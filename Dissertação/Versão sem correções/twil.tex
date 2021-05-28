@@ -1,0 +1,70 @@
+Toda a modelagem realizada neste trabalho é baseada no robô móvel Twil~\cite{lages98a,lages98b}, mostrado na Figura~\ref{fig:twil}. Este robô foi desenvolvido no Departamento de Controle e Conversão de Energia do Instituto Tecnológico da Aeronáutica, CTA-ITA-IEEE.
+
+Este robô possui duas rodas ativas, ambas com um raio de $7,5~cm$, e uma distância entre rodas de $25~cm$. Assim, conforme a Figura~\ref{fig:twil_meas}, define-se:
+\begin{equation*}
+	r = 0,075~m \qquad b = 0,25~m
+\end{equation*}
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.4\linewidth]{Figuras/twil.ps}
+    \caption{O robô móvel Twil.}
+    \label{fig:twil}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.55\linewidth]{Figuras/twil_meas.eps}
+    \caption{Aspectos estruturais do robô Twil.}
+    \label{fig:twil_meas}
+\end{center}\end{figure}
+
+Como já mencionado, no controle preditivo é possível definir restrições nas variáveis de entrada do sistema a ser controlado, utilizando então estas restrições durante o cálculo da lei de controle. E é bem sabido o fato de que a saturação de atuadores eletromecânicos invariavelmente existe. Frente a isto, alguns dados construtivos do robô tornam-se necessários, a fim de se calcular um limite nas velocidade do robô para que estas saturações não ocorram. Pode-se usar estas restrições também para fazer com que as rodas não derrapem.
+
+Então, para evitar a saturação dos atuadores, cada motor do robô Twil pode desenvolver uma velocidade máxima de 1 rotação por segundo\footnote{Considera-se que os motores das rodas ativas esquerda e direita são iguais e possuem os mesmos limites de velocidade.}. Logo, a velocidade angular máxima será de $\overline\varphi = 2\pi~rad/s$. Considerando que as rodas não derrapam, as velocidades tangenciais desenvolvidas na roda esquerda, $v_L$, e direita, $v_R$, são proporcionais à velocidade angular: $v_L=v_R = \varphi r$. Assim:
+\begin{equation*}
+	\begin{split}
+		\overline v_L &= \bar\varphi r \\
+				    &= 2\pi~rad/s\times 0.075~m \\
+				    &= 0.4712~m/s
+	\end{split} \qquad\qquad\qquad
+	\overline v_R = \overline v_L
+\end{equation*}
+onde $\overline v_L$ e $\overline v_R$ são as velocidades tangenciais máximas nas rodas esquerda e direita, respectivamente.
+
+Entretanto, o modelo cinemático~\req{eqn:model} possui como entradas de controle a velocidade linear $v$ e a velocidade angular $w$, que se relacionam com $v_L$ e $v_R$ da seguinte maneira:
+\begin{equation*}
+	v = \frac{v_L+v_R}{2} \qquad\qquad w = \frac{v_L-v_R}{b}
+\end{equation*}
+ 
+O valor máximo da velocidade linear é dado quando as duas rodas desenvolvem a velocidade tangencial máxima no mesmo sentido. Assim:
+\begin{equation*}
+	\begin{split}
+		\overline v &= \frac{\overline v_L+\overline v_R}{2} \\
+			  &= 0.4712~m/s
+	\end{split}
+\end{equation*}
+
+A máxima velocidade angular é desenvolvida quando as duas rodas operam a máxima velocidade tangencial, mas com sentidos opostos. Assim:
+\begin{equation*}
+	\begin{split}
+		\overline w &= \frac{\overline v_L+\overline v_R}{b} \\
+			  &= 3,7699~rad/s
+	\end{split}
+\end{equation*}
+
+De uma forma geral, as restrições no MPC podem ser representadas pela seguinte expressão:
+\begin{equation*}
+	{\bf Du}\leq{\bf d},
+\end{equation*}
+onde ${\bf u}$ é o vetor das entradas de controle. Para este caso, ${\bf u}=[v~~w]^T$. A matriz $\bf D$ e o vetor $\bf d$ são definidos fazendo
+\begin{alignat*}{2}
+	-\overline v &\leq &v &\leq \overline v, \\ 
+	-\overline w &\leq &w &\leq \overline w,
+\end{alignat*}
+de onde tem-se que:
+\begin{equation}\label{eqn:Dd}
+	{\bf D} = \begin{bmatrix}
+		1 & 0 \\ 0 & 1 \\ -1 & 0 \\ 0 & -1
+	\end{bmatrix}, \qquad
+	{\bf d} = \begin{bmatrix}
+		0,4712~m/s \\ 3,7699~rad/s \\ 0,4712~m/s \\ 3,7699~rad/s
+	\end{bmatrix}
+\end{equation}

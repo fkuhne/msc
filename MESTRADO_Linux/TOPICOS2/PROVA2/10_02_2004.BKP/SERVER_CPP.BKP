@@ -1,0 +1,226 @@
+/* server.cpp */
+
+#include "defines.h"
+#include "controls.h"
+
+#define m_c 2								// ordem do controle.
+#define x_ref_p 0.0001							// ponto de referência em x com relação ao sistema móvel do robô.
+#define y_ref_p 0								// ponto de referência em y com relação ao sistema móvel do robô.
+
+#define k_x 1								// ganho da lei de controle linear.
+#define k_y 1								// ganho da lei de controle linear.
+
+#define m 3								// ordem da saida.
+
+int main (void)
+{
+
+	CVECTOR<double> x_ref(n);						// trajetória de referência.
+	CVECTOR<double> u_ref(p);						// vetor de entradas de controle de referência.
+	CVECTOR<double> y_ref(m);						// saída de referência.
+
+	CVECTOR<double> r_r(p);							// ponto de referência.
+	CVECTOR<double> y_r(m);							// saída com relação ao ponto de referência.
+	CVECTOR<double> v(m_c);							// entrada de controle linear.
+
+	CVECTOR<double> y(m);							// saída com relação ao ponto de referência.
+
+	MATRIX<double> H(m,m);							// matriz de observação.
+	MATRIX<double> K(m_c,m_c);						// matriz de ganhos do controle linear.
+
+
+	std::string msg;						// mensagem recebida dos clientes.
+//	char carac [100];						// vetor auxiliar para separar os dados recebidos do servidor.
+	char rcv_err[CHAR_SIZE];				// vetor para receber os erros 'e' e 'E' dos outros nodos.
+//	char snd_err[CHAR_SIZE];				// vetor para enviar os erros 'e' e 'E' dos outros nodos.
+	char *next;							// ponteiro auxiliar.
+	char buffer [400];					// char para enviar [x y theta].
+
+	double vl = 0.3;						// velocidade linear do robô.
+	double r = 2;						// raio da trajetória.
+	double va = vl/r;						// velocidade angular do robô.
+	double T = 0.1;						// período de amostragem.
+	double k_final = (4*M_PI/va)/T;			// tempo final de simulação (8 completo).
+	double k_meio = k_final/2;				// metade da trajetória (qdo inverte a va).
+
+	// Cria arquivo de nome "xxx_ctrl", onde serão inseridos os dados:
+	ofstream arq("./xxx_ctrl");
+
+      // --------------------------------------------
+      // MECANISMOS DE COMUNICAÇÃO:
+      //
+      // Servidor para se comunicar com o encoder:
+	ServerSocket server_enc (PORT_SIM2ENC);
+	ServerSocket client_enc;
+	cout << "Cria servidor server_enc... "; cout.flush();
+	server_enc.accept (client_enc);
+	cout << "conectou servidor server_enc    PASSO 1.2\n";
+
+      // Servidor para se comunicar com o GPS:
+	ServerSocket server_gps (PORT_SIM2GPS);
+	ServerSocket client_gps;
+	cout << "Cria servidor server_gps... "; cout.flush();
+	server_gps.accept (client_gps);
+	cout << "conectou servidor server_gps    PASSO 2.2\n";
+
+      // Servidor para se comunicar com a bússola:
+	ServerSocket server_bus (PORT_SIM2BUS);
+	ServerSocket client_bus;
+	cout << "Cria servidor server_bus... "; cout.flush();
+	server_bus.accept (client_bus);
+	cout << "conectou servidor server_bus    PASSO 3.2\n";
+	//
+      // --------------------------------------------
+
+	std::cout << "\n--- Processo rodando...\n";
+
+	x.zeros();
+	x_ref.zeros();
+
+	r_r[0] = x_ref_p;
+	r_r[1] = y_ref_p;
+	
+	x_est_global_k1.zeros();
+	Q.zeros(); Q[0][0] = var_x; Q[1][1] = var_y; Q[2][2] = var_theta;
+	P_global_k1.eye(); P_global_k1 = P_global_k1*1000.;
+
+
+	client_enc >> msg;				// Aguarda requisição do encoder...
+	client_gps >> msg;				// Aguarda requisição do GPS...
+	client_bus >> msg;				// Aguarda requisição da bússola...
+
+	for (int k=0; k<k_final; k++)
+	{
+
+		// Saída atual:
+		y = H * x_est_global_k1;
+
+		// Saída no ponto de referência com relação ao sistema móvel do robô:
+		y_r = ref_point(y, r_r);
+
+		// Saída de referência:
+		y_ref = ref_point(H * x_ref, r_r);
+
+		// Lei de controle linear:
+		v = control(y_ref, y_r, K);
+
+		// Realimentação linearizante:
+		u = linearization(y_r, r_r, v);
+
+
+		if (k>=k_meio && va>0) va = -va;
+		u_ref[0] = vl;
+		u_ref[1] = va;
+
+		x_ref = f(x_ref, u_ref, T);
+
+		snprintf (buffer, sizeof(buffer), "%g %g %g %g %g", x[0], x[1], x[2], u[0], u[1]);
+
+		client_enc << buffer;				// ... e envia o dado para ele.
+		client_gps << buffer;				// ... e envia o dado para ele.
+		client_bus << buffer;				// ... e envia o dado para ela.
+
+		client_enc >> msg;				// Aguarda requisição do encoder...
+		memset(&rcv_err[0], 0, CHAR_SIZE);  // zera o vetor de erro rcv_err.
+
+		for(int i=0; i<=msg.size(); i++){
+			rcv_err[i] = msg[i];
+		}
+
+		E_enc[0][0] = strtod(rcv_err, &next);   // grava erros do encoder.
+		E_enc[0][1] = strtod(next, &next);
+		E_enc[0][2] = strtod(next, &next);
+		E_enc[1][0] = strtod(next, &next);
+		E_enc[1][1] = strtod(next, &next);
+		E_enc[1][2] = strtod(next, &next);
+		E_enc[2][0] = strtod(next, &next);
+		E_enc[2][1] = strtod(next, &next);
+		E_enc[2][2] = strtod(next, &next);
+		e_enc[0] = strtod(next, &next);
+		e_enc[1] = strtod(next, &next);
+		e_enc[2] = strtod(next, &next);
+
+
+		client_gps >> msg;				// Aguarda requisição do GPS...
+		memset(&rcv_err[0], 0, CHAR_SIZE); // zera o vetor de erro rcv_err.
+
+		for(int i=0; i<=msg.size(); i++){
+			rcv_err[i] = msg[i];
+		}
+
+		E_gps[0][0] = strtod(rcv_err, &next);   // grava erros do encoder.
+		E_gps[0][1] = strtod(next, &next);
+		E_gps[0][2] = strtod(next, &next);
+		E_gps[1][0] = strtod(next, &next);
+		E_gps[1][1] = strtod(next, &next);
+		E_gps[1][2] = strtod(next, &next);
+		E_gps[2][0] = strtod(next, &next);
+		E_gps[2][1] = strtod(next, &next);
+		E_gps[2][2] = strtod(next, &next);
+		e_gps[0] = strtod(next, &next);
+		e_gps[1] = strtod(next, &next);
+		e_gps[2] = strtod(next, &next);
+
+
+		client_bus >> msg;				// Aguarda requisição da bússola...
+		memset(&rcv_err[0], 0, CHAR_SIZE); // zera o vetor de erro rcv_err.
+
+		for(int i=0; i<=msg.size(); i++){
+			rcv_err[i] = msg[i];
+		}
+
+		E_bus[0][0] = strtod(rcv_err, &next);   // grava erros do encoder.
+		E_bus[0][1] = strtod(next, &next);
+		E_bus[0][2] = strtod(next, &next);
+		E_bus[1][0] = strtod(next, &next);
+		E_bus[1][1] = strtod(next, &next);
+		E_bus[1][2] = strtod(next, &next);
+		E_bus[2][0] = strtod(next, &next);
+		E_bus[2][1] = strtod(next, &next);
+		E_bus[2][2] = strtod(next, &next);
+		e_bus[0] = strtod(next, &next);
+		e_bus[1] = strtod(next, &next);
+		e_bus[2] = strtod(next, &next);
+
+
+		P_global_k = (P_global_k1.inv() + E_enc + E_gps + E_bus).inv();
+		x_est_global_k = P_global_k * (P_global_k1.inv() * x_est_global_k1 + e_enc + e_gps + e_bus);
+		x_est_global_k1 = f(x_est_global_k,u,T);
+		F = jacob_F(x_est_global_k,u,T);
+		P_global_k1 = F * P_global_k * F.t() + Q;
+		//
+		// Fim do algoritmo do Filtro de Kalman Extendido Descentralizado.
+		// ---------------------------------------------------------------
+
+	/*	client_bus2enc << "d";   //
+		client_gps2enc << "d";   //
+		server_gps2enc >> msg;      //
+		server_bus2enc >> msg;      //  */
+
+		// Escreve os dados no arquivo:
+		arq
+			<< x_est_global_k[0] << "\t"        // 1
+			<< x_est_global_k[1] << "\t"        // 2
+			<< x_est_global_k[2] << "\t"        // 3
+
+			<< P_global_k[0][0] << "\t"         // 4
+			<< P_global_k[1][1] << "\t"         // 5
+			<< P_global_k[2][2] << "\t"         // 6
+
+			<< x[0] << "\t"                     // 7
+			<< x[1] << "\t"                     // 8
+			<< x[2] << "\t"                     // 9
+
+			<< "\n";
+
+
+		std::cout << " Passo " << k << "\n";
+	}
+
+	arq.close();
+	std::cout << "\n--- Processo finalizado!\n\n";
+
+	return 0;
+}
+
+/* server.cpp -- ESTA É A ÚLTIMA LINHA */

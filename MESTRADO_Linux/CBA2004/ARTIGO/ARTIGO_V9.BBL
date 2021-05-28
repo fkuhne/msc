@@ -1,0 +1,84 @@
+\begin{thebibliography}{xx}
+
+\harvarditem[Borenstein et~al.]{Borenstein, Everett \harvardand\
+  Feng}{1996}{borenstein1}
+Borenstein, J., Everett, H.~R. \harvardand\ Feng, L.  \harvardyearleft
+  1996\harvardyearright .
+\newblock Where am i? -- sensors and methods for mobile robot positioning, {\em
+  Technical report}, Univ. Of Michigan.
+
+\harvarditem{Goodwin \harvardand\ Sin}{1984}{goodwin1}
+Goodwin, G. \harvardand\ Sin, K.  \harvardyearleft 1984\harvardyearright .
+\newblock {\em Adaptive filtering prediction and control}, Prentice-Hall,
+  Englewood Cliffs, NJ.
+
+\harvarditem{Isidori}{1995}{isidori1}
+Isidori, A.  \harvardyearleft 1995\harvardyearright .
+\newblock {\em Nonlinear control systems}, 3rd. edn, Springer-Verlag, London.
+
+\harvarditem{Kalman}{1960}{kalman1}
+Kalman, R.~E.  \harvardyearleft 1960\harvardyearright .
+\newblock A new approach to linear filtering and prediction problems, {\em
+  Trans. ASME J. Basic Engineerings} pp.~35--45.
+
+\harvarditem[Kang et~al.]{Kang, Hashimoto \harvardand\ Harashima}{1995}{kang1}
+Kang, D., Hashimoto, H. \harvardand\ Harashima, F.  \harvardyearleft
+  1995\harvardyearright .
+\newblock Position estimation for mobile robot using sensor fusion, {\em IEEE
+  Intl. Conf. on Intelligent Robots and Systems}, pp.~271--276.
+
+\harvarditem{Lages}{1998}{lages1}
+Lages, W.~F.  \harvardyearleft 1998\harvardyearright .
+\newblock {\em Controle e estimação de posição e orientação de robôs móveis},
+  Tese de doutorado, Inst. Tecnológico da Aeronáutica, São José dos Campos.
+
+\harvarditem{Lages \harvardand\ Hemerly}{1998}{lages2}
+Lages, W.~F. \harvardand\ Hemerly, E.~M.  \harvardyearleft
+  1998\harvardyearright .
+\newblock Controle em coordenadas polares de robôs móveis com rodas, {\em XII
+  Congresso Brasileiro de Automática}, pp.~605--610.
+
+\harvarditem{Leonard \harvardand\ Durrant-White}{1992}{leonard1}
+Leonard, J.~J. \harvardand\ Durrant-White, H.~F.  \harvardyearleft
+  1992\harvardyearright .
+\newblock {\em Directed sonar sensing for mobile robot navigation}, Kluwer
+  Academic Publishers.
+
+\harvarditem[Medromi et~al.]{Medromi, Zaafrani, Dekneuvel \harvardand\
+  Thomas}{1996}{medromi1}
+Medromi, H., Zaafrani, E., Dekneuvel, E. \harvardand\ Thomas, M.~C.
+  \harvardyearleft 1996\harvardyearright .
+\newblock Multi-sensors localization for control af autonomous mobile robot,
+  {\em IEEE/SICE/RSJ Intl. Conf. on Multisensor Fusion and Integration for
+  Intelligent Systems}, pp.~373--380.
+
+\harvarditem{Mutambara}{1998}{mutambara1}
+Mutambara, A. G.~O.  \harvardyearleft 1998\harvardyearright .
+\newblock {\em Descentralized estimation and control for multisensor systems},
+  CRC Press, Boca Raton, FL.
+
+\harvarditem[Park et~al.]{Park, Chung, Chung \harvardand\ Lee}{1996}{park1}
+Park, K.~C., Chung, D., Chung, H. \harvardand\ Lee, J.~G.  \harvardyearleft
+  1996\harvardyearright .
+\newblock Dead reckoning navigation of a mobile robot using an indirect kalman
+  filter, {\em IEEE/SICE/RSJ Intl. Conf. on Multisensor Fusion and Integration
+  for Intelligent Systems}, pp.~132--138.
+
+\harvarditem[Sandi et~al.]{Sandi, Hemerly \harvardand\ Lages}{1998}{franz1}
+Sandi, F.~A., Hemerly, E.~M. \harvardand\ Lages, W.~F.  \harvardyearleft
+  1998\harvardyearright .
+\newblock Sistema para navegação e guiagem de robôs móveis autônomos, {\em
+  Controle e Automação} {\bf 9(3)}:~107--118.
+
+\harvarditem{Vestli}{1995}{sjur1}
+Vestli, S.~J.  \harvardyearleft 1995\harvardyearright .
+\newblock {\em Fast, accurate and robust estimation of mobile robot position
+  and orientation}, PhD thesis, Swiss Federal Inst. of Technology, Zurich.
+
+\harvarditem{Yajnik \harvardand\ Jha}{1997}{yajnik1}
+Yajnik, S. \harvardand\ Jha, N.~K.  \harvardyearleft 1997\harvardyearright .
+\newblock Graceful degradation in an algorithm-based fault tolerant
+  multiprocessor systems, {\em IEEE Trans. on Parallel and Distributed Systems}
+  {\bf 8(2)}:~137--153.
+
+\end{thebibliography}

@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0073)http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor15b.html -->
+<HTML><HEAD><TITLE>Constrained Optimization :: Standard Algorithms (Optimization Toolbox)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!-- $Revision$  $Date$ --><!-- DOCNAME: Optimization Toolbox --><!-- CHUNKNAME: Constrained Optimization --><!-- CHAPNAME: Standard Algorithms --><!-- HEADSTUFF --><LINK 
+href="Constrained Optimization  Standard Algorithms (Optimization Toolbox)_files/docset.css" 
+type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2900.2627" name=GENERATOR></HEAD>
+<BODY class=support bgColor=#ffffff>
+<SCRIPT language=Javascript>
+if (parent.frames.length<2) document.write('<p><a href="../../helpdesk.html" target=_top><b>Documentation</b></a> <img src="../../arrowr.gif"> <a HREF="optim.html"><b>Optimization Toolbox</b></a></p>');
+</SCRIPT>
+<!-- NAVBARTOP -->
+<TABLE class=support cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=baseline bgColor=#e7ebf7><B>Optimization Toolbox</B></TD>
+    <TD vAlign=baseline align=right bgColor=#e7ebf7><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor14b.html"><IMG 
+      alt="Previous page" 
+      src="Constrained Optimization  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      border=0></A>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor16b.html"><IMG 
+      alt="Next Page" 
+      src="Constrained Optimization  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      border=0></A></TD></TR></TBODY></TABLE><A name=constrained_optimization></A><!-- H1 --><A name=51152></A>
+<P><FONT class=Head2 size=+2><B>Constrained Optimization</B></FONT><BR 
+class=hdr>
+<P><A name=26598></A>In constrained optimization, the general aim is to 
+transform the problem into an easier subproblem that can then be solved and used 
+as the basis of an iterative process. A characteristic of a large class of early 
+methods is the translation of the constrained problem to a basic unconstrained 
+problem by using a penalty function for constraints that are near or beyond the 
+constraint boundary. In this way the constrained problem is solved using a 
+sequence of parameterized unconstrained optimizations, which in the limit (of 
+the sequence) converge to the constrained problem. These methods are now 
+considered relatively inefficient and have been replaced by methods that have 
+focused on the solution of the Kuhn-Tucker (KT) equations. The KT equations are 
+necessary conditions for optimality for a constrained optimization problem. If 
+the problem is a so-called convex programming problem, that is, <IMG alt=f(x) 
+src="Constrained Optimization  Standard Algorithms (Optimization Toolbox)_files/tutor213.gif" 
+align=bottom>and <IMG alt="G sub  i (x) = 1, ..., m" 
+src="Constrained Optimization  Standard Algorithms (Optimization Toolbox)_files/tuto104a.gif" 
+align=bottom>, are convex functions, then the KT equations are both necessary 
+and sufficient for a global solution point.</P>
+<P><A name=26607></A>Referring to GP (<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori2b.html#15026">Eq.&nbsp;3-1</A>), 
+the Kuhn-Tucker equations can be stated as</P>
+<P><A name=26612></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG alt="Kuhn-Tucker equations" 
+      src="Constrained Optimization  Standard Algorithms (Optimization Toolbox)_files/tutor145.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-23)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26613></A>in addition to the original constraints in <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori2b.html#15026">Equation&nbsp;3-1</A>.</P>
+<P><A name=59891></A>The first equation describes a canceling of the gradients 
+between the objective function and the active constraints at the solution point. 
+For the gradients to be canceled, Lagrange multipliers (<IMG 
+alt="lambda sub i, i  = 1, ... m)" 
+src="Constrained Optimization  Standard Algorithms (Optimization Toolbox)_files/tutor244.gif" 
+align=bottom>) are necessary to balance the deviations in magnitude of the 
+objective function and constraint gradients. Because only active constraints are 
+included in this canceling operation, constraints that are not active must not 
+be included in this operation and so are given Lagrange multipliers equal to 
+zero. This is stated implicitly in the last two equations of <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor15b.html#26612">Eq.&nbsp;3-23</A>.</P>
+<P><A name=26620></A>The solution of the KT equations forms the basis to many 
+nonlinear programming algorithms. These algorithms attempt to compute the 
+Lagrange multipliers directly. Constrained quasi-Newton methods guarantee 
+superlinear convergence by accumulating second order information regarding the 
+KT equations using a quasi-Newton updating procedure. These methods are commonly 
+referred to as Sequential Quadratic Programming (SQP) methods, since a QP 
+subproblem is solved at each major iteration (also known as Iterative Quadratic 
+Programming, Recursive Quadratic Programming, and Constrained Variable Metric 
+methods).</P>
+<P><A name=41311></A>This section continues with discussions of the following 
+topics:</P>
+<UL>
+  <LI><A name=41330></A><A 
+  href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor16b.html#26622">Sequential 
+  Quadratic Programming (SQP)</A> 
+  <LI><A name=41334></A>A <A 
+  href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor17b.html#26633">Quadratic 
+  Programming (QP) Subproblem</A> 
+  <LI><A name=41323></A><A 
+  href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html#26684">SQP 
+  Implementation</A> 
+  <LI><A name=54595></A><A 
+  href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor19b.html#53423">Simplex 
+  Algorithm</A> </LI></UL>
+<P><BR>
+<P>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#e7ebf7 border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD align=left width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor14b.html"><IMG 
+      alt="Previous page" 
+      src="Constrained Optimization  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      align=bottom border=0></A>&nbsp;</TD>
+    <TD align=left>&nbsp;Nonlinear Equations Implementation</TD>
+    <TD>&nbsp;</TD>
+    <TD align=right>Sequential Quadratic Programming (SQP)&nbsp;</TD>
+    <TD align=right width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor16b.html"><IMG 
+      alt="Next page" 
+      src="Constrained Optimization  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      align=bottom border=0></A></TD></TR></TBODY></TABLE><BR><!-- Copyright 2005 The MathWorks, Inc. --><!-- Last updated: Thu Jan 13 23:15:24 2005 --><!-- SiteCatalyst code version: G.7.
+Copyright 1997-2004 Omniture, Inc. More info available at
+http://www.omniture.com -->
+<SCRIPT language=JavaScript type=text/javascript><!--
+/* You may give each page an identifying name, server, and channel on
+the next lines. */
+var s_pageName=document.title
+var s_server=""
+var s_channel=""
+var s_pageType=""
+var s_prop1=""
+var s_prop2=""
+var s_prop3=""
+var s_prop4=""
+var s_prop5=""
+/* E-commerce Variables */
+var s_campaign=""
+var s_state=""
+var s_zip=""
+var s_events=""
+var s_products=""
+var s_purchaseID=""
+var s_eVar1=""
+var s_eVar2=""
+var s_eVar3=""
+var s_eVar4=""
+var s_eVar5=""
+//--></SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Constrained Optimization  Standard Algorithms (Optimization Toolbox)_files/s_code_remote.js" 
+type=text/javascript></SCRIPT>
+<!-- End SiteCatalyst code version: G.7. -->
+<TABLE style="BORDER-TOP: #ed8000 2px solid; BACKGROUND-COLOR: #ffffff" 
+cellSpacing=0 cellPadding=3 width="100%" align=center summary=layout border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>&nbsp;© 1994-2005 The MathWorks, Inc. &nbsp;&nbsp;&nbsp; 
+      -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/trademarks.html" 
+      target=_parent>Trademarks</A>&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/" 
+      target=_parent>Privacy Policy</A> </TD></TR></TBODY></TABLE></P></BODY></HTML>

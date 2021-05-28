@@ -1,0 +1,19 @@
+all : dnodes
+
+objs = normal.o func.o
+
+dnodes: $(objs) dnodes.cpp
+	g++ -o dnodes $(objs) dnodes.cpp -Wno-deprecated
+
+normal.o:normal.c
+	gcc -c -o normal.o normal.c
+
+func.o:func.cpp
+	g++ -c -o func.o func.cpp -Wno-deprecated
+clean:
+	rm -f *.o dnodes normal func
+
+
+
+
+

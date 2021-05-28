@@ -1,0 +1,428 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0393)http://ieeexplore.ieee.org/xpl/abs_free.jsp?isNumber=12289&prod=CNF&arnumber=572171&arSt=145&ared=150&arAuthor=Hoshino%2C+M.%3B+Gunji%2C+Y.%3B+Oho%2C+S.%3B+Takano%2C+K.&arNumber=572171&a_id0=572166&a_id1=572167&a_id2=572168&a_id3=572169&a_id4=572170&a_id5=572171&a_id6=572172&a_id7=572173&a_id8=572174&a_id9=572175&a_id10=572176&a_id11=572177&a_id12=572178&a_id13=572179&a_id14=572180&count=15 -->
+<HTML><HEAD><TITLE>IEEE Xplore: A Kalman filter to estimate direction for automotive navigation</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="2002-08-20 17:17:48.0" name=GenerationDate>
+<SCRIPT 
+src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/Xplorejs.js"></SCRIPT>
+
+<STYLE type=text/css>BODY {
+	FONT-WEIGHT: normal; FONT-SIZE: 10pt; LINE-HEIGHT: normal; FONT-STYLE: normal; FONT-VARIANT: normal
+}
+.link {
+	COLOR: #663366
+}
+.active {
+	COLOR: #663366
+}
+.visited {
+	COLOR: #993333
+}
+#Mt:hover {
+	FONT-WEIGHT: bold; COLOR: #993333
+}
+.Mht {
+	FONT-WEIGHT: bold; FONT-SIZE: 9pt; BACKGROUND: #ffffff; COLOR: #000000; FONT-FAMILY: Verdana, Arial, Helvetica, San-serif
+}
+</STYLE>
+
+<META content="MSHTML 6.00.2800.1400" name=GENERATOR></HEAD>
+<BODY vLink=#333333 aLink=#aa3333 link=#000066 bgColor=#ffffff leftMargin=0 
+topMargin=0 marginheight="0" marginwidth="0">
+<TABLE cellSpacing=0 cellPadding=18 width=600 bgColor=#ffffff>
+  <TBODY>
+  <TR></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width=750 bgColor=#000000 border=0>
+  <TBODY>
+  <TR>
+    <TD width=663 bgColor=#ffffff><A href="http://www.ieee.org/"><IMG 
+      height=23 alt="IEEE Home" hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/tb_01.gif" 
+      width=69 border=0 name=home></A><A 
+      href="http://www.ieee.org/web/search/"><IMG height=23 alt="Search IEEE" 
+      hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/tb_02.gif" 
+      width=98 border=0 name=IEEE_Search></A> <A 
+      href="http://shop.ieee.org/store/"><IMG height=23 alt=Shop hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/tb_03.gif" 
+      width=53 border=0 name=shop></A><A 
+      href="http://www.ieee.org/web/accounts/"><IMG height=23 alt="Web Account" 
+      hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/tb_04.gif" 
+      width=108 border=0 name=web></A> <A 
+      href="http://www.ieee.org/about/location/"><IMG height=23 
+      alt="Contact IEEE" hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/tb_05.gif" 
+      width=107 border=0 name=contact></A> </TD>
+    <TD align=right width=87 bgColor=#ffffff><A 
+      href="http://www.ieee.org/"><IMG height=25 alt=IEEE hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/ieeelogosminv.gif" 
+      width=82 border=0 name=ieee></A> </TD></TR>
+  <TR>
+    <TD width=526><A href="http://www.ieee.org/membership/"><IMG height=14 
+      alt=Membership hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/trmem.gif" 
+      width=85 border=0 name=mem></A><A 
+      href="http://www.ieee.org/products/periodicals.html"><IMG height=14 
+      alt=Publications/Services hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/trpubs.gif" 
+      width=139 border=0 name=pubs></A><A href="http://standards.ieee.org/"><IMG 
+      height=14 alt=Standards hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/trstds.gif" 
+      width=71 border=0 name=stds></A><A 
+      href="http://www.ieee.org/conferences/"><IMG height=14 alt=Conferences 
+      hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/trconf.gif" 
+      width=90 border=0 name=confs></A><A 
+      href="http://www.ieee.org/membership/benefits/careers.html"><IMG height=14 
+      alt=Careers/Jobs hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/trjob.gif" 
+      width=89 border=0 name=career></A></TD>
+    <TD width=212>&nbsp;</TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width=750 border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top align=left width=57 bgColor=#663366><IMG height=57 
+      alt="IEEE Xplore" hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/hplmlog.gif" 
+      width=257 align=top border=0 name=hblulog> </TD>
+    <TD vAlign=top width=1 bgColor=#663366>&nbsp;</TD>
+    <TD vAlign=center align=middle bgColor=#663366><FONT face=verdana 
+      color=#ffffff size=-2>
+      <SCRIPT type=text/javascript>
+
+var instNm = "NotSet";
+var memNm = "NotSet";
+
+
+
+instNm = getCookie("instNm");
+memNm = getCookie("memNm");
+
+
+if(!(instNm))
+{
+instNm = "NotSet";
+}
+
+
+if(!(memNm))
+{
+memNm = "NotSet";
+}
+
+
+
+if((instNm != "NotSet" || memNm != "NotSet") ){
+
+	//alert("0"+instNm);
+//alert("0"+memNm);
+	document.writeln("Welcome  <br>");
+
+	if(memNm != "NotSet" && instNm == "NotSet"){
+	//alert("1"+instNm);
+		document.writeln("<b>" + removedash(memNm) + " ,    " + "IEEE Member" +"</b><br>");
+	}
+
+	else if(instNm != "NotSet" && memNm == "NotSet" ){
+	//alert("2"+instNm);
+		document.writeln("<b>"+ removedash(instNm) +"</b>");
+	}
+
+	else if(instNm != "NotSet" && memNm != "NotSet" ){
+	//alert("3"+instNm);
+		document.writeln("<b>" + removedash(memNm) + " ,    " + "IEEE Member" +"</b><br>");		
+		document.writeln("<b>"+ removedash(instNm) +"</b>");
+	}
+
+
+}
+
+
+
+function getCookie (name) {
+var mtcookie = document.cookie; 
+var cname = name + "=";
+var clen = mtcookie.length;
+var cbegin = 0;
+        while (cbegin < clen) {
+        var vbegin = cbegin + cname.length;
+                if (mtcookie.substring(cbegin, vbegin) == cname) { 
+                var vend = mtcookie.indexOf (";", vbegin);
+                        if (vend == -1) vend = clen;
+                return unescape(mtcookie.substring(vbegin, vend));
+                }
+        cbegin = mtcookie.indexOf(" ", cbegin) + 1;
+                if (cbegin == 0) break;
+        }
+return;
+}
+
+
+</SCRIPT>
+      </FONT></TD>
+    <TD vAlign=top align=right bgColor=#663366>
+      <DIV align=right><FONT face=verdana color=#ffffff size=-2><A 
+      href="http://www.ieee.org/products/onlinepubs/news/0104_04.html" 
+      target=blank><IMG height=60 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/1m_bluebkgd_120x60.gif" 
+      width=120 border=0></A></FONT></DIV></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=2 width=750 bgColor=#cccccc border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=top width=275><FONT 
+      face="Verdana, Arial, Helvetica, sans-serif" color=#663366 size=1><A 
+      href='javascript:loadhelp("../../xplorehelp/IELHELPLocating_a_Journal.htm")'>Help</A></FONT> 
+      &nbsp; &nbsp;<FONT face="Verdana, Arial, Helvetica, sans-serif" 
+      color=#663366 size=1><A 
+      href="http://ieeexplore.ieee.org/xpl/faq.jsp">FAQ</A></FONT>&nbsp;&nbsp; 
+      <FONT face="Verdana, Arial, Helvetica, sans-serif" color=#663366 size=1 
+      font><A 
+      href="http://ieeexplore.ieee.org/xpl/terms.jsp">Terms</A></FONT>&nbsp;&nbsp; 
+      <FONT face="Verdana, Arial, Helvetica, sans-serif" color=#663366 size=1 
+      font><A href="http://ieeexplore.ieee.org/xpl/Peerreview.jsp">IEEE Peer 
+      Review</A></FONT></TD>
+    <TD vAlign=top width=404><FONT face=verdana color=#ffffff size=0><B>
+      <FORM name=Form1 action="" method=post><SELECT class=Mht 
+      onchange="MM_jumpMenu('parent',this,0)" name=menu1> <OPTION 
+        selected>Quick Links</OPTION> <OPTION>_________________</OPTION> <OPTION 
+        value=/xpl/weekinfo.jsp>New This Week</OPTION> <OPTION 
+        value=/xpl/opac.jsp>OPAC Linking Information</OPTION> <OPTION 
+        value=/xpl/emailalert1.jsp>EMail Alerts</OPTION> <OPTION 
+        value='javascript:loadfback("/xpl/feedback.jsp")'>Your Feedback</OPTION> 
+        <OPTION value='javascript:loadfback("/xpl/techform.jsp")'>Technical 
+        Support</OPTION> <OPTION value=/xpl/More_rob.jsp>No Robots 
+        Please</OPTION> <OPTION value=/xpl/ReleaseNotes.jsp>Release 
+        Notes</OPTION> <OPTION 
+        value='javascript:loadfback("http://www.ieee.org/products/onlinepubs/index.html")'>IEEE 
+        Online Publications</OPTION></SELECT> </FORM></FONT></B></TD>
+    <TD vAlign=top width=185 bgColor=#cccccc>
+      <DIV align=right><FONT face="Verdana, Arial, Helvetica, sans-serif" 
+      color=#3333cc 
+  size=1><B>»Abstract&nbsp;&nbsp;</B></FONT></DIV></TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width=750 border=0 valign="TOP">
+  <TBODY>
+  <TR vAlign=top align=left>
+    <TD><A 
+      href="http://ieeexplore.ieee.org/xpl/abs_free.jsp?isNumber=12289&amp;prod=CNF&amp;arnumber=572171&amp;arSt=145&amp;ared=150&amp;arAuthor=Hoshino%2C+M.%3B+Gunji%2C+Y.%3B+Oho%2C+S.%3B+Takano%2C+K.&amp;arNumber=572171&amp;a_id0=572166&amp;a_id1=572167&amp;a_id2=572168&amp;a_id3=572169&amp;a_id4=572170&amp;a_id5=572171&amp;a_id6=572172&amp;a_id7=572173&amp;a_id8=572174&amp;a_id9=572175&amp;a_id10=572176&amp;a_id11=572177&amp;a_id12=572178&amp;a_id13=572179&amp;a_id14=572180&amp;count=15#"><IMG 
+      height=20 alt="Welcome to IEEE Xplore" hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/ahwelco.gif" 
+      width=130 align=top border=0 name=ahwelco></A><BR><A 
+      onmouseover="MM_swapImage('home1','','/images/t2home.gif',1)" 
+      onmouseout=MM_swapImgRestore() 
+      href="http://ieeexplore.ieee.org/Xplore/DynWel.jsp"><IMG height=24 
+      alt=Home hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/t1home.gif" 
+      width=130 border=0 name=home1></A><BR><A 
+      onmouseover="MM_swapImage('access1','','/images/t2access.gif',1)" 
+      onmouseout=MM_swapImgRestore() href="javascript:openurl();"><IMG height=32 
+      alt="What Can I Access?" hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/t1access.gif" 
+      width=130 border=0 name=access1></A><BR><A 
+      onmouseover="MM_swapImage('login1','','/images/t2login.gif',1)" 
+      onmouseout=MM_swapImgRestore() 
+      href="http://ieeexplore.ieee.org/servlet/Login?logout=/Xplore/logout.jsp"><IMG 
+      height=30 alt=Log-out hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/t1login.gif" 
+      width=130 border=0 name=login1></A><BR><A 
+      href="http://ieeexplore.ieee.org/xpl/abs_free.jsp?isNumber=12289&amp;prod=CNF&amp;arnumber=572171&amp;arSt=145&amp;ared=150&amp;arAuthor=Hoshino%2C+M.%3B+Gunji%2C+Y.%3B+Oho%2C+S.%3B+Takano%2C+K.&amp;arNumber=572171&amp;a_id0=572166&amp;a_id1=572167&amp;a_id2=572168&amp;a_id3=572169&amp;a_id4=572170&amp;a_id5=572171&amp;a_id6=572172&amp;a_id7=572173&amp;a_id8=572174&amp;a_id9=572175&amp;a_id10=572176&amp;a_id11=572177&amp;a_id12=572178&amp;a_id13=572179&amp;a_id14=572180&amp;count=15#"><IMG 
+      height=20 alt="Tables of Contents" hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/ahtoc.gif" 
+      width=130 align=top border=0 name=toc></A><BR><A 
+      onmouseover="MM_swapImage('journ1','','/images/t2journ.gif',1)" 
+      onmouseout=MM_swapImgRestore() 
+      href="http://ieeexplore.ieee.org/xpl/periodicals.jsp"><IMG height=39 
+      alt="Journals &amp; Magazines" hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/t1journ.gif" 
+      width=130 border=0 name=journ1></A><BR><A 
+      onmouseover="MM_swapImage('conf1','','/images/t2conf.gif',1)" 
+      onmouseout=MM_swapImgRestore() 
+      href="http://ieeexplore.ieee.org/xpl/conferences.jsp"><IMG height=32 
+      alt="Conference Proceedings" hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/t1conf.gif" 
+      width=130 border=0 name=conf1></A><BR><A 
+      onmouseover="MM_swapImage('stds1','','/images/t2stds.gif',1)" 
+      onmouseout=MM_swapImgRestore() 
+      href="http://ieeexplore.ieee.org/xpl/standards.jsp"><IMG height=32 
+      alt=Standards hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/t1stds.gif" 
+      width=130 border=0 name=stds1></A><BR><A 
+      href="http://ieeexplore.ieee.org/xpl/abs_free.jsp?isNumber=12289&amp;prod=CNF&amp;arnumber=572171&amp;arSt=145&amp;ared=150&amp;arAuthor=Hoshino%2C+M.%3B+Gunji%2C+Y.%3B+Oho%2C+S.%3B+Takano%2C+K.&amp;arNumber=572171&amp;a_id0=572166&amp;a_id1=572167&amp;a_id2=572168&amp;a_id3=572169&amp;a_id4=572170&amp;a_id5=572171&amp;a_id6=572172&amp;a_id7=572173&amp;a_id8=572174&amp;a_id9=572175&amp;a_id10=572176&amp;a_id11=572177&amp;a_id12=572178&amp;a_id13=572179&amp;a_id14=572180&amp;count=15#"><IMG 
+      height=20 alt="K2 Search" hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/k2search.gif" 
+      width=130 align=top border=0 name=k2search></A><BR><A 
+      onmouseover="MM_swapImage('auth1','','/images/t2auth.gif',1)" 
+      onmouseout=MM_swapImgRestore() 
+      href="http://ieeexplore.ieee.org/search/authors.jsp"><IMG height=25 
+      alt="By Author" hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/t1auth.gif" 
+      width=130 border=0 name=auth1></A><BR><A 
+      onmouseover="MM_swapImage('basic1','','/images/t2basic.gif',1)" 
+      onmouseout=MM_swapImgRestore() 
+      href="http://ieeexplore.ieee.org/search/basicsearch.jsp"><IMG height=21 
+      alt=Basic hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/t1basic.gif" 
+      width=130 border=0 name=basic1></A><BR><A 
+      onmouseover="MM_swapImage('adv1','','/images/t2adv.gif',1)" 
+      onmouseout=MM_swapImgRestore() 
+      href="http://ieeexplore.ieee.org/search/advsearch.jsp"><IMG height=31 
+      alt=Advanced hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/t1adv.gif" 
+      width=130 border=0 name=adv1></A><BR><A 
+      href="http://ieeexplore.ieee.org/xpl/abs_free.jsp?isNumber=12289&amp;prod=CNF&amp;arnumber=572171&amp;arSt=145&amp;ared=150&amp;arAuthor=Hoshino%2C+M.%3B+Gunji%2C+Y.%3B+Oho%2C+S.%3B+Takano%2C+K.&amp;arNumber=572171&amp;a_id0=572166&amp;a_id1=572167&amp;a_id2=572168&amp;a_id3=572169&amp;a_id4=572170&amp;a_id5=572171&amp;a_id6=572172&amp;a_id7=572173&amp;a_id8=572174&amp;a_id9=572175&amp;a_id10=572176&amp;a_id11=572177&amp;a_id12=572178&amp;a_id13=572179&amp;a_id14=572180&amp;count=15#"><IMG 
+      height=20 alt="Member Services" hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/ahmemsrv.gif" 
+      width=130 align=top border=0 name=memsrv></A><BR><A 
+      onmouseover="MM_swapImage('join1','','/images/t2join.gif',1)" 
+      onmouseout=MM_swapImgRestore() 
+      href="http://www.ieee.org/membership/join/"><IMG height=24 alt="Join IEEE" 
+      hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/t1join.gif" 
+      width=130 border=0 name=join1></A><BR><A 
+      onmouseover="MM_swapImage('web1','','/images/t2estab.gif',1)" 
+      onmouseout=MM_swapImgRestore() 
+      href="http://www.ieee.org/web/accounts/"><IMG height=42 hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/t1estab.gif" 
+      width=130 border=0 name=web1></A><BR><A 
+      onmouseover="MM_swapImage('web3','','/images/access2.gif',1)" 
+      onmouseout=MM_swapImgRestore() 
+      href="http://ieeexplore.ieee.org/application/mdl/mdlHome.jsp"><IMG 
+      height=48 hspace=0 
+      src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/access1.gif" 
+      width=130 border=0 name=web3></A><BR></TD>
+    <TD>
+    <TD colSpan=10></TD>
+    <TD>
+      <TABLE cellSpacing=0 cellPadding=18 width=600 bgColor=#ffffff>
+        <TBODY>
+        <TR>
+          <TD><FONT face=Verdana size=1><A 
+            href="http://ieeexplore.ieee.org/xpl/tocresult.jsp?isNumber=12289&amp;page=0">VIEW 
+            TOC</A></FONT>&nbsp;&nbsp;&nbsp; <FONT face=Verdana size=1><A 
+            href="http://ieeexplore.ieee.org/iel3/4229/12289/00572171.pdf?isNumber=12289&amp;arnumber=572171&amp;prod=CNF&amp;arSt=145&amp;ared=150&amp;arAuthor=Hoshino%2C+M.%3B+Gunji%2C+Y.%3B+Oho%2C+S.%3B+Takano%2C+K.">[PDF 
+            Full-Text (444 KB)]</A></FONT>&nbsp;&nbsp;&nbsp; <A 
+            href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arNumber=572170&amp;pos=4&amp;isNumber=12289&amp;a_id0=572166&amp;a_id1=572167&amp;a_id2=572168&amp;a_id3=572169&amp;a_id4=572170&amp;a_id5=572171&amp;a_id6=572172&amp;a_id7=572173&amp;a_id8=572174&amp;a_id9=572175&amp;a_id10=572176&amp;a_id11=572177&amp;a_id12=572178&amp;a_id13=572179&amp;a_id14=572180&amp;count=15"><FONT 
+            face=verdana size=1>PREV</FONT></A>&nbsp;&nbsp; <A 
+            href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arNumber=572172&amp;pos=6&amp;isNumber=12289&amp;a_id0=572166&amp;a_id1=572167&amp;a_id2=572168&amp;a_id3=572169&amp;a_id4=572170&amp;a_id5=572171&amp;a_id6=572172&amp;a_id7=572173&amp;a_id8=572174&amp;a_id9=572175&amp;a_id10=572176&amp;a_id11=572177&amp;a_id12=572178&amp;a_id13=572179&amp;a_id14=572180&amp;count=15"><FONT 
+            face=verdana size=1>NEXT</FONT></A>&nbsp;&nbsp; <FONT face=Verdana 
+            size=1><A 
+            href="http://ieeexplore.ieee.org/Xplore/routeAbstract.jsp?url=/xpls/abs_all.jsp?isNumber=12289&amp;prod=CNF&amp;arnumber=572171&amp;arSt=145&amp;ared=150&amp;arAuthor=Hoshino%2C+M.%3B+Gunji%2C+Y.%3B+Oho%2C+S.%3B+Takano%2C+K.&amp;arNumber=572171&amp;a_id0=572166&amp;a_id1=572167&amp;a_id2=572168&amp;a_id3=572169&amp;a_id4=572170&amp;a_id5=572171&amp;a_id6=572172&amp;a_id7=572173&amp;a_id8=572174&amp;a_id9=572175&amp;a_id10=572176&amp;a_id11=572177&amp;a_id12=572178&amp;a_id13=572179&amp;a_id14=572180&amp;count=15">ABSTRACT 
+            PLUS</A></FONT>&nbsp;&nbsp;&nbsp; 
+            <HR>
+            <FONT face=Verdana size=2>You are not currently logged in. Guests 
+            may access abstract/citation records free of charge.&nbsp;<A 
+            href="http://ieeexplore.ieee.org/Xplore/routeAbstract.jsp?url=/xpls/abs_all.jsp?isNumber=12289&amp;prod=CNF&amp;arnumber=572171&amp;arSt=145&amp;ared=150&amp;arAuthor=Hoshino%2C+M.%3B+Gunji%2C+Y.%3B+Oho%2C+S.%3B+Takano%2C+K.&amp;arNumber=572171&amp;a_id0=572166&amp;a_id1=572167&amp;a_id2=572168&amp;a_id3=572169&amp;a_id4=572170&amp;a_id5=572171&amp;a_id6=572172&amp;a_id7=572173&amp;a_id8=572174&amp;a_id9=572175&amp;a_id10=572176&amp;a_id11=572177&amp;a_id12=572178&amp;a_id13=572179&amp;a_id14=572180&amp;count=15">Click 
+            here</A> to log in.<BR><BR>You may purchase the PDF full-text 
+            document for up to three (3) downloads within 30 days.<BR><A 
+            href="http://ieeexplore.ieee.org/Xplore/routeSAS.jsp?isNumber=12289&amp;prod=CNF&amp;arnumber=572171&amp;arSt=145&amp;ared=150&amp;arAuthor=Hoshino, M.; Gunji, Y.; Oho, S.; Takano, K.&amp;arNumber=572171&amp;username=&amp;memYesNo=md"><IMG 
+            src="IEEE Xplore A Kalman filter to estimate direction for automotive navigation_files/buy.gif" 
+            border=0></A><BR></FONT>
+            <P>
+            <HR>
+            <FONT face=Verdana size=4><B>A Kalman filter to estimate direction 
+            for automotive navigation</B></FONT><BR><FONT 
+            face=Arial,Helvetica,sans-serif size=2>Hoshino, 
+            M.&nbsp;&nbsp;</FONT> <FONT face=Arial,Helvetica,sans-serif 
+            size=2>Gunji, Y.&nbsp;&nbsp;</FONT> <FONT 
+            face=Arial,Helvetica,sans-serif size=2>Oho, S.&nbsp;&nbsp;</FONT> 
+            <FONT face=Arial,Helvetica,sans-serif size=2>Takano, 
+            K.&nbsp;&nbsp;</FONT> <BR><FONT face=Verdana size=2>Res. Lab., 
+            Hitachi Ltd., Ibaraki;</FONT><BR><FONT face=Verdana size=2><I>This 
+            paper appears in:</I><B> Multisensor Fusion and Integration for 
+            Intelligent Systems, 1996. IEEE/SICE/RSJ International Conference 
+            on</B></FONT><BR><FONT face=Verdana size=2>Meeting 
+            Date:&nbsp;12/08/1996</FONT> <FONT face=Verdana 
+            size=2>-12/11/1996</FONT><BR><FONT face=Verdana size=2>Publication 
+            Date:&nbsp;8-11 Dec 1996</FONT><BR><FONT face=Verdana 
+            size=2>Location: Washington, DC</FONT> <FONT face=Verdana 
+            size=2>,&nbsp;&nbsp; USA</FONT><BR><FONT face=Verdana size=2>On 
+            page(s): 145-150</FONT><BR><FONT face=Verdana size=2>References 
+            Cited: 11</FONT><BR><FONT face=Verdana size=2>Number of Pages: 
+            xv+848</FONT><BR>
+            <HR>
+            <FONT face=Verdana size=2><B>Abstract: </B></FONT><BR><FONT 
+            face=Verdana size=2>A Kalman filter algorithm to estimate direction 
+            for automotive navigation is reported. An extended Kalman filter is 
+            used to combine a magnetic compass and a rate gyroscope and to 
+            compensate for the sensor errors; the result is an optimal estimate 
+            for heading direction. A mathematical model for magnetic compass 
+            errors caused by body magnetization and the body effect of magnetic 
+            material is proposed. An error model of the rate gyroscope is also 
+            established. Errors of both sensors are calibrated through a 
+            computer simulation. Finally, experimental navigation results are 
+            demonstrated </FONT><BR>
+            <HR>
+            <FONT face=Verdana size=1><A 
+            href="http://ieeexplore.ieee.org/xpl/tocresult.jsp?isNumber=12289&amp;page=0">VIEW 
+            TOC</A></FONT>&nbsp;&nbsp;&nbsp; <FONT face=Verdana size=1><A 
+            href="http://ieeexplore.ieee.org/iel3/4229/12289/00572171.pdf?isNumber=12289&amp;arnumber=572171&amp;prod=CNF&amp;arSt=145&amp;ared=150&amp;arAuthor=Hoshino%2C+M.%3B+Gunji%2C+Y.%3B+Oho%2C+S.%3B+Takano%2C+K.">[PDF 
+            Full-Text (444 KB)]</A></FONT>&nbsp;&nbsp;&nbsp; <A 
+            href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arNumber=572170&amp;pos=4&amp;isNumber=12289&amp;a_id0=572166&amp;a_id1=572167&amp;a_id2=572168&amp;a_id3=572169&amp;a_id4=572170&amp;a_id5=572171&amp;a_id6=572172&amp;a_id7=572173&amp;a_id8=572174&amp;a_id9=572175&amp;a_id10=572176&amp;a_id11=572177&amp;a_id12=572178&amp;a_id13=572179&amp;a_id14=572180&amp;count=15"><FONT 
+            face=verdana size=1>PREV</FONT></A>&nbsp;&nbsp; <A 
+            href="http://ieeexplore.ieee.org/xpls/abs_all.jsp?arNumber=572172&amp;pos=6&amp;isNumber=12289&amp;a_id0=572166&amp;a_id1=572167&amp;a_id2=572168&amp;a_id3=572169&amp;a_id4=572170&amp;a_id5=572171&amp;a_id6=572172&amp;a_id7=572173&amp;a_id8=572174&amp;a_id9=572175&amp;a_id10=572176&amp;a_id11=572177&amp;a_id12=572178&amp;a_id13=572179&amp;a_id14=572180&amp;count=15"><FONT 
+            face=verdana size=1>NEXT</FONT></A>&nbsp;&nbsp; <FONT face=Verdana 
+            size=1><A 
+            href="http://ieeexplore.ieee.org/Xplore/routeAbstract.jsp?url=/xpls/abs_all.jsp?isNumber=12289&amp;prod=CNF&amp;arnumber=572171&amp;arSt=145&amp;ared=150&amp;arAuthor=Hoshino%2C+M.%3B+Gunji%2C+Y.%3B+Oho%2C+S.%3B+Takano%2C+K.&amp;arNumber=572171&amp;a_id0=572166&amp;a_id1=572167&amp;a_id2=572168&amp;a_id3=572169&amp;a_id4=572170&amp;a_id5=572171&amp;a_id6=572172&amp;a_id7=572173&amp;a_id8=572174&amp;a_id9=572175&amp;a_id10=572176&amp;a_id11=572177&amp;a_id12=572178&amp;a_id13=572179&amp;a_id14=572180&amp;count=15">ABSTRACT 
+            PLUS</A></FONT>&nbsp;&nbsp;&nbsp; 
+            <HR>
+          </TD></TR></TBODY></TABLE></TD></TR></TBODY></TABLE>
+<HR>
+
+<TABLE cellSpacing=0 width="100%" bgColor=white border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle><FONT face=Verdana,Arial color=#000000 size=1></FONT>
+      <P><FONT face=Verdana,Arial color=#000000 size=1><A 
+      href="http://ieeexplore.ieee.org/Xplore/DynWel.jsp"><FONT 
+      face="Arial, Helvetica, sans-serif">Home</FONT></A> <FONT 
+      face="Arial, Helvetica, sans-serif">| <A 
+      href="http://ieeexplore.ieee.org/servlet/Login?logout=/Xplore/logout.jsp">Log-out</A> 
+      | <A href="http://ieeexplore.ieee.org/xpl/periodicals.jsp">Journals</A> | 
+      <A href="http://ieeexplore.ieee.org/xpl/conferences.jsp">Conference 
+      Proceedings</A> | <A 
+      href="http://ieeexplore.ieee.org/xpl/standards.jsp">Standards</A></FONT> 
+      <FONT face=Verdana,Arial color=#000000 size=1><FONT 
+      face="Arial, Helvetica, sans-serif">| </FONT></FONT><FONT 
+      face="Arial, Helvetica, sans-serif"><A 
+      href="http://ieeexplore.ieee.org/search/authors.jsp">Search by Author</A> 
+      | <A href="http://ieeexplore.ieee.org/search/basicsearch.jsp">Basic 
+      Search</A> | <A 
+      href="http://ieeexplore.ieee.org/search/advsearch.jsp">Advanced 
+      Search</A></FONT> <FONT face=Verdana,Arial color=#000000 size=1><FONT 
+      face="Arial, Helvetica, sans-serif"><A 
+      href="http://www.ieee.org/membership/join/">Join IEEE</A></FONT> 
+      </FONT><FONT face="Arial, Helvetica, sans-serif">| <A 
+      href="http://www.ieee.org/web/accounts/">Web Account</A></FONT> <FONT 
+      face=Verdana,Arial color=#000000 size=1><FONT 
+      face="Arial, Helvetica, sans-serif">| <A 
+      href="http://www.ieee.org/web/accounts/"></A></FONT></FONT><FONT 
+      face="Arial, Helvetica, sans-serif"><A 
+      href="http://ieeexplore.ieee.org/xpl/weekinfo.jsp">New this week</A> 
+      </FONT><FONT face=Verdana,Arial color=#000000 size=1><FONT 
+      face="Arial, Helvetica, sans-serif">| <A 
+      href="http://ieeexplore.ieee.org/xpl/opac.jsp">OPAC Linking 
+      Information</A> </FONT></FONT><FONT face="Arial, Helvetica, sans-serif">| 
+      <A href='javascript:loadfback("/xpl/feedback.jsp")'>Your Feedback 
+      </A></FONT><FONT face=Verdana,Arial color=#000000 size=1><FONT 
+      face="Arial, Helvetica, sans-serif">| <A 
+      href='javascript:loadfback("/xpl/techform.jsp")'>Technical Support 
+      </A></FONT><FONT face=Verdana,Arial color=#000000 size=1><FONT 
+      face="Arial, Helvetica, sans-serif">| <A 
+      href="http://ieeexplore.ieee.org/xpl/emailalert1.jsp">Email Alerting</A> 
+      </FONT></FONT><FONT face="Arial, Helvetica, sans-serif"><A 
+      href="http://ieeexplore.ieee.org/xpl/More_rob.jsp">No Robots Please</A> | 
+      <A href="http://ieeexplore.ieee.org/xpl/ReleaseNotes.jsp">Release 
+      Notes</A> | </FONT><FONT face=Verdana,Arial color=#000000 size=1><FONT 
+      face="Arial, Helvetica, sans-serif"><A 
+      href='javascript:loadfback("http://www.ieee.org/products/onlinepubs/index.html")'>IEEE 
+      Online Publications</A></FONT><FONT face=Verdana,Arial color=#000000 
+      size=1><FONT face="Arial, Helvetica, sans-serif"> | 
+      </FONT></FONT></FONT><FONT face="Arial, Helvetica, sans-serif"><A 
+      href='javascript:loadhelp("../../xplorehelp/IELHELPLocating_a_Journal.htm")'>Help 
+      </A>| <A href="http://ieeexplore.ieee.org/xpl/faq.jsp">FAQ</A>| <A 
+      href="http://ieeexplore.ieee.org/xpl/terms.jsp">Terms </A>| <A 
+      href="http://ieeexplore.ieee.org/xpl/abs_free.jsp?isNumber=12289&amp;prod=CNF&amp;arnumber=572171&amp;arSt=145&amp;ared=150&amp;arAuthor=Hoshino%2C+M.%3B+Gunji%2C+Y.%3B+Oho%2C+S.%3B+Takano%2C+K.&amp;arNumber=572171&amp;a_id0=572166&amp;a_id1=572167&amp;a_id2=572168&amp;a_id3=572169&amp;a_id4=572170&amp;a_id5=572171&amp;a_id6=572172&amp;a_id7=572173&amp;a_id8=572174&amp;a_id9=572175&amp;a_id10=572176&amp;a_id11=572177&amp;a_id12=572178&amp;a_id13=572179&amp;a_id14=572180&amp;count=15#top">Back 
+      to Top</A></FONT></FONT></P>
+      <P><FONT face=Verdana,Arial color=#000000 size=1><FONT 
+      face="Arial, Helvetica, sans-serif">Copyright © 2004 IEEE — All rights 
+      reserved</FONT></FONT></P></FONT></TD></TR></TBODY></TABLE></BODY></HTML>

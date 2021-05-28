@@ -1,0 +1,14 @@
+Esta pasta contém arquivos necessários para rodar o programa robo.cpp.
+
+Utiliza o filtro de Kalman para estimar os estados e realizar o controle linearizante.
+
+Não utiliza sockets. Não é separado em simulador e sensor.
+
+Com o filtro de Kalman, utiliza-se:
+
+     z = H * q_est_k1 + noise(sigma_out_x, sigma_out_y, sigma_out_theta);
+
+
+Para retirar o filtro de Kalman, apenas modificar a expressão de saída por 
+
+     z = H * q + noise(sigma_out_x, sigma_out_y, sigma_out_theta);

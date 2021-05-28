@@ -1,0 +1,298 @@
+%%%%%%%%%%%%%%%%%%%%
+\section{Introdução}
+Desde os anos 70, o MPC tem recebido cada vez mais atenção, tanto da comunidade acadêmica quanto de empresas interessadas em aplicá-lo em suas plantas industriais. Embora estas duas vertentes tenham seguido, de certa forma, caminhos diferentes, estes caminhos convergem atualmente para objetivos bastante comuns. Inicialmente, questões de cunho mais teórico como garantia de estabilidade e robustez foram, em primeiro momento, deixadas de lado frente ao bom desempenho prático de tais leis. Por outro lado, a partir da década de 90, o grande interesse da indústria no MPC levou a comunidade acadêmica a desenvolver trabalhos teóricos, envolvendo provas de estabilidade, robustez, diferentes esquemas para modelagem dos sistemas e a utilização de observadores de estados, por exemplo.
+
+Da mesma forma, a evolução dos computadores e de algoritmos numéricos de otimização têm feito com que o MPC possa ser considerado também para aplicações em sistemas de dinâmicas rápidas ou de dimensões elevadas. Em sistemas eletromecânicos, o interesse recai principalmente na possibilidade que o MPC proporciona em se considerar restrições nos estados e nas entradas de controle, bem como o fato de possuir um critério de otimização que faz com que a lei de controle calculada seja ótima no sentido de que minimiza este critério.
+
+Neste capítulo uma descrição inicial do MPC será feita, juntamente com uma breve perspectiva histórica, situando o desenvolvimento do controle preditivo ao longo do tempo. Logo após, o MPC é formulado matematicamente em suas duas versões, linear e não linear, ambas discretas no tempo. A última seção deste capítulo trata de trabalhos já desenvolvidos onde o MPC é utilizado para controlar robôs móveis.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Perspectiva Histórica}\label{sec:mpc_historical}
+O controle preditivo baseado em modelo, MPC, é uma forma de controle que pode ser usada em sistemas complexos, multivariáveis e com restrições nas entradas de controle e nos estados. Uma seqüência de controle que minimiza uma função de custo é calculada {\em on-line}, a cada instante de amostragem, através da resolução de um problema de otimização com um horizonte finito de predição, usando o estado corrente da planta como condição inicial. Assim, obtém-se uma seqüência ótima de controle dentro daquele horizonte sendo que apenas o primeiro elemento desta seqüência é aplicada no processo~\cite{mayne00}. A seguir, estas etapas se repetem em uma política de horizonte deslizante ({\em receding horizon}), o que confere uma característica de malha fechada à lei de controle gerada.
+
+Em métodos de controle ótimo como o ${\cal H}_2$ e ${\cal H}_\infty$, uma solução analítica existe e pode ser calculada {\em off-line} através da resolução de equações de Ricatti~\cite{kwakernaak72}. Entretanto, estes métodos são válidos apenas para sistemas lineares e sem restrições. Essencialmente, a diferença é que no MPC restrições existentes nos estados e nas entradas de controle são consideradas e a otimização é resolvida {\em on-line} para cada instante de amostragem. Torna-se assim necessário um horizonte finito para o cálculo da lei de controle. Assim, em princípio, não existe uma solução analítica e a lei de controle é dada implicitamente para cada instante de amostragem.
+
+Uma técnica bastante recente, desenvolvida em~\cite{bemporad02,tondel03}, garante uma expressão analítica explícita para o MPC considerando um sistema linear em tempo discreto, com um critério quadrático de minimização e com restrições em um horizonte finito de predição. Esta expressão analítica é obtida a partir de programação quadrática multi-paramétrica ({\em multi-parametric Quadratic Program, mp-QP}). Através da partição do espaço de estados em sub-regiões poliedrais convexas, uma solução linear afim e contínua por partes do tipo ${\bf u}={\bf Kx}+{\bf c}$ é encontrada para cada sub-região do espaço de estados, onde $\bf K$ é uma matriz de realimentação de estados e $\bf c$ é um termo independente. Segundo os autores, esta técnica aumenta a confiabilidade do controle e a solução {\em on-line} do problema de otimização não precisa mais ser feita, já que a lei de controle é calculada {\em off-line}, diminuindo assim o esforço computacional e permitindo a sua aplicação em sistemas com dinâmicas bastante rápidas. Entretanto, o número de partições (sub-regiões) depende da dimensão do sistema, e mesmo para sistemas de ordem 2 a quantidade destas partições já é alto, conforme exemplo dos autores. Assim, para sistemas de ordem elevada são necessários mecanismos de busca em árvore bastante complexos.
+
+Algums pontos fortes bastante evidentes do MPC com relação a outras técnicas de controle podem ser citadas~\cite{camacho99}:
+\begin{itemize}
+	\item Os conceitos são intuitivos;
+	\item Restrições e limites do sistema podem ser levados em consideração durante o cálculo da lei de controle de uma forma direta;
+	\item Pode ser usado em uma ampla gama de processos, incluindo, por exemplo, sistemas multivariáveis, sistemas de fase não-mínima, com longos atrasos de tempo ou que são instáveis em malha aberta;
+	\item Aplicável a processos onde se conhece os valores futuros de referência, como sistemas em batelada ({\it batch processes}) ou em rastreamento de trajetória;
+	\item Vários tipos de modelos podem ser utilizados: espaço de estados, função de transferência, resposta ao impulso, etc.
+\end{itemize}
+
+Entretanto, existem também alguns pontos fracos, a saber:
+\begin{itemize}
+	\item Necessidade de um modelo preciso do sistema para o cálculo de valores futuros dos estados. A predição dos estados é feita com base neste modelo e é utilizada no critério de minimização;
+	\item Alto custo computacional (em cada instante um problema de otimização é resolvido {\em on-line}). Para o caso não linear, o problema de otimização é não convexo, possui um maior número de variáveis de decisão e um mínimo global geralmente é impossível de se encontrar. Entretanto, se o sistema é linear, a função de custo é quadrática e as restrições são lineares, o problema de otimização pode ser transformado em um problema de programação quadrática ({\em Quadratic Programming, QP}), onde o problema é convexo e uma solução ótima sempre existe, pelo menos localmente.
+\end{itemize}
+
+Embora as principais aplicações do MPC tenham se desenvolvido mais recentemente e primeiramente na indústria, a idéia de se controlar um sistema através de uma seqüência de problemas de otimização {\em on-line} não é nova. Em 1967, \cite{lee67} anteciparam o que viria a ser, atualmente, a essência do MPC:
+\begin{margins}{1cm}{0cm}
+{\small Pode-se obter um controlador por realimentação através do conhecimento de vários controladores em malha aberta. Primeiramente mede-se o estado atual do processo e calcula-se muito rapidamente a lei de controle em malha aberta. A primeira porção deste controle é então aplicada no processo durante um curto período de tempo, depois do qual uma nova lei de controle é calculada baseada nas novas informações do processo. O procedimento então repete-se.}\footnote{Traduzido do original em inglês pelo autor.}
+\end{margins}
+
+Esta idéia era, a princípio, impraticável, dada à alta quantidade de cálculos necessários. Contudo, com o advento da computação digital, algumas soluções começaram a ser implementadas, principalmente nas indústrias de processo e petroquímica, onde considerações econômicas (aumento da produtividade e da qualidade dos produtos) tornava necessário aproximar os pontos de operação das plantas de seus limites, sem que estes fossem, logicamente, ultrapassados. As primeiras aplicações industriais disponíveis comercialmente surgiram nas décadas de 70  e 80 com, por exemplo, o {\em Model Algorithmic Control, MAC}~\cite{richalet76}, o {\em Dynamic Matrix Control, DMC}~\cite{cutler80}, o {\em Extended Prediction Self Adaptive Control, EPSAC}~\cite{dekeyser85}, o {\em Quadratic Dynamic Matrix Control, QDMC}~\cite{garcia86} e o {\em Generalized Predictive Control, GPC}~\cite{clarke87}, todos para plantas lineares. Cabe ressaltar que, com excessão do GPC, todas as outras são aplicáveis somente em plantas estáveis em malha aberta.
+
+Em aplicações industriais para processos não lineares, existem atualmente, por exemplo, o NOVA~\cite{dynamic96} e o Process Perfector~\cite{martin97}, mas por serem tecnologias proprietárias, detalhes dos algoritmos não existem na literatura.
+
+Várias referências sobre o MPC quanto à teoria e aplicações industriais podem ser vistos em \cite{garcia89,qin97,morari97,henson98,allgower99,camacho99,qin00,rawlings00,rossiter03}.
+
+As primeiras versões do MPC na indústria não levavam em conta a estabilidade do sistema em malha fechada, mas obviamente sabia-se que esta era uma questão importante. Propriedades associadas a um controle com horizonte infinito eram garantidas restringindo a aplicação para plantas estáveis em malha aberta e escolhendo um horizonte de predição suficientemente grande. Assim, estimulada pelo grande sucesso do MPC na indústria, a comunidade acadêmica preocupou-se em abordar questões teóricas não estudadas até então. Inicialmente, técnicas baseadas na teoria de Lyapunov foram negligenciadas, mas ganharam força com o trabalho de \cite{chen82}, que mostrou que a função de custo de um problema de controle ótimo com horizonte finito pode ser usada como uma função de Lyapunov para sistemas em tempo contínuo e sem restrições. Em \cite{keerthi88}, estes resultados foram estendidos para sistemas não lineares em tempo discreto, variantes no tempo e com restrições. Depois destes trabalhos, vários outros abordando estabilidade do MPC foram desenvolvidos, como por exemplo \cite{mayne90,bitmead90,michalska93,chen98,mayne00}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Elementos Essenciais}\label{sec:mpc_elements}
+Uma analogia do MPC pode ser feita ao ato de se dirigir um automóvel~\cite{camacho99}. O motorista sabe a trajetória de referência desejada para um horizonte finito: seu campo de visão da estrada. Levando em conta as características do carro (um {\em modelo mental} do carro e limitações de velocidade, aceleração e manobrabilidade) bem como possíveis obstáculos na estrada (como buracos, cruzamentos e outros carros), ele decidirá que ação tomar (aumentar ou diminuir a velocidade, girar a direção para um lado ou para outro) a fim de que a desejada trajetória seja percorrida. Esta ação de controle é então aplicada por um curto espaço de tempo e o procedimento se repete para a próxima ação de controle, agora com o seu campo de visão atualizado. Observa-se que, utilizando o modelo do carro, predições de comportamento são utilizadas, baseadas no que o motorista está enxergando à sua frente. 
+
+Todas as versões de MPC possuem assim elementos comuns que podem ser escolhidos de diferentes formas, conforme as necessidades e a aplicação. Estes elementos são~\cite{camacho99}:
+\begin{itemize}
+\item {\em Modelo de predição.} O modelo do processo é a peça-chave do MPC. Seu uso é determinado pela necessidade de se {\em predizer} os estados (ou saídas) do sistema em instantes de tempo no futuro. As diferentes estratégias de controle preditivo podem utilizar diferentes tipos de modelos para representar a relação entre as entradas de controle e os estados (ou saídas) do sistema, como modelos por resposta ao impulso (usado no MAC), resposta ao degrau (usado no DMC e QDMC), função de transferência (usado no GPC) e espaço de estados (que será utilizado neste trabalho). A vantagem deste último é que a formulação do MPC pode ser estendida para processos multivariáveis e não lineares de uma forma bastante direta. 
+
+Em situações realistas, onde geralmente existem diferenças entre o processo e seu modelo, é preciso identificar também um modelo para as incertezas, sendo assim as duas partes necessárias para a predição.
+
+\item {\em Função de custo.} É o critério de desempenho com relação ao qual será feita a otimização da lei de controle. As várias formulações do MPC utilizam diferentes tipos de função de custo. A idéia predominante é que esta função de custo é formada por um somatório de termos dos estados (ou saídas) e das entradas de controle ao longo do horizonte. Assim, a minimização desta função implica na minimização do erro nas variáveis de estado e de controle. Esta função pode ainda incluir outros termos como penalizações na variação do esforço de controle e custo terminal dos estados.
+
+\item {\em Obtenção da lei de controle.} Para se obter uma seqüência de valores ótimos das variáveis de decisão dentro do horizonte de predição, realiza-se a minimização da função de custo, ou seja, o cálculo do valor mínimo desta função através da manipulação das variáveis de decisão. Para fazer isso, usa-se o modelo do sistema para calcular valores futuros dos estados ou das saídas. Geralmente as variáveis de decisão são as entradas de controle. No caso não linear, tanto os estados quanto o controle são variáveis de decisão. Se existirem restrições, a minimização da função de custo precisa respeitá-las. A lei de controle é então dada implicitamente pelo primeiro termo da seqüência calculada.
+
+\item {\em Horizonte deslizante.} Até a obtenção da lei de controle, o MPC funciona essencialmente como um método de controle em malha aberta: calcula uma lei de controle para o estado atual da planta através da minimização da função de custo. Entretanto, em sua totalidade, a estratégia funciona em malha fechada, pois, através da aplicação do controle calculado em cada instante de amostragem, os estados do sistema são atualizados e o processo de otimização e do cálculo da lei de controle se repete, agora com o instante de amostragem deslocado em uma unidade para o futuro, o que dá a característica de horizonte móvel ou deslizante.
+\end{itemize}
+
+Todas estas idéias são então expostas formalmente nas próximas seções.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Formulação do MPC Não Linear}
+
+Se o modelo do sistema é não linear ou se existirem restrições não lineares a serem respeitadas, o problema de minimização a ser resolvido em cada instante de amostragem é não linear, configurando-se assim um MPC não linear ({\em Nonlinear Model-based Predictive Control, NMPC}). No NMPC, as variáveis de decisão são as variáveis de estado e de controle, e o comportamento dinâmico do sistema é respeitado através da imposição de uma restrição não linear na forma do modelo deste sistema.
+
+Assim, será considerado aqui um sistema com o seguinte modelo:
+\begin{equation}\label{eqn:mpc_nl_model}
+	\dot{\bf x}(t) = f({\bf x}(t),{\bf u}(t)),
+\end{equation}
+onde $\bf x$ é o vetor de estados de ordem $n$, ${\bf x}\in\real^n$, $\bf u$ é o vetor de entradas de controle de ordem $m$, ${\bf u}\in\real^m$ e $t$ é o tempo. Em tempo discreto, o modelo acima pode ser representado pela seguinte equação de diferenças:
+\begin{equation}\label{eqn:mpc_nl_model_discrete}
+	{\bf x}(k+1) = f({\bf x}(k),{\bf u}(k)),
+\end{equation}
+onde $k$ é o instante de amostragem, $k = \{k|k\in{\mathbb N},k\geq 0\}$.
+
+A função de custo a ser minimizada tem a forma
+\begin{equation}\label{eqn:cost}
+	\Phi(k) = \sum_{j=N_1}^{N_2}{\bf x}^T(k+j|k){\bf Q}{\bf x}(k+j|k) + \sum_{j=1}^{N_u}{\bf u}^T(k+j|k){\bf R}{\bf u}(k+j|k),
+\end{equation}
+onde $N=N_2-N_1+1$ é o {\em horizonte de predição} e $N_u$ é o {\em horizonte de controle}. ${\bf Q}$ e ${\bf R}$ são matrizes de ponderação utilizadas para penalizar o erro de estado e o esforço de controle, respectivamente, com ${\bf Q}\geq 0$ e ${\bf R}>0$.
+
+Como dito anteriormente, na prática todo o sistema está sujeito a restrições, estas podendo surgir quando da existência de basicamente três tipos de limitações:
+\begin{itemize}
+\item {\it Limites físicos}. Quando existem barreiras físicas que não podem ser ultrapassadas, como por exemplo, faixas de atuação de atuadores e sensores, vazão máxima de tubulações, etc.;
+\item {\it Limites de segurança}. Limites que se ultrapassados podem levar a situações de perigo, como explosões ou desastres ambientais;
+\item {\it Limites operacionais}. Relativos ao desempenho do sistema e à qualidade do produto final. São restrições que, eventualmente, podem ser violadas a fim de se preservar as restrições relativas aos limites físicos ou de segurança.
+\end{itemize}
+
+Assim, definem-se, de uma forma geral, as seguintes expressões de restrição:
+
+\begin{align*}
+	{\bf x}(k+j|k) &\in \mathbb{X}, \quad j\in[N_1,N_2] \\
+	{\bf u}(k+j|k) &\in \mathbb{U}, \quad j\in[0,N_u]
+\end{align*}
+onde $\mathbb{X}$, fechado e convexo, é o conjunto dos possíveis valores para os estados do sistema e $\mathbb{U}$, compacto e convexo, é o conjunto das possíveis entradas de controle. Se forem lineares com relação a $\bf x$ e $\bf u$, as restrições podem ser escritas como:
+\begin{align}
+	{\bf Cx}(k+j|k) &\leq {\bf c}, \quad j\in[N_1,N_2] \label{eqn:restx} \\
+	{\bf Du}(k+j|k) &\leq {\bf d}, \quad j\in[0,N_u] \label{eqn:restu}
+\end{align}
+com ${\bf C}\in\real^{l_{{\bf x}}\times n}$, ${\bf c}\in\real^{l_{{\bf x}}}$, ${\bf D}\in\real^{l_{{\bf u}}\times m}$ e ${\bf d}\in\real^{l_{{\bf u}}}$.
+
+Assim, o problema de otimização a ser resolvido em cada instante de amostragem $k$ pode ser posto como encontrar uma seqüência de controle ${\bf u}^\star$ e uma seqüência de estados ${\bf x}^\star$ tal que minimizem a função de custo $\Phi(k)$ e respeitem as restrições impostas, ou seja:
+\begin{equation}\label{eqn:optim}
+	{\bf u}^\star,~{\bf x}^\star = \arg\min_{{\bf u},{\bf x}}\left\{\Phi(k)\right\}
+\end{equation}
+sujeito a:
+\begin{alignat*}{2}
+	{\bf x}(k|k)    &= {\bf x}_0, \\
+	{\bf x}(k+j|k)  &= f({\bf x}(k+j-1|k),{\bf u}(k+j-1|k)), &\quad &j \in[N_1,N_2] \\
+	{\bf Cx}(k+j|k) &\leq {\bf c}, &\quad &j \in[N_1,N_2] \\
+	{\bf Du}(k+j|k) &\leq {\bf d}, &\quad &j \in[0,N_u]
+\end{alignat*}
+onde ${\bf x}_0$ é a condição inicial, ou seja, o valor medido de $\bf x$ no instante $k$. O problema~\req{eqn:optim} é então resolvido para cada instante de amostragem $k$, resultando em uma seqüência ótima de controle
+\begin{equation}\label{eqn:control_seq}
+	{\bf u}^\star = \{{\bf u}^\star(k|k),{\bf u}^\star(k+1|k),{\bf u}^\star(k+2|k),\ldots,{\bf u}^\star(k+N_u|k)\},
+\end{equation}
+uma seqüência ótima de estados
+\begin{equation}\label{eqn:state_seq}
+	{\bf x}^\star = \{{\bf x}^\star(k+N_1|k),{\bf x}^\star(k+N_1+1|k),{\bf x}^\star(k+N_1+2|k),\ldots,{\bf x}^\star(k+N_2|k)\}
+\end{equation}
+e um custo ótimo $\Phi^\star(k)$. Assim, a lei de controle do MPC é dada implicitamente pelo primeiro termo da seqüência ${\bf u}^\star$:
+\begin{equation}\label{eqn:control_law}
+	h(\delta) = {\bf u}^\star(k|k),
+\end{equation}
+onde $h(\delta)$ é contínua dentro de cada período de amostragem $T$, $\delta\in[kT,(k+1)T)$. O resto da seqüência ${\bf u}^\star$ é descartada. Logo, o sistema~\req{eqn:mpc_nl_model}, em malha fechada, pode ser escrito como:
+\begin{equation}\label{mpc_closed_loop}
+	\dot{\bf x}(\delta) = f({\bf x}(\delta),h(\delta))
+\end{equation}	
+
+No próximo instante de amostragem ($k+1$), todo o procedimento se repete, agora com os estados atualizados pela expressão~\req{mpc_closed_loop} e uma janela de tempo deslocada em um instante de amostragem para frente (horizonte deslizante). O comportamento do MPC ao longo do horizonte pode ser visto genericamente na Figura~\ref{fig:mpc}.
+
+O problema com otimizações não lineares é a sua não convexidade, existindo assim vários mínimos locais, o que faz com que, geralmente, seja impossível achar um mínimo global, gerando assim soluções sub-ótimas~\cite{henson98}. Ainda, o custo computacional é exponencialmente relacionado com o número de variáveis de decisão~\cite{henrion04}. Assim, dependendo da rapidez da dinâmica ou de sua dimensão, a aplicação do MPC em um sistema não linear pode tornar-se impraticável.
+
+Em particular, neste trabalho, será utilizada a função {\tt fmincon} do pacote de otimização do Matlab para a resolução de problemas de otimização não linear. Para a solução de um problema de programação não linear\footnote{Um problema de programação não linear é um problema de otimização onde a função de custo a ser minimizada e as restrições são não lineares.}~\cite{luenberger89}, a função {\tt fmincon} utiliza o método {\em Quasi-Newton} com um procedimento de busca polinomial de ordens quadrática e cúbica. Este método utiliza a formulação BFGS~\cite{broyden70,fletcher70,goldfarb70,shanno70} para calcular uma aproximação da matriz Hessiana em cada iteração do processo de otimização. Assim, resolve-se um sub-problema através do método {\em Active Set}, chamado de Programação Quadrática Sequencial ({\em Sequential Quadratic Programming, SQP})~\cite{fletcher87,gil81,hock83} baseada em uma aproximação quadrática da função Lagrangiana. A solução de cada SQP é então utilizada para calcular uma direção de busca do ponto ótimo.
+
+\begin{figure}\begin{center}
+    \includegraphics[width=\linewidth]{Figuras/mpc.eps}
+    \caption{O controle preditivo.}
+    \label{fig:mpc}
+\end{center}\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Formulação do MPC Linear}\label{sec:lmpc}
+
+Se o modelo do sistema é linear e existirem apenas restrições lineares a serem respeitadas, pode-se formular o MPC de forma linear ({\em Linear Model-based Predictive Control, LMPC}). Assim, considerando as entradas de controle como as variáveis de decisão e tendo-se um critério quadrático de minimização, pode-se transformar o problema de minimização em um problema de programação quadrática, QP, para o qual algoritmos numéricos robustos e eficientes existem. Problemas de otimização deste tipo têm a vantagem, quando comparados com problemas não lineares, de serem convexos, o que faz com que sempre exista um mínimo global.
+
+Assim, reescreve-se a expressão~\req{eqn:mpc_nl_model_discrete}, referente ao modelo dinâmico do sistema, na forma linear, discreta e invariante no tempo:
+\begin{equation}\label{eqn:mpc_linear_model}
+	{\bf x}(k+1) = {\bf Ax}(k) + {\bf Bu}(k),
+\end{equation}
+onde $\bf A$ é a matriz de transição de estados e $\bf B$ é a matriz que relaciona os estados com as entradas de controle. Pode-se prever o estado do sistema para um instante de amostragem $j$ no futuro através da aplicação recursiva da expressão~\req{eqn:mpc_linear_model}:
+\begin{align*}
+	{\bf x}(k+1|k) &= {\bf Ax}(k|k) + {\bf Bu}(k|k) \\
+	{\bf x}(k+2|k) &= {\bf A}^2{\bf x}(k|k) + {\bf ABu}(k|k) + {\bf Bu}(k+1|k) \\
+	{\bf x}(k+3|k) &= {\bf A}^3{\bf x}(k|k) + {\bf A}^2{\bf Bu}(k|k) + {\bf A}{\bf Bu}(k+1|k) + {\bf Bu}(k+2|k) \\
+	&\vdots \\
+	{\bf x}(k+j|k) &= {\bf A}^j{\bf x}(k|k) + \sum_{i=0}^{j-1}{\bf A}^{j-1-i}{\bf Bu}(k+i|k) 
+\end{align*}
+
+Sem perda de generalidade e a fim de simplificar a formulação matemática, escolhe-se, na expressão~\req{eqn:cost}, $N_1=1$, $N_2=N$ e $N_u=N-1$ e tem-se a seguinte função de custo:
+\begin{equation*}
+	\Phi(k) = \sum_{j=1}^{N}{\bf x}^T(k+j|k){\bf Q}{\bf x}(k+j|k) + {\bf u}^T(k+j-1|k){\bf R}{\bf u}(k+j-1|k)
+\end{equation*}
+
+Definido os seguintes vetores:
+\begin{equation*}
+	\bar{\bf x}(k+1|k) = \begin{bmatrix}
+		{\bf x}(k+1|k) \\ {\bf x}(k+2|k) \\ \vdots \\ {\bf x}(k+N|k)
+	\end{bmatrix} \quad {\text e} \quad
+	\bar{\bf u}(k|k) = \begin{bmatrix}
+		{\bf u}(k|k) \\ {\bf u}(k+1|k) \\ \vdots \\ {\bf u}(k+N-1|k)
+	\end{bmatrix},
+\end{equation*}
+pode-se reescrever a função de custo como:
+\begin{equation*}
+	\Phi(k) = \bar{\bf x}^T(k+1|k)\bar{\bf Q}\bar{\bf x}(k+1|k) + \bar{\bf u}^T(k|k)\bar{\bf R}\bar{\bf u}(k|k),
+\end{equation*}
+onde
+\begin{equation*}
+	\bar{\bf Q} = \begin{bmatrix}
+		{\bf Q} & {\bf 0} & \cdots & {\bf 0} \\
+		{\bf 0} & {\bf Q} & \cdots & {\bf 0} \\
+		\vdots  & \vdots  & \ddots & \vdots  \\
+		{\bf 0} & {\bf 0} & \cdots & {\bf Q} \\
+	\end{bmatrix} \quad {\text e} \quad
+	\bar{\bf R} = \begin{bmatrix}
+		{\bf R} & {\bf 0} & \cdots & {\bf 0} \\
+		{\bf 0} & {\bf R} & \cdots & {\bf 0} \\
+		\vdots  & \vdots  & \ddots & \vdots  \\
+		{\bf 0} & {\bf 0} & \cdots & {\bf R} \\
+	\end{bmatrix}
+\end{equation*} 
+
+Fazendo
+\begin{equation*}
+	\bar{\bf x}(k+1|k) = \bar{\bf A}{\bf x}(k|k) + \bar{\bf B}\bar{\bf u}(k|k),
+\end{equation*}
+onde
+\begin{equation*}
+	\bar{\bf A} = \begin{bmatrix}
+		{\bf A} \\ {\bf A}^2 \\ \vdots \\ {\bf A}^{N-1} \\ {\bf A}^N
+	\end{bmatrix} \quad {\text e} \quad
+	\bar{\bf B} = \begin{bmatrix}
+		{\bf B} & {\bf 0} & {\bf 0} & \cdots & {\bf 0} \\
+		{\bf AB} & {\bf B} & {\bf 0} & \cdots & {\bf 0} \\
+		\vdots & \vdots & \vdots & \ddots & \vdots \\
+		{\bf A}^{N-2}{\bf B} & {\bf A}^{N-3}{\bf B} & {\bf A}^{N-4}{\bf B}& \cdots & {\bf 0} \\
+		{\bf A}^{N-1}{\bf B} & {\bf A}^{N-2}{\bf B} & {\bf A}^{N-3}{\bf B}& \cdots & {\bf B}
+	\end{bmatrix},
+\end{equation*}
+tem-se que:
+\begin{equation*}
+	\Phi(k) = \left({\bf x}^T(k|k)\bar{\bf A}^T + \bar{\bf u}^T(k|k)\bar{\bf B}^T\right)\bar{\bf Q}\left(\bar{\bf A}{\bf x}(k|k)+\bar{\bf B}\bar{\bf u}(k|k)\right) + \bar{\bf u}^T(k|k)\bar{\bf R}\bar{\bf u}(k|k)
+\end{equation*}
+e
+\begin{multline*}	
+	\Phi(k) = {\bf x}^T(k|k)\bar{\bf A}^T\bar{\bf Q}\bar{\bf A}{\bf x}(k|k) + {\bf x}^T(k|k)\bar{\bf A}^T\bar{\bf Q}\bar{\bf B}\bar{\bf u}(k|k) + \\ + \bar{\bf u}^T(k|k)\bar{\bf B}^T\bar{\bf Q}\bar{\bf A}{\bf x}(k|k) + \bar{\bf u}^T(k|k)\bar{\bf B}^T\bar{\bf Q}\bar{\bf B}\bar{\bf u}(k|k) + \bar{\bf u}^T(k|k)\bar{\bf R}\bar{\bf u}(k|k)
+\end{multline*}
+
+Os termos quadráticos em $\bar{\bf u}(k|k)$ são:
+\begin{align*}
+	\bar{\bf u}^T(k|k)\bar{\bf B}^T\bar{\bf Q}\bar{\bf B}\bar{\bf u}(k|k) + \bar{\bf u}^T(k|k)\bar{\bf R}\bar{\bf u}(k|k) &= \bar{\bf u}^T(k|k)\left(\bar{\bf B}^T\bar{\bf Q}\bar{\bf B}+\bar{\bf R}\right)\bar{\bf u}(k|k) \\
+	   &= \frac{1}{2}\bar{\bf u}^T(k|k)\bar{\bf H}\bar{\bf u}(k|k),
+\end{align*}
+os termos lineares em $\bar{\bf u}(k|k)$ são:
+\begin{align*}
+	{\bf x}^T(k|k)\bar{\bf A}^T\bar{\bf Q}\bar{\bf B}\bar{\bf u}(k|k) + \bar{\bf u}^T(k|k)\bar{\bf B}^T\bar{\bf Q}\bar{\bf A}{\bf x}(k|k) &= 2{\bf x}^T(k|k)\bar{\bf A}^T\bar{\bf Q}\bar{\bf B}\bar{\bf u}(k|k) \\
+					 &= {\bf f}^T\bar{\bf u}(k|k)
+\end{align*}
+e o termo independente de $\bar{\bf u}(k|k)$ é ${\bf x}^T(k|k)\bar{\bf A}^T\bar{\bf Q}\bar{\bf A}{\bf x}(k|k)$. Assim, a função de custo pode ser escrita em uma forma quadrática padrão:
+\begin{equation}\label{eqn:quadratic_form}
+	\Phi(k) = \frac{1}{2}\bar{\bf u}^T(k|k)\bar{\bf H}\bar{\bf u}(k|k) + {\bf f}^T\bar{\bf u}(k|k) + {\bf g},
+\end{equation}
+com
+\begin{align*}
+		{\bf H} &= 2\left(\bar{\bf B}^T\bar{\bf Q}\bar{\bf B}+\bar{\bf R}\right) \\
+		{\bf f} &= 2\bar{\bf B}^T\bar{\bf Q}\bar{\bf A}{\bf x}(k|k) \\
+		{\bf g} &= {\bf x}^T(k|k)\bar{\bf A}^T\bar{\bf Q}\bar{\bf A}{\bf x}(k|k)
+\end{align*}
+e $\bf g$ é independente de $\bar{\bf u}(k|k)$ e não importa para o problema de minimização. Assim, define-se
+\begin{equation}\label{eqn:quadratic_form2}
+	\Phi'(k) = \frac{1}{2}\bar{\bf u}^T(k|k)\bar{\bf H}\bar{\bf u}(k|k) + {\bf f}^T\bar{\bf u}(k|k)
+\end{equation}
+
+A expressão~\req{eqn:quadratic_form2} é a forma padrão para se aplicar um algoritmo de QP~~\cite{luenberger89}. Assim, o seguinte problema de otimização é resolvido em cada instante de amostragem $k$:
+\begin{equation}\label{eqn:linopt2}
+	{\bf u}^\star = \arg\min_{\bf u}\left\{\Phi'(k)\right\}
+\end{equation}
+sujeito a:
+\begin{equation*}
+	{\bf Du}(k+j|k) \leq {\bf d}, \quad j\in[0,N-1]
+\end{equation*}
+
+Nota-se que agora, ao contrário do NMPC, a única variável de decisão existente, utilizada para minimizar $\Phi'(k)$, é a entrada de controle $\bf u$. Assim, todas as restrições a serem respeitadas precisam ser escritas com relação a esta variável. Ainda, a dinâmica linear do sistema~\req{eqn:mpc_linear_model} e a condição inicial ${\bf x}(k|k)={\bf x}_0$ estão embutidas na forma quadrática da função de custo, expressão~\req{eqn:quadratic_form}. Este fato simplifica de forma significativa o processo de minimização, diminuindo consideravelmente o esforço computacional.
+
+A minimização de $\Phi'(k)$ leva a uma seqüência ótima de controle
+\begin{equation*}
+	{\bf u}^\star = \{{\bf u}^\star(k|k),{\bf u}^\star(k+1|k),{\bf u}^\star(k+2|k),\ldots,{\bf u}^\star(k+N-1|k)\}
+\end{equation*}
+e um custo ótimo $\Phi^\star(k)=\Phi'^\star(k)+{\bf g}$. A lei de controle do MPC é dada implicitamente pelo primeiro termo da seqüência ${\bf u}^\star$:
+\begin{equation*}
+	h(\delta) = {\bf u}^\star(k|k),
+\end{equation*}
+onde $h(\delta)$ é contínua dentro de cada período de amostragem $T$, $\delta\in[kT,(k+1)T)$. O resto da seqüência ${\bf u}^\star$ é descartada. O sistema em malha fechada pode então ser escrito em tempo contínuo como:
+\begin{equation*}
+	\dot{\bf x}(\delta) = {\bf Ax} + {\bf B}h(\delta)
+\end{equation*}
+
+Conforme mencionado, o problema de otimização~\req{eqn:linopt2} a ser resolvido em cada instante de amostragem neste caso é um problema de Programação Quadrática, ou seja, o critério a ser minimizado é quadrático e as restrições são lineares. A vantagem deste tipo de problema é que o mesmo é convexo e para isto algoritmos eficientes e confiáveis existem. Em geral, estes algoritmos são baseados na solução das equações de Kuhn-Tucker que, neste caso, dão condições necessárias e suficientes de otimalidade~\cite{luenberger89}.
+
+Em particular, neste trabalho será utilizada a função {\tt quadprog} do pacote de otimização do Matlab para a solução de problemas de QP. Esta função soluciona o problema de otimização de otimização através do método {\em Active Set}, ou método de projeção~\cite{gil81}. Uma solução inicial factível é calculada através da solução de um problema simplificado de Programação Linear ({\em Linear Programming, LP}). Em um segundo momento, é gerada uma seqüência iterativa de pontos factíveis que convergem para a solução Com o método {\em Active Set}, a função de custo é minimizada em cada iteração com relação a um sub-conjunto de restrições localmente ativas, até que o algoritmo encontre a soluçãó final.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{MPC Aplicado a Robôs Móveis}
+
+Como dito anteriormente, trabalhos envolvendo MPC de robôs móveis não holonômicos são relativamente raros e esparsos. Alguns são descritos brevemente a seguir.
+
+Em \cite{ollero91} o GPC é aplicado ao problema de seguimento de caminho do robô CMU NavLab. Um modelo CARIMA ({\em Controlled Autoregressive and Moving Average}) em coordenadas locais linearizadas do robô é utilizado para o cálculo da distância do robô a uma trajetória de referência. O controle é realizado apenas através da velocidade angular, considerando que a velocidade linear permanece constante. Como o modelo utilizado é linear, trajetórias de aproximação do veículo à referência tornam-se necessárias quando o erro de orientação é muito grande. A função de custo envolve o erro de posição e orientação em coordenadas locais e incrementos do controle e uma restrição na velocidade linear de 30~{\em km/h} é imposta.
+
+Em \cite{ortega96}, algoritmos genéticos são utilizados para a otimização não linear, a fim de diminuir o esforço computacional e tornando possível assim a aplicação em tempo-real. O problema de rastreamento de trajetória é resolvido para um robô com modelo não linear e acionamento diferencial. A novidade neste trabalho é a inclusão, na função de custo, de um termo que penaliza a proximidade entre o robô e obstáculos fixos no ambiente. Assim, uma trajetória de referência é previamente calculada, levando em consideração apenas obstáculos conhecidos. O problema de rastreamento é então resolvido, agora então com obstáculos inesperados presentes no ambiente. O algoritmo foi aplicado ao robô LABMATE.
+
+Em \cite{yang98} um controle preditivo inteligente é desenvolvido. Um modelo cinemático em redes neurais é utilizado para a predição dos estados, onde as entradas de controle são as velocidades linear e angular. O tipo de robô utilizado é parecido com um carro, com duas rodas frontais orientáveis e duas rodas não-orientáveis traseiras motorizadas. Para corrigir erros existentes entre o modelo de predição e o robô real, uma rede neural é utilizada para ajustar este modelo de forma {\em on-line}. A função de custo envolve termos de erro entre a postura atual e a de referência e de esforço de controle. O problema de seguimento de caminho é resolvido e aplicado ao robô THMR-III.
+
+\cite{rico99} destaca algumas vantagens da utilização do MPC para o seguimento de caminho de robôs móveis, como por exemplo: a trajetória é previamente conhecida; o caminho percorrido é suave; há um aumento na autonomia do robô, já que o esforço de controle é minimizado. Este trabalho utiliza o GPC sem restrições para o seguimento de caminho de um modelo linearizado em coordenadas locais do robô, onde a velocidade linear é constante, a entrada de controle é a velocidade angular e as saídas são a orientação global e a posição $y$ em coordenadas locais. A existência de atrasos de transporte no modelo é considerada. Através de um preditor de Smith, obtém-se um aumento da robustez do sistema em malha fechada. Um novo algoritmo de controle preditivo ({\em Smith-Predictor Generalized Predictive Control, SPGPC}) é então proposto e aplicado ao robô LABMATE.
+
+\cite{essen01} desenvolve um algoritmo não linear de MPC em espaço de estados aplicado a um robô móvel com acionamento diferencial para a estabilização em uma postura fixa e rastreamento de trajetória. Seu método é então comparado com leis de controle variantes no tempo e descontínuas, mostrando a eficiência do MPC. Algumas modificações na função de custo são propostas, a fim de aumentar a taxa de convergência sem restrições adicionais, entretanto detalhes do algoritmo não são fornecidos. Segundo afirmam os autores, os resultados de simulação mostram que não é possível a aplicação do MPC não linear em robôs móveis, dado o alto custo computacional necessário. O tempo para a solução do problema de otimização é cerca de 500 vezes maior que o permitido a uma aplicação em tempo-real, quando o algoritmo é executado em Matlab com um Pentium III de 500MHz. Entretanto, é claro que este tempo pode ser minimizado com processadores mais rápidos e com algoritmos em linguagem C, por exemplo.
+
+Em alguns dos trabalhos citados acima, um modelo linear do robô em coordenadas locais é utilizado. Esta escolha é vantajosa pois permite o uso de algoritmos de otimização convexos e diminui consideravelmente o esforço computacional necessário. Entretando, para o modelo linear ser válido, é necessário assumir que o incremento de orientação mantém-se pequeno para cada instante de amostragem~\cite{rico99}. Sendo assim, este modelo não é válido para grandes variações de orientação e trajetórias de aproximação precisam ser usadas quando o robô encontra-se com uma orientação muito diferente da orientação de referência.
+
+A presente dissertação tem como objetivo abranger tanto o problema de estabilização em uma postura fixa quanto o de rastreamento de trajetória para um robô móvel não holonômico dotado de rodas e com acionamento diferencial. No próximo capítulo o primeiro problema é resolvido através de um algoritmo de controle preditivo não linear. Alguns resultados mostrados em \cite{essen01} são melhorados através de uma transformação em coordenadas polares da função de custo a ser minimizada. No Capítulo~\ref{cap:traj}, o segundo problema é tratado, primeiramente de forma não linear. Após isso, uma outra abordagem é desenvolvida, utilizando-se agora um método de linearizações sucessivas ao longo da trajetória de referência.

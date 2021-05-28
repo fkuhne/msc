@@ -1,0 +1,31 @@
+server_objects = ServerSocket.o Socket.o
+client_objects = ClientSocket.o Socket.o
+ 
+
+all : server client_enc client_gps client_bus
+
+server: $(server_objects) server.cpp
+	g++ -o server $(server_objects) server.cpp
+
+
+client_enc: $(client_objects) client_enc.cpp
+	g++ -o client_enc $(client_objects) client_enc.cpp
+
+
+client_gps: $(client_objects) client_gps.cpp
+	g++ -o client_gps $(client_objects) client_gps.cpp
+
+client_bus: $(client_objects) client_bus.cpp
+	g++ -o client_bus $(client_objects) client_bus.cpp
+
+Socket: Socket.cpp
+ServerSocket: ServerSocket.cpp
+ClientSocket: ClientSocket.cpp
+
+
+clean:
+	rm -f *.o server client_enc client_gps client_bus
+
+
+
+

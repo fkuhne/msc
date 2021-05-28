@@ -1,0 +1,25 @@
+all : server client_enc client_gps client_bus
+
+server: ServerSocket.o Socket.o server.cpp
+	g++ -o server ServerSocket.o Socket.o server.cpp
+
+client_enc: ServerSocket.o ClientSocket.o Socket.o client_enc.cpp
+	g++ -o client_enc ServerSocket.o ClientSocket.o Socket.o client_enc.cpp
+
+client_gps: ServerSocket.o ClientSocket.o Socket.o client_gps.cpp
+	g++ -o client_gps ServerSocket.o ClientSocket.o Socket.o client_gps.cpp
+
+client_bus: ClientSocket.o Socket.o client_bus.cpp
+	g++ -o client_bus ClientSocket.o Socket.o client_bus.cpp
+
+Socket: Socket.cpp
+ServerSocket: ServerSocket.cpp
+ClientSocket: ClientSocket.cpp
+
+
+clean:
+	rm -f *.o server client_enc client_gps client_bus
+
+
+
+

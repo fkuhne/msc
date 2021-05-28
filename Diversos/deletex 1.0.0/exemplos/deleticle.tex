@@ -1,0 +1,291 @@
+\documentclass{deleticle}
+\usepackage[latin1]{inputenc}
+
+\course{ENG04476-Microprocessadores II}
+
+\title{Roteiro de Laboratório 1\\
+Ambiente de Desenvolvimento}
+
+\author{Prof. Walter Fetter Lages}
+
+\begin{document}
+
+\maketitle
+
+\section{Objetivo}
+
+O objetivo deste laboratório é familiarizar os alunos com a operação dos
+diversos utilitários utilizados para programação de computadores, em
+especial na linguagem Assembly. Ao final, espera-se que os alunos sejam
+capazes de montar e linkar tanto programas compostos por um único módulo
+quanto programas compostos por vários módulos.
+
+\section{Configuração do Ambiente}
+
+O programa MASM deve ser instalado no diretório \verb$C:\ENG04476\MASM$. A
+variável de ambiente \verb$PATH$ deve incluir os diretórios \verb$C:\ENG04476\MASM\BIN$ e \verb$C:\ENG04476\MASM\BINB$. A variável de ambiente
+\verb$INCLUDE$ deve incluir o diretório \verb$C:\ENG04476\MASM\INCLUDE$. A
+variável de ambiente \verb$HELPFILES$ deve incluir
+\verb$C:\ENG04476\MASM\HELP\*.HLP$. A variável de ambiente \verb$ML$ deve
+incluir as opções {\it default} do montador, ou seja \verb$/c /Cp /W3 /VM$.
+
+Se tudo estiver configurado corretamente, os comandos \verb$ml /?$ e
+\verb$link /?$ devem apresentar o resumo dos parâmetros que podem ser
+passados na linha de comando do montador e do linker, respectivamente. Por
+outro lado, os comandos \verb$ml /help$ e \verb$link /help$ devem apresentar
+um {\it help} detalhado da utilização do montador e do linker. 
+
+{\bf Crie um diretório para colocar os seus arquivos.} Ao final do
+laboratório, limpe-o. 
+
+{\bf Não altere as configurações dos computadores do laboratório.} Isto
+inclui o papel de parede e a criação de ícones e atalhos no {\it desktop}.
+
+{\bf Usuários que colocarem arquivos em local inapropriado ou alterarem as
+configurações do computador serão penalizados na avaliação do relatório do
+laboratório.}
+
+\section{Desenvolvimento dos Experimentos}
+
+\subsection{Programa em um Único Módulo}
+\label{onemodule}
+
+O programa abaixo imprime a mensagem {\tt Hello, World!} na tela. Isto é feito
+através da subrotina imprime. Note que este programa está estruturado para
+ser montado e linkado como um programa do tipo executável ({\tt .exe}).
+
+\begin{verbatim}
+CSEG            segment         public
+                assume          cs:CSEG
+
+inicio:         push            ds
+                mov             ax,DSEG
+                mov             ds,ax
+                assume          ds:DSEG
+
+                mov             dx,offset msg
+                call            imprime
+                pop             ds
+                mov             ax,4c00h
+                int             21h
+
+imprime         proc            near
+                mov             ah,09
+                int             21h
+                ret
+imprime         endp
+
+CSEG            ends
+
+DSEG            segment         public
+msg             db              0ah,0dh
+                db              'Hello, World!'
+                db              0ah,0dh,'$'
+DSEG            ends
+
+SSEG            segment         stack
+                db              256 dup('pilha')
+SSEG            ends
+                end             inicio
+\end{verbatim}
+
+\begin{enumerate}
+
+\item Edite este programa e coloque em um arquivo denominado, por exemplo,
+{\tt hello1.asm}. Sugestão: utilize o editor edit do DOS.
+
+\item Monte o programa utilizando o Microsoft Macro-assembler, digitando
+\label{asm}
+
+\begin{verbatim}
+ML /Fl hello1.lst hello1.asm
+\end{verbatim}
+
+Note que o parâmetro {\tt /Fl hello.asm} é opcional. Ele faz com que o
+montador gere um arquivo de listagem do módulo sendo montado. Este arquivo é
+um arquivo ASCII. Utilize o editor para verificar o conteúdo deste arquivo.
+Se não houveram erros de digitação, deve ter sido gerado o arquivo {\tt
+hello1.obj}. Verifique se isto realmente ocorreu. Caso contrário, retorne ao
+item~\ref{asm}. O parâmetro {\tt /c} faz com que o montador não invoque
+automaticamente o {\it linker}. O parâmetro {\tt W3} habilita todos os {\it
+warnings}.
+
+\item Linke o arquivo {\tt hello1.obj}, utilizando o comando
+\label{link}
+
+\begin{verbatim}
+link /M hello1.obj;
+\end{verbatim}
+
+O Parâmetro {\tt /M} é opcional. Ele força o linker a gerar uma arquivo de
+mapa do programa sendo linkado ({\tt hello1.map}). Este arquivo também é um
+arquivo ASCII, portanto utilize o editor para verificar o conteúdo deste
+arquivo. Caso não tenham havido erros de linkagem, deve ter sido gerado
+também um arquivo denominado {\tt hello1.exe}.
+
+\item Execute o programa {\tt hello1.exe} para verificar o seu funcionamento.
+\end{enumerate}
+
+\subsection{Programas com Vários Módulos}
+\label{twomodules}
+
+Considere a subrotina {\tt imprime}, utilizada no programa anterior. Esta
+subrotina é relativamente genérica, ou seja, é bastante provável que outros
+programas necessitem de uma subrotina semelhante. Imagine agora que esta
+subrotina seja bastante grande. Neste caso incluir esta rotina em todos os
+programas que necessitam dela torna-se bastante indesejável, pois além de
+ser cansativo, aumenta a probabilidade de introdução erros e também o tempo
+necessário para montagem do programa. O que se faz nestes casos é colocar a
+subrotina em um módulo separado, que é montado uma única vez e linkado com
+todos os programas que necessitam desta subrotina. Em outras palavras,
+cria-se um arquivo {\tt .asm} com o programa principal e um arquivo {\tt
+.asm} com a(s) subrotina(s). Ambos são montados separadamente e linkados em 
+único arquivo {\tt .exe}. O mesmo arquivo {\tt .obj} que contém a subrotina
+pode ser utilizado em qualquer outro programa que necessite desta subrotina,
+sem a necessidade passar pelo processo de montagem novamente.
+
+Dividindo-se o programa anterior tem-se o seguinte módulo correspondente ao
+programa principal:
+
+\begin{verbatim}
+                extrn           imprime:near
+
+CSEG            segment         public
+                assume          cs:CSEG
+
+inicio:         push            ds
+                mov             ax,DSEG
+                mov             ds,ax
+                assume          ds:DSEG
+
+                mov             dx,offset msg
+                call            imprime
+                pop             ds
+                mov             ax,4c00h
+                int             21h
+
+CSEG            ends
+
+DSEG            segment         public
+msg             db              0ah,0dh
+                db              'Hello, World!'
+                db              0ah,0dh,'$'
+DSEG            ends
+
+SSEG            segment         stack
+                db              256 dup('pilha')
+SSEG            ends
+                end             inicio
+\end{verbatim}
+
+O módulo contendo a subrotina {\tt imprime} seria:
+
+\begin{verbatim}
+                public          imprime
+
+CSEG            segment         public
+
+                assume          cs:CSEG 
+
+imprime         proc            near
+                mov             ah,9
+                int             21h
+                ret
+imprime         endp
+
+CSEG            ends
+                end
+
+\end{verbatim}
+
+\begin{enumerate}
+
+\item Digite o programa principal em um arquivo denominado, por exemplo
+{\tt hello2.asm}. (Ou copie e modifique o arquivo {\tt hello1.asm}).
+
+\item Digite o módulo com a subrotina em um arquivo denominado, por exemplo
+{\tt imprime.asm}.
+
+\item Monte cada um dos módulos do programa separadamente, gerando os
+arquivos {\tt hello2.obj} e {\tt imprime.obj} (e opcionalmente os arquivos
+{\tt hello2.lst} e {\tt imprime.lst}).
+
+\item Linke ambos os módulos utilizando o comando
+
+\begin{verbatim}
+link /m hello2.obj+imprime.obj;
+\end{verbatim}
+
+Note que os mesmos comentários feitos no item~\ref{link} da seção~\ref{asm}
+com relação ao parâmetro {\tt /m} também aplicam-se aqui.
+
+\item Execute o novo programa {\tt hello2.exe} para verificar o seu
+funcionamento.
+
+\item Compare os arquivos de listagem e de mapa com os gerados na
+seção~\ref{onemodule}.
+
+\end{enumerate}
+
+\subsection{Programas com bibliotecas}
+
+Suponha que além da subrotina imprime, já se tenha desenvolvido uma rotina
+para fazer soar um beep no auto-falante do computador, como mostrado abaixo.
+Salve este novo arquivo com o nome {\tt beep.asm}. Note que o nome do
+arquivo com o código fonte do módulo não tem relação nenhuma com o nome das
+subrotinas contidas no mesmo. Como os módulos desenvolvidos aqui contém
+apenas uma rotinas, torna-se conveniente dar para o módulo o mesmo nome da
+rotina.
+
+\begin{verbatim}
+                public          beep
+
+CSEG            segment         public
+
+                assume          cs:CSEG 
+
+beep            proc            near
+                mov             ah,0eh
+                xor             bh,bh
+                mov             al,07h
+                int             10h
+                ret
+beep            endp
+		
+CSEG            ends
+                end
+\end{verbatim}
+
+\begin{enumerate}
+
+\item \label{libstart} Monte o módulo {\tt beep.asm}, gerando o arquivo {\tt
+beep.obj}.
+
+
+\item Crie uma biblioteca contendo este módulo, através do comando
+
+\begin{verbatim}
+lib tela.lib +imprime.obj +beep.obj, tela.lst;
+\end{verbatim}
+
+Note que a vírgula e o arquivo de listagem são opcionais. Este arquivo
+também está em ASCII. Utilize o editor para verificar o seu conteúdo.
+
+\item Crie e monte o programa {\tt hello3.asm} a partir do programa {\tt
+hello2.asm}, incluindo no cabeçalho a diretiva \verb$extern beep:near$ e
+incluindo um \verb$call beep$ após o \verb$call imprime$. 
+
+\item Linke o arquivo {\tt hello3.obj} e o arquivo {\tt tela.lib} para
+produzir o programa {\tt hello3.exe}. Para isto utilize o comando:
+
+\begin{verbatim}
+link /m hello3.obj, hello3.exe, hello3.map, tela.lib;
+\end{verbatim}
+
+\item Execute o programa {\tt hello3.exe} e verifique o seu funcionamento.
+
+\item \label{libend} Compare os arquivos de listagem e de mapa gerados com
+os obtidos nas seções~\ref{onemodule} e~\ref{twomodules}.
+
+\end{enumerate}
+\end{document}

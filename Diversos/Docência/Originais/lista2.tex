@@ -1,0 +1,172 @@
+%%% \emph{}
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lista1"
+%%% End: 
+\documentclass[11pt,epsf]{report}
+\setlength{\vsize}{297mm}
+\setlength{\hsize}{210mm}
+\setlength{\textheight}{230mm}
+\setlength{\textwidth}{170mm}
+%\voffset -2.5cm
+\hoffset -2.5cm
+
+\usepackage[latin1]{inputenc}
+%\usepackage{latexsym}
+%\usepackage{amssymb}
+\usepackage[dvips]{graphicx}
+
+
+\renewcommand\contentsname{Conte\'udo}
+\renewcommand\listfigurename{Lista de Figuras}
+\renewcommand\listtablename{Lista de Tabelas}
+\renewcommand\bibname{Bibliografia}
+\renewcommand\indexname{Indice}
+\renewcommand\figurename{Figura}
+\renewcommand\tablename{Tabela}
+\renewcommand\partname{Parte}
+\renewcommand\chaptername{Capítulo}
+\renewcommand\appendixname{Ap\^endice}
+\renewcommand\abstractname{Resumo}
+\renewcommand\today{\ifcase\month\or
+  Janeiro\or Fevereiro\or Março\or Abril\or Maio\or Junho\or
+  Julho\or Agosto\or Setembro\or Outubro\or Novembro\or Dezembror\fi
+  \space\number\day, \number\year}
+
+\newtheorem{algo}{Algoritmo}
+\newcommand\balgo{\begin{algo}}
+\newcommand\ealgo{\end{algo}}
+\newtheorem{theor}{Teorema}
+\newcommand\bth{\begin{theor}}
+\newcommand\eth{\end{theor}}
+\newcommand\fpreuve {$\Box$ \\}
+\newtheorem{assum}{Hip\'otese}
+\newcommand\bhyp{\begin{hyp}}
+\newcommand\ehyp{\end{hyp}}
+\newcommand\fhyp {$\lhd$ \\}
+\newtheorem{defin}{Defini\c c\~ao}
+\newcommand\bdefi{\begin{defin}}
+\newcommand\edefi{\end{defin}}
+\newtheorem{lemma}{Lema}
+\newcommand\blem{\begin{lemma}}
+\newcommand\elem{\end{lemma}}
+\newtheorem{propo}{Proposi\c{c}\~{a}o}
+\newcommand\bpropo{\begin{propo}}
+\newcommand\epropo{\end{propo}}
+\newtheorem{propr}{Propriedade}
+\newcommand\bpropr{\begin{propr}}
+\newcommand\epropr{\end{propr}}
+\newtheorem{coroll}{Corol\'ario}
+\newcommand\bcor{\begin{coroll}}
+\newcommand\ecor{\end{coroll}}
+\newtheorem{exemp}{Exemplo}
+\newcommand\bex{\begin{exemp}}
+\newcommand\eex{\end{exemp}}
+\newcommand \fexe {$\diamondsuit$ \\}
+\newtheorem{remarq}{Observa\c c\~ao}
+\newcommand\brem{\begin{remarq}}
+\newcommand\erem{\end{remarq}}
+
+
+
+
+\newcommand\ipar{\hspace*{\parindent}}
+\newcommand\epar{\vspace{\baselineskip}}
+\newcommand\pdef{\stackrel{\bigtriangleup}{=}}
+\newcommand\bdm{\begin{displaymath}}
+\newcommand\edm{\end{displaymath}}
+\newcommand\barray{\begin{array}}
+\newcommand\earray{\end{array}}
+\newcommand\beqa{\begin{eqnarray}}
+\newcommand\eeqa{\end{eqnarray}}
+\newcommand\beqan{\begin{eqnarray*}}
+\newcommand\eeqan{\end{eqnarray*}}
+\newcommand\beq{\begin{equation}}
+\newcommand\eeq{\end{equation}}
+\newcommand\bc{\begin{center}}
+\newcommand\ec{\end{center}}
+\newcommand\bit{\begin{itemize}}
+\newcommand\eit{\end{itemize}}
+\newcommand\bquo{\begin{quote}}
+\newcommand\equo{\end{quote}}
+\newcommand\ben{\begin{enumerate}}
+\newcommand\een{\end{enumerate}}
+\newcommand{\ignore}[1]{\iffalse #1 \fi}
+\newcommand\tz{{\cal Z}}
+\newcommand\tzi{{\cal Z}^{-1}}
+
+
+\begin{document}
+
+\begin{center}
+\Large{{\sf LISTA DE EXERCÍCIOS 2}}
+\end{center}
+
+\begin{enumerate}
+
+\item Ler o capítulo 4 do livro: 
+
+G. Franklin, D. Powell, A. Emami-Naeini. {\em Feedback Control of Dynamic
+ Systems }
+
+
+\item Resolver os seguintes exercícios propostos da referência do 
+item anterior: 4.2, 4.5, 4.8, 4.11, 4.14, 4.18, 4.19, 4.25, 4.32,
+4.36.
+
+\item Considere o diagrama em blocos da figura 1
+
+\begin{figure}[!hhh]
+\vspace*{5cm}
+\caption{sistema genérico}
+\end{figure} 
+
+\begin{enumerate}
+\item Supondo que $G_1(s),G_2(s)$ não possuam zeros na origem 
+($s=0$), qual a condição necessária e suficiente, em termos de número de 
+pólos na origem em $G_1(s)$ e $G_2(s)$  
+e das raízes da equação característica $1+G_1(s)G_2(s)$,
+ para que o sistema rejeite assintoticamente uma perturbação do tipo salto?  
+\item Supondo que $G_2(s)$ tenha um zero na origem, qual a condição necessária e suficiente, em termos de número de 
+pólos na origem em $G_1(s)$ e $G_2(s)$  
+das raízes da equação característica $1+G_1(s)G_2(s)$,
+ para que o sistema rejeite assintoticamente uma perturbação do tipo salto?
+
+\end{enumerate}
+
+\item Considere o diagrama em blocos da figura 1
+
+\begin{enumerate}
+\item Que condições devem ser satisfeitas para que seja 
+possível seguir uma referência senoidal, com freqüência 
+angular $w$rad/s, com erro nulo em regime permanente.
+
+\item Que condições devem ser satisfeitas para que seja 
+possível rejeitar assintoticamente em regime permanente
+uma referência senoidal, com freqüência 
+angular $w$rad/s?
+\end{enumerate} 
+
+
+\end{enumerate}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,41 @@
+% deltter.tex - Exemplo genérico de uso da classe deletter.cls
+% Copyright (C) 2004 Walter Fetter Lages <w.fetter@ieee.org>
+%
+% This file was adapted from:
+% iiletter.tex - exemplo de carta padrao do II/UFRGS
+% $Id: iiletter.tex,v 4.1 2002/12/07 17:16:05 utug Exp $
+% Copyright (C) 2001 UFRGS TeX Users Group
+%
+% This is free software, distributed under the GNU GPL; please take
+% a look in `iiufrgs.cls' to see complete information on using, copying
+% and redistributing these files
+%
+\documentclass{deletter}
+
+% Para cartas em inglês, deve-se utilizar a opcao english:
+% \documentclass[english]{deletter}
+
+% Para cartas promocionais, isto é, não oficiais, deve-se utilizar
+% o logo ao invés do brasão da UFRGS. Isto é obtido com a utilização da
+% opção promo:
+% \documentclass[promo]{deletter}
+
+\usepackage[latin1]{inputenc}
+
+\signature{Leslie Lamport}
+
+\begin{document}
+
+\begin{letter}{Prof.~Dr.~Donald E. Knuth\\Grande Criador do \TeX\\Stanford University\\Estados Unidos}
+
+\opening{Caro Mestre,}
+	Envio-lhe, por meio desta, um especial agradecimento por ter inventado o \TeX, para que eu pudesse inventar o \LaTeX. Repito, a seguir, o mesmo parágrafo, para que a carta tenha uma aparência melhor.
+
+	Envio-lhe, por meio desta, um especial agradecimento por ter inventado o \TeX, para que eu pudesse inventar o \LaTeX. Repito, a seguir, o mesmo parágrafo, para que a carta tenha uma aparência melhor.
+
+	Envio-lhe, por meio desta, um especial agradecimento por ter inventado o \TeX, para que eu pudesse inventar o \LaTeX.
+
+\closing{Atenciosamente,}
+\end{letter}
+
+\end{document}

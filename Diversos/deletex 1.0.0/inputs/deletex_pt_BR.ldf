@@ -1,0 +1,121 @@
+\ProvidesLanguage{deletex_pt_BR}[2004/11/29 v0.4.0 DeLeTex brazilian portuguese support]
+\@namedef{captionsbrazilian}{%
+	\def\bibname{Refer{\^e}ncias}%
+	\def\refname{\bibname}
+	\def\abstractname{Resumo}%
+	\def\appendixname{Ap{\^e}ndice}%
+	\def\contentsname{Sum{\'a}rio}%
+	\def\listfigurename{Lista de Ilustra\c{c}\~oes}%
+	\def\listtablename{Lista de Tabelas}%
+	\def\figurename{Figura}%
+	\def\tablename{Tabela}%
+	\def\advisorname{Orientador}%
+	\def\coadvisorname{Co-orientador}%
+	\def\examinername{Banca Examinadora}%
+	\def\listabbrvname{Lista de Abreviaturas}%
+	\def\listsymbolname{Lista de S{\'\i}mbolos}%
+	\def\annexname{Anexo}%
+	\def\keywordsname{Palavras-chave}%
+	\def\cipcaption{CIP -- CATALOGA{\c{C}}{\~A}O NA PUBLICA{\c{C}}{\~A}O}%
+	\def\byname{por}%
+
+	\def\PPGEEcoordname{Coordenador do PPGEE}
+	\def\DELETheadname{Chefe do DELET}
+
+	\def\dissname{Disserta{\c{c}}{\~a}o (mestrado)}%
+	\def\dissspecificinfo{%
+		Disserta{\c{c}}{\~a}o de mestrado apresentada ao
+		\ppgee\ da \ufrgs\ como parte dos requisitos para a
+		obten{\c{c}}{\~a}o do t\'{\i}tulo de Mestre em Engenharia El\'etrica.
+		
+		\'Area de concentra\c{c}\~ao: Automa\c{c}\~ao e
+		Instrumenta\c{c}\~ao Eletro-Eletr\^onica
+	}%
+	\def\dissapproval{%
+		Esta disserta\c{c}\~ao foi julgada adequada para a
+		obten\c{c}\~ao do t\'{\i}tulo de Mestre em Engenharia
+		El\'etrica e aprovada em sua forma final pelo Orientador e
+		pela Banca Examinadora.
+	}%
+
+	\def\tesename{Tese (doutorado)}%
+	\def\tesespecificinfo{%
+		Tese de doutorado apresentada ao
+		\ppgee\ da \ufrgs\ como parte dos requisitos para a
+		obten{\c{c}}{\~a}o do t\'{\i}tulo de Doutor em Engenharia El\'etrica.\\
+		
+		\'Area de concentra\c{c}\~ao: Automa\c{c}\~ao e
+		Instrumenta\c{c}\~ao Eletro-Eletr\^onica
+	}%
+	\def\teseapproval{%
+		Esta tese foi julgada adequada para a
+		obten\c{c}\~ao do t\'{\i}tulo de Doutor em Engenharia
+		El\'etrica e aprovada em sua forma final pelo Orientador e
+		pela Banca Examinadora.
+	}%
+
+	\def\planodoutoradospecificinfo{Plano de Curso para Doutorado}%
+
+	\def\proptesespecificinfo{Proposta de Tese de Doutorado}%
+
+	\def\tcname{Trabalho de Conclus{\~a}o (Mestrado)}%
+	\def\tcspecificinfo{%
+		Trabalho de conclus\~ao apresentado
+		como parte dos requisitos para a
+		obten{\c{c}}{\~a}o do t\'{\i}tulo de Mestre em Engenharia
+		El\'etrica.
+	}%
+
+	\def\rpname{Relat{\'o}rio de Pesquisa}%
+	\def\financname{Financiamento}%
+
+	\def\especname{Monografia (especializa\c{c}\~ao)}%
+	\def\especcoursename{Curso de Especializa\c{c}\~ao em}%
+	\def\especcoordname{Coordenador do}
+	\def\especspecificinfo{%
+		Monografia de conclus\~ao de curso apresentada
+		como parte dos requisitos para a
+		obten{\c{c}}{\~a}o do t\'{\i}tulo de Especialista.
+	}%
+
+	\def\diplelespecificinfo{%
+		Projeto de Diploma\c{c}\~ao apresentado ao
+		\delet\ da \ufrgs\ como parte dos requisitos para a
+		obten{\c{c}}{\~a}o do t\'{\i}tulo de Engenheiro Eletricista.
+	}%
+	\def\diplecpspecificinfo{%
+		Projeto de Diploma\c{c}\~ao apresentado ao
+		\delet\ da \ufrgs\ como parte dos requisitos para a
+		obten{\c{c}}{\~a}o do t\'{\i}tulo de Engenheiro de Computa\c{c}\~ao.
+	}%
+	\def\diplapproval{%
+		Este Projeto foi julgado adequado para a
+		obten\c{c}\~ao dos cr\'editos da Disciplina Projeto de
+		Diploma\c{c}\~ao do \delet\ e aprovado em sua forma final pelo
+		Orientador e pela Banca Examinadora.
+	}%
+
+	\def\tispecificinfo{%
+		Trabalho Individual~\@tirelease\\
+		TI-\@tinumber
+	}%
+
+	\def\pepspecificinfo{%
+		Plano de Estudos e Pesquisa
+	}%
+
+	\def\phonename{Fone}%
+}
+
+
+\@namedef{datebrazilian}{%
+	\def\today{\number\day\space de\space\monthname\space de\space\number\year}%
+	\def\monthname{%
+		\ifcase\month\or%
+			janeiro\or fevereiro\or mar{\c{c}}o\or abril\or%
+			maio\or junho\or julho\or agosto\or setembro\or%
+			outubro\or novembro\or dezembro%
+		\fi%
+	}%
+	\def\delet@date{\@publmonth\ de~\@publyear}%
+}

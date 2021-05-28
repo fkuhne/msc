@@ -1,0 +1,28 @@
+\select@language {brazil}
+\contentsline {section}{\numberline {1}Modelagem e Lineariza\c c\~ao de Sistemas}{1}{section.1}
+\contentsline {paragraph}{1.1.}{1}{section*.2}
+\contentsline {paragraph}{1.2.}{1}{section*.3}
+\contentsline {paragraph}{1.3.}{1}{section*.4}
+\contentsline {paragraph}{1.4.}{2}{section*.5}
+\contentsline {section}{\numberline {2}Resposta Transit\'oria e Identifica\c c\~ao de Par\^ametros de Fun\c c\~oes de Transfer\^encia}{2}{section.2}
+\contentsline {paragraph}{2.1.}{2}{section*.6}
+\contentsline {paragraph}{2.2.}{2}{section*.7}
+\contentsline {paragraph}{2.3.}{3}{section*.8}
+\contentsline {paragraph}{2.4.}{3}{section*.9}
+\contentsline {paragraph}{2.5.}{3}{section*.10}
+\contentsline {section}{\numberline {3}Sistemas Realimentados: Desempenho Transit\'orio e em Regime Permanente}{3}{section.3}
+\contentsline {paragraph}{3.1.}{3}{section*.11}
+\contentsline {paragraph}{3.2.}{4}{section*.12}
+\contentsline {paragraph}{3.3.}{4}{section*.13}
+\contentsline {paragraph}{3.4.}{4}{section*.14}
+\contentsline {paragraph}{3.5.}{4}{section*.15}
+\contentsline {paragraph}{3.6.}{5}{section*.16}
+\contentsline {paragraph}{3.7.}{6}{section*.17}
+\contentsline {paragraph}{3.8.}{6}{section*.18}
+\contentsline {paragraph}{3.9.}{6}{section*.19}
+\contentsline {section}{\numberline {4}Controladores PID}{6}{section.4}
+\contentsline {paragraph}{4.1.}{6}{section*.20}
+\contentsline {paragraph}{4.2.}{7}{section*.21}
+\contentsline {paragraph}{4.3.}{7}{section*.22}
+\contentsline {paragraph}{4.4.}{8}{section*.23}
+\contentsline {paragraph}{4.5.}{8}{section*.24}

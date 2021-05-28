@@ -1,0 +1,26 @@
+all : robo 
+
+objs = normal.o func.o controls.o
+
+robo: $(objs) robo.cpp
+	g++ -o robo $(objs) robo.cpp -Wno-deprecated
+
+
+	
+controls.o:controls.cpp
+	g++ -c -o controls.o controls.cpp -Wno-deprecated
+
+normal.o:normal.c
+	gcc -c -o normal.o normal.c
+
+func.o:func.cpp
+	g++ -c -o func.o func.cpp -Wno-deprecated
+
+
+clean:
+	rm -f *.o robo normal func controls
+	
+
+
+
+

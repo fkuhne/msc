@@ -1,0 +1,557 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0073)http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html -->
+<HTML><HEAD><TITLE>SQP Implementation :: Standard Algorithms (Optimization Toolbox)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!-- $Revision$  $Date$ --><!-- DOCNAME: Optimization Toolbox --><!-- CHUNKNAME: SQP Implementation --><!-- CHAPNAME: Standard Algorithms --><!-- HEADSTUFF --><LINK 
+href="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/docset.css" 
+type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2900.2627" name=GENERATOR></HEAD>
+<BODY class=support bgColor=#ffffff>
+<SCRIPT language=Javascript>
+if (parent.frames.length<2) document.write('<p><a href="../../helpdesk.html" target=_top><b>Documentation</b></a> <img src="../../arrowr.gif"> <a HREF="optim.html"><b>Optimization Toolbox</b></a></p>');
+</SCRIPT>
+<!-- NAVBARTOP -->
+<TABLE class=support cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=baseline bgColor=#e7ebf7><B>Optimization Toolbox</B></TD>
+    <TD vAlign=baseline align=right bgColor=#e7ebf7><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor17b.html"><IMG 
+      alt="Previous page" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      border=0></A>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor19b.html"><IMG 
+      alt="Next Page" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      border=0></A></TD></TR></TBODY></TABLE><A name=sqp_implementation></A><!-- H2 --><A name=26684></A>
+<P><FONT class=Head3 size=+1><B>SQP Implementation</B></FONT><BR class=hdr>
+<P><A name=26685></A>The SQP implementation consists of three main stages, which 
+are discussed briefly in the following subsections:</P>
+<UL>
+  <LI><A name=26686></A><A 
+  href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html#26691">Updating 
+  of the Hessian matrix</A> of the Lagrangian function 
+  <LI><A name=26687></A><A 
+  href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html#26746">Quadratic 
+  programming problem solution</A> 
+  <LI><A name=26688></A><A 
+  href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html#26965">Line 
+  search and merit function</A> calculation </LI></UL><A 
+name=updating_the_hessian_matrix></A><!-- H3 --><A name=26691></A>
+<P><FONT class=midsup><B>Updating the Hessian Matrix</B></FONT><BR class=hdr>
+<P><A name=26692></A>At each major iteration a positive definite quasi-Newton 
+approximation of the Hessian of the Lagrangian function, <EM>H</EM>, is 
+calculated using the BFGS method, where <IMG alt="lambda sub i (I = 1, ..., m)" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor231.gif" 
+align=bottom> is an estimate of the Lagrange multipliers. </P>
+<P><A name=26697></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG alt="equation to compute H sub k + 1" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor204.gif" 
+      align=bottom> <FONT face=sansserif>where </FONT></TD>
+    <TD align=right><B>(3-27)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<UL><A name=40130></A><IMG alt="" 
+  src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor380.gif" 
+  align=bottom> </UL>
+<P><A name=26698></A>Powell&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33408">[35]</A> 
+recommends keeping the Hessian positive definite even though it might be 
+positive indefinite at the solution point. A positive definite Hessian is 
+maintained providing <IMG alt="q sub k transpose times s sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor210.gif" 
+align=bottom> is positive at each update and that <EM>H</EM> is initialized with 
+a positive definite matrix. When <IMG alt="q sub k transpose times s sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor216.gif" 
+align=bottom> is not positive, <IMG alt="q sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor223.gif" 
+align=bottom> is modified on an element-by-element basis so that 0 --&gt;<IMG 
+alt="q sub k transpose times s sub k >" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor229.gif" 
+align=bottom>. The general aim of this modification is to distort the elements 
+of <IMG alt="q sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor235.gif" 
+align=bottom>, which contribute to a positive definite update, as little as 
+possible. Therefore, in the initial phase of the modification, the most negative 
+element of <IMG alt="q sub k * s sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor241.gif" 
+align=bottom> is repeatedly halved. This procedure is continued until <IMG 
+alt="q sub k transpose times s sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor247.gif" 
+align=bottom> is greater than or equal to 1<EM>e</EM>-5. If, after this 
+procedure, <IMG alt="q sub k transpose times s sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor254.gif" 
+align=bottom> is still not positive, modify <IMG alt="q sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor261.gif" 
+align=bottom> by adding a vector <EM>v</EM><STRONG> </STRONG>multiplied by a 
+constant scalar <EM>w</EM>, that is,</P>
+<P><A name=32571></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG alt="q sub k = q sub k + w v" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tuto138a.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-28)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=32595></A>where</P>
+<P>
+<UL class=continued><A name=32582></A>
+  <LI class=continued><IMG 
+  alt="v sub i = gradient g sub i(x sub k + 1) times g sub i(x sub k + 1) - gradient g sub i (x sub k) times g sub i (x sub k)" 
+  src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tuto125a.gif" 
+  align=bottom> </LI></UL>
+<P>
+<UL class=continued><A name=40142></A>
+  <LI class=continued>if <IMG alt="(q sub k) i times w less than 0" 
+  src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor22b.gif" 
+  align=bottom> and <BR><BR><IMG 
+  alt="(q sub k) sub i times ( s sub k) sub i less than 0 ( i = 1, ... m)" 
+  src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor238.gif" 
+  align=bottom> </LI></UL>
+<P>
+<UL class=continued><A name=40137></A>
+  <LI class=continued><IMG alt="v sub i = 0" 
+  src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutori8c.gif" 
+  align=bottom> otherwise </LI></UL>
+<P><A name=32579></A>and increase <EM>w</EM> systematically until <IMG 
+alt="q sub k transpose times s sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor268.gif" 
+align=bottom> becomes positive.</P>
+<P><A name=33703></A>The functions <CODE><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/fmincon.html">fmincon</A></CODE>, 
+<CODE><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/fminimax.html">fminimax</A></CODE>, 
+<CODE><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/fgoalattain.html">fgoalattain</A></CODE>, 
+and <CODE><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/fseminf.html">fseminf</A></CODE> 
+all use SQP. If <CODE>Display</CODE> is set to <CODE>'iter'</CODE> in 
+<CODE>options</CODE>, then various information is given such as function values 
+and the maximum constraint violation. When the Hessian has to be modified using 
+the first phase of the preceding procedure to keep it positive definite, then 
+<CODE>Hessian modified</CODE> is displayed. If the Hessian has to be modified 
+again using the second phase of the approach described above, then <CODE>Hessian 
+modified twice</CODE> is displayed. When the QP subproblem is infeasible, then 
+<CODE>infeasible</CODE> is displayed. Such displays are usually not a cause for 
+concern but indicate that the problem is highly nonlinear and that convergence 
+might take longer than usual. Sometimes the message <CODE>no update</CODE> is 
+displayed, indicating that <IMG alt="q sub k transpose times s sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor275.gif" 
+align=bottom> is nearly zero. This can be an indication that the problem setup 
+is wrong or you are trying to minimize a noncontinuous function.</P><A 
+name=quadratic_programming_solution></A><!-- H3 --><A name=26746></A>
+<P><FONT class=midsup><B>Quadratic Programming Solution</B></FONT><BR class=hdr>
+<P><A name=26748></A>At each major iteration of the SQP method, a QP problem of 
+the following form is solved, where <IMG alt="A sub i" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor281.gif" 
+align=bottom>refers to the <CODE>i</CODE>th row of the <EM>m</EM>-by-<EM>n</EM> 
+matrix <IMG alt=A 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor108.gif" 
+align=bottom>.</P>
+<P><A name=26756></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG alt="quadratic programming problem" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor287.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-29)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26758></A>The method used in the Optimization Toolbox is an active 
+set strategy (also known as a projection method) similar to that of Gill et 
+al<EM>.,</EM> described in <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33303">[20]</A> 
+and <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33317">[19]</A>. 
+It has been modified for both Linear Programming (LP) and Quadratic Programming 
+(QP) problems. </P>
+<P><A name=26759></A>The solution procedure involves two phases. The first phase 
+involves the calculation of a feasible point (if one exists). The second phase 
+involves the generation of an iterative sequence of feasible points that 
+converge to the solution. In this method an active set, <IMG alt="A sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor293.gif" 
+align=bottom>, is maintained that is an estimate of the active constraints 
+(i.e., those that are on the constraint boundaries) at the solution point. 
+Virtually all QP algorithms are active set methods. This point is emphasized 
+because there exist many different methods that are very similar in structure 
+but that are described in widely different terms.</P>
+<P><A name=26766></A><IMG alt="A bar sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor299.gif" 
+align=bottom> is updated at each iteration <EM>k</EM>, and this is used to form 
+a basis for a search direction <IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor305.gif" 
+align=bottom>. Equality constraints always remain in the active set <IMG 
+alt="A sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor311.gif" 
+align=bottom>. The notation for the variable<EM> </EM><IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor317.gif" 
+align=bottom><EM> </EM>is used here to distinguish it from <IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor322.gif" 
+align=bottom><B><I> </I></B>in the major iterations of the SQP method. The 
+search direction <IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor328.gif" 
+align=bottom> is calculated and minimizes the objective function while remaining 
+on any active constraint boundaries. The feasible subspace for<STRONG> 
+</STRONG><IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor334.gif" 
+align=bottom><STRONG> </STRONG>is formed from a basis <IMG alt="Z sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor340.gif" 
+align=bottom> whose columns are orthogonal to the estimate of the active set 
+<IMG alt="A sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor346.gif" 
+align=bottom> (i.e., <IMG alt="A sub k times Z sub k = 0" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor364.gif" 
+align=bottom>). Thus a search direction, which is formed from a linear summation 
+of any combination of the columns of <IMG alt="Z sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor383.gif" 
+align=bottom>, is guaranteed to remain on the boundaries of the active 
+constraints. </P>
+<P><A name=26800></A>The matrix <IMG alt="Z sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutori3c.gif" 
+align=bottom> is formed from the last <IMG alt="m minus l" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor186.gif" 
+align=bottom> columns of the QR decomposition of the matrix <IMG 
+alt="A bar sub k transpose" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor10c.gif" 
+align=bottom>, where <EM>l</EM><EM> </EM>is the number of active constraints and 
+<EM>l &lt; m</EM>. That is, <IMG alt="Z sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor17c.gif" 
+align=bottom> is given by</P>
+<P><A name=26810></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG alt="Z sub k = Q[:, l + 1:m]" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor24b.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-30)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=40183></A>where</P>
+<P>
+<UL class=continued><A name=40184></A>
+  <LI class=continued><IMG 
+  alt="Q transpose times A bar sub k transpose = the 2 by 1 vector R 0" 
+  src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor29b.gif" 
+  align=bottom> </LI></UL>
+<P><A name=26820></A>Once <IMG alt="Z sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor38b.gif" 
+align=bottom> is found, a new search direction <IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor44a.gif" 
+align=bottom> is sought that minimizes <IMG 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor48a.gif" 
+align=bottom> where<STRONG> </STRONG><IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor62a.gif" 
+align=bottom> is in the null space of the active constraints. That is, <IMG 
+alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor70a.gif" 
+align=bottom> is a linear combination of the columns of <IMG alt="Z sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tuto128a.gif" 
+align=bottom>: <EM><IMG alt="d sub k = Z sub k times p" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor149.gif" 
+align=bottom> </EM>for some vector<EM> </EM><EM>p</EM>.</P>
+<P><A name=26836></A>Then if you view the quadratic as a function of <EM>p</EM>, 
+by substituting for <IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor155.gif" 
+align=bottom>, you have</P>
+<P><A name=26840></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="q(p) = one-half p transpose times Z sub k transpose times H times Z sub k times p + c transpose times Z sub k times p" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor161.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-31)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26841></A>Differentiating this with respect to <EM>p</EM> yields</P>
+<P><A name=26845></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="gradient q(p) = Z sub k transpose times H times Z sub k times p + Z sub k transpose times c" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor167.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-32)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26849></A><IMG alt="gradient of q(p)" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor173.gif" 
+align=bottom> is referred to as the projected gradient of the quadratic function 
+because it is the gradient projected in the subspace defined by <IMG 
+alt="Z sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor178.gif" 
+align=bottom>. The term <B><I><IMG alt="Z sub k transpose times H times Z sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor183.gif" 
+align=bottom> </I></B>is called the projected Hessian. Assuming the Hessian 
+matrix <EM>H</EM> is positive definite (which is the case in this implementation 
+of SQP), then the minimum of the function <EM>q(p)</EM> in the subspace defined 
+by <IMG alt="Z sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor188.gif" 
+align=bottom> occurs when <IMG alt="gradient of q(p) = 0" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor193.gif" 
+align=bottom>, which is the solution of the system of linear equations</P>
+<P><A name=26865></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="Z sub k transpose times H times Z sub k times p = minus Z sub k transpose times c" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor199.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-33)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26866></A>A step is then taken of the form</P>
+<P><A name=26870></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="x sub (k+1) = x sub k + alpha times d subk where d sub k =" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor205.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-34)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26871></A>At each iteration, because of the quadratic nature of the 
+objective function, there are only two choices of step length <IMG alt=alpha 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor211.gif" 
+align=bottom>. A step of unity along<B><I> </I></B><IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor217.gif" 
+align=bottom> is the exact step to the minimum of the function restricted to the 
+null space of <IMG alt="A sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor224.gif" 
+align=bottom>. If such a step can be taken, without violation of the 
+constraints, then this is the solution to QP (<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html#26810">Eq.&nbsp;3-30</A>). 
+Otherwise, the step along <IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor230.gif" 
+align=bottom> to the nearest constraint is less than unity and a new constraint 
+is included in the active set at the next iteration. The distance to the 
+constraint boundaries in any direction <IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor236.gif" 
+align=bottom> is given by</P>
+<P><A name=26890></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="alpha = min i {-(Asub i times x sub k - b sub i) divided by A sub i times d sub k} where (i = 1, 2, ..., m)" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor242.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-35)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26891></A>which is defined for constraints not in the active set, and 
+where the direction <IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor248.gif" 
+align=bottom> is towards the constraint boundary, i.e., <IMG 
+alt="A sub i times d sub k greater than 0, i = 1, ..., m" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor255.gif" 
+align=bottom>.</P>
+<P><A name=26898></A>When <EM>n</EM><EM> </EM>independent constraints are 
+included in the active set, without location of the minimum, Lagrange 
+multipliers, <IMG alt="lambda sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor262.gif" 
+align=bottom>, are calculated that satisfy the nonsingular set of linear 
+equations</P>
+<P><A name=26905></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="A bar sub k transpose times lambda sub k = c" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor269.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-36)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26912></A>If all elements of <IMG alt="lambda sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor276.gif" 
+align=bottom> are positive, <IMG alt="x sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor282.gif" 
+align=bottom> is the optimal solution of QP (<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html#26810">Eq.&nbsp;3-30</A>). 
+However, if any component of <IMG alt="lambda sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor288.gif" 
+align=bottom> is negative, and the component does not correspond to an equality 
+constraint, then the corresponding element is deleted from the active set and a 
+new iterate is sought. </P><!-- H4 -->
+<P><A name=26916></A><B>Initialization.</B> &nbsp;&nbsp;<A name=26918></A>The 
+algorithm requires a feasible point to start. If the current point from the SQP 
+method is not feasible, then you can find a point by solving the linear 
+programming problem</P>
+<P><A name=26922></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="mathematical statement of the problem" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor294.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-37)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=33664></A>The notation <IMG alt="A sub i" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor300.gif" 
+align=bottom>indicates the <EM>i</EM>th row of the matrix <EM>A</EM>. You can 
+find a feasible point (if one exists) to <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html#26922">Eq.&nbsp;3-37</A> 
+by setting <EM>x</EM><FONT face=sansserif> t</FONT>o a value that satisfies the 
+equality constraints. You can determine this value by solving an under- or 
+overdetermined set of linear equations formed from the set of equality 
+constraints. If there is a solution to this problem, then the slack variable 
+<IMG alt=gamma 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor306.gif" 
+align=bottom> is set to the maximum inequality constraint at this point.</P>
+<P><A name=33659></A>You can modify the preceding QP algorithm for LP problems 
+by setting the search direction to the steepest descent direction at each 
+iteration, where<B><I> <IMG alt="g sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor312.gif" 
+align=bottom></I></B> is the gradient of the objective function (equal to the 
+coefficients of the linear objective function).</P>
+<P><A name=26938></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="d ^ sub k = -Z sub k times Z sub k transpose times g sub k" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor318.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-38)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26939></A>If a feasible point is found using the preceding LP method, 
+the main QP phase is entered. The search direction <IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor323.gif" 
+align=bottom> is initialized with a search direction <IMG alt="d sub 1" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor329.gif" 
+align=bottom> found from solving the set of linear equations</P>
+<P><A name=26949></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG alt="H times d sub 1 = minus g sub k" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor335.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-39)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26956></A>where <B><I><IMG alt="g sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor341.gif" 
+align=bottom></I></B> is the gradient of the objective function at the current 
+iterate <IMG alt="x sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor347.gif" 
+align=bottom> (i.e.,<B><I> <IMG alt="H times x sub k + c" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor353.gif" 
+align=bottom></I></B>). </P>
+<P><A name=26960></A>If a feasible solution is not found for the QP problem, the 
+direction of search for the main SQP routine <IMG alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor359.gif" 
+align=bottom> is taken as one that minimizes <IMG alt=gamma 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor257.gif" 
+align=bottom>. </P><A name=line_search_and_merit_function></A><!-- H3 --><A 
+name=26965></A>
+<P><FONT class=midsup><B>Line Search and Merit Function</B></FONT><BR class=hdr>
+<P><A name=26969></A>The solution to the QP subproblem produces a vector <IMG 
+alt="d sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor365.gif" 
+align=bottom>, which is used to form a new iterate</P>
+<P><A name=26973></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="x sub (k+1) = x sub k + alpha times d sub k" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor371.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-40)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=31262></A>The step length parameter <IMG alt="alpha sub k" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor377.gif" 
+align=bottom> is determined in order to produce a sufficient decrease in a merit 
+function. The merit function used by Han&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33337">[24]</A> 
+and Powell&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33408">[35]</A> 
+of the following form is used in this implementation.</P>
+<P><A name=26983></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="merit function used by Han and Powell" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor384.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-41)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26984></A>Powell recommends setting the penalty parameter</P>
+<P><A name=26989></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="Powell\xd5 s recommendation for setting the penalty parameter" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutori4c.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-42)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26990></A>This allows positive contribution from constraints that are 
+inactive in the QP solution but were recently active. In this implementation, 
+the penalty parameter <IMG alt="r sub i" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor11c.gif" 
+align=bottom> is initially set to</P>
+<P><A name=26997></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="r sub i = ||gradient of f(x)|| divided by ||gradient of g sub i (x)||" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor18c.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-43)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=27001></A>where <IMG alt="|| ||" 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/tutor25b.gif" 
+align=bottom>represents the Euclidean norm.</P>
+<P><A name=27002></A>This ensures larger contributions to the penalty parameter 
+from constraints with smaller gradients, which would be the case for active 
+constraints at the solution point.</P>
+<P><BR>
+<P>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#e7ebf7 border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD align=left width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor17b.html"><IMG 
+      alt="Previous page" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      align=bottom border=0></A>&nbsp;</TD>
+    <TD align=left>&nbsp;Quadratic Programming (QP) Subproblem</TD>
+    <TD>&nbsp;</TD>
+    <TD align=right>Simplex Algorithm&nbsp;</TD>
+    <TD align=right width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor19b.html"><IMG 
+      alt="Next page" 
+      src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      align=bottom border=0></A></TD></TR></TBODY></TABLE><BR><!-- Copyright 2005 The MathWorks, Inc. --><!-- Last updated: Thu Jan 13 23:15:24 2005 --><!-- SiteCatalyst code version: G.7.
+Copyright 1997-2004 Omniture, Inc. More info available at
+http://www.omniture.com -->
+<SCRIPT language=JavaScript type=text/javascript><!--
+/* You may give each page an identifying name, server, and channel on
+the next lines. */
+var s_pageName=document.title
+var s_server=""
+var s_channel=""
+var s_pageType=""
+var s_prop1=""
+var s_prop2=""
+var s_prop3=""
+var s_prop4=""
+var s_prop5=""
+/* E-commerce Variables */
+var s_campaign=""
+var s_state=""
+var s_zip=""
+var s_events=""
+var s_products=""
+var s_purchaseID=""
+var s_eVar1=""
+var s_eVar2=""
+var s_eVar3=""
+var s_eVar4=""
+var s_eVar5=""
+//--></SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="SQP Implementation  Standard Algorithms (Optimization Toolbox)_files/s_code_remote.js" 
+type=text/javascript></SCRIPT>
+<!-- End SiteCatalyst code version: G.7. -->
+<TABLE style="BORDER-TOP: #ed8000 2px solid; BACKGROUND-COLOR: #ffffff" 
+cellSpacing=0 cellPadding=3 width="100%" align=center summary=layout border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>&nbsp;© 1994-2005 The MathWorks, Inc. &nbsp;&nbsp;&nbsp; 
+      -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/trademarks.html" 
+      target=_parent>Trademarks</A>&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/" 
+      target=_parent>Privacy Policy</A> </TD></TR></TBODY></TABLE></P></BODY></HTML>

@@ -1,0 +1,169 @@
+\begin{thebibliography}{xx}
+
+\harvarditem{Aburto}{1992}{aburto92}
+Aburto, A.  \harvardyearleft 1992\harvardyearright .
+\newblock Flops c program (double precision) v2.0 18 dec 1992.
+\newblock Available {\em on-line} in \url{ftp://ftp.nosc.mil/pub/aburto/flops}.
+  Acessed in Jan. 2005.
+
+\harvarditem[Allgower et~al.]{Allgower, Badgwell, Qin, Rawlings \harvardand\
+  Wright}{1999}{allgower99}
+Allgower, F., Badgwell, T.~A., Qin, J.~S., Rawlings, J.~B. \harvardand\ Wright,
+  S.~J.  \harvardyearleft 1999\harvardyearright .
+\newblock Nonlinear predictive control and moving horizon estimation -- an
+  introductory overview, {\em in} P.~M. Frank (ed.), {\em Advances {I}n
+  {C}ontrol: {H}ighlights of {ECC}'99}, Springer-Verlag, New York,
+  pp.~391--449.
+
+\harvarditem{Bloch \harvardand\ McClamroch}{1989}{bloch89}
+Bloch, A.~M. \harvardand\ McClamroch, N.~H.  \harvardyearleft
+  1989\harvardyearright .
+\newblock Control of mechanical systems with classical nonholonomic constraint,
+  {\em Proceedings of the IEEE Conference on Decision and Control}, Tampa,
+  Florida, pp.~201--205.
+
+\harvarditem{Brockett}{1982}{brockett82}
+Brockett, R.~W.  \harvardyearleft 1982\harvardyearright .
+\newblock {\em New directions in applied mathematics}, Springer-Verlag, New
+  York.
+
+\harvarditem{Camacho \harvardand\ Bordons}{1999}{camacho99}
+Camacho, E.~F. \harvardand\ Bordons, C.  \harvardyearleft 1999\harvardyearright
+  .
+\newblock {\em Model Predictive Control}, Advanced Textbooks in Control and
+  Signal Processing, Springer-Verlag, London.
+
+\harvarditem[Campion et~al.]{Campion, Bastin \harvardand\
+  D'Andr\'ea-Novel}{1996}{campion96}
+Campion, G., Bastin, G. \harvardand\ D'Andr\'ea-Novel, B.  \harvardyearleft
+  1996\harvardyearright .
+\newblock Structural properties and classification of kinematic and dynamical
+  models of wheeled mobile robots, {\em {IEEE} Transactions on Robotics and
+  Automation} {\bf 12}(1):~47--62.
+
+\harvarditem{Cannon \harvardand\ Kouvaritakis}{2000}{cannon00}
+Cannon, M. \harvardand\ Kouvaritakis, B.  \harvardyearleft
+  2000\harvardyearright .
+\newblock Continuous-time predictive control of constrained nonlinear systems,
+  {\em in} F.~Allg{\"{o}}wer \harvardand\ A.~Zeng (eds), {\em Nonlinear model
+  predictive control, Progress in systems and control theory}, Vol.~26,
+  Birkh{\"{a}}user Verlag, Basel/Switzerland, pp.~205--215.
+
+\harvarditem{Canudas~de Wit \harvardand\ S{\o}rdalen}{1992}{canudas92}
+Canudas~de Wit, C. \harvardand\ S{\o}rdalen, O.~J.  \harvardyearleft
+  1992\harvardyearright .
+\newblock Exponential stabilization of mobile robots with nonholonomic
+  constraints, {\em IEEE Transactions on Automatic Control} {\bf
+  37(11)}:~1791--1797.
+
+\harvarditem{Chen \harvardand\ Allg{\"{o}}wer}{1998}{chen98}
+Chen, H. \harvardand\ Allg{\"{o}}wer, F.  \harvardyearleft
+  1998\harvardyearright .
+\newblock A quasi-infinite horizon nonlinear model predictive control scheme
+  with guaranteed stability, {\em Automatica} {\bf 34(10)}:~1205--1217.
+
+\harvarditem[Do et~al.]{Do, Jiang \harvardand\ Pan}{2002}{do02}
+Do, K.~D., Jiang, Z.~P. \harvardand\ Pan, J.  \harvardyearleft
+  2002\harvardyearright .
+\newblock A universal saturation controller design for mobile robots, {\em
+  Proceedings of the 41st IEEE Conference on Decision and Control}, Las Vegas,
+  NV, pp.~2044--2049.
+
+\harvarditem{Essen \harvardand\ Nijmeijer}{2001}{essen01}
+Essen, H.~V. \harvardand\ Nijmeijer, H.  \harvardyearleft 2001\harvardyearright
+  .
+\newblock Non-linear model predictive control of constrained mobile robots,
+  {\em European Control Conference}, Porto, Portugal, pp.~1157--1162.
+
+\harvarditem{Gómez-Ortega \harvardand\ Camacho}{1996}{ortega96}
+Gómez-Ortega, J. \harvardand\ Camacho, E.~F.  \harvardyearleft
+  1996\harvardyearright .
+\newblock Mobile robot navigation in a partially structured static environment
+  using neural predictive control, {\em Control Engineering Practice} {\bf
+  4}(12):~1669--1679.
+
+\harvarditem{Henson}{1998}{henson98}
+Henson, M.~A.  \harvardyearleft 1998\harvardyearright .
+\newblock Nonlinear model predictive control: current status and future
+  directions, {\em Computers and Chemical Engineering} {\bf 23(2)}:~187--202.
+
+\harvarditem[Kanayama et~al.]{Kanayama, Miyazaki \harvardand\
+  Noguchi}{1990}{kanayama90}
+Kanayama, Y., Miyazaki, Y. K.~F. \harvardand\ Noguchi, T.  \harvardyearleft
+  1990\harvardyearright .
+\newblock A stable tracking control method for an autonomous mobile robot, {\em
+  Proceedings of the IEEE International Conference on Robotics and Automation},
+  Cincinnati, OH, pp.~384--389.
+
+\harvarditem{Kühne}{2005}{kuhne05}
+Kühne, F.  \harvardyearleft 2005\harvardyearright .
+\newblock {\em Predictive control of nonholonomic mobile robots (in
+  portuguese)}, Dissertation ({M.Sc.}), Federal University of Rio Grande do
+  Sul, Porto Alegre, RS.
+
+\harvarditem{Lages}{1998}{lages98a}
+Lages, W.~F.  \harvardyearleft 1998\harvardyearright .
+\newblock {\em Control and Estimation of the Position and Orientation of Mobile
+  Robots (in portuguese)}, Thesis ({D.Sc.}), Instituto Tecnológico de
+  Aeronáutica, São José dos Campos, Brazil.
+
+\harvarditem{McCloskey \harvardand\ Murray}{1997}{murray97}
+McCloskey, R.~T. \harvardand\ Murray, R.~M.  \harvardyearleft
+  1997\harvardyearright .
+\newblock Exponential stabilization of driftless control systems using
+  homogeneous feedback, {\em IEEE Transactions on Automatic Control} {\bf
+  42(5)}:~614--628.
+
+\harvarditem[Normey-Rico et~al.]{Normey-Rico, G\'{o}mez-Ortega \harvardand\
+  Camacho}{1999}{rico99}
+Normey-Rico, J.~E., G\'{o}mez-Ortega, J. \harvardand\ Camacho, E.~F.
+  \harvardyearleft 1999\harvardyearright .
+\newblock A {S}mith-predictor-based generalised predictive controller for
+  mobile robot path-tracking, {\em Control Engineering Practice} {\bf
+  7(6)}:~729--740.
+
+\harvarditem{Ollero \harvardand\ Amidi}{1991}{ollero91}
+Ollero, A. \harvardand\ Amidi, O.  \harvardyearleft 1991\harvardyearright .
+\newblock Predictive path tracking of mobile robots. {A}pplication to the {CMU}
+  {N}avlab, {\em Proceedings of the 5th IEEE International Conference on
+  Advanced Robotics}, Pisa, Italy, pp.~1081--1086.
+
+\harvarditem[Pomet et~al.]{Pomet, Thuilot, Bastin \harvardand\
+  Campion}{1992}{pomet92}
+Pomet, J.~B., Thuilot, B., Bastin, G. \harvardand\ Campion, G.
+  \harvardyearleft 1992\harvardyearright .
+\newblock A hybrid strategy for the feedback stabilization of nonholonomic
+  mobile robots, {\em Proceedings of the IEEE International Conference on
+  Robotics and Automation}, Nice, France, pp.~129--134.
+
+\harvarditem{Samson \harvardand\ Ait-Abderrahim}{1991}{samson91}
+Samson, C. \harvardand\ Ait-Abderrahim, K.  \harvardyearleft
+  1991\harvardyearright .
+\newblock Feedback control of a nonholonomic wheeled cart in cartesian space,
+  {\em Proceedings of the IEEE International Conference on Robotics and
+  Automation}, Sacramento, California, pp.~1136--1141.
+
+\harvarditem{Sun}{2005}{sun05}
+Sun, S.  \harvardyearleft 2005\harvardyearright .
+\newblock Designing approach on trajectory-tracking control of mobile robot,
+  {\em Robotics and Computer-Integrated Manufacturing} {\bf 21}(1):~81--85.
+
+\harvarditem{Yamamoto \harvardand\ Yun}{1994}{yamamoto94}
+Yamamoto, Y. \harvardand\ Yun, X.  \harvardyearleft 1994\harvardyearright .
+\newblock Coordinating locomotion and manipulation of a mobile manipulator,
+  {\em IEEE Transactions on Automatic Control} {\bf 39(6)}:~1326--1332.
+
+\harvarditem{Yang \harvardand\ Kim}{1999}{yang99}
+Yang, J.~M. \harvardand\ Kim, J.~H.  \harvardyearleft 1999\harvardyearright .
+\newblock Sliding mode control for trajectory tracking of nonholonmic wheeled
+  mobile robots, {\em IEEE Transactions on Robotics and Automation} {\bf
+  15}(3):~578--587.
+
+\harvarditem[Yang et~al.]{Yang, He, Guo \harvardand\ Zhang}{1998}{yang98}
+Yang, X., He, K., Guo, M. \harvardand\ Zhang, B.  \harvardyearleft
+  1998\harvardyearright .
+\newblock An intelligent predictive control approach to path tracking problem
+  of autonomous mobile robot, {\em Proceedings of the IEEE International
+  Conference on Systems, Man, and Cybernetics}, San Diego, CA, pp.~3301--3306.
+
+\end{thebibliography}

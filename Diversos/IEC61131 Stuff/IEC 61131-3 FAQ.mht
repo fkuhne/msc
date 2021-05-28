@@ -1,0 +1,495 @@
+From: <Saved by Microsoft Internet Explorer 5>
+Subject: IEC 61131-3 FAQ
+Date: Fri, 10 Sep 2004 10:43:22 -0300
+MIME-Version: 1.0
+Content-Type: multipart/related;
+	type="text/html";
+	boundary="----=_NextPart_000_0000_01C49722.FEA38CB0"
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2900.2180
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_0000_01C49722.FEA38CB0
+Content-Type: text/html;
+	charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
+Content-Location: http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD><TITLE>IEC 61131-3 FAQ</TITLE>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Dwindows-1252"><!-- Created with the CoffeeCup HTML Editor++ =
+--><!--     http://www.coffeecup.com/editor      -->
+<META content=3D"MSHTML 6.00.2900.2180" name=3DGENERATOR></HEAD>
+<BODY text=3D#000000 vLink=3D#800080 link=3D#0000ff bgColor=3D#ffffff =
+leftMargin=3D30=20
+background=3Dhttp://www.holobloc.com/stds/iec/sc65bwg7tf3/html/i11313.gif=
+>
+<CENTER>
+<H1>IEC 61131-3 (PLC Programming Languages) FAQ</H1></CENTER>
+<P><I>This document is a compilation of responses by the Experts of IEC=20
+TC65B/WG7/TF3 task force to Frequently Asked Questions (FAQs) about the =
+IEC=20
+Standard 61131-3. The contents of this document are not normative and do =
+not=20
+form a part of the Standard.</I></P>
+<UL>
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#reduceI=
+nnovation">Will=20
+  IEC 61131-3 reduce the innovation of new languages and concepts for =
+PLCs?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#whyReso=
+urce">Why=20
+  does IEC 61131-3 have 'resources'?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#tooComp=
+licated">Is=20
+  it still possible to create simple Ladder programs by users unfamiliar =
+with=20
+  IEC 61131-3?</A>=20
+  <LI><A =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#"=20
+  slowApps??>Will IEC 61131-3 languages result in applications that run =
+more=20
+  slowly and require more memory than using simple ladder?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#possibl=
+ePort">Is=20
+  it really possible to port IEC 61131-3 software from one vendor's PLC =
+to=20
+  another?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#autoCon=
+v">Is=20
+  it possible to automatically convert one IEC 61131-3 language to any =
+other</A>=20
+
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#funBlkE=
+x">Can=20
+  function blocks also have execution control variables EN and ENO, like =
+
+  functions?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#fullGra=
+phic">In=20
+  a full graphic implementation of FBD, is there anyway to distinguish =
+between=20
+  lines that cross-over and lines that join.</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#whereTy=
+pes">Where=20
+  are type definitions actually defined and what is their scope?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#typeSaf=
+e">Do=20
+  IEC 61131-3 languages enforce data type consistency?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#whenEx"=
+>When=20
+  are the actions in an SFC actually executed?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#howRest=
+art">How=20
+  can the execution of all actions in an SFC be halted and the SFC=20
+  restarted?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#sameAdd=
+">Can=20
+  more than one variable be fixed at the same direct address using the =
+AT=20
+  construct?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#sizeMat=
+ch">When=20
+  using the AT attribute, does the size of a memory location specified =
+by a=20
+  direct address have to match the size of the variable?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#userini=
+tvalues">When=20
+  are user specified initialisation values for variables used?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#callFBs=
+">Can=20
+  function block instances be passed as inputs to other blocks?</A>=20
+  <LI><A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#program=
+Inputs">Are=20
+  the assignments of inputs and outputs to programs at the resource =
+level fixed=20
+  or can they change dynamically?</A> </LI></UL>
+<HR>
+
+<UL><A name=3DreduceInnovation></A>
+  <LI><B>Will IEC 61131-3 reduce the innovation of new languages and =
+concepts=20
+  for PLCs?</B><BR>The main objective of IEC 61131-3 has been to =
+standardise=20
+  existing PLC languages. There is no intention that IEC 61131-3 should =
+reduce=20
+  the development of new PLC languages. Any PLC vendor is free to =
+provide=20
+  extensions and additional languages where required. Because the =
+standard=20
+  allows proprietary function blocks to be programmed in non IEC 61131-3 =
+
+  languages such as C++, it always possible to provide extensions fairly =
+
+  'seamlessly' e.g. packaged as function blocks. This is well =
+demonstrated by=20
+  IEC 61131-7 "Fuzzy control programming" which defines language =
+extensions for=20
+  implementing fuzzy logic encapsulated as function blocks.=20
+  <P></P><A name=3DwhyResource></A>
+  <LI><B>Why does IEC 61131-3 have 'resources'? Is a resource just =
+another name=20
+  for a PLC?</B><BR>A resource is a general name for anything that is =
+able to=20
+  provide the appropriate access to I/O and services to allow IEC =
+61131-3=20
+  programs to execute. Normally a PLC that can execute IEC 61131-3 =
+programs can=20
+  be regarded as a single resource. However, other processors, such as a =
+
+  personal computer (PC) if able to support the execution of IEC 61131-3 =
+
+  programs may also be regarded as resources.=20
+  <P></P><A name=3DtooComplicated></A>
+  <LI><B>IEC 61131-3 seems to be very complicated. Is it still possible =
+to=20
+  create simple Ladder programs by users unfamiliar with IEC =
+61131-3?</B><BR>An=20
+  IEC 61131-3 system can still be programmed as a single Ladder program =
+if=20
+  required. Programming systems may provide a option to create a simple =
+IEC=20
+  61131-3 configuration containing one resource, one task, and one =
+program=20
+  instance of a program type. All of this could be created automatically =
+so the=20
+  user is only concerned with developing a single ladder program. =
+Function=20
+  blocks and other IEC 61131-3 constructs do not need to be used.=20
+  <P></P><A name=3DslowApps></A>
+  <LI><B>Will IEC 61131-3 languages result in applications that run more =
+slowly=20
+  and require more memory than using simple ladder?</B><BR>Attempting to =
+
+  implement IEC 61131-3 constructs such as function blocks on PLCs that =
+were=20
+  originally only designed to support ladder programs, will inevitably =
+have=20
+  performance and memory overheads. PLCs specifically designed with =
+firmware to=20
+  support the execution of IEC 61131-3 programs should not be noticeably =
+slower=20
+  than classical ladder based PLCs. The improvements in software =
+structure from=20
+  IEC 61131-3 should allow users to be able to write more efficient =
+applications=20
+  that will be significantly easier to maintain than monolithic ladder =
+programs.=20
+
+  <P><A name=3DpossiblePort></A></P>
+  <LI><B>Is it really possible to port IEC 61131-3 software from one =
+vendor's=20
+  PLC to another?</B><BR>No it is not possible simply to take an =
+application=20
+  that runs on one type of PLC and copy it over to another type. There =
+are=20
+  several problems preventing the direct porting of IEC 61131-3 =
+software.=20
+  <OL>
+    <LI>The PLC I/O systems use different addressing schemes.=20
+    <LI>The task scan rates supported on different PLCs vary.=20
+    <LI>Each PLC vendor may have implemented a different sub-set of IEC =
+61131-3=20
+    features.=20
+    <LI>Similarly each vendor may have different values for =
+implementation=20
+    specific parameters such as maximum array sizes, string lengths etc. =
+
+    <LI>Finally there is not a standard file format in which to store =
+and port=20
+    IEC 61131-3 applications. </LI></OL>Notwithstanding these =
+constraints, at the=20
+  function and function block level, it may be possible to re-implement=20
+  identical POUs on different vendors PLCs. Textual source code for POUs =
+
+  developed in ST or IL can be ported between different types of PLCs.=20
+  <P></P><A name=3DautoConv></A>
+  <LI><B>Is it possible to automatically convert between IEC 61131-3 =
+languages,=20
+  for example, can a POU written using LD be viewed and edited in ST or=20
+  FBD?</B><BR>This is a favourite IEC 61131-3 myth. There has never been =
+any=20
+  intention that it should be possible to convert any language into any =
+other=20
+  language. If a restricted sub-set of each language is used some =
+limited=20
+  portability may be possible but there are some significant problems. =
+For=20
+  example, there is no way to represent expressions involving array =
+variables in=20
+  the FBD language.=20
+  <P><A name=3DfunBlkEx></A></P>
+  <LI><B>Can function blocks also have execution control variables EN =
+and ENO,=20
+  like functions?</B><BR>The standard is not explicit about whether =
+function=20
+  blocks may have execution control variables, e.g. for connecting =
+function=20
+  blocks within ladder rungs. However, from the IEC 1131 languages user=20
+  guidelines, (part 8 of the IEC 61131 standard), it is implied that for =
+
+  consistency, both functions and function blocks should use EN and ENO=20
+  variables for execution control in ladder diagrams. It is an =
+implementation=20
+  decision whether function blocks have EN and ENO variables that can be =
+used in=20
+  the FBD language for explicit execution control. This may be useful in =
+
+  eliminating execution order ambiguities that might arise in FBD =
+networks.=20
+  <P><A name=3DfullGraphic></A></P>
+  <LI><B>In a full graphic implementation of FBD, is there anyway to =
+distinguish=20
+  between lines that cross-over and lines that join.</B><BR>The =
+graphical format=20
+  of lines, cross-overs and junctions in full graphics implementations =
+of=20
+  languages LD, FDB and SFC is not specified in IEC 61131-3. It is a=20
+  implementation decision outside the scope of the standard how fine =
+graphic=20
+  details such a line cross-overs are depicted.=20
+  <P><A name=3DwhereTypes></A></P>
+  <LI><B>Where are type definitions actually defined and what is their=20
+  scope?</B><BR>All type definitions for datatypes and POUs can be =
+regarded as=20
+  outside the entire IEC 61131-3 configuration and apply to all entities =
+within=20
+  the configuration, i.e. all type definitions have global scope. This =
+is as if=20
+  all type definitions exist in a conceptual 'header file' that is =
+pre-processed=20
+  before any entity within a configuration is compiled. Extensions to =
+IEC=20
+  61131-3 are now being considered to provide a more flexible range of =
+type=20
+  scopes. With large applications, more specific type scopes may be =
+necessary,=20
+  such as, a library scope for type definitions that only apply to POUs =
+within a=20
+  specific library.=20
+  <P><A name=3DtypeSafe></A></P>
+  <LI><B>Do IEC 61131-3 languages enforce data type consistency? =
+</B><BR>All IEC=20
+  61131-3 languages except IL, enforce strict data type consistency, =
+i.e. it is=20
+  not possible to directly assign (or connect) variables of one data =
+type to=20
+  variables of different data types. Data type conversion functions are=20
+  necessary to convert the values of variables to the appropriate type, =
+e.g. an=20
+  INT value should be converted to a REAL before being assigned to a =
+REAL=20
+  variable. In the IL language, it is not always possible for a compiler =
+to=20
+  check that the type of value in the accumulator will match the data =
+type of=20
+  any variable to be loaded from the accumulator. With IL, run-time =
+checks are=20
+  required to ensure data type consistency.=20
+  <P><A name=3DwhenEx></A></P>
+  <LI><B>When are the actions in an SFC actually executed?</B><BR>Every =
+SFC is=20
+  encapsulated in a function block or program POU. When the POU is =
+invoked, e.g.=20
+  because it has been scheduled by a task, the contained SFC is =
+evaluated once,=20
+  i.e.=20
+  <UL>
+    <LI>The current set of active steps is determined.=20
+    <LI>All transitions associated with active steps are evaluated=20
+    <LI>Actions which nominally ceased execution in the previous SFC =
+evaluation=20
+    ( because their Q flag has been cleared ) are executed one last =
+time.=20
+    <LI>All actions that are active are executed once.=20
+    <LI>Any active steps that precede transition conditions that are =
+true are=20
+    deactivated and their succeeding steps are activated. </LI></UL>The=20
+  encapsulating POU should be repeatedly invoked for the SFC to progress =
+through=20
+  its various steps.=20
+  <P><A name=3DhowRestart></A></P>
+  <LI><B>How can the execution of all actions in an SFC be halted and =
+the SFC=20
+  restarted?</B><BR>The execution of all actions in an SFC can be halted =
+by=20
+  suspending the invocation of the encapsulating POU, see <A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#whenEx"=
+>When=20
+  are the actions in an SFC actually executed?</A> If, at a later time, =
+the POU=20
+  is again repeatedly invoked, the active actions in the contained SFC =
+will=20
+  continue to be executed. The only way to re-start an SFC from its =
+initial step=20
+  and clear all active actions is for the resource containing the POU to =
+have a=20
+  'cold start'. A jump back to the initial step is always possible using =
+an=20
+  explicit branch, e.g. back from the last step in a sequence. However, =
+this=20
+  cannot guarantee to clear any stored actions or simultaneous sequences =
+which=20
+  may be been started.=20
+  <P><A name=3DsameAdd></A></P>
+  <LI><B>Can more than one variable be fixed at the same direct address =
+using=20
+  the AT construct?</B><BR>The standard does not forbid this. Allowing =
+variables=20
+  to be at the same or to use overlapping memory locations is an =
+implementation=20
+  issue. This however may invalidate data type consistency - see <A=20
+  =
+href=3D"http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/faq.htm#typeSaf=
+e">Do=20
+  IEC 61131-3 languages enforce data type consistency?</A>.=20
+  <P><A name=3DsizeMatch></A></P>
+  <LI><B>When using the AT attribute, does the size of a memory location =
+
+  specified by a direct address have to match the size of the=20
+  variable?</B><BR>The standard is unclear; there are two ways of =
+interpreting=20
+  the purpose of the direct address. It either specifies a) the actual =
+memory=20
+  location, in which case the location size and variable type size =
+should match=20
+  or b) the starting address from which the variable will be located, in =
+which=20
+  case sizes do not need to match.=20
+  <P><A name=3Duserinitvalues></A></P>
+  <LI><B>When are user specified initialisation values for variables=20
+  used?</B><BR>User specified initial values apply to non-retentive =
+variables=20
+  both at "cold restart" and "warm restart", but they only apply to =
+retentive=20
+  variables at "cold restart". On "warm restart" retentive variables =
+have the=20
+  same values as existed when their resource stopped executing, e.g. due =
+to a=20
+  power outage. The 61131-3 amendment allows initialisation values =
+defined by=20
+  the VAR_CONFIG construct to override type specific initial values. =
+Therefore,=20
+  VAR_CONFIG specified initial values apply at "cold restart" or "warm =
+restart"=20
+  for non-retentive variables, and to "cold restart" for retentive =
+variables.=20
+  <P><A name=3DcallFBs></A></P>
+  <LI><B>Can function block instances be passed as inputs to other=20
+  blocks?</B><BR>Yes if function block FB1 is passed as an input to a =
+second=20
+  function block FB2, it is possible to invoke the function block FB1 =
+within the=20
+  body of FB2. Any input parameters of FB1 not defined in the invocation =
+call=20
+  within FB2 will take values defined by earlier invocations of FB1 made =
+outside=20
+  of FB2. Function block instances should be passed as VAR_IN_OUT =
+parameters=20
+  otherwise the values produced within the internal invocation will not =
+be=20
+  preserved.=20
+  <P><A name=3DprogramInputs></A></P>
+  <LI><B>Are the assignments of inputs and outputs to programs at the =
+resource=20
+  level fixed or can they change dynamically?</B><BR>They are fixed. =
+Programs=20
+  are the highest level IEC 61131-3 programmable organisation unit. It =
+is not=20
+  possible to have language statements outside of a program. In a =
+resource=20
+  declaration it is only possible to assign input and output variables =
+to the=20
+  program interface. If it is necessary to change the inputs used by =
+part of a=20
+  program, then all inputs concerned should be passed to the program and =
+any=20
+  dynamic selection of particular inputs should be done within the =
+program body,=20
+  e.g. to switch between using two different sets of sensors.=20
+  <P>
+  <CENTER>
+  <HR>
+
+  <P><I>Last updated:</I> =
+1998-02-5.</P></CENTER></LI></UL></BODY></HTML>
+
+------=_NextPart_000_0000_01C49722.FEA38CB0
+Content-Type: image/gif
+Content-Transfer-Encoding: base64
+Content-Location: http://www.holobloc.com/stds/iec/sc65bwg7tf3/html/i11313.gif
+
+R0lGODdhLAFkAPcAAAAAAAAAMwAAZgAAmcy9/d//7zMAADMAMzMAZjMAmeDr/qKK/2YAAGYAM2YA
+ZmYAmWYAzPr3/5kAAJkAM5kAZpkAmZkAzJkA/8wAAMwAM8wAZswAmcwAzMwA//8AAP8AM/8AZv8A
+mf8AzP8A/wAzAAAzMwAzZgAzmQAzzPr6+jMzADMzMzMzZjMzmfT0/eHh/2YzAGYzM2YzZmYzmWYz
+zMGs/5kzAJkzM5kzZpkzmZkzzJkz/8wzAMwzM8wzZswzmcwzzMwz//8zAP8zM/8zZv8zmf8zzP8z
+/wBmAABmMwBmZgBmmQBmzABm/zNmADNmMzNmZjNmmTNmzDNm/2ZmAGZmM2ZmZmZmmWZmzGZm/5lm
+AJlmM5lmZplmmZlmzJlm/8xmAMxmM8xmZsxmmcxmzMxm//9mAP9mM/9mZv9mmf9mzP/X/wCZAACZ
+M8fG/QCZmQCZzACZ/zOZADOZMzOZZjOZmTOZzDOZ/2aZAGaZM2aZZmaZmTrJ+GaZ/5mZAJmZM5mZ
+ZpmZmZmZzJmZ/8yZAMyZM8yZZsyZmcyZzMyZ//+ZAP+ZM/+ZZv+Zmf+ZzP+Z/wDMAADMMwDMZgDM
+mQDMzADM/zPMADPMMzPMZjPMmTPMzOr6/2bMAGbMM2bMZmbMmWbMzGbM/5nMAJnMM5nMZpnMmZnM
+zJnM/8zMAMzMM8zMZszMmczMzMzM///MAP/MM//MZv/Mmf/MzP/M/wD/AAD/MwD/ZgD/mQD/zAD/
+/zP/ADP/MzP/ZjP/mRbh8TP//2b/AGb/M2b/Zmb/mWb/zGb//5n/AJn/M5n/Zpn/mZn/zJn//8z/
+AMz/M8z/Zt7e3Mz/zMz/////AP//M///Zv//mej/8f///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAALAFkAAAI/gBTCBxI
+sKDBgwgTKlzIsKHDhxAjSpxIMYWCihgzasR4caPHjyBDiqTYcaTJkw5LolzJsqXLgSpfygwZc6bN
+mzgX1szJ8+HOnkCDrvwptChMlzuJclTAVKnRmU6fAo3qMSnNmEyl9qSqFSdXjVY/Ev3alWZZrWQ5
+Hkyr0CnbsxnfwkUpV2LYjW7nvqyrVyRfiHfjNvzbd3DhoIRTrq1q+PDJxI6XNp1MubLly5TXYt58
+uXFkv59zQmYYWC3p0KBR2xytczFez6pfx5bJuq1r2Qlrq9Y923bL0qYRZu2Nm/hQpLeLF+Q9lzNm
+42KRG6w9HCZz1NehH9WeWbty72bB/otnPD51+fMTs3tXj/4ze+jv2x+OT5y+fL32Z+e/f3b/bv4A
+5hZgcAMW6B92BSZokYJ2MTjggaElVR1dlYnVVHpvTUjahXZpeJpwHDq44HKTTedchSBuVpGKKYXY
+oocmdvYijAKSKKOCNXVH0Iko2ugchizqpOOGLsYYpJBFtmYdZwzmWOKOPA4pUJRJtnUikVVq9qSW
+PyKZpXBQdmmgkVhR6aGZNHJZomVWSpnilmR2xGabcH5oUYU3BuhkkT0C1uedf+Y2ZKBT5vlmnUvy
+6WaiiPoGqIaEyrcnpIt6mWWkZGYaZ6OMVuomoUfaiSim6E1aJqd0pklqp5p2GqmY/j6aeupzPiUa
+Z4KmxprWqpXG6ieTm2JaZZ9X1lqohKiW2uqxXx4aVbKM2qpmVqDiCe20us6pmKUQIrbso2k6OxhX
+mRnKrJyLothrtopyuOpyzl5bXq5hUllvuB1GaeO9P7m47rmBbvnujtPKO++3aKr0b748YonvvQ4P
+PPB27D58Hr2uwrpwRLRqK+6MzwKbKlnImssfxgDDCu5VxP478coR8+qpySqfjPDG/ILkMcAj+2Sw
+rtwG26yrY/qa869DPxoxtoL+jPOtTScpctAP3vwzzz1bemjW417qdbIBB/l10uKhDO6uLi88c7Mv
+r93vutXKiOrT3FlNNtAfaw11/t4Ob70309umSzd8dlucLd9Rnwn3026XrHjCkE99ceFsGWqymngn
+/lXjs8JY0stHE01xxpGXfrWj0fLbsOo1a45u2k5zqu3OU7IKZIg754i6dGBRvjrrtPrceuZ9x3v5
+54OTHvB0u/9GHsQVh5ry5SPTDnjxxveK/OnAf8p8jbQ9n3r3wUd/d8F30w079SOeK9nx34MJFUQF
+1G8/wTH+Zj3DhksrPMgPU9j5qCY//BVwLxSpnwFF1Byh6A58CJyIAkfHwP44MH7J4V1EJli7CjYQ
+MfvrYPgkWIAFerAr3TJh+zLovO+c8CkppOAKMahBAr1QKjEUoQxVyBLI5PCG/gfkyQOD2MLeAREt
+F4QXBGu4oiMi0VtKJGIPxefEJE6FhlGMoBGriL7IGeuKWcTiFF04EuDghXtf3KKdtiI005mOio9h
+YVzKVMbobAuM7YmPGZsoRcHA0XVu9KKkmDhDG4rRkHzUIhcLaZI9pkdJdiRjHBepQ7rI8ZFrVOMc
+2YfII+rxkg3KJADR2MdJUjKQ+mojmmCjyU6acpGfPGQoISnJWRLSk4T0ISv9WMs6UpKRvgyjKyvZ
+ykTeEoixFKYxTRSeXpoHlrnU2RKdmcYiQtOaO1wKiYJZTEv+8oc6I+UulznGU/5SmSSZ3zfPycN0
+jtCcTpTeilBZHUF6EJyOWxlNfvD5QXYCE5OK5CI/C6NPdcLTnwV95zURGslj3nCgfUloQKsIUfw0
+FJsU9ScxyXmcdXpSnu6caDw1+k9bYnSkGpWoQ19Y0X5285UCJalKT4rLlNKzpb0JCAAAOw==
+
+------=_NextPart_000_0000_01C49722.FEA38CB0--

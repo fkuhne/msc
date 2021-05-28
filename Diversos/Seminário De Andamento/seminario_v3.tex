@@ -1,0 +1,288 @@
+\documentclass{ppgeesa}
+\usepackage{amssymb,amsmath,graphicx,float,array}
+\usepackage[latin1]{inputenc}
+
+\begin{document}
+
+\title{Controle Preditivo de Robôs Móveis Usando Linearização}
+
+\author{Felipe Kühne, Walter Fetter Lages e João Manoel Gomes da Silva Jr.\\
+{\small Universidade Federal do Rio Grande do Sul\\Departamento de Engenharia Elétrica\\
+Av, Oswaldo Aranha, 103, CEP 90035-190, Porto Alegre RS}\\
+\thanks{F. Kühne, \mbox{kuhne@eletro.ufrgs.br}, W. F. Lages, \mbox{fetter@eletro.ufrgs.br}, J. M. Gomes da Silva Jr., \mbox{jmgomes@eletro.ufrgs.br}, Tel.
++55-51-33163129, Ext. 3561, Fax +55-51-33163293.}}
+
+\maketitle
+\thispagestyle{empty}\pagestyle{empty}
+
+\begin{abstract}
+Este artigo apresenta um esquema de controle ótimo para robôs móveis dotados de rodas e com restrições não holonômicas. Devido às condições de Brockett, um robô móvel com restrições não holonômicas não pode ser estabilizado por realimentação através de leis de controle suaves ou invariantes no tempo. Utilizando Controle Preditivo, um lei de controle descontínua é naturalmente obtida. Uma das principais vantagens do controle preditivo em robôs móveis é a sua habilidade de aceitar restrições (devido a limitações de controle e/ou estado) de uma maneira bastante direta. Umas das desvantagens é a grande carga computacional necessária, já que a otimização precisa ser feita {\em on-line}. Entretanto, através de linearizações sucessivas, o método de Programação Quadrática pode ser utilizado para resolver o problema de otimização, reduzindo consideravelmente a carga computacional.
+\end{abstract}
+\begin{keywords}
+Robôs móveis, controle preditivo, rastreamento de trajetória.
+\end{keywords}
+\thispagestyle{empty}\pagestyle{empty}
+
+\section{Introdução}
+\label{sec:intro}
+
+O problema do controle de robôs móveis vem recebendo bastante atenção da comunidade acadêmica nas últimas décadas. Apesar da aparente simplicidade do modelo cinemático de um robô móvel dotado de rodas, a existência de restrições não holonômicas (não integráveis) torna a síntese de leis de controle para estes sistemas um grande desafio, já que, devido às condições de Brockett~\cite{brockett82}, leis de controle suaves (continuamente diferenciáveis) ou invariantes no tempo não podem ser obtidas. Para superar este problema, leis de controle descontínuas e variantes no tempo são as abordagens mais comuns~\cite{bloch89,samson91,canudas92,yamamoto94,murray97}. Trabalhos recentes lidando com controle robusto e adaptativo podem ser vistos em \cite{oya03,dixon04}.
+
+Entretanto, em implementações reais é difícil de se obter boa performance, devido às restrições nas entradas de controle e nos estados que naturalmente existem. Nenhum dos autores citados acima leva em consideração estas restrições no momento da síntese do controle. Isto pode ser feito de uma maneira bastante direta através do controle preditivo baseado em modelo ({\em model predictive control -- MPC}). Para um robô móvel isto é uma importante característica, já que a posição do robô pode ser restringida a pertencer dentro de uma região segura de operação. Considerando limitações nas entradas de controle, ações de controle que respeitem limites de saturação e de torque dos atuadores são geradas. Além disso, transformações de coordenadas para a forma {\em encadeada}~\cite{bloch89}, por exemplo, não são mais necessárias, o que torna a sintonia do controle preditivo mais intuitiva. Com relação à não holonomicidade do sistema, uma lei de controle descontínua (não suave) é implicitamente obtida através do MPC.
+
+O método de controle preditivo baseia-se em um modelo do sistema para obter uma seqüência ótima de controle através da minimização de uma função de custo. A cada passo amostral, o modelo fornece uma predição dos estados dentro de um horizonte de predição. Baseado nestas predições, a função de custo é minimizada com relação às futuras ações de controle em malha aberta. Embora a predição e a otimização são calculadas dentro de um horizonte futuro, apenas as componentes do controle para o instante atual de amostragem é que são aplicados na planta e o mesmo procedimento repete-se para o próximo instante de amostragem. Este mecanismo é comumente chamado de {\em Estratégia de Horizonte Móvel} ({\em moving} ou {\em receding horizon}), em referência ao modo com que a janela de tempo desloca-se de um tempo amostral para o próximo.
+
+Para problemas de controle complexos, multivariáveis e com restrições, o controle preditivo tornou-se um padrão bem aceito em indústrias de processo~\cite{bemporad02}, principalmente onde as plantas a serem controladas são suficientemente {\em lentas} para permitir a sua implementação~\cite{mayne00}. Entretanto, para sistemas não lineares e/ou com dinâmicas rápidas, como os robôs móveis, a implementação de tal técnica permanece fundamentalmente limitada em sua aplicabilidade, devido principalmente ao grande custo computacional envolvido na solução da otimização, que precisa ser resolvida {\em on-line}~\cite{cannon00}.
+
+O modelo que descreve a dinâmica de um robô móvel é não linear. Embora o controle preditivo não linear (NMPC) já esteja teoricamente bem fundamentado, o esforço computacional necessário é muito maior que no caso linear. No NMPC existe um problema de programação não linear que é não convexo, possui um maior número de variáveis de decisão e um mínimo global é em geral impossível de ser encontrado~\cite{henson98}. Neste artigo é proposta uma estratégia com o objetivo de se resolver pelo menos parte destes problemas. A idéia central consiste no uso de linearizações sucessivas, resultando assim, para cada instante amostral, em um sistema linear, que pode ser resolvido por controle preditivo linear. Então, considerando as entradas de controle como sendo as variáveis de decisão, é possível transformar o problema de otimização em um problema de Programação Quadrática. Como este é um problema convexo, pode ser resolvido através de rotinas computacionais que são robustas numericamente e sempre levam à solução ótima global. É mostrado também que inclusive uma implementação tempo real é possível de ser implementada. Embora o controle preditivo não seja um novo método de controle, sua aplicação em robôs móveis é recente e bastante esparsa~\cite{ollero91,rico99,essen01}.
+
+\section{Modelo Cinemático do Robô Móvel}
+\label{sec:model}
+
+Um robô constituído de um corpo rígido e rodas não deformáveis é considerado (veja Fig.~\ref{fig:robot}). Assume-se ainda que o veículo move-se em um plano e que as rodas não derrapam, ou seja, a velocidade no ponto de contato entre a roda e o solo é nula. A cinemática do robô móvel é descrita por~\cite{Campion:TRA-12-1}:
+
+\begin{equation}
+\label{eqn:model}
+	\left\{
+		\begin{aligned}
+			\dot x	  &= v\cos\theta \\
+			\dot y	  &= v\sin\theta \\
+			\dot \theta &= w
+		\end{aligned}
+	\right.,
+\end{equation}
+que pode ser escrita em uma forma compacta:
+\begin{equation}
+\label{eqn:modelshort}
+	\dot{\bf x} = f({\bf x},{\bf u}),	
+\end{equation}
+onde ${\bf x}\triangleq[x~~y~~\theta]^T$ descreve a configuração (posição e orientação) do centro do eixo das rodas ativas, $C$, com respeito a um sistema de coordenadas global $\{O,X,Y\}$. ${\bf u}\triangleq[v~~w]^T$ é a entrada de controle, onde $v$ e $w$ são as velocidades linear e angular, respectivamente. 
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.64\linewidth]{Figures/robot.eps}
+	\caption{Sistema de coordenadas do robô.}
+	\label{fig:robot}
+\end{figure}
+
+Um modelo linear pode ser obtido através de um modelo de erro com respeito a uma trajetória de referência. Para isso, considera-se um robô de referência descrito através do mesmo modelo~(\ref{eqn:modelshort}). Portanto, sua trajetória ${\bf x}_r$ e o controle ${\bf u}_r$ são relacionados por:
+
+\begin{equation}
+\label{eqn:referencecar}
+	\dot{\bf x}_r=f({\bf x}_r,{\bf u}_r)
+\end{equation}
+
+Expandindo o lado direito de~(\ref{eqn:modelshort}) através de séries de Taylor em torno de um ponto $({\bf x}_r,{\bf u}_r)$ e desconsiderando termos de ordem superior, tem-se que:
+
+\begin{equation}
+\label{eqn:taylor}
+	\dot{\bf x} = f({\bf x}_r,{\bf u}_r) + f_{{\bf x},r}({\bf x}-{\bf x}_r) + f_{{\bf u},r}({\bf u}-{\bf u}_r),
+\end{equation}
+onde $f_{{\bf x},r}$ e $f_{{\bf u},r}$ são os jacobianos de $f$ com relação a ${\bf x}$ e ${\bf u}$, respectivamente, avaliados em torno do ponto $({\bf x}_r,{\bf u}_r)$.
+
+Assim, a subtração de (\ref{eqn:referencecar}) em (\ref{eqn:taylor}) resulta em:
+
+\begin{equation}
+\label{eqn:conterror}
+	{\dot{\tilde{\bf x}}} = f_{{\bf x},r}\tilde{\bf x}+f_{{\bf u},r}\tilde{\bf u},
+\end{equation}
+onde $\tilde{\bf x} \triangleq {\bf x}-{\bf x}_r$ representa o erro com relação ao robô de referência e $\tilde{\bf u}\triangleq{\bf u}-{\bf u}_r$ é a perturbação da entrada de controle.
+
+Através da aproximação de ${\dot{\tilde{\bf x}}}$ pelo método de Euler, \mbox{$({\dot{\tilde{\bf x}}}\approx\frac{\tilde{{\bf x}}(k+1)-\tilde{{\bf x}}(k)}{T})$}, onde $T$ é o período de amostragem e $k$ é o passo amostral, pode-se formular o seguinte sistema em tempo discreto para a expressão linearizada em (\ref{eqn:conterror}):
+
+\begin{equation}
+\label{eqn:error}
+	\tilde{\bf x}(k+1) = {\bf A}(k)\tilde{\bf x}(k)+{\bf B}(k)\tilde{\bf u}(k),
+\end{equation}
+com
+\begin{align*}
+	{\bf A}(k) &\triangleq \begin{bmatrix}
+		1 & 0 & -v_r(k)\sin\theta_r(k)T \\
+		0 & 1 &  v_r(k)\cos\theta_r(k)T \\
+		0 & 0 & 1
+	\end{bmatrix} \\
+	{\bf B}(k) &\triangleq \begin{bmatrix}
+		\cos\theta_r(k)T & 0 \\
+		\sin\theta_r(k)T & 0 \\
+		0 			  & T
+	\end{bmatrix}
+\end{align*}
+
+Em~\cite{bloch89} é mostrado que o sistema não-linear, não-holonômico (\ref{eqn:model}) é totalmente controlável, i.e., pode ser levado de qualquer estado inicial para qualquer estado final em um espaço de tempo finito através de um controle finito. É fácil de ver que, quando o robô está parado ($v=w=0$), a linearização em torno de um ponto estacionário de operação é não controlável. Entretanto, esta linearização torna-se controlável enquanto existirem entradas de controle não nulas~\cite{samson91}, o que significa que é possível utilizar o controle preditivo linear para o problema de rastreamento de trajetória de um robô móvel~\cite{essen01}.
+
+
+\section{O Algoritmo de Controle Preditivo}
+\label{sec:mpc}
+
+Como dito na Seção~\ref{sec:intro}, a essência do controle preditivo é a otimização do comportamento do processo através da predição das entradas de controle. Tal predição é feita através do modelo do processo dentro de um intervalo de tempo finito, chamado de {\em horizonte de predição}. Em cada instante de amostragem, o controlador preditivo gera uma seqüência ótima de controle através da solução de um problema de otimização. O mesmo problema é resolvido novamente para o próximo instante de amostragem utilizando os estados atualizados e um horizonte de predição deslocado.
+
+A função de custo a ser minimizada pode ser escrita como uma função quadrática dos estados e dos controles:
+\begin{multline}
+\label{eqn:cost}
+	\Phi(k) = \sum_{j=1}^{N}\tilde{\bf x}^T(k+j|k){\bf Q}\tilde{\bf x}(k+j|k) + \\ + \tilde{\bf u}^T(k+j-1|k){\bf R}\tilde{\bf u}(k+j-1|k),
+\end{multline}
+
+\noindent onde $N$ é o horizonte de predição e ${\bf Q}$, ${\bf R}$ são matrizes de peso.
+
+Então, o problema de otimização pode ser escrito como:
+\begin{equation*}
+	\tilde{\bf u}^\star = \arg\min_{\tilde{\bf u}}\left\{\Phi(k)\right\}
+\end{equation*}
+\noindent s. a.
+\begin{equation*}
+	\tilde{\bf u}_{min} \leq \tilde{\bf u} \leq \tilde{\bf u}_{max}
+\end{equation*}
+
+\noindent onde $\Phi(k)$ é a função de custo, $\tilde{\bf u}$ é a variável livre de otimização e $\tilde{\bf u}_{min}$ e $\tilde{\bf u}_{max}$ são os limites inferior e superior, respectivamente.
+
+O problema de minização da função de custo (\ref{eqn:cost}) é resolvido a cada passo $k$ resultando então, para cada $k$, uma sequência de controle ótima $\{\tilde{\bf u}^\star(k|k),\cdots,\tilde{\bf u}^\star(k+N-1|k)\}$ e o custo ótimo $\Phi^\star(k)$. a lei de controle preditivo é implicitamente dada pelo primeiro termo da sequência de controle ótima, $\tilde{\bf u}^\star(k|k)$.
+
+A fim de formular o problema de otimização na forma padrão de programação quadrática, define-se agora os seguintes vetores:
+
+\begin{equation*}
+	\bar{\bf x}(k+1) \triangleq \begin{bmatrix}
+		\tilde{\bf x}(k+1|k) \\ \tilde{\bf x}(k+2|k) \\ \vdots \\ \tilde{\bf x}(k+N|k) 
+	\end{bmatrix} \quad
+	\bar{\bf u}(k) \triangleq \begin{bmatrix}
+		\tilde{\bf u}(k|k)  \\ \tilde{\bf u}(k+1|k) \\ \vdots \\ \tilde{\bf u}(k+N-1|k)
+	\end{bmatrix}
+\end{equation*}
+
+Logo, (\ref{eqn:cost}) pode ser reescrita como:
+
+\begin{equation}\label{eqn:cost2}
+	\Phi(k) = \bar{\bf x}^T(k+1)\bar{\bf Q}\bar{\bf x}(k+1) + \bar{\bf u}^T(k)\bar{\bf R}\bar{\bf u}(k),
+\end{equation}
+com $\bar{\bf Q}\triangleq diag({\bf Q},{\bf Q},\cdots,{\bf Q})$ e $\bar{\bf R}\triangleq diag({\bf R},{\bf R},\cdots,{\bf R})$.
+
+Assim, com~(\ref{eqn:error}), reescreve-se $\bar{\bf x}(k+1)$ como:
+
+\begin{equation}\label{eqn:exbar}
+	\bar{\bf x}(k+1) = \bar{\bf A}(k)\tilde{\bf x}(k|k)+\bar{\bf B}(k)\bar{\bf u}(k),
+\end{equation}
+com
+\begin{equation*}
+	\bar{\bf A}(k) \triangleq \begin{bmatrix}
+		{\bf A}(k|k) \\ {\bf A}(k|k){\bf A}(k+1|k) \\ \vdots \\ \alpha(k,0)
+	\end{bmatrix}
+\end{equation*}
+{\small
+\begin{multline*}
+		\bar{\bf B}(k) \triangleq \\ \begin{bmatrix}
+			{\bf B}(k|k)		       & {\bf 0} 			    	& \cdots & {\bf 0}         \\
+			{\bf A}(k+1|k){\bf B}(k|k) & {\bf B}(k+1|k)      		& \cdots & {\bf 0}         \\
+			\vdots			       & \vdots				& \ddots & \vdots          \\
+			\alpha(k,1){\bf B}(k|k)    & \alpha(k,2){\bf B}(k+1|k) & \cdots & {\bf B}(k+N-1|k)
+		\end{bmatrix}
+\end{multline*}
+}
+onde  $\alpha(k,j)$ é definido como:
+\begin{equation*}
+	\alpha(k,j) \triangleq \prod_{i=j}^{N-1}{\bf A}(k+i|k)
+\end{equation*}
+
+Com (\ref{eqn:cost2}) e (\ref{eqn:exbar}), pode-se reescrever a função de custo (\ref{eqn:cost}) em uma forma quadrática padrão:
+\begin{equation*}
+	\Phi(k) = \frac{1}{2}\bar{\bf u}^T(k){\bf H}(k)\bar{\bf u}(k) + {\bf f}^T(k)\bar{\bf u}(k) + {\bf d}(k)
+\end{equation*}
+com
+\begin{align*}
+	{\bf H}(k) &\triangleq 2\left(\bar{\bf B}^T(k)\bar{\bf Q}\bar{\bf B}(k)+\bar{\bf R}\right) \\
+	{\bf f}(k) &\triangleq 2\bar{\bf B}^T(k)\bar{\bf Q}\bar{\bf A}(k)\tilde{\bf x}(k|k) \\
+	{\bf d}(k) &\triangleq \tilde{\bf x}^T(k|k)\bar{\bf A}^T(k)\bar{\bf Q}\bar{\bf A}(k)\tilde{\bf x}(k|k)
+\end{align*}
+
+A matriz ${\bf H}$ descreve a parte quadrática da função de custo, e o vetor ${\bf f}$ descreve a parte linear. ${\bf d}$ é independente de $\tilde{\bf u}$ e não influencia na determinação de $\bf u^\star$.
+
+O controle preditivo utilizado aqui baseia-se na suposição de que, para um curto horizonte de predição, os sistemas do modelo e da planta são idênticos. Obviamente, para qualquer planta realmente implementada, as entradas de controle são sujeitas a limitações físicas. Logo, para evitar grandes diferenças entre planta e modelo, estas limitações precisam ser levadas em conta no cálculo da lei de controle. No controle preditivo, isto pode ser feito de uma maneira direta através de definicões de limites inferiores e superiores para os valores de controle. O problema de otimização precisa então ser resolvido garantindo que o controle permanecerá sempre dentro destes limites. Assim, as seguintes restrições de controle podem ser escritas:
+
+\begin{equation}\label{eqn:uconstr}
+	{\bf u}_{min}(k) \leq {\bf u}(k) \leq {\bf u}_{max}(k),
+\end{equation}
+
+Como a variável livre de otimização é $\tilde{\bf u}(k)$, (\ref{eqn:uconstr}) precisa ser reescrita com relação a esta variável. Assim:
+
+\begin{equation*}
+	{\bf u}_{min}(k) - {\bf u}_r(k) \leq \tilde{\bf u}(k) \leq {\bf u}_{max}(k) - {\bf u}_r(k),
+\end{equation*}
+ou, na forma empilhada,
+\begin{equation*}
+	\bar{\bf u}_{min}(k) - \bar{\bf u}_r(k) \leq \bar{\bf u}(k) \leq \bar{\bf u}_{max}(k) - \bar{\bf u}_r(k)
+\end{equation*}
+
+
+\section{Resultados de simulação}
+\label{sec:simulations}
+
+Nesta seção, resultados de simulação são apresentados para o controle preditivo aplicado ao robô móvel, utilizando-se como referência uma trajetória em forma de oito. O problema de otimização é resolvido através da rotina {\tt quadprog} do {\sc Matlab}. A configuração inicial do robô e da referência são, respectivamente, ${\bf x}(0)=[0~~-1~~\pi/2]^T$ e ${\bf x}_r(0)=[0~~0~~0]^T$. As matrizes de peso utilizadas são ${\bf Q}=diag(1,1,0.5)$ e ${\bf R}=0.1{\bf I}_{2\times 2}$. O horizonte de predição é $N=5$. Restrições nas amplitudes das variáveis de controle são: $v_{min}=-0.4 m/s$, $v_{max}=0.4 m/s$, $w_{min}=-0.4 rad/s$ e $w_{max}=0.4 rad/s$.
+
+\begin{figure}[H]
+	\centering
+    \includegraphics[width=.81\linewidth]{Figures/traj8.eps}
+    \caption{Trajetória no plano $XY$.}
+    \label{fig:traj8}
+\end{figure}
+%\begin{figure}[H]
+%	\centering
+%    \includegraphics[width=.8\linewidth]{Figures/states.eps}
+%    \caption{Estados $x$, $y$ e $\theta$.}
+%    \label{fig:states}
+%\end{figure}
+
+Pode ser claramente visto que os estados convergem para a trajetória de referência. É preciso observar que, mesmo que inicialmente o estado $x$ é igual a $x_r$ (ou seja, com erro nulo), este estado tem que se desviar da referência a fim de satisfazer a não-holonomicidade do robô móvel. Na Fig. ~\ref{fig:controls}, é visto que as entradas de controle permanecem dentro dos limites impostos pelas restrições.
+
+\begin{figure}
+	\centering
+    	\includegraphics[width=.81\linewidth]{Figures/controls.eps}
+    	\caption{Entradas de controle limitadas pelas restrições.}
+    	\label{fig:controls}
+\end{figure}
+
+Uma medida típica de convergência é o erro integrado~\cite{essen01},
+
+\begin{equation*}
+	\varepsilon \triangleq \frac{1}{K_f}\sum_{k=0}^{K_f}\left\|\tilde{\bf x}\right\|^2,
+\end{equation*}
+
+\noindent onde $K_f$ é o numero de passos necessários para percorrer toda a trajetória e $\left\|{\bf\cdot}\right\|$ é a norma euclideana.
+
+A Tabela~\ref{table:table1} mostra alguns resultados relacionando o custo computacional e o erro $\varepsilon$ como função do horizonte de predição $N$. O tempo de computação é o tempo médio para resolver o problema de otimização para um passo da trajetória. O número de flops necessários para completar os cálculos para um tempo amostral também é mostrado.
+ 
+\begin{table}[htpb]
+ \caption{Influência do horizonte no tempo de computação e em $\varepsilon$}
+ \label{table:table1}
+ \centering
+ \begin{tabular}{cccc}
+  \hline
+  Horizonte & Tempo de computação (s) & Flops & $\varepsilon$ \\
+  \hline\hline
+  1  & 0.0110 & 4343    & 3.2578  \\
+  3  & 0.0114 & 9529    & 1.4384  \\
+  5  & 0.0135 & 25643   & 1.3757  \\
+  10 & 0.0271 & 160180  & 1.3695  \\
+ % 15 & 0.0582 & 528570  & 1.3798  \\
+  20 & 0.1156 & 1269500 & 1.3927  \\
+  30 & 0.3402 & 4949000 & 1.4856  \\
+  \hline
+ \end{tabular}
+\end{table}
+
+Obviamente, em uma aplicação em tempo real, o horizonte de predição precisa ser escolhido de forma que o tempo de computação seja menor que o período amostral, $T$. Neste caso, $T=0,1$ segundos. Portanto, com $N=20$ o problema não é mais factível em tempo real. Por outro lado, para $N$ acima de 5 não nota-se mais uma melhora significativa em $\varepsilon$. Além disso, para $N=5$ o tempo de computação é cerca de sete vezes menor que o período de amostragem, portanto sendo uma boa escolha para o horizonte de predição. A simulação foi realizada em um computador com processador Athlon 2600+ e sistema operacional Linux.
+
+\section{Conclusões}
+\label{sec:conclusions}
+
+Este artigo mostrou a implementação do controle preditivo em um robô móvel não-holonômico. A solução do problema de otimização através de programação quadrática foi mostrada. Os sinais de controle obtidos obedeceram perfeitamente as restrições impostas durante a solução do problema de otimização. 
+
+Como visto acima, a escolha do controle preditivo é bem justificada por algumas vantagens: a maneira simples e direta com que restrições podem ser consideradas; não é necessário qualquer tipo de transformação de coordenadas; o controlador preditivo gera implicitamente uma lei de controle descontínua, assim respeitando as condições de Brockett.
+
+Foi ainda mostrado que com uma abordagem de linearizações sucessivas, o problema de controle ótimo proposto foi satisfatóriamente resolvido, sendo possível ainda o seu desenvolvimento em tempo real. Com tal técnica, foi possível a formulação do problema de controle em um problema de Programação Quadrática, que é simples, rápido e robusto numericamente.
+
+\section{Agradecimentos}
+
+Os autores agradecem à CAPES pelo apoio financeiro.
+
+\bibliographystyle{IEEEtran}
+\bibliography{seminario}
+
+\end{document}

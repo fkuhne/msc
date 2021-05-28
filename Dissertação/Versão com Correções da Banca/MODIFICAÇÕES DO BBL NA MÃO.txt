@@ -1,0 +1,37 @@
+\bibitem[CHAVES(2000)CHAVES]{chaves00} CHAVES, L.~F\@. \textbf{Projeto,
+  Construção, Modelagem e Controle de um Robô Móvel}. 2000. Dissertação
+  (Mestrado em engenharia elétrica) --- Pontifícia Universidade Católica do Rio
+  Grande do Sul, Porto Alegre, RS, 2000.
+
+
+\bibitem[DURAISKI(2001)DURAISKI]{duraiski01} DURAISKI, R.~G\@. \textbf{Controle
+  Preditivo Não Linear Utilizando Linearizações Sucessivas ao Longo da
+  Trajetória}. 2001. Dissertação (Mestrado em engenharia química) ---
+  Departamento de Engenharia Química, Universidade Federal do Rio Grande do
+  Sul, Porto Alegre, RS, 2001.
+
+
+\bibitem[GURVITS; LI(1993)GURVITS; LI]{gurvits93} GURVITS, L.; LI, Z\@. Smooth
+  Time-Periodic Feedback Solutions for Nonholonomic Motion Planning. In: LI,
+  Z.; CANNY, J\@.~(Ed.). \textbf{Nonholonomic Motion Planning}. Boston, MA:
+  Kluwer Academic Publishers, 1993. p.53--108. v.26 (Kluwer International Series in
+  Engineering and Computer Science, 192).
+
+
+\bibitem[LAGES(1998)LAGES]{lages98a} LAGES, W.~F\@. \textbf{Controle e
+  Estimação de Posição e Orientação de Robôs Móveis}. 1998. Tese (Doutorado em
+  engenharia eletrônica e computação) --- Instituto Tecnológico de Aeronáutica,
+  São José dos Campos, SP, 1998.
+
+
+\bibitem[SAMSON(1990)SAMSON]{samson90} SAMSON, C\@. Velocity and Torque
+  Feedback Control of a Nonholonomic Cart. In: INTERNATIONAL WORKSHOP IN
+  ADAPTIVE AND NONLINEAR CONTROL: issues in robotics, 1990, Grenoble, France.
+  \textbf{Proceedings{\ldots}} London: Springer-Verlag, 1990.
+
+
+\bibitem[S{\O}RDALEN(1993a)S{\O}RDALEN]{sordalen93a} S{\O}RDALEN, O.~J\@.
+  \textbf{Feedback Control of Nonholonomic Mobile Robots}. 1993. Tese (Dr.
+  ing.) --- The Norwegian Institute of Technology, Trondheim, Norway, 1993.
+
+

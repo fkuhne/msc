@@ -1,0 +1,618 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0057)http://www-ccs.ucsd.edu/matlab/toolbox/optim/fmincon.html -->
+<HTML><HEAD><TITLE>fmincon (Optimization Toolbox)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!-- $Revision: 1.1 $  $Date: 1998/10/02 20:31:44 $ --><!-- $Log: fmincon.html,v $
+<!-- Revision 1.1  1998/10/02  20:31:44  thornton
+<!-- Initial revision
+<!-- --><!-- DOCNAME: Optimization Toolbox --><!-- HEADSTUFF -->
+<SCRIPT language=Javascript>
+function slipInNewDest(cname){ 
+  if ((navigator.appName == 'Microsoft Internet Explorer') && (navigator.appVersion.substring(0,1) == '2' )) {window.location = cname.toLowerCase()+".html";}
+  else {window.document.f2.action=cname.toLowerCase()+".html";}
+}
+</SCRIPT>
+
+<META content="MSHTML 6.00.2900.2627" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff><A name=186828><!-- NAVBARTOP -->
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=baseline bgColor=#9bd0e0>&nbsp;<FONT size=+2>Optimization 
+      Toolbox</FONT></TD>
+    <TD vAlign=baseline align=right bgColor=#9bd0e0>
+      <FORM name=f2 onsubmit=slipInNewDest(f2.cmdname.value)>&nbsp;&nbsp;<B>Go 
+      to function:</B> <INPUT size=12 name=cmdname></FORM></TD>
+    <TD vAlign=baseline align=right bgColor=#9bd0e0>&nbsp;&nbsp;&nbsp;&nbsp;<A 
+      href="http://www-ccs.ucsd.edu/matlab/search1.html" 
+      target=_top>Search</A>&nbsp;&nbsp;&nbsp;&nbsp;<A 
+      href="http://www-ccs.ucsd.edu/matlab/helpdesk.html" target=_top>Help 
+      Desk</A>&nbsp;</TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><FONT size=+4>fmincon</FONT> </A></TD>
+    <TD vAlign=baseline align=right>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/fmincon.html#exmpl_sec"><FONT 
+      size=+1>Examples</FONT></A>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/fmincon.html#seeal_sec"><FONT 
+      size=+1>See Also</FONT></A></TD></TR></TBODY></TABLE><!-- FNAME:fmincon --><A 
+name=186828></A>
+<P></P><!-- H2 --><A name=358608></A>
+<P><A name=358617></A>Find the minimum of a constrained nonlinear multivariable 
+function</P>
+<UL><A name=358645></A><IMG 
+  src="fmincon (Optimization Toolbox)_files/optrea12.gif" align=absMiddle> </UL><A 
+name=358646></A>where <EM>x, b, beq, lb,</EM> and <EM>ub</EM> are vectors, 
+<EM>A</EM> and <EM>Aeq</EM> are matrices, <EM>c(x)</EM> and <EM>ceq(x)</EM> are 
+functions that return vectors, and <EM>f(x)</EM> is a function that returns a 
+scalar. <EM>f(x)</EM>, <EM>c(x)</EM>, and <EM>ceq(x)</EM> can be nonlinear 
+functions.
+<P></P><!-- H2 --><A name=186835></A>
+<P><FONT size=+2>Syntax</FONT></P>
+<UL><PRE><A name=186836></A>x = fmincon(fun,x0,A,b)
+<A name=186837></A>x = fmincon(fun,x0,A,b,Aeq,beq)
+<A name=186838></A>x = fmincon(fun,x0,A,b,Aeq,beq,lb,ub)
+<A name=186839></A>x = fmincon(fun,x0,A,b,Aeq,beq,lb,ub,nonlcon)
+<A name=186840></A>x = fmincon(fun,x0,A,b,Aeq,beq,lb,ub,nonlcon,options)
+<A name=186841></A>x = fmincon(fun,x0,A,b,Aeq,beq,lb,ub,nonlcon,options,P1,P2, ...)
+<A name=186842></A>[x,fval] = fmincon(...)
+<A name=186843></A>[x,fval,exitflag] = fmincon(...)
+<A name=186844></A>[x,fval,exitflag,output] = fmincon(...)
+<A name=186845></A>[x,fval,exitflag,output,lambda] = fmincon(...)
+<A name=186846></A>[x,fval,exitflag,output,lambda,grad] = fmincon(...)
+<A name=186847></A>[x,fval,exitflag,output,lambda,grad,hessian] = fmincon(...)
+</PRE></UL><!-- H2 --><A name=186848></A>
+<P><FONT size=+2>Description</FONT></P><A name=186849></A><CODE>fmincon</CODE> 
+finds the constrained minimum of a scalar function of several variables starting 
+at an initial estimate. This is generally referred to as <EM>constrained 
+nonlinear optimization</EM> or <EM>nonlinear programming</EM>.
+<P></P><A name=186851></A><CODE><CODE>x = fmincon(</CODE>fun,x0,A,b<CODE>) 
+</CODE></CODE><A name=186852></A>starts at <CODE>x0</CODE> and finds a minimum 
+<CODE>x</CODE> to the function described in <CODE>fun</CODE> subject to the 
+linear inequalities <CODE>A*x&nbsp;&lt;=&nbsp;b</CODE>. <CODE>x0</CODE> can be a 
+scalar, vector, or matrix.
+<P></P><A name=338423></A><CODE><CODE>x = fmincon(</CODE>fun,x0,A,b,Aeq,beq) 
+</CODE><A name=186854></A>minimizes <CODE>fun</CODE> subject to the linear 
+equalities <CODE>Aeq*x&nbsp;=&nbsp;beq</CODE> as well as 
+<CODE>A*x&nbsp;&lt;=&nbsp;b</CODE>. Set <CODE>A=[]</CODE> and <CODE>b=[]</CODE> 
+if no inequalities exist.
+<P></P><A name=186855></A><CODE>x = fmincon(fun,x0,A,b,Aeq,beq,lb,ub) </CODE><A 
+name=186856></A>defines a set of lower and upper bounds on the design variables, 
+<CODE>x</CODE>, so that the solution is always in the range 
+<CODE>lb&nbsp;&lt;=&nbsp;x&nbsp;&lt;=&nbsp;ub</CODE>. Set <CODE>Aeq=[]</CODE> 
+and <CODE>beq=[]</CODE> if no equalities exist.
+<P></P><A name=186857></A><CODE>x = fmincon(fun,x0,A,b,Aeq,beq,lb,ub,nonlcon) 
+</CODE><A name=186858></A>subjects the minimization to the nonlinear 
+inequalities <CODE>c(x)</CODE> or equalities <CODE>ceq(x)</CODE> defined in 
+<CODE>nonlcon</CODE>. <CODE>fmincon</CODE> optimizes such that 
+<CODE>c(x)&nbsp;&lt;=&nbsp;0</CODE> and <CODE>ceq(x)&nbsp;=&nbsp;0.</CODE> Set 
+<CODE>lb=[]</CODE> and/or <CODE>ub=[]</CODE> if no bounds exist.
+<P></P><A name=186859></A><CODE>x = 
+fmincon(fun,x0,A,b,Aeq,beq,lb,ub,nonlcon,options) </CODE><A 
+name=211228></A>minimizes with the optimization parameters specified in the 
+structure <CODE>options</CODE>.
+<P></P><A name=186861></A><CODE><CODE>x = 
+fmincon(</CODE>fun,x0,A,b,Aeq,beq,lb,ub,nonlcon,options<CODE>,P1,P2,...) 
+</CODE></CODE><A name=186863></A>passes the problem-dependent parameters 
+<CODE>P1</CODE>, <CODE>P2</CODE>, etc., directly to the functions 
+<CODE>fun</CODE> and <CODE>nonlcon</CODE>. Pass empty matrices as placeholders 
+for <CODE>A</CODE>, <CODE>b</CODE>, <CODE>Aeq</CODE>, <CODE>beq</CODE>, 
+<CODE>lb</CODE>, <CODE>ub</CODE>, <CODE>nonlcon</CODE>, and <CODE>options</CODE> 
+if these arguments are not needed.
+<P></P><A name=339805></A><CODE>[x,fval] = fmincon(...) </CODE><A 
+name=186864></A>returns the value of the objective function <CODE>fun</CODE> at 
+the solution <CODE>x</CODE>.
+<P></P><A name=186865></A><CODE>[x,fval,exitflag] = fmincon(...) </CODE><A 
+name=186866></A>returns a value <CODE>exitflag</CODE> that describes the exit 
+condition of <CODE>fmincon</CODE>.
+<P></P><A name=186867></A><CODE>[x,fval,exitflag,output] = fmincon(...) 
+</CODE><A name=186868></A>returns a structure <CODE>output</CODE> with 
+information about the optimization.
+<P></P><A name=247439></A><CODE>[x,fval,exitflag,output,lambda] = fmincon(...) 
+</CODE><A name=186871></A>returns a structure <CODE>lambda</CODE> whose fields 
+contain the Lagrange multipliers at the solution <CODE>x.</CODE>
+<P></P><A name=186878></A><CODE>[x,fval,exitflag,output,lambda,grad] = 
+fmincon(...) </CODE><A name=186879></A>returns the value of the gradient of 
+<CODE>fun</CODE> at the solution <CODE>x</CODE>.
+<P></P><A name=186880></A><CODE>[x,fval,exitflag,output,lambda,grad,hessian] = 
+fmincon(...) </CODE><A name=186881></A>returns the value of the Hessian of 
+<CODE>fun</CODE> at the solution <CODE>x</CODE>.
+<P></P><!-- H2 --><A name=197653></A>
+<P><FONT size=+2>Arguments</FONT></P><A name=337988></A>The arguments passed 
+into the function are described in <A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/optref.html#2681">Table&nbsp;1-1</A>. 
+The arguments returned by the function are described in <A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/optref.html#2806">Table&nbsp;1-2</A>. 
+Details relevant to <CODE>fmincon</CODE> are included below for 
+<CODE>fun</CODE>, <CODE>nonlcon</CODE>, <CODE>options</CODE>, 
+<CODE>exitflag</CODE>, <CODE>lambda</CODE>, and <CODE>output</CODE>.<BR><BR>
+<TABLE cellPadding=5 border=3>
+  <CAPTION></CAPTION>
+  <TBODY>
+  <TR vAlign=top>
+    <TD><A name=337994></A><CODE>fun</CODE><BR></TD>
+    <TD><A name=399833></A>The function to be minimized. <CODE>fun</CODE> 
+      takes a vector <CODE>x</CODE> and returns a scalar value <CODE>f</CODE> of 
+      the objective function evaluated at <CODE>x</CODE>. You can specify 
+      <CODE>fun</CODE> to be an inline object. For example,
+      <P></P>
+      <UL><PRE><A name=358669></A>fun = inline('sin(x''*x)');
+</PRE></UL><A name=358670></A>Alternatively, <CODE>fun</CODE> can be a 
+      string containing the name of a function (an M-file, a built-in function, 
+      or a MEX-file). If <CODE>fun='myfun'</CODE> then the M-file function 
+      <CODE>myfun.m</CODE> would have the form
+      <P></P>
+      <UL><PRE><A name=358671></A>function f = myfun(x)
+<A name=338000></A>f = ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% Compute function value at x
+</PRE></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=338002></A><CODE></CODE><BR></TD>
+    <TD><A name=358674></A>If the gradient of <CODE>fun</CODE> can also be 
+      computed <EM>and</EM> <CODE>options.GradObj</CODE> is <CODE>'on'</CODE>, 
+      as set by
+      <P></P>
+      <UL><PRE><A name=358675></A>options = optimset('GradObj','on')
+</PRE></UL><A name=358676></A>then the function <CODE>fun</CODE> must 
+      return, in the second output argument, the gradient value <CODE>g</CODE>, 
+      a vector, at <CODE>x</CODE>. Note that by checking the value of 
+      <CODE>nargout</CODE> the function can avoid computing <CODE>g</CODE> when 
+      <CODE>fun</CODE> is called with only one output argument (in the case 
+      where the optimization algorithm only needs the value of <CODE>f</CODE> 
+      but not <CODE>g</CODE>):
+      <P></P>
+      <UL><PRE><A name=358677></A>function [f,g] = myfun(x)
+<A name=358678></A>f = ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% compute the function value at x
+<A name=358679></A>if nargout &gt; 1&nbsp;&nbsp;% fun called with two output arguments
+<A name=358680></A>&nbsp;&nbsp;&nbsp;g = ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% compute the gradient evaluated at x
+<A name=338011></A>end
+</PRE></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=341245></A><BR></TD>
+    <TD><A name=342592></A>The gradient is the partial derivatives of 
+      <CODE>f</CODE> at the point <CODE>x</CODE>. That is, the <CODE>i</CODE>th 
+      component of <CODE>g</CODE> is the partial derivative of <CODE>f</CODE> 
+      with respect to the <CODE>i</CODE>th component of <CODE>x</CODE>.
+      <P></P></TD>
+  <TR vAlign=top>
+    <TD><A name=338013></A><BR></TD>
+    <TD><A name=358685></A>If the Hessian matrix can also be computed 
+      <EM>and</EM> <CODE>options.Hessian</CODE> is <CODE>'on'</CODE>, i.e., 
+      <CODE>options&nbsp;=&nbsp;optimset('Hessian','on')</CODE>, then the 
+      function <CODE>fun</CODE> must return the Hessian value <CODE>H</CODE>, a 
+      symmetric matrix, at <CODE>x</CODE> in a third output argument. Note that 
+      by checking the value of <CODE>nargout</CODE> we can avoid computing 
+      <CODE>H</CODE> when <CODE>fun</CODE> is called with only one or two output 
+      arguments (in the case where the optimization algorithm only needs the 
+      values of <CODE>f</CODE> and <CODE>g</CODE> but not <CODE>H</CODE>):
+      <P></P>
+      <UL><PRE><A name=358686></A>function [f,g,H] = myfun(x)
+<A name=358687></A>f = ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% Compute the objective function value at x
+<A name=358688></A>if nargout &gt; 1&nbsp;&nbsp;&nbsp;% fun called with two output arguments
+<A name=358689></A>&nbsp;&nbsp;&nbsp;g = ...&nbsp;&nbsp;&nbsp;&nbsp;% gradient of the function evaluated at x
+<A name=358690></A>&nbsp;&nbsp;&nbsp;if nargout &gt; 2
+<A name=358691></A>&nbsp;&nbsp;&nbsp;H = ...&nbsp;&nbsp;&nbsp;&nbsp;% Hessian evaluated at x
+<A name=358692></A>end
+</PRE></UL><A name=338027></A>The Hessian matrix is the second partial 
+      derivatives matrix of <CODE>f</CODE> at the point <CODE>x</CODE>. That is, 
+      the (<CODE>i</CODE>th,<CODE>j</CODE>th) component of <CODE>H</CODE> is the 
+      second partial derivative of <CODE>f</CODE> with respect to 
+      <CODE>x</CODE><SUB>i</SUB> and <CODE>x</CODE><SUB>j</SUB>, <IMG 
+      src="fmincon (Optimization Toolbox)_files/optref40.gif" align=absMiddle>. 
+      The Hessian is by definition a symmetric matrix.
+      <P></P></TD>
+  <TR vAlign=top>
+    <TD><A name=342596></A><CODE>nonlcon</CODE><BR></TD>
+    <TD><A name=342603></A>The function that computes the nonlinear inequality 
+      constraints <CODE>c(x)&lt;=0</CODE> and nonlinear equality constraints 
+      <CODE>ceq(x)=0</CODE>. <CODE>nonlcon</CODE> is a string containing the 
+      name of a function (an M-file, a built-in, or a MEX-file). 
+      <CODE>nonlcon</CODE> takes a vector <CODE>x</CODE> and returns two 
+      arguments, a vector <CODE>c</CODE> of the nonlinear inequalities evaluated 
+      at <CODE>x</CODE> and a vector <CODE>ceq</CODE> of the nonlinear 
+      equalities evaluated at <CODE>x</CODE>. For example, if 
+      <CODE>nonlcon='mycon'</CODE> then the M-file <CODE>mycon.m</CODE> would 
+      have the form
+      <P></P>
+      <UL><PRE><A name=342604></A>function [c,ceq] = mycon(x)
+<A name=342605></A>c = ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% Compute nonlinear inequalities at x
+<A name=342606></A>ceq = ...&nbsp;&nbsp;&nbsp;% Compute the nonlinear equalities at x
+</PRE></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=342909></A><BR></TD>
+    <TD><A name=343964></A>If the gradients of the constraints can also be 
+      computed <EM>and</EM> <CODE>options.GradConstr</CODE> is 
+      <CODE>'on'</CODE>, as set by
+      <P></P>
+      <UL><PRE><A name=343965></A>options = optimset('GradConstr','on')
+</PRE></UL><A name=343966></A>then the function <CODE>nonlcon</CODE> must 
+      also return, in the third and fourth output arguments, <CODE>GC</CODE>, 
+      the gradient of <CODE>c(x)</CODE>, and <CODE>GCeq</CODE>, the gradient of 
+      <CODE>ceq(x)</CODE>. Note that by checking the value of 
+      <CODE>nargout</CODE> the function can avoid computing <CODE>GC</CODE> and 
+      <CODE>GCeq</CODE> when <CODE>nonlcon</CODE> is called with only two output 
+      arguments (in the case where the optimization algorithm only needs the 
+      values of <CODE>c</CODE> and <CODE>ceq</CODE> but not <CODE>GC</CODE> and 
+      <CODE>GCeq</CODE>):
+      <P></P></TD>
+  <TR vAlign=top>
+    <TD><A name=342905></A><BR></TD>
+    <TD>
+      <UL><PRE><A name=345306></A>function [c,ceq,GC,GCeq] = mycon(x)
+<A name=345307></A>c = ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% nonlinear inequalities at x
+<A name=345308></A>ceq = ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% nonlinear equalities at x
+<A name=345309></A>if nargout &gt; 2&nbsp;&nbsp;&nbsp;% nonlcon called with 4 outputs
+<A name=345310></A>&nbsp;&nbsp;&nbsp;GC = ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% gradients of the inequalities
+<A name=345311></A>&nbsp;&nbsp;&nbsp;GCeq = ...&nbsp;&nbsp;&nbsp;&nbsp;% gradients of the equalities
+<A name=345312></A>end
+</PRE></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=342901></A><BR></TD>
+    <TD><A name=345597></A>If <CODE>nonlcon</CODE> returns a vector 
+      <CODE>c</CODE> of <CODE>m</CODE> components and <CODE>x</CODE> has length 
+      <CODE>n</CODE>, then the gradient <CODE>GC</CODE> of <CODE>c(x)</CODE> is 
+      an n-by-m matrix, where <CODE>GC(i,j)</CODE> is the partial derivative of 
+      <CODE>c(j)</CODE> with respect to <CODE>x(i)</CODE> (i.e., the 
+      <CODE>j</CODE>th column of <CODE>GC</CODE> is the gradient of the 
+      <CODE>j</CODE>th inequality constraint <CODE>c(j)</CODE>). Likewise, if 
+      <CODE>ceq</CODE> has <CODE>p</CODE> components, the gradient 
+      <CODE>GCeq</CODE> of <CODE>ceq(x)</CODE> is an n-by-p matrix, where 
+      <CODE>GCeq(i,j)</CODE> is the partial derivative of <CODE>ceq(j)</CODE> 
+      with respect to <CODE>x(i)</CODE> (i.e., the <CODE>j</CODE>th column of 
+      <CODE>GCeq</CODE> is the gradient of the <CODE>j</CODE>th equality 
+      constraint <CODE>ceq(j)</CODE>).
+      <P></P></TD>
+  <TR vAlign=top>
+    <TD><A name=338032></A><CODE>options</CODE><BR></TD>
+    <TD><A name=358695></A>Optimization parameter options. You can set or 
+      change the values of these parameters using the <CODE>optimset</CODE> 
+      function. Some parameters apply to all algorithms, some are only relevant 
+      when using the large-scale algorithm, and others are only relevant when 
+      using the medium-scale algorithm. 
+      <P></P><A name=358696></A>We start by describing the 
+      <CODE>LargeScale</CODE> option since it states a <EM>preference</EM> for 
+      which algorithm to use. It is only a preference since certain conditions 
+      must be met to use the large-scale algorithm. For <CODE>fmincon</CODE>, 
+      the <EM>gradient must be provided (</EM>see the description of 
+      <CODE>fun</CODE> above to see how) or else the medium-scale algorithm will 
+      be used.
+      <P></P>
+      <UL><A name=338036>
+        <LI><CODE>LargeScale</CODE> - Use large-scale algorithm if possible when 
+        set to <CODE>'on'</CODE>. Use medium-scale algorithm when set to 
+        <CODE>'off'</CODE>. </A></LI></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=349902></A><BR></TD>
+    <TD><A name=358704></A>Parameters used by both the large-scale and 
+      medium-scale algorithms:
+      <P></P>
+      <UL><A name=358705>
+        <LI><CODE>Diagnostics</CODE> - Print diagnostic information about the 
+        function to be minimized. </A><A name=358706>
+        <LI><CODE>Display</CODE> - Level of display. <CODE>'off'</CODE> displays 
+        no output; <CODE>'iter'</CODE> displays output at each iteration; 
+        <CODE>'final'</CODE> displays just the final output. </A><A name=349911>
+        <LI><CODE>GradObj</CODE> - Gradient for the objective function defined 
+        by user. See the description of <CODE>fun</CODE> under the 
+        <EM>Arguments</EM> section above to see how to define the gradient in 
+        <CODE>fun</CODE>. The gradient <EM>must</EM> be provided to use the 
+        large-scale method. It is optional for the medium-scale method. 
+      </A></LI></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=349898></A><BR></TD>
+    <TD>
+      <UL><A name=358699>
+        <LI><CODE>MaxFunEvals</CODE> - Maximum number of function evaluations 
+        allowed. </A><A name=358700>
+        <LI><CODE>MaxIter</CODE> - Maximum number of iterations allowed. </A><A 
+        name=358701>
+        <LI><CODE>TolFun</CODE> - Termination tolerance on the function value. 
+        </A><A name=358723>
+        <LI><CODE>TolCon</CODE> - Termination tolerance on the constraint 
+        violation. </A><A name=349951>
+        <LI><CODE>TolX</CODE> - Termination tolerance on <CODE>x</CODE>. 
+        </A></LI></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=349894></A><BR></TD>
+    <TD><A name=358709></A>Parameters used by the large-scale algorithm only:
+      <P></P>
+      <UL><A name=358710>
+        <LI><CODE>Hessian</CODE> - Hessian for the objective function defined by 
+        user. See the description of <CODE>fun</CODE> under the 
+        <EM>Arguments</EM> section above to see how to define the Hessian in 
+        <CODE>fun</CODE>. </A><A name=350980>
+        <LI><CODE>HessPattern</CODE> - Sparsity pattern of the Hessian for 
+        finite-differencing. If it is not convenient to compute the sparse 
+        Hessian matrix <CODE>H</CODE> in <CODE>fun</CODE>, the large-scale 
+        method in <CODE>fmincon</CODE> can approximate <CODE>H</CODE> via sparse 
+        finite-differences (of the gradient) provided the <EM>sparsity 
+        structure</EM> of <CODE>H</CODE> -- i.e., locations of the nonzeros -- 
+        is supplied as the value for <CODE>HessPattern</CODE>. In the worst 
+        case, if the structure is unknown, you can set <CODE>HessPattern</CODE> 
+        to be a dense matrix and a full finite-difference approximation will be 
+        computed at each iteration (this is the default). This can be very 
+        expensive for large problems so it is usually worth the effort to 
+        determine the sparsity structure. </A></LI></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=338038></A><BR></TD>
+    <TD>
+      <UL><A name=358713>
+        <LI><CODE>MaxPCGIter</CODE> - Maximum number of PCG (preconditioned 
+        conjugate gradient) iterations (see the <EM>Algorithm</EM> section 
+        below). </A><A name=358714>
+        <LI><CODE>PrecondBandWidth</CODE> - Upper bandwidth of preconditioner 
+        for PCG. By default, diagonal preconditioning is used (upper bandwidth 
+        of 0). For some problems, increasing the bandwidth reduces the number of 
+        PCG iterations. </A><A name=358715>
+        <LI><CODE>TolPCG</CODE> - Termination tolerance on the PCG iteration. 
+        </A><A name=352283>
+        <LI><CODE>TypicalX</CODE> - Typical <CODE>x</CODE> values. 
+    </A></LI></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=338052></A><BR></TD>
+    <TD><A name=358718></A>Parameters used by the medium-scale algorithm only:
+      <P></P>
+      <UL><A name=358719>
+        <LI><CODE>DerivativeCheck</CODE> - Compare user-supplied derivatives 
+        (gradients of the objective and constraints) to finite-differencing 
+        derivatives. </A><A name=358720>
+        <LI><CODE>DiffMaxChange</CODE> - Maximum change in variables for 
+        finite-difference gradients. </A><A name=358721>
+        <LI><CODE>DiffMinChange</CODE> - Minimum change in variables for 
+        finite-difference gradients. </A><A name=338062>
+        <LI><CODE>LineSearchType</CODE> - Line search algorithm choice. 
+      </A></LI></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=338064></A><CODE>exitflag</CODE><BR></TD>
+    <TD><A name=358759></A>Describes the exit condition:
+      <P></P>
+      <UL><A name=358760>
+        <LI><CODE>&gt; 0</CODE> indicates that the function converged to a 
+        solution <CODE>x</CODE>. </A><A name=358761>
+        <LI><CODE>0</CODE> indicates that the maximum number of function 
+        evaluations or iterations was reached. </A><A name=338069>
+        <LI><CODE>&lt; 0</CODE> indicates that the function did not converge to 
+        a solution. </A></LI></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=340912></A><CODE>lambda</CODE><BR></TD>
+    <TD><A name=341205></A>A structure containing the Lagrange multipliers at 
+      the solution <CODE>x</CODE> (separated by constraint type):
+      <P></P>
+      <UL><A name=358771>
+        <LI><CODE>lambda.lower</CODE> for the lower bounds <CODE>lb</CODE>. 
+        </A><A name=341206>
+        <LI><CODE>lambda.upper</CODE> for the upper bounds <CODE>ub</CODE>. 
+        </A><A name=341207>
+        <LI><CODE>lambda.ineqlin</CODE> for the linear inequalities. </A><A 
+        name=341208>
+        <LI><CODE>lambda.eqlin</CODE> for the linear equalities. </A><A 
+        name=341209>
+        <LI><CODE>lambda.ineqnonlin</CODE> for the nonlinear inequalities. 
+        </A><A name=341210>
+        <LI><CODE>lambda.eqnonlin</CODE> for the nonlinear equalities. 
+      </A></LI></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=338071></A><CODE>output</CODE><BR></TD>
+    <TD><A name=358764></A>A structure whose fields contain information about 
+      the optimization:
+      <P></P>
+      <UL><A name=358765>
+        <LI><CODE>output.iterations</CODE> - The number of iterations taken. 
+        </A><A name=358766>
+        <LI><CODE>output.funcCount</CODE> - The number of function evaluations. 
+        </A><A name=358767>
+        <LI><CODE>output.algorithm</CODE> - The algorithm used. </A><A 
+        name=358768>
+        <LI><CODE>output.cgiterations</CODE> - The number of PCG iterations 
+        (large-scale algorithm only). </A><A name=358769>
+        <LI><CODE>output.stepsize</CODE> - The final step size taken 
+        (medium-scale algorithm only). </A><A name=340891>
+        <LI><CODE>output.firstorderopt</CODE> - A measure of first-order 
+        optimality (large-scale algorithm only). 
+</A></LI></UL></TD></TR></TBODY></TABLE>
+<TABLE>
+  <TBODY>
+  <TR vAlign=top>
+    <TD></TR></TBODY></TABLE>
+<P></P><A name=exmpl_sec></A><!-- H2 --><A name=186882></A>
+<P><FONT size=+2>Examples</FONT></P><A name=186886></A>Find values of<STRONG> 
+</STRONG><EM>x</EM><STRONG> </STRONG>that minimize<EM> <IMG 
+src="fmincon (Optimization Toolbox)_files/optref58.gif" align=absMiddle></EM>, 
+starting at the point <CODE>x&nbsp;=&nbsp;[10;&nbsp;10;&nbsp;10]</CODE> and 
+subject to the constraints
+<P></P>
+<UL><A name=417034></A><IMG 
+  src="fmincon (Optimization Toolbox)_files/optref59.gif" align=absMiddle> </UL><A 
+name=415755></A>First, write an M-file that returns a scalar value 
+<CODE>f</CODE> of the function evaluated at <CODE>x</CODE>:
+<P></P>
+<UL><PRE><A name=186891></A>function f = myfun(x)
+<A name=186892></A>f = -x(1) * x(2) * x(3);
+</PRE></UL><A name=236874></A>Then rewrite the constraints as both less than or 
+equal to a constant,
+<P></P>
+<UL><A name=418410></A><IMG 
+  src="fmincon (Optimization Toolbox)_files/optrefb5.gif" align=absMiddle> </UL><A 
+name=418394></A>Since both constraints are linear, formulate them as the matrix 
+inequality <IMG src="fmincon (Optimization Toolbox)_files/optref23.gif" 
+align=absMiddle> where
+<P></P>
+<UL><A name=426319></A><IMG 
+  src="fmincon (Optimization Toolbox)_files/optref34.gif" align=absMiddle> </UL><A 
+name=418426></A>Next, supply a starting point and invoke an optimization 
+routine:
+<P></P>
+<UL><PRE><A name=186896></A>x0 = [10;&nbsp;10;&nbsp;10];    % Starting guess at the solution
+<A name=186897></A>[x,fval] = fmincon('myfun',x0,A,b)
+</PRE></UL><A name=186898></A>After 66 function evaluations, the solution is
+<P></P>
+<UL><PRE><A name=186899></A>x =
+<A name=186900></A>&nbsp;&nbsp;&nbsp;&nbsp;24.0000
+<A name=236948></A>&nbsp;&nbsp;&nbsp;&nbsp;12.0000
+<A name=236953></A>&nbsp;&nbsp;&nbsp;&nbsp;12.0000
+</PRE></UL><A name=186901></A>where the function value is 
+<P></P>
+<UL><PRE><A name=418454></A>fval =
+<A name=419954></A>    -3.4560e+03
+</PRE></UL><A name=419955></A>and linear inequality constraints evaluate to be 
+<CODE>&lt;= 0</CODE>
+<P></P>
+<UL><PRE><A name=419956></A>
+<A name=186905></A>A*x-b= 
+<A name=186906></A>&nbsp;&nbsp;&nbsp;&nbsp;-72
+<A name=262573></A>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0
+</PRE></UL><!-- H2 --><A name=354930></A>
+<P><FONT size=+2>Notes</FONT></P><!-- H4 --><A name=355617></A><B>Large-scale 
+optimization.</B> &nbsp;&nbsp; <A name=432376></A>To use the large-scale method, 
+the gradient must be provided in <CODE>fun</CODE> (and 
+<CODE>options.GradObj</CODE> set to <CODE>'on'</CODE>). A warning is given if no 
+gradient is provided and <CODE>options.LargeScale</CODE> is not 
+<CODE>'off'</CODE>.<FONT face=times> </FONT><CODE>fmincon</CODE> permits 
+<EM>g</EM>(<EM>x</EM>) to be an approximate gradient but this option is not 
+recommended: the numerical behavior of most optimization codes is considerably 
+more robust when the true gradient is used. 
+<P></P><A name=355296></A>The large-scale method in <CODE>fmincon</CODE> is most 
+effective when the matrix of second derivatives, i.e., the Hessian matrix 
+<EM>H</EM>(<EM>x</EM>), is also computed. However, evaluation of the true 
+Hessian matrix is not required. For example, if you can supply the Hessian 
+sparsity structure (using the <CODE>HessPattern</CODE> parameter in 
+<CODE>options</CODE>), then <CODE>fmincon</CODE> will compute a sparse 
+finite-difference approximation to <EM>H</EM>(<EM>x</EM>). 
+<P></P><A name=355297></A>If <CODE>x0</CODE> is not strictly feasible, 
+<CODE>fmincon</CODE> chooses a new strictly feasible (centered) starting point.
+<P></P><A name=355298></A>If components of <EM>x</EM> have no upper (or lower) 
+bounds, then <CODE>fmincon</CODE> prefers that the corresponding components of 
+<CODE>ub</CODE> (or <CODE>lb)</CODE> be set to <CODE>Inf</CODE> <CODE>(</CODE>or 
+<CODE>-Inf</CODE> for <CODE>lb)</CODE> as opposed to an arbitrary but very large 
+positive (or negative in the case of lower bounds) number.
+<P></P><A name=354939></A>Several aspects of linearly constrained minimization 
+should be noted:
+<P></P>
+<UL><A name=354940>
+  <LI>A dense (or fairly dense) column of matrix <CODE>Aeq</CODE> can result in 
+  considerable fill and computational cost. </A><A name=354941>
+  <LI><CODE>fmincon</CODE> removes (numerically) linearly dependent rows in 
+  <CODE>Aeq</CODE>; however, this process involves repeated matrix 
+  factorizations and therefore can be costly if there are many dependencies. 
+  </A><A name=354942>
+  <LI>Each iteration involves a sparse least-squares solve with matrix 
+</A></LI></UL>
+<UL><A name=433638></A>
+  <P><IMG src="fmincon (Optimization Toolbox)_files/optref36.gif" 
+  align=absMiddle> </P><A name=355311></A>
+  <P>where <CODE>R</CODE>T is the Cholesky factor of the preconditioner. 
+  Therefore, there is a potential conflict between choosing an effective 
+  preconditioner and minimizing fill in <IMG 
+  src="fmincon (Optimization Toolbox)_files/optref38.gif" 
+align=absMiddle>.</P></UL><!-- H4 --><A name=355631></A><B>Medium-scale 
+optimization.</B> &nbsp;&nbsp; <A name=433640></A>Better numerical results are 
+likely if you specify equalities explicitly using <CODE>Aeq</CODE> and 
+<CODE>beq,</CODE> instead of implicitly using <CODE>lb</CODE> and 
+<CODE>ub</CODE>.
+<P></P><A name=431228></A>If equality constraints are present and dependent 
+equalities are detected and removed in the quadratic subproblem, 
+<CODE>'dependent'</CODE> is printed under the <CODE>Procedures</CODE> heading 
+(when output is asked for using 
+<CODE>options.Display&nbsp;=&nbsp;'iter')</CODE>. The dependent equalities are 
+only removed when the equalities are consistent. If the system of equalities is 
+not consistent, the subproblem is infeasible and <CODE>'infeasible'</CODE> is 
+printed under the <CODE>Procedures</CODE> heading.
+<P></P><!-- H2 --><A name=355328></A>
+<P><FONT size=+2>Algorithm</FONT></P><!-- H4 --><A 
+name=355329></A><B>Large-scale optimization.</B> &nbsp;&nbsp; <A 
+name=433650></A>By default <CODE>fmincon</CODE> will choose the large-scale 
+algorithm <EM>if </EM>the user supplies the gradient in <CODE>fun</CODE> (and 
+<CODE>GradObj</CODE> is <CODE>'on'</CODE> in <CODE>options</CODE>) <EM>and</EM> 
+if <EM>only</EM> upper and lower bounds exists <EM>or only</EM> linear equality 
+constraints exist. This algorithm is a subspace trust region method and is based 
+on the interior-reflective Newton method described in [5],[6]. Each iteration 
+involves the approximate solution of a large linear system using the method of 
+preconditioned conjugate gradients (PCG). See the trust-region and 
+preconditioned conjugate gradient method descriptions in the <EM>Large-Scale 
+Algorithms</EM> chapter.
+<P></P><!-- H4 --><A name=411181></A><B>Medium-scale optimization.</B> 
+&nbsp;&nbsp; <A name=434912></A><CODE>fmincon</CODE> uses a Sequential Quadratic 
+Programming (SQP) method. In this method, a Quadratic Programming (QP) 
+subproblem is solved at each iteration. An estimate of the Hessian of the 
+Lagrangian is updated at each iteration using the BFGS formula (see 
+<CODE>fminunc</CODE>, references [3, 6]).
+<P></P><A name=186913></A>A line search is performed using a merit function 
+similar to that proposed by [1] and [2, 3]. The QP subproblem is solved using an 
+active set strategy similar to that described in [4]. A full description of this 
+algorithm is found in the "Constrained Optimization" section of the 
+<EM>Introduction to Algorithms </EM>chapter of the toolbox manual.
+<P></P><A name=186914></A>See also the SQP implementation section in the 
+<EM>Introduction to Algorithms </EM>chapter for more details on the algorithm 
+used.
+<P></P><!-- H2 --><A name=355602></A>
+<P><FONT size=+2>Diagnostics</FONT></P><!-- H4 --><A 
+name=355603></A><B>Large-scale optimization.</B> &nbsp;&nbsp; <A 
+name=435181></A>The large-scale code will not allow equal upper and lower 
+bounds. For example if <CODE>lb(2)==ub(2)</CODE>, then <CODE>fmincon</CODE> 
+gives the error:
+<P></P>
+<UL><PRE><A name=355604></A>Equal upper and lower bounds not permitted in this large-scale 
+method.
+<A name=355605></A>Use equality constraints and the medium-scale method instead.
+</PRE></UL><A name=411165></A>If you only have equality constraints you can 
+still use the large-scale method. But if you have both equalities and bounds, 
+you must use the medium-scale method.
+<P></P><!-- H2 --><A name=186915></A>
+<P><FONT size=+2>Limitations</FONT></P><A name=186916></A>The function to be 
+minimized and the constraints must both be continuous. <CODE>fmincon</CODE> may 
+only give local solutions.
+<P></P><A name=186918></A>When the problem is infeasible, <CODE>fmincon</CODE> 
+attempts to minimize the maximum constraint value.
+<P></P><A name=186919></A>The objective function and constraint function must be 
+real-valued, that is they cannot return complex values.
+<P></P><!-- H4 --><A name=355342></A><B>Large-scale optimization.</B> 
+&nbsp;&nbsp; <A name=435190></A>To use the large-scale algorithm, the user must 
+supply the gradient in <CODE>fun</CODE> (and <CODE>GradObj</CODE> must be set 
+<CODE>'on'</CODE> in <CODE>options</CODE>) , and only upper and lower bounds 
+constraints may be specified, <EM>or only</EM> linear equality constraints must 
+exist and <CODE>Aeq</CODE> cannot have more rows than columns. <CODE>Aeq</CODE> 
+is typically sparse. See Table&nbsp;1-4 for more information on what problem 
+formulations are covered and what information must be provided.
+<P></P><A name=355567></A>Currently, if the analytical gradient is provided in 
+<CODE>fun</CODE>, the <CODE>options</CODE> parameter 
+<CODE>DerivativeCheck</CODE> cannot be used with the large-scale method to 
+compare the analytic gradient to the finite-difference gradient. Instead, use 
+the medium-scale method to check the derivative with <CODE>options</CODE> 
+parameter <CODE>MaxIter</CODE> set to 0 iterations. Then run the problem with 
+the large-scale method.
+<P></P><!-- H2 --><A name=355343></A>
+<P><FONT size=+2>References</FONT></P><A name=186924></A>[1] Han, S.P., "A 
+Globally Convergent Method for Nonlinear Programming," <EM>Journal of 
+Optimization Theory and Applications</EM>, Vol. 22, p. 297, 1977.
+<P></P><A name=186925></A>[2] Powell, M.J.D., "The Convergence of Variable 
+Metric Methods For Nonlinearly Constrained Optimization Calculations," 
+<EM>Nonlinear Programming 3</EM>, (O.L. Mangasarian, R.R. Meyer, and S.M. 
+Robinson, eds.) Academic Press, 1978.
+<P></P><A name=186926></A>[3] Powell, M.J.D., "A Fast Algorithm for Nonlineary 
+Constrained Optimization Calculations," <EM>Numerical Analysis</EM>, ed. G.A. 
+Watson, <EM>Lecture Notes in Mathematics</EM>, Springer Verlag, Vol. 630, 1978.
+<P></P><A name=186927></A>[4] Gill, P.E., W. Murray, and M.H. Wright, 
+<EM>Practical Optimization</EM><EM>, </EM>Academic Press, London, 1981.
+<P></P><A name=353630></A>[5] Coleman, T.F. and Y. Li, "On the Convergence of 
+Reflective Newton Methods for Large-Scale Nonlinear Minimization Subject to 
+Bounds," <EM>Mathematical Programming</EM>, Vol. 67, Number 2, pp. 189-224, 
+1994.
+<P></P><A name=353628></A>[6] Coleman, T.F. and Y. Li, "An Interior, Trust 
+Region Approach for Nonlinear Minimization Subject to Bounds," <EM>SIAM Journal 
+on Optimization</EM>, Vol. 6, pp. 418-445, 1996.
+<P></P><A name=seeal_sec></A><!-- H2 --><A name=186928></A>
+<P><FONT size=+2>See Also</FONT></P><A name=186929></A><CODE><A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/fminbnd.html">fminbnd</A></CODE>, 
+<CODE><A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/fminsearch.html">fminsearch</A></CODE>, 
+<CODE><A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/fminunc.html">fminunc</A></CODE>, 
+<CODE><A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/optimset.html">optimset</A></CODE>
+<P></P>
+<HR>
+<BR>
+<CENTER>[ <A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/fminbnd.html">Previous</A> | 
+<A href="http://www-ccs.ucsd.edu/matlab/helpdesk.html" target=_top>Help Desk</A> 
+| <A href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/fminimax.html">Next</A> 
+]</CENTER><BR><!-- Copyright (c) 1998 by The MathWorks, Inc. --><!-- Last updated: 09/30/98 12:22:45 --></BODY></HTML>

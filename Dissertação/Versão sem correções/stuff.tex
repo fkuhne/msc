@@ -1,0 +1,86 @@
+\maketitle
+
+\chapter*{Dedicatória}
+Aos meus pais João e Elisabeth e à minha namorada Luciana.
+
+\chapter*{Agradecimentos}
+Gostaria de deixar aqui meus profundos agradecimentos ao meu orientador, Prof. João Manoel, e ao meu co-orientador, Prof. Walter, pela inspiração, amizade e constante disponibilidade durante todo o curso de mestrado.
+
+Ao Programa de Pós-Graduação em Engenharia Elétrica, PPGEE, pela oportunidade de realização de trabalhos em minha área de pesquisa, à Coordenação de Aperfeiçoamento de Pessoal de Nível Superior, CAPES, pela provisão da bolsa de mestrado e aos professores do DELET.
+
+Agradeço também a todos os colegas do PPGEE e amigos da TOL. Especialmente, destaco os colegas Rodrigo, Fernando e Miguel como os principais incentivadores de tempo perdido e conversa jogada fora nos cafés do Bar do Antônio e nos almoços do RU.
+
+Por fim, e não menos importante, gostaria de agradecer à minha namorada Luciana e aos meus pais, João e Elisabeth, a quem eu dedico este trabalho e sem os quais tudo isso não seria possível.
+
+\begin{abstract}
+O controle de robôs móveis não holonômicos apresenta como principal desafio o fato de estes sistemas não serem estabilizáveis em um ponto através de uma realimentação de estados suave e invariante no tempo, conforme o Teorema de Brockett. Para contornar este resultado, técnicas clássicas utilizam leis de controle variante no tempo ou não suaves (descontínuas). Entretanto, estas técnicas não prevêem durante o cálculo da lei de controle restrições nas variáveis do sistema e assim, muitas vezes, geram entradas de controle que são incompatíveis com uma implementação real. Neste trabalho são desenvolvidos algoritmos de controle preditivo baseado em modelo (MPC) para o controle de robôs móveis não holonômicos dotados de rodas. No MPC, restrições nas variáveis de estado e de controle podem ser consideradas durante o cálculo da lei de controle de uma forma bastante direta. Além disso, o MPC gera implicitamente uma lei de controle não suave, respeitando assim as condições de Brockett. Como o modelo do robô é não linear, é necessário um algoritmo de MPC não linear (NMPC). Dois objetivos são estudados: (1) estabilização em um ponto e (2) rastreamento de trajetória. Através de extensivos resultados de simulação, é mostrada a eficácia da técnica. Referente ao primeiro problema, é feita uma análise comparativa com algumas leis clássicas de controle de robôs móveis, mostrando que o MPC aplicado aqui apresenta uma melhor performance com relação às trajetórias de estado e de controle. No problema de rastreamento de trajetória, é desenvolvida uma técnica linear, alternativa ao NMPC, utilizando linearizações sucessivas ao longo da trajetória de referência, a fim de diminuir o esforço computacional necessário para o problema de otimização. Para os dois problemas, análises referentes ao esforço computacional são desenvolvidas com o intuito de mostrar a viabilidade das técnicas de MCP apresentadas aqui em uma implementação real.
+\end{abstract}
+
+\begin{englishabstract}{nonholonomic systems, mobile robots, model-based predictive control}
+Concerning the control of non-holonomic mobile robots, the main challenge lies on the fact that these systems are not point stabilizable through a smooth, time invariant state feedback, as postulated by the Brockett Theorem. To overcome this result, classical approaches are the use of time variant or nonsmooth (discontinuous) control laws. However, these approaches do not take into account constraints on system's variables during the computation of the control signals. In doing so, it is often the case that classical techniques generate control inputs which are not feasible for actual implementations. In the present work, model-based predictive control (MPC) algorithms are developed for the control of nonholonomic wheeled mobile robots. By using MPC, constraints in both state and control variables become readily accountable during the computation of the control law in an straightforward way. Moreover, MPC implicitly generates a nonsmooth control law which, in turn, respects Brockett conditions. Since the model of the robot is nonlinear, a nonlinear MPC (NMPC) is needed. Studies are aimed towards two goals: (1) point stabilization and (2) trajectory tracking. Comprehensive simulation results assure the effectiveness of the proposed method. Furthermore, concerning the challenging problems forementioned, comparative studies show the MPC herein outperforms several classical approaches in what regards both state and control trajectories. With respect to the problem of trajectory tracking, a linear alternative technique to NMPC is developed, in order to reduce the computational effort required to solve the optimization problem. For both problems, computational effort analyses are developed with the purpose of speculating the viability of the application of the proposed techniques in a real implementation.
+\end{englishabstract}
+
+\tableofcontents
+\listoffigures
+\listoftables
+
+% lista de abreviaturas e siglas
+\begin{listofabbrv}{CARIMA}
+	\item[CARIMA] {\em Controlled Autoregressive and Moving Average}
+	\item[DMC] {\em Dynamic Matrix Control}
+	\item[EPSAC] {\em Extended Predicion Self Adaptive Control}
+	\item[flops] {\em floating-point operations per second}
+	\item[GPC] {\em Generalized Predictive Control}
+	\item[LMPC] {\em Linear Model-based Predictive Control}
+	\item[MAC] {\em Model Algorithmic Control}
+	\item[MPC] {\em Model-based Predictive Control}
+	\item[mp-QP]{\em multi-parametric Quadratic Programming}
+	\item[NMPC] {\em Nonlinear Model-based Predictive Control}
+	\item[OPF] Operações em Ponto Flutuante
+	\item[QDMC] {\em Quadratic Dynamic Matrix Control}
+	\item[QP] {\em Quadratic Programming}
+	\item[RHC] {\em Receding Horizon Control}
+	\item[SPGPC] {\em Smith-Predictor Generalized Predictive Control}
+	\item[UNECE] {\em United Nations Economic Commission for Europe}
+\end{listofabbrv}
+
+% lista de símbolos é opcional
+\begin{listofsymbols}{ccccccccccccccccc}
+       \item[$\bf x$] Vetor de ordem $n$ composto de elementos $x_i$, $i = 1\ldots n$. Diz-se então que ${\bf x}\in\real^n$
+       \item[${\bf x}^T$] Vetor transposto de $\bf x$
+       \item[$\dot{\bf x}$] Derivada temporal de $\bf x$
+       \item[$\{O,X_o,Y_o\}$] Sistema de coordenadas cartesianas, formado pela origem $O$, um eixo horizontal $X_o$ e um vertical $Y_o$
+       \item[$\dim\{{\bf x}\}$] Dimensão de $\bf x$
+       \item[$\inv\Delta$] Fechamento involutivo de uma distribuição $\Delta$
+%
+%       \item [$[f,g]$] Colchete de Lie de $f$ e $g$
+%
+       \item[$\bf M$] Matriz de dimensão $n_1\times n_2$, ${\bf M}\in\real^{n_1\times n_2}$
+       \item[${\rm rank}\{{\bf M}\}$] Posto da matriz $\bf M$
+       \item[$\cal C$] Matriz de controlabilidade
+       \item[${\bf x}_0$] Condição inicial de $\bf x$
+       \item[${\bf x}_f$] Condição final de $\bf x$
+       \item[$k$] Instante de amostragem
+       \item[$\Phi$] Função de custo do MPC
+       \item[$N_1$] Início do horizonte de predição de estados
+       \item[$N_2$] Fim do horizonte de predição de estados
+       \item[$N_u$] Horizonte de controle
+       \item[$N$] Horizonte de predição
+       \item[$\bf Q$] Matriz de ponderação do erro de estado
+       \item[$\bf R$] Matriz de ponderação do esforço de controle
+       \item[${\bf x}(a|b)$] Valor de $\bf x$ no instante $a$ predito no instante $b$
+       \item[${\bf x}^\star$] Valor ótimo da variável $\bf x$
+       \item[$\min\{{\bf x}\}$] Valor mínimo da variável $\bf x$
+       \item[${\bf x}_{ref}$] Valor de referência da variável $\bf x$
+       \item[$\Omega$] Custo terminal
+       \item[$\bf P$] Matriz de ponderação do custo terminal $\Omega$
+       \item[$\atan(y,x)$] Valor do arco tangente de $y/x$, usando os sinais dos dois argumentos para determinar o quadrante do valor retornado
+       \item[${\rm diag}(a_1;\ldots;a_n)$] Matriz diagonal onde os elementos da diagonal principal são $a_i$, $i=1\ldots n$ e os outros elementos são zero.
+       \item[$\bar{\bf x}$] Limite de amplitude da variável $\bf x$
+       \item[$\bf I$] Matriz identidade de dimensão apropriada
+       \item[${\mathbb A}\subseteq{\mathbb B}$] O conjunto $\mathbb A$ é um subconjunto do conjunto $\mathbb B$
+       \item[${\mathbb A}\cup{\mathbb B}$] União dos conjuntos $\mathbb A$ e $\mathbb B$
+       \item[$T$] Período de amostragem
+       \item[$\tilde{\bf x}$] Variável de erro ${\bf x}-{\bf x}_{ref}$
+       \item[$f_{{\bf x},a}$] Matriz jacobiana de $f$ com relação a $\bf x$ em torno de um ponto $a$
+\end{listofsymbols}

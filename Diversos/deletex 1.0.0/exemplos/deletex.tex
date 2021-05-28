@@ -1,0 +1,354 @@
+% exemplo genérico de uso da classe deletex.cls
+% Copyright (C) 2004 Walter Fetter Lages <w.fetter@ieee.org>
+%
+% This file was adapted from:
+% $Id: iiufrgs.tex,v 4.6 2003/11/21 22:36:13 avila Exp $
+% Copyright (C) 2001,2003 UFRGS TeX Users Group
+%
+% This is free software, distributed under the GNU GPL; please take
+% a look in `deletex.cls' to see complete information on using, copying
+% and redistributing these files
+%
+
+% Seleção do tipo de monografia e das opções de formatação
+\documentclass[openright,diss]{deletex}
+
+% um tipo específico de monografia pode ser informado como parâmetro opcional:
+%\documentclass[tese]{deletex}
+
+% O tipo de monografia pode ser:
+% diss 			dissertação de mestrado
+% rp 			relatório de pesquisa
+% prop-tese 		proposta de tese de doutorado
+% plano-doutorado 	plano curso de doutorado
+% dipl-ele 		projeto de diplomação em Engenharia Elétrica
+% dipl-ecp		projeto de diplocação em Engenharia de Computação
+% ti			trabalho individual
+% pep			plano de estudos e pesquisa
+% tese			tese de doutorado
+% tc			trabalho de conclusão de mestrado profissional
+% espec			monografia de conclusão de curso de especialização
+
+% É importante notar que estes tipos de monografia foram herdados do estilo
+% do II/UFRGS e não necessariamente aplicam-se ao DELET/EE/UFRGS. Ou seja,
+% embora a classe deletex.cls defina uma opcao para elaborar um PEP, isto nao
+% significa que um PEP seja exigido pelo PPGEE.
+
+% monografias em inglês devem receber o parâmetro `english':
+%\documentclass[diss,english]{deletex}
+
+% a opção `openright' pode ser usada para forçar inícios de capítulos
+% em páginas ímpares
+% \documentclass[openright]{deletex}
+
+% para gerar uma versão somente-frente, basta utilizar a opção `oneside':
+% \documentclass[oneside]{deletex}
+
+% A opcao numbers pode ser usada para gerar referência numéricas.
+% A opcao sort&compress faz com que referencias do tipo [8,5,3,4] sejam
+% convertidas para [3-4,8]
+%\documentclass[numbers,sort&compress]{deletex}
+
+% A opcao relnum faz com que a numeracao de figuras, tabelas e equações
+% seja por capítulo.
+%\documentclass[relnum]{deletex}
+
+% O uso dos pacotes abaixo é opcional e depende de preferências pessoais
+\usepackage[latin1]{inputenc}   % Para reconhecer o conjunto de
+				% caracteres latin1 (á) na entrada (.tex) e evitar a necessidade
+				% de utilizar o formato tradicional: (\'a)
+\usepackage{graphicx}           % Para importar figuras
+%\usepackage{mathptmx}          % Para usar fonte Adobe Times nas expressoes
+\usepackage{float}		% Para posicionar as figuras de forma mais conveniente
+%
+% Informações gerais
+%
+\title{Um Exemplo de Dissertação (Monografia, Tese, Projeto de Diplomação) Apresentada ao PPGEE
+ou ao DELET}
+
+\author{Flaumann}{Fritz Gutenberg}
+% alguns documentos podem ter varios autores:
+%\author{Flaumann}{Frida Gutenberg}
+%\author{Flaumann}{Klaus Gutenberg}
+
+% orientador
+\advisor[Prof.~Dr.]{Lamport}{Leslie}
+\advisorinfo{Microsoft}{Doutor pela Brandeis University -- Waltham, EUA}
+
+% O comando \advisorwidth pode ser usado para ajustar o tamanho do campo
+% destinado ao nome do orientador, de forma a evitar que ocupe mais de uma linha 
+%\advisorwidth{0.55\textwidth}
+
+% obviamente, o co-orientador é opcional
+%\coadvisor[Prof.~Dr.]{Knuth}{Donald E.}
+\coadvisorinfo{Stanford}{Doutor pelo California Institute of Technology -- Pasadena, EUA}
+
+% banca examinadora
+\examiner[Prof.~Dr.]{Goossens}{Michel}
+\examinerinfo{CERN}{Doutor pela Vrije Universiteit Brussel -- Bruxelas, Bélgica}
+\examiner[Prof.~Dr.]{Gomes da Silva Jr.}{João Manuel}
+\examinerinfo{UFRGS}{Doutor pela Université Paul Sabatier -- Toulouse, França}
+\examiner[Prof.~Dr.]{Carro}{Luigi}
+\examinerinfo{UFRGS}{Doutor pela Universidade Federal do Rio Grande do Sul -- Porto Alegre, Brasil}
+
+% a data deve ser a da defesa; se nao especificada, são gerados
+% mes e ano correntes
+%\date{fevereiro}{2004}
+
+% o nome do curso pode ser redefinido (ex. para Monografias)
+%\course{Curso de Qualquer Coisa}
+
+% o local de realização do trabalho pode ser especificado (ex. para Monografias)
+% com o comando \location:
+%\location{São José dos Campos}{SP}
+
+% itens individuais da nominata podem ser redefinidos com os comandos
+% abaixo:
+% \renewcommand{\nominataReit}{Prof\textsuperscript{a}.~Dr.~Jos{\'e} Carlos Ferraz Hennemann}
+% \renewcommand{\nominataReitname}{Reitor}
+% \renewcommand{\nominataPRE}{Prof.~Dr.~Pedro Cezar Dutra Fonseca}
+% \renewcommand{\nominataPREname}{Pr{\'o}-Reitor de Ensino}
+% \renewcommand{\nominataPRAPG}{Prof\textsuperscript{a}.~Dr\textsuperscript{a}.~Valqu\'{\i}ria Linck Bassani}
+% \renewcommand{\nominataPRAPGname}{Pr{\'o}-Reitora de P{\'o}s-Gradua{\c{c}}{\~a}o}
+% \renewcommand{\nominataDir}{Prof.~Dr.~Renato Machado de Brito}
+% \renewcommand{\nominataDirname}{Diretor da Escola de Engenharia}
+% \renewcommand{\nominataCoord}{Prof.~Dr.~Carlos Eduardo Pereira}
+% \renewcommand{\nominataCoordname}{Coordenador do PPGEE}
+% \renewcommand{\nominataBibchefe}{June Magda Rosa Schamberg}
+% \renewcommand{\nominataBibchefename}{Bibliotec{\'a}ria-chefe da Escola de Engenharia}
+% \renewcommand{\nominataChefeDELET}{Prof.~Dr.~Roberto Petry Homrich}
+% \renewcommand{\nominataChefeDELETname}{Chefe do \delet}
+
+% A seguir são apresentados comandos específicos para alguns
+% tipos de documentos.
+
+% Relatório de Pesquisa [rp]:
+% \rp{123}             % numero do rp
+% \financ{CNPq, CAPES} % orgaos financiadores
+
+% Trabalho Individual [ti]:
+% \ti{123}     % numero do TI
+% \ti[II]{456} % no caso de ser o segundo TI
+
+% Monografias de Especialização [espec]:
+% \espec{Automação Industrial}      % nome do curso
+% \coord[Prof.]{Bazanella}{Alexandre Sanfelice} % coordenador do curso
+% \dept{DELET}                                 % departamento relacionado
+
+% Projeto de diplomação em Engenharia Elétrica [dipl-ele] ou em Engenharia
+% de Computação [dipl-ecp]:
+% Pode-se definir explicitamente o nome do curso (\course):
+%\course{\cgele}
+%\course{\cgecp}
+%
+% palavras-chave
+% iniciar todas com letras minúsculas, exceto no caso de abreviaturas
+%
+\keyword{formatação eletrônica de documentos}
+\keyword{\LaTeX}
+\keyword{ABNT}
+\keyword{UFRGS}
+
+%
+% inicio do documento
+%
+\begin{document}
+
+% O comando \maketile gera a capa, a folha de rosto e a folha de aprovacao 
+% (se for o caso)
+% às vezes é necessário redefinir algum comando logo antes de produzir
+% a Capa, folha de rosto e folha de aprovacao:
+% \renewcommand{\coordname}{Coordenadora do Curso}
+\maketitle
+
+% dedicatoria é opcional
+\chapter*{Dedicatória}
+Dedico aos dedicados.
+
+% agradecimentos são opcionais
+\chapter*{Agradecimentos}
+Agradeço ao \LaTeX\ por não ter vírus de macro\ldots
+
+% resumo no idioma do documento
+\begin{abstract}
+Este documento é um exemplo de como formatar documentos para o
+Departamento de Engenharia Elétrica da UFRGS usando a classe \LaTeX\
+{\tt deletex.cls}. Ao mesmo tempo, pode servir de consulta
+para comandos mais genéricos. \emph{O texto do resumo não deve
+conter mais do que 500 palavras.}
+\end{abstract}
+
+% resumo no outro idioma
+% como parametro devem ser passadas as palavras-chave
+% no outro idioma, separadas por vírgulas
+\begin{englishabstract}{Electronic document preparation, \LaTeX, ABNT, UFRGS}
+This document is an example on how to prepare documents at DELET/EE/UFRGS
+using the \LaTeX\ class {\tt deletex.cls}. At the same time, it
+may serve as a guide for general-purpose commands. \emph{The text in
+the abstract should not contain more than 500~words.}
+\end{englishabstract}
+
+
+% sumario
+\tableofcontents
+
+% lista de ilustrações
+\listoffigures
+
+% lista de tabelas
+\listoftables
+
+% lista de abreviaturas e siglas
+% o parametro deve ser a abreviatura mais longa
+\begin{listofabbrv}{SPMD}
+        \item[SMP] Symmetric Multi-Processor
+        \item[NUMA] Non-Uniform Memory Access
+        \item[SIMD] Single Instruction Multiple Data
+        \item[SPMD] Single Program Multiple Data
+        \item[ABNT] Associação Brasileira de Normas Técnicas
+\end{listofabbrv}
+
+% lista de símbolos é opcional
+\begin{listofsymbols}{$\alpha\beta\pi\omega$}
+       \item[$\sum$] Somatório
+       \item[$\alpha\beta\pi\omega$] Fator de inconstância do resultado
+\end{listofsymbols}
+
+
+
+
+% AQUI COMEÇA O TEXTO PROPRIAMENTE DITO
+
+% introducao
+\chapter{Introdução}
+
+No início dos tempos, Donald E. Knuth criou o \TeX. Algum tempo depois,
+Leslie Lamport criou o \LaTeX. Graças a eles, não somos obrigados a usar o
+Word nem o StarOffice.
+
+\section{Figuras e tabelas}
+
+Esta seção faz referência às Figuras~\ref{fig:ex1} e~\ref{fig:ex2}, a título
+de exemplo. A primeira representa o caso mais comum, onde a figura
+propriamente dita é importada de um arquivo \texttt{.eps} (aplicativos como
+\emph{xfig} e \emph{dia} estão entre os mais usados para gerar figuras no
+formato \texttt{.eps}). A segunda exemplifica o uso do ambiente
+\texttt{picture}, para desenhar usando o próprio~\LaTeX.
+
+\begin{figure}[htbp]
+        \centerline{\includegraphics[width=8em]{fig.eps}}
+        \caption{Exemplo de figura importada de um arquivo \texttt{.eps} e também exemplo de caption muito grande que ocupa mais de uma linha na Lista de~Figuras.}
+        \label{fig:ex1}
+\end{figure}
+
+% O `[htbp]'  é um parâmetro opcional que SUGERE que o LaTeX coloque a
+% figura exatamente neste ponto do texto, ou no topo da página, ou no final
+% da página, ou em uma página separada, nesta ordem de prioridade. Somente
+% preocupe-se com esse tipo de formatação quando o texto estiver
+% completamente pronto (uma frase a mais pode fazer o LaTeX mudar
+% completamente de idéia sobre onde colocar as  figuras e tabelas).
+% O parâmetro `[H]' FORÇA que a figura seja colocada exatamente neste ponto
+% do texto.
+
+\begin{figure}[H]
+        \begin{center}
+        \setlength{\unitlength}{.1em}
+        \begin{picture}(100,100)
+                \put(20,20){\circle{20}}
+                \put(20,20){\small\makebox(0,0){a}}
+                \put(80,80){\circle{20}}
+                \put(80,80){\small\makebox(0,0){b}}
+                \put(28,28){\vector(1,1){44}}
+        \end{picture}
+        \end{center}
+        \caption{Exemplo de figura desenhada com o ambiente \texttt{picture}.}
+        \label{fig:ex2}
+\end{figure}
+
+Tabelas são construídas com praticamente os mesmos comandos. Lembre-se,
+porém, que o caption das tabelas deve ir em cima, como pode ser visto na
+Tabela~\ref{tab:desempenho}. 
+
+\begin{table*}[htbp]
+\begin{center}
+\caption{Desempenho do sistema de controle.}
+\label{tab:desempenho}
+\begin{tabular}{l|cccc}
+\hline
+Controle & ISE & IAE & ITSE & ITAE \\
+\hline
+local 			& $79,7715$& $69,8436$& $10,9993$& $57,0757$\\
+em rede 		& $1802,18$& $1292,39$& $9765,84$& $6943,23$\\
+com compensa\c{c}\~ao de atrasos & $64,1702$& $70,4040$& $9,2710$& $137,8003$\\
+\hline
+\end{tabular}
+\end{center}
+\end{table*}
+
+\subsection{Classificação dos etc.}
+
+O formato adotado pela ABNT prevê apenas três níveis (capítulo, seção e
+subseção). Assim, \texttt{\char'134subsubsection} não é aconselhado.
+
+\section{Sobre as referências bibliográficas}
+
+Recomenda-se seriamente fazer uso do pacote \emph{bibabnt}, 
+disponibilizado na página do UTUG~\citeyearpar{UTUG:Homepage-01}. Esse
+pacote provê um estilo BIBTeX para formatação de referências
+bibliográficas combinando normas da ABNT e do Departamento de Engenharia
+Elétrica da UFRGS.
+
+As seguintes referências são colocadas aqui a título de exemplo:
+\cite{Patashnik:bibTeXing-88, Silberschatz:OSC-3-91, IEEE:Pthreads-95}.
+
+O pacote \DeLeTeX\ faz uso do pacote \emph{natbib}. Esse pacote
+disponibiliza diversos comandos alternativos para citações. Os mais úteis
+são o \texttt{\char'134citeyearpar}, que produz somente o ano
+(ex.~``[\ldots] são apresentados por Caromel, Klauser e
+Vayssiere~\citeyearpar{Caromel:TSC-CPE-10-11-98}.'') e o
+\texttt{\char'134citep*}, que produz a citação com a lista completa de
+autores (ex.~``[\ldots] na linguagem
+Panda~\citep*{Assenmacher:Panda-ECOOP93}.'')
+
+% e aqui vai a parte principal
+%
+% \chapter{Estado da arte}
+% \chapter{Mais estado da arte}
+% \chapter{A minha contribuição}
+% \chapter{Prova de que a minha contribuição é válida}
+% \chapter{Conclusão}
+
+% referencias
+% Aqui pode ser usado o ambiente padrao `thebibliography'; porém, faça um
+% favor a sí mesmo e use o \bibtex\ e o estilo abnt.bst (veja na página do
+% UTUG). 
+
+\bibliographystyle{abnt}
+\bibliography{exemplo} 		% pode-se ter vários arquivos .bib separados
+				% por vírgulas
+
+
+% Apêndices
+\appendix
+
+% Pode-se ter diversos apêndices
+\chapter{Título do Apêndice}
+
+Nos apêndices aparecem textos ou documentos elaborados pelo autor  a fim de
+complementar sua argumentação sem prejuízo do trabalho. Eles sempre deverão
+estar depois das referências e antes dos anexos.
+
+
+% Anexos
+\annex
+
+% Pode-se ter diversos anexos
+\chapter{Título do Anexo}
+
+Já os anexos serão textos, trabalhos e materiais que não foram elaborados
+pelo autor, mas que servem de comprovação, fundamentação ou ilustração dos
+argumentos contidos no texto. Neste ponto, deve-se dar especial atenção à
+questão dos direitos autorais.
+
+\end{document}
+

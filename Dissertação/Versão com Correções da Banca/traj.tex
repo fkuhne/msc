@@ -1,0 +1,682 @@
+%%%%%%%%%%%%%%%%%%%%
+\section{Introdução}
+No Capítulo~\ref{cap:wmr} o problema do controle de robôs móveis dotados de rodas foram brevemente expostos, e alguns exemplos foram mostrados. No Capítulo~\ref{cap:point} o problema de estabilização em um ponto foi discutido e resolvido através de um algoritmo de NMPC, e diversas comparações com leis clássicas de controle de robôs móveis foram feitas, provando-se a eficácia e as vantagens do NMPC para este problema. Neste capítulo será estudado o problema de rastreamento de trajetória, onde uma trajetória de referência é determinada previamente e indica o {\em caminho} no qual o robô deve se movimentar. Tem-se então agora um robô {\em virtual} de referência que move-se ao longo do tempo.
+
+O problema de rastreamento de trajetória já foi previamente abordado na literatura que trata de controle de robôs móveis (por exemplo,~\cite{murray90,kanayama90,yang98,lee99,rico99,ramirez99,dong01}). Este método torna-se vantajoso quando o robô movimenta-se em um ambiente onde existem obstáculos conhecidos e uma trajetória de referência previamente calculada. Novamente, com excessão daqueles que utilizam MPC, em nenhum dos trabalhos existentes é possível considerar restrições nos estados ou entradas de controle de uma forma direta, como é feito com o MPC. Ainda, como destacado em~\cite{camacho99}, o MPC é bastante vantajoso quando aplicado a processos onde as evoluções das referências são conhecidas {\em a priori}, como na robótica e na indústria de processamento em lote, pois assim o sistema pode reagir com antecedência às futuras mudanças das referências.
+
+Na próxima seção é dada então a formulação do problema de rastreamento de trajetória tratado aqui, seguido do desenvolvimento de um algoritmo de MPC não linear aplicado a este problema. Após, um estudo relativo ao esforço computacional do NMPC é feito. Como dito anteriormente, o cálculo de uma lei de controle através do NMPC requer um alto custo computacional. Assim, a fim de minimizar este problema, na seção subseqüente é mostrada uma abordagem onde, através de linearizações sucessivas do modelo cinemático do robô ao longo da trajetória de referência, é possível transformar o problema de otimização do MPC em um problema de programação quadrática, o qual é computacionalmente mais simples de se resolver. Por fim, considerações acerca do custo computacional relativo ao MPC linear são feitas.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Formulação do Problema}
+
+O problema aqui é bastante parecido com o tratado no capítulo anterior, quando o objetivo era estabilizar o robô na origem. A diferença é que agora o objetivo é fazer com que o robô siga uma trajetória de referência pré determinada e variante no tempo, que pode ser formulado então como:
+\begin{equation}\label{eqn:traj_obj}
+	{\bf x}(k) - {\bf x}_{ref}(k) = 0, \qquad {\bf x}_{ref}(k) =
+		\begin{bmatrix}x_{ref}(k)\\y_{ref}(k)\\\theta_{ref}(k)\end{bmatrix}
+\end{equation}
+onde ${\bf x}_{ref}(k)$ é a trajetória de referência.
+
+Nota-se que a expressão~\req{eqn:traj_obj} é bem semelhante à expressão~\req{eqn:point_obj}, definida no Capítulo~\ref{cap:point} para o problema de estabilização em um ponto. A diferença é que agora o ponto onde o robô deve convergir move-se ao longo do tempo. Assim, comumente associa-se à trajetória de referência um robô de referência {\em virtual}, que possui o mesmo modelo cinemático do robô a ser controlado:
+\begin{equation*}
+	\left\{
+		\begin{aligned}
+			x_{ref}(k+1) 	   &= x_{ref}(k) + v_{ref}(k)\cos\theta_{ref}(k)T \\
+			y_{ref}(k+1) 	   &= y_{ref}(k) + v_{ref}(k)\sen\theta_{ref}(k)T \\
+			\theta_{ref}(k+1) &= \theta_{ref}(k) + w_{ref}(k)T
+		\end{aligned}
+	\right.,
+\end{equation*}
+ou, em uma forma mais compacta,
+\begin{equation*}
+	{\bf x}_{ref}(k+1) = f({\bf x}_{ref}(k),{\bf u}_{ref}(k)),
+\end{equation*}
+onde ${\bf u}_{ref}(k)=[v_{ref}(k)~~w_{ref}(k)]^T$ são as entradas de controle de referência.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Rastreamento de Trajetória com um MPC Não Linear}
+
+Definindo
+\begin{align*}
+	\tilde{\bf x}(k) &= {\bf x}(k) - {\bf x}_{ref}(k) \\
+	\tilde{\bf u}(k) &= {\bf u}(k) - {\bf u}_{ref}(k),
+\end{align*}
+e novamente assumindo que $N_1=1$, $N_2=N$ e $N_u=N-1$ na expressão~\req{eqn:cost}, tem-se que $j\in[1,N]$ e a seguinte função de custo é utilizada:
+\begin{equation}\label{eqn:tracking_cost}
+	\Phi(k) = \sum_{j=1}^{N}\tilde{\bf x}^T(k+j|k){\bf Q}\tilde{\bf x}(k+j|k) + \tilde{\bf u}^T(k+j-1|k){\bf R}\tilde{\bf u}(k+j-1|k)
+\end{equation}
+e o NMPC em cada instante de amostragem $k$ para o problema de seguimento de trajetória é resolvido de forma idêntica ao caso de estabilização na origem:
+\begin{equation*}
+	{\bf u}^\star,~{\bf x}^\star = \arg\min_{{\bf u},{\bf x}}\left\{\Phi(k)\right\}
+\end{equation*}
+sujeito às restrições da dinâmica do sistema~\req{eqn:discrete_model} e da amplitude da entrada de controle:
+\begin{alignat*}{2}
+	{\bf x}(k+j|k)  &= f({\bf x}(k+j-1|k),{\bf u}(k+j-1|k)), &\quad j &\in [1,N] \\
+	{\bf Du}(k+j|k) &\leq {\bf d}, 					  &\quad j &\in [0,N-1]
+\end{alignat*}
+onde os valores utilizados na matriz $\bf D$ no vetor $\bf d$ são referentes aos limites do robô Twil, definidos no Apêndice~\ref{app:twil}.
+
+Considerando-se então os seguintes parâmetros:
+\begin{equation*}
+	N = 5, \qquad
+	{\bf Q} = \begin{bmatrix}	
+		1 & 0 & 0 \\
+		0 & 1 & 0 \\
+		0 & 0 & 0.5 \end{bmatrix}, \qquad
+	{\bf R} = \begin{bmatrix}
+		0.1 & 0 \\ 
+		0 & 0.1 \end{bmatrix},
+\end{equation*}
+e os mesmos $\bf D$ e $\bf d$ definidos pela expressão~\req{eqn:Dd} relativos aos limites do robô Twil, obtém-se os seguintes resultados, para uma condição inicial de ${\bf x}_0=[-0,5~~-2,5~~0]^T$ e uma trajetória de referência circular:
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/traj_01.eps}
+    \caption{Trajetória do robô no plano $XY$ para uma referência circular (linha traço-ponto). NMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:traj_traj_01}
+\end{center}\end{figure}
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. NMPC com função de custo em coordenadas cartesianas. A linha traço-ponto representa o estado de referência.}
+    \label{fig:traj_state_01}
+\end{center}\end{figure}
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. NMPC com função de custo em coordenadas cartesianas. A linha traço-ponto representa a entrada de referência.}
+    \label{fig:traj_control_01}
+\end{center}\end{figure}
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/cost_01.eps}
+    \caption{Função de custo $\Phi$. NMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:traj_cost_01}
+\end{center}\end{figure}
+
+A referência utilizada aqui é uma trajetória circular, com um raio de dois metros e centrada na origem. O tempo para percorrer uma volta da trajetória é de 40 segundos, fazendo com que a velocidade linear de referência seja igual a $0,3142~m/s$ e a velocidade angular de referência seja de $0,1571~rad/s$. 
+
+Nota-se então nas figuras~\ref{fig:traj_traj_01} a \ref{fig:traj_cost_01} acima que o robô segue a referência, mas com uma baixa taxa de convergência, levando cerca de 40 segundos, ou uma volta, para convergir para a trajetória.
+
+No capítulo anterior, quando o problema da estabilização em um ponto foi tratado, existia um grande erro em regime permanente. Entretanto, este problema agora desaparece, aparentemente pelo fato de agora existir uma referência que se move ao longo do tempo. Assim, o algoritmo de MPC consegue minimizar tanto o erro em $x$ quanto o erro em $y$, mesmo estes dois estados sendo dependentes da mesma entrada de controle. Observa-se também que a restrição na amplitude das entradas de controles é perfeitamente respeitada (Figura~\ref{fig:traj_control_01}).
+
+Os resultados são novamente mostrados abaixo, agora para uma trajetória de referência em forma de U e com os mesmos dados do NMPC utilizados anteriormente. A condição inicial do robô é ${\bf x}_0=[-1~~-1~~0]^T$.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/traj_02.eps}
+    \caption{Trajetória do robô no plano $XY$ para uma referência em U (linha traço-ponto). NMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:traj_traj_02}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/state_02.eps}
+    \caption{Estados $x$, $y$ e $\theta$. NMPC com função de custo em coordenadas cartesianas. A linha traço-ponto representa o estado de referência.}
+    \label{fig:traj_state_02}
+\end{center}\end{figure}
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/control_02.eps}
+    \caption{Entradas de controle $v$ e $w$. NMPC com função de custo em coordenadas cartesianas. A linha traço-ponto representa a entrada de referência.}
+    \label{fig:traj_control_02}
+\end{center}\end{figure}
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/cost_02.eps}
+    \caption{Função de custo $\Phi$. NMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:traj_cost_02}
+\end{center}\end{figure}
+
+Novamente para este caso observa-se uma baixa taxa de convergência, de forma que o robô converge para a referência apenas no fim da trajetória, como observa-se na Figura~\ref{fig:traj_traj_02}.
+
+No Capítulo anterior mostrou-se que, através da inclusão de um custo terminal e de um peso de estados exponencialmente crescente na função de custo~\cite{essen01}, a taxa de convergência pode ser drasticamente aumentada sem a necessidade de se aumentar o horizonte de predição. Assim, a fim de, ao mesmo tempo, manter um baixo custo computacional com um bom desempenho de controle, a seguinte função de custo é utilizada:
+\begin{equation*}
+	\Phi(k) = \sum_{j=1}^{N-1}\tilde{\bf x}^T(k+j|k){\bf Q}(j)\tilde{\bf x}(k+j|k) + \sum_{j=0}^{N-1}\tilde{\bf u}^T(k+j|k){\bf R}\tilde{\bf u}(k+j|k) + \Omega(\tilde{\bf x}(k+N|k)),
+\end{equation*}
+onde
+\begin{equation*}
+	\Omega(\tilde{\bf x}(k+N|k)) = \tilde{\bf x}^T(k+N|k){\bf P}\tilde{\bf x}(k+N|k)
+\end{equation*}
+e ${\bf P}$ é uma matriz tal que aumenta o peso dos estados no final do horizonte, fazendo com que ${\bf x}(k+N|k)$ se aproxime mais da origem. Aqui, escolhe-se
+\begin{equation*}
+	{\bf Q}(j) = 2^{j-1}{\bf Q}, \quad {\bf P} = 30{\bf Q}(N)
+\end{equation*}
+
+Mantendo-se um horizonte de $N=5$ e as mesmas matrizes de ponderação utilizadas anteriormente, obtém-se os seguintes resultados, para uma condição inicial de \mbox{${\bf x}_0=[-0,5~~-2,5~~0]^T$} na trajetória de referência circular:
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/traj_01.eps}
+    \caption{Trajetória do robô no plano $XY$ para uma referência circular (linha traço-ponto). NMPC de~\cite{essen01}.}
+    \label{fig:essen_traj_11}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. NMPC de~\cite{essen01}. A linha traço-ponto representa o estado de referência.}
+    \label{fig:essen_state_11}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. NMPC de~\cite{essen01}. A linha traço-ponto representa a entrada de referência.}
+    \label{fig:essen_control_11}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/cost_01.eps}
+    \caption{Função de custo $\Phi$. NMPC de~\cite{essen01}.}
+    \label{fig:essen_cost_11}
+\end{center}\end{figure}
+
+Agora, repetindo-se o mesmo problema para a trajetória de referência em forma de U e com uma condição inicial de ${\bf x}_0=[-1~~-1~~\pi/2]^T$, obtém-se os seguintes resultados:
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/traj_02.eps}
+    \caption{Trajetória do robô no plano $XY$ para uma referência em U (linha traço-ponto).}
+    \label{fig:essen_traj_12}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/state_02.eps}
+    \caption{Estados $x$, $y$ e $\theta$. NMPC de~\cite{essen01}. A linha traço-ponto representa o estado de referência.}
+    \label{fig:essen_state_12}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/control_02.eps}
+    \caption{Entradas de controle $v$ e $w$. NMPC de~\cite{essen01}. A linha traço-ponto representa a entrada de referência.}
+    \label{fig:essen_control_12}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/cost_02.eps}
+    \caption{Função de custo $\Phi$. NMPC de~\cite{essen01}.}
+    \label{fig:essen_cost_12}
+\end{center}\end{figure}
+
+Observa-se assim, pelas figuras~\ref{fig:essen_traj_11} a \ref{fig:essen_cost_12}, que a trajetória do robô alcança a trajetória de referência mais rapidamente, com uma aproximação bastante suave. Nota-se também que as amplitudes das entradas de controle respeitam perfeitamente as restrições impostas para o robô Twil.
+
+Nas figuras a seguir é feita uma comparação entre o NMPC com função de custo original e o NMPC de \cite{essen01}. A trajetória de referência é formada por três segmentos de retas, estes ligados por duas curvas. A condição inicial do robô é ${\bf x}_0=[0~~2~~-\pi/2]^T$.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/traj_03.eps}
+    \caption{Trajetória do robô no plano $XY$. Linha contínua: NMPC de \cite{essen01}; linha tracejada: NMPC com função de custo original; linha traço-ponto: trajetória de referência.}
+    \label{fig:essen_traj_13}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/state_03.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Linha contínua: NMPC de \cite{essen01}; linha tracejada: NMPC com função de custo original; linha traço-ponto: trajetória de referência.}
+    \label{fig:essen_state_13}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/control_03.eps}
+    \caption{Entradas de controle $v$ e $w$. Linha contínua: NMPC de \cite{essen01}; linha tracejada: NMPC com função de custo original; linha traço-ponto: trajetória de referência.}
+    \label{fig:essen_control_13}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/cost_03.eps}
+    \caption{Função de custo $\Phi$. Linha contínua: NMPC de \cite{essen01}; linha tracejada: NMPC com função de custo original.}
+    \label{fig:essen_cost_13}
+\end{center}\end{figure}
+
+Assim, observa-se claramente que o robô Twil cumpre com resultados bem satisfatórios a tarefa de rastreamento de trajetória para qualquer tipo de trajetória de referência, respeitando os limites de amplitude impostos nas entradas de controle. 
+
+Como dito anteriormente, a modificação da função de custo proposta por~\cite{essen01} faz com que o aumento no horizonte de predição não seja necessário para se aumentar a performance, quando comparado com o NMPC com a função de custo em seu formato original (expressão~\req{eqn:tracking_cost}). Nota-se, na Figura~\ref{fig:essen_comp}, o desempenho do robô no plano $XY$ com $N=20$ para o NMPC original e $N=5$ para o NMPC de~\cite{essen01}, para uma referência circular e uma condição inicial de \mbox{${\bf x}_0=[0~~-1~~0]^T$}.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/comp_01.eps}
+    \caption{Função de custo $\Phi$. Linha contínua: NMPC de \cite{essen01} com $N=5$; linha tracejada: NMPC com função de custo original e $N=20$.}
+    \label{fig:essen_comp}
+\end{center}\end{figure}
+
+Na próxima seção um estudo do custo computacional para este problema é desenvolvido.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{O Custo Computacional do NMPC}\label{sec:traj_nmpc_cost}
+
+A exemplo do capítulo anterior, nesta seção será feita uma análise quanto ao esforço computacional necessário para a resolução dos algoritmos de NMPC para o problema de rastreamento de trajetória, a fim de ser verificada a viabilidade destes algoritmos em uma aplicação em tempo-real. 
+
+Assim, utilizando-se do mesmo critério (o número de operações em ponto flutuante, OPF, realizadas por período de amostragem) e tomando por base o valor estimado por~\cite{aburto92} para um computador com processador Athlon XP 2600+, tem-se que o número de flops executados é de 576.000.000. Assim, como o período de amostragem é de $T=0,1~\text{segundo}$, tem-se que o máximo custo computacional permitido é de 57.600.000 de operações em ponto flutuante por período de amostragem.
+
+Dois casos de NMPC são então estudados:
+\begin{itemize}
+\item {\em Caso 1}. O NMPC com função de custo original (Expressão~\req{eqn:tracking_cost});
+\item {\em Caso 2}. O NMPC de \cite{essen01}, com função de custo com custo terminal e matriz $\bf Q$ crescente exponencialmente ao longo do horizonte.
+\end{itemize}
+
+Nos dois casos acima a restrição de amplitude das entradas de controle, ${\bf Du}\leq{\bf d}$, é considerada e a condição inicial do robô é ${\bf x}_0=[-0,5~~-2,5~~0]^T$. Como referência, é utilizada a trajetória circular apresentada anteriormente. O número de OPF por período de amostragem foi medido através da função {\tt flops} do Matlab. Os resultados são mostrados na Tabela~\ref{tab:nmpc_traj}.
+
+\begin{table}[H]
+	\caption{Custo computacional do NMPC - rastreamento de trajetória.}
+ 	\label{tab:nmpc_traj}
+ 	\centering
+ 	\begin{tabular}{c|cc}
+  		\hline
+  		Horizonte & \multicolumn{2}{c} \mbox{No.} OPF por período de amostragem \\
+          		& Caso 1 & Caso 2 \\
+  		\hline\hline
+  		5	& 624.000	   & 1.109.800 \\
+  		10	& 5.178.300  & 50.156.000 \\
+  		15	& 12.371.000 & 536.410.000 \\
+  		20	& 28.265.000 & --- \\
+  		\hline
+ 	\end{tabular}
+\end{table}
+
+Novamente, a inclusão de um custo terminal e de uma matriz de ponderação de estados crescente exponencialmente como desenvolvido por~\cite{essen01} faz com que o custo computacional aumente consideravelmente com o aumento do horizonte de predição. Entretanto, o aumento do horizonte é não justificável quando se analisa o desempenho desenvolvido pelo robô quando se aplica a função de custo de~\cite{essen01}, conforme pode-se observar pelo gráfico da Figura~\ref{fig:essen_traj_10}. Assim, com um horizonte igual a 5 é possível manter um bom compromisso entre desempenho e custo computacional.
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/traj_10.eps}
+    \caption{Trajetória do robô no plano $XY$. Linha contínua: NMPC de \cite{essen01} com $N=5$; linha tracejada: NMPC de \cite{essen01} com $N=15$; linha traço-ponto: trajetória de referência.}
+    \label{fig:essen_traj_10}
+\end{center}\end{figure}
+
+Entretanto, dependendo do computador utilizado, este NMPC pode não ser implementável em tempo real até mesmo para horizontes menores que 5. Então, uma outra abordagem que não a utilização de um MPC não linear é desejável. Assim, na próxima seção deste capítulo será visto que, para o problema de rastreamento de trajetória, é possível utilizar um MPC linear através da linearização sucessiva do modelo cinemático do robô ao longo da trajetória de referência. Como se sabe, um MPC linear possui a vantagem de considerar um problema convexo de otimização e de ter um menor número de variáveis de decisão, diminuindo assim o esforço computacional necessário.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Rastreamento de Trajetória com um MPC Linear}\label{sec:tracking_linear}
+Se o sistema é linear, as restrições são lineares e a função de custo é quadrática, o problema de otimização de um MPC pode ser transformado em um problema de programação quadrática\footnote{Abordado com detalhes na Seção~\ref{sec:qp}.}, e para isso algoritmos de solução numérica robustos existem. Como o problema é convexo, é possível o cálculo do mínimo global~\cite{morari97}. Agora, se o sistema é não linear ou existem restrições não lineares, o problema de otimização torna-se significativamente mais custoso computacionalmente e mais difícil de se resolver, pois agora tem-se um maior número de variáveis de decisão e o problema é não convexo, o que geralmente leva a soluções sub-ótimas~\cite{henson98}.
+
+Assim, desenvolve-se nesta seção um algoritmo de MPC linear, ou LMPC ({\em Linear Model-based Predictive Control}) para a solução do problema de rastreamento de trajetória. Como a referência é conhecida para qualquer instante de amostragem futuro, é possível, através de linearizações sucessivas ao longo da trajetória de referência, obter-se uma descrição linear e variante no tempo do modelo do sistema~\cite{henson98,jorge00,duraiski01}. Então, considerando as entradas de controle como sendo as variáveis de decisão, pode-se transformar o problema de minimização da função de custo em um problema de QP.
+
+Tem-se novamente o seguinte modelo cinemático do robô:
+\begin{equation*}
+	\left\{
+		\begin{aligned}
+			\dot x	  &= v\cos\theta \\
+			\dot y	  &= v\sen\theta \\
+			\dot \theta &= w
+		\end{aligned}
+	\right.
+\end{equation*}
+que é escrito na forma compacta 
+\begin{equation}\label{eqn:modelshort2}
+	\dot{\bf x} = f({\bf x},{\bf u})
+\end{equation}
+	
+Um modelo linearizado pode ser obtido considerando-se um modelo de erro entre o robô e o robô de referência virtual~\cite{kuhne04b}. Este é descrito pelo mesmo modelo cinemático descrito acima. Então,
+\begin{equation}\label{eqn:refmodelshort}
+	\dot{\bf x}_{ref} = f({\bf x}_{ref},{\bf u}_{ref})
+\end{equation}
+
+Expandindo o lado direito da expressão~\req{eqn:modelshort2} em séries de Taylor em torno do ponto $({\bf x}_{ref},{\bf u}_{ref})$ e desconsiderando termos de ordem superior, segue-se que:
+\begin{equation}\label{eqn:taylor}
+	\dot{\bf x} = f({\bf x}_{ref},{\bf u}_{ref}) + f_{{\bf x},ref}({\bf x}-{\bf x}_{ref}) + f_{{\bf u},ref}({\bf u}-{\bf u}_{ref}),
+\end{equation}
+onde $f_{{\bf x},ref}$ e $f_{{\bf u},ref}$ representam os jacobianos de $f({\bf x},{\bf u})$ com relação a $\bf x$ e $\bf u$, respectivamente, em torno da referência:
+\begin{equation*}
+	f_{{\bf x},ref} = \left.\frac{\partial f({\bf x},{\bf u})}{\partial{\bf x}}\right|_{\begin{smallmatrix}{\bf x}={\bf x}_{ref} \\ {\bf u}={\bf u}_{ref} \end{smallmatrix}}, \qquad
+	f_{{\bf u},ref} = \left.\frac{\partial f({\bf x},{\bf u})}{\partial{\bf u}}\right|_{\begin{smallmatrix}{\bf x}={\bf x}_{ref} \\ {\bf u}={\bf u}_{ref} \end{smallmatrix}}
+\end{equation*}	
+
+Assim, substituindo a expressão~\req{eqn:refmodelshort} em \req{eqn:taylor}, e definindo ${\bf A}=f_{{\bf x},ref}$ e ${\bf B}=f_{{\bf u},ref}$, tem-se que:
+\begin{equation}\label{eqn:conterror}
+	{\dot{\tilde{\bf x}}} = {\bf A}\tilde{\bf x}+{\bf B}\tilde{\bf u}
+\end{equation}
+onde
+\begin{equation*}
+	\tilde{\bf x} = {\bf x} - {\bf x}_{ref}, \qquad
+	\tilde{\bf u} = {\bf u} - {\bf u}_{ref}
+\end{equation*}
+e
+\begin{equation*}
+	{\bf A} = \begin{bmatrix}
+		0 & 0 & -v_{ref}\sen\theta_{ref} \\
+		0 & 0 &  v_{ref}\cos\theta_{ref} \\
+		0 & 0 & 0 \end{bmatrix}, \qquad
+	{\bf B} = \begin{bmatrix}
+		\cos\theta_{ref} & 0 \\
+		\sen\theta_{ref} & 0 \\
+		0 & 1 \end{bmatrix}
+\end{equation*}
+
+Do Teorema~\ref{teo:cont}, foi visto que o modelo cinemático não linear do robô móvel, sistema~\req{eqn:model}, é controlável, ou seja, pode ser levado de uma configuração inicial a uma configuração final em um intervalo de tempo finito e com entradas de controle finitas. Entretanto, é fácil de notar que, quando o robô não está se movendo (ou seja, as entradas de controle são nulas), a linearização em torno de um ponto estacionário torna o sistema não controlável. Contudo, esta linearização torna-se controlável à medida que o robô permanece em movimento. A matriz de controlabilidade para o sistema linear sobre cada ponto da trajetória de referência é dada por:
+\begin{equation*}
+	{\cal C}=\begin{bmatrix}
+		\cos\theta_{ref} & 0 & 0 & -v_{ref}\sen\theta_{ref} & 0 & 0 \\
+		\sen\theta_{ref} & 0 & 0 & v_{ref}\cos\theta_{ref} & 0 & 0 \\
+		0 & 1 & 0 & 0 & 0 & 0
+	\end{bmatrix}
+\end{equation*}
+e claramente observa-se que para o sistema ser controlável a velocidade linear de referência $v_{ref}$ precisa ser não nula, caso contrário o posto de $\cal C$ não seria completo. Ainda, a velocidade angular de referência $w_{ref}$ não precisa ser diferente de zero, permitindo assim ao robô seguir trajetórias retas.
+
+Então, pode-se dizer que o modelo linearizado deduzido acima pode ser utilizado para o problema de rastreamento de trajetória de um robô móvel não holonômico.
+
+Discretizando a expressão~\req{eqn:conterror} pelo método de Euler, tem-se o seguinte modelo linear variante no tempo em tempo discreto, que será utilizado no LMPC:
+\begin{equation}\label{eqn:error}
+	\tilde{\bf x}(k+1) = {\bf A}(k)\tilde{\bf x}(k)+{\bf B}(k)\tilde{\bf u}(k),
+\end{equation}
+com $\tilde{\bf x}(k)={\bf x}(k)-{\bf x}_{ref}(k)$, $\tilde{\bf u}(k)={\bf u}(k)-{\bf u}_{ref}(k)$ e
+\begin{equation*}
+	{\bf A}(k) = \begin{bmatrix}
+		1 & 0 & -v_{ref}(k)\sen\theta_{ref}(k)T \\
+		0 & 1 &  v_{ref}(k)\cos\theta_{ref}(k)T \\
+		0 & 0 & 1
+	\end{bmatrix}, \qquad
+	{\bf B}(k) = \begin{bmatrix}
+		\cos\theta_{ref}(k)T & 0 \\
+		\sen\theta_{ref}(k)T & 0 \\
+		0 			  & T
+	\end{bmatrix},
+\end{equation*}
+onde $T$ é o período de amostragem.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{O Algoritmo de Programação Quadrática}\label{sec:qp}
+Aqui, a mesma função de custo dos casos anteriores para o problema de rastreamento de trajetória será utilizada:
+\begin{equation}\label{eqn:cost3}
+	\Phi(k) = \sum_{j=1}^{N}\tilde{\bf x}^T(k+j|k){\bf Q}\tilde{\bf x}(k+j|k) + \tilde{\bf u}^T(k+j-1|k){\bf R}\tilde{\bf u}(k+j-1|k)
+\end{equation}
+
+Assim, definindo:
+\begin{align}
+	\bar{\bf x}(k+1) &= \begin{bmatrix}
+		\tilde{\bf x}(k+1|k) \\ \tilde{\bf x}(k+2|k) \\ \vdots \\ \tilde{\bf x}(k+N-1|k) \\ \tilde{\bf x}(k+N|k)
+	\end{bmatrix}, \notag \\
+	\bar{\bf u}(k) &= \begin{bmatrix}
+		\tilde{\bf u}(k|k)  \\ \tilde{\bf u}(k+1|k) \\ \vdots \\ \tilde{\bf u}(k+N-2|k) \\ \tilde{\bf u}(k+N-1|k)
+	\end{bmatrix}\label{eqn:baru},
+\end{align}
+a função de custo pode ser reescrita como
+\begin{equation}\label{eqn:cost2}
+	\bar\Phi(k) = \bar{\bf x}^T(k+1)\bar{\bf Q}\bar{\bf x}(k+1) + \bar{\bf u}^T(k)\bar{\bf R}\bar{\bf u}(k),
+\end{equation}
+onde
+\begin{equation*}
+	\bar {\bf Q} = \begin{bmatrix}
+		{\bf Q} & {\bf 0} & \cdots & {\bf 0} \\
+		{\bf 0} & {\bf Q} & \cdots & {\bf 0} \\
+		\vdots  & \vdots  & \ddots & \vdots  \\
+		{\bf 0} & {\bf 0} & \cdots & {\bf Q}
+	\end{bmatrix}, \qquad
+	\bar {\bf R} = \begin{bmatrix}
+		{\bf R} & {\bf 0} & \cdots & {\bf 0} \\
+		{\bf 0} & {\bf R} & \cdots & {\bf 0} \\
+		\vdots  & \vdots  & \ddots & \vdots  \\
+		{\bf 0} & {\bf 0} & \cdots & {\bf R}
+	\end{bmatrix}
+\end{equation*}
+
+Ainda, com o modelo linear variante no tempo da expressão~\req{eqn:error}, pode-se escrever:
+\begin{equation}\label{eqn:exbar}
+	\bar{\bf x}(k+1) = \bar{\bf A}(k)\tilde{\bf x}(k|k)+\bar{\bf B}(k)\bar{\bf u}(k),
+\end{equation}
+com
+\begin{equation*}
+	\bar{\bf A}(k) = \begin{bmatrix}
+		{\bf A}(k|k) \\ {\bf A}(k+1|k){\bf A}(k|k) \\ \vdots \\ \alpha(k,2,0) \\ \alpha(k,1,0)
+	\end{bmatrix}
+\end{equation*}
+e
+\begin{equation*}
+		\bar{\bf B}(k) = \begin{bmatrix}
+			{\bf B}(k|k)				& {\bf 0} 			    	& \cdots & {\bf 0}        \\
+			{\bf A}(k+1|k){\bf B}(k|k) 	& {\bf B}(k+1|k)      	     & \cdots & {\bf 0}        \\
+			\vdots					& \vdots					& \ddots & \vdots         \\
+			\alpha(k,2,1){\bf B}(k|k)	& \alpha(k,2,2){\bf B}(k+1|k) & \cdots & {\bf 0}		 \\
+			\alpha(k,1,1){\bf B}(k|k)	& \alpha(k,1,2){\bf B}(k+1|k) & \cdots & {\bf B}(k+N-1|k)
+		\end{bmatrix}
+\end{equation*}
+onde $\alpha(k,j,l)$ é definido como:
+\begin{equation*}
+	\alpha(k,j,l) = \prod_{i=N-j}^{l}{\bf A}(k+i|k)
+\end{equation*}
+
+Então, pela dedução feita na Seção~\ref{sec:lmpc} e substituindo~\req{eqn:exbar} em~\req{eqn:cost2}, tem-se que a função de custo pode ser escrita na forma quadrática padrão:
+\begin{equation}\label{eqn:quadcost}
+	\bar\Phi(k) = \frac{1}{2}\bar{\bf u}^T(k){\bf H}(k)\bar{\bf u}(k) + {\bf f}^T(k)\bar{\bf u}(k) + {\bf g}(k),
+\end{equation}
+com
+\begin{align*}
+	{\bf H}(k) &= 2\left(\bar{\bf B}(k)^T\bar{\bf Q}\bar{\bf B}(k)+\bar{\bf R}\right) \\
+	{\bf f}(k) &= 2\bar{\bf B}^T(k)\bar{\bf Q}\bar{\bf A}(k)\tilde{\bf x}(k|k) \\
+	{\bf g}(k) &= \tilde{\bf x}^T(k|k)\bar{\bf A}^T(k)\bar{\bf Q}\bar{\bf A}(k)\tilde{\bf x}(k|k)
+\end{align*}
+
+Ainda, como ${\bf g}(k)$ é independente da variável de decisão $\tilde{\bf u}$, define-se
+\begin{equation*}
+	\bar\Phi'(k) = \frac{1}{2}\bar{\bf u}^T(k){\bf H}(k)\bar{\bf u}(k) + {\bf f}^T(k)\bar{\bf u}(k)
+\end{equation*}
+e o seguinte LMPC é resolvido, em cada instante de amostragem $k$, para o problema de seguimento de trajetória do robô:
+\begin{equation*}
+	\tilde{\bf u}^\star = \arg\min_{\tilde{\bf u}}\left\{\bar\Phi'(k)\right\}
+\end{equation*}
+sujeito à restrição de amplitude com relação a $\tilde{\bf u}$:
+\begin{equation}\label{eqn:resttilu}
+	{\bf D}\tilde{\bf u}(k+j|k) \leq {\bf d}, \quad j \in [0,N-1],
+\end{equation}
+resultando assim em uma seqüência ótima de controle:
+\begin{equation*}
+	\tilde{\bf u}^\star = \{\tilde{\bf u}^\star(k|k), \tilde{\bf u}^\star(k+1|k), \tilde{\bf u}^\star(k+2|k), \ldots, \tilde{\bf u}^\star(k+N-1|k)\}
+\end{equation*}	
+
+Observa-se então que agora não é mais necessário uma restrição da dinâmica do sistema, como é feito no caso não linear do MPC. Agora, o comportamento dinâmico do sistema está inserido no problema de minimização, já que a função de custo da expressão~\req{eqn:quadcost} é obtida substituindo-se o modelo~\req{eqn:exbar} em \req{eqn:cost2}. 
+
+É importante observar também que a variável de decisão, utilizada para minimizar a função de custo, é o vetor $\bar{\bf u}(k)$ (expressão~\req{eqn:baru}). Assim, as restrições devem ser escritas com relação a esta variável. Neste caso, serão consideradas apenas restrições na amplitude da entrada de controle $\bf u$. Assim, como $\tilde{\bf u}={\bf u}-{\bf u}_{ref}$, tem-se que:
+\begin{equation*}
+	-\overline{\bf u} - {\bf u}_{ref}(k+j) \leq \tilde{\bf u}(k+j|k) \leq \overline{\bf u} - {\bf u}_{ref}(k+j), \quad j\in[0,N-1]
+\end{equation*}
+
+Logo, a desigualdade~\req{eqn:resttilu} é escrita, para este problema de minimização, como:
+\begin{equation}\label{eqn:restubar}
+	\begin{bmatrix} {\bf I} & {\bf 0} & \cdots & {\bf 0} \\
+			     -{\bf I} & {\bf 0} & \cdots & {\bf 0} \\
+			      {\bf 0} & {\bf I} & \cdots & {\bf 0} \\
+			      {\bf 0} &-{\bf I} & \cdots & {\bf 0} \\
+			      \vdots  & \vdots  & \ddots & \vdots  \\
+			      {\bf 0} & {\bf 0} & \cdots & {\bf I} \\
+			      {\bf 0} & {\bf 0} & \cdots &-{\bf I} \end{bmatrix}
+	\begin{bmatrix} \tilde{\bf u}(k|k) \\ 
+				 \tilde{\bf u}(k+1|k) \\ \vdots \\ 
+				 \tilde{\bf u}(k+N-1|k) 
+	\end{bmatrix} \leq
+	\begin{bmatrix} \overline{\bf u}-{\bf u}_{ref}(k) \\ 
+				 \overline{\bf u}+{\bf u}_{ref}(k) \\ 
+				 \overline{\bf u}-{\bf u}_{ref}(k+1) \\ 
+				 \overline{\bf u}+{\bf u}_{ref}(k+1) \\ 
+				 \vdots \\ 
+				 \overline{\bf u}-{\bf u}_{ref}(k+N-1) \\
+				 \overline{\bf u}+{\bf u}_{ref}(k+N-1) 
+	\end{bmatrix},
+\end{equation}
+	
+Assim, através da função {\tt quadprog} do Matlab, agora aplica-se o algoritmo de QP desenvolvido acima para a solução do problema de rastreamento de trajetória de um robô móvel. A restrição na amplitude das entradas de controle da forma da expressão~\req{eqn:restubar} é imposta, considerando-se os limites definidos no Apêndice~\ref{app:twil} para o robô Twil. Os seguintes parâmetros são utilizados:
+\begin{equation*}
+	N = 5, \qquad
+	{\bf Q} = \begin{bmatrix}	
+		1 & 0 & 0 \\
+		0 & 1 & 0 \\
+		0 & 0 & 0.5 \end{bmatrix}, \qquad
+	{\bf R} = \begin{bmatrix}
+		0.1 & 0 \\ 
+		0 & 0.1 \end{bmatrix},
+\end{equation*}
+e os seguintes resultados são obtidos, para uma trajetória de referência circular e uma condição inicial do robô de ${\bf x}_0=[-0,5~~-2,5~~0]^T$:
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/traj_03.eps}
+    \caption{Trajetória do robô no plano $XY$ para uma referência circular (linha traço-ponto). LMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:traj_traj_03}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/state_03.eps}
+    \caption{Estados $x$, $y$ e $\theta$. LMPC com função de custo em coordenadas cartesianas. A linha traço-ponto representa o estado de referência.}
+    \label{fig:traj_state_03}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/control_03.eps}
+    \caption{Entradas de controle $v$ e $w$. LMPC com função de custo em coordenadas cartesianas. A linha traço-ponto representa a entrada de referência.}
+    \label{fig:traj_control_03}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/cost_03.eps}
+    \caption{Função de custo $\Phi$. LMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:traj_cost_03}
+\end{center}\end{figure}
+
+Agora, para uma referência em forma de U e utilizando-se os mesmos parâmetros e um condição inicial de ${\bf x}_0=[-1~~-1~~\pi/2]^T$, os resultados são vistos abaixo.
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/traj_04.eps}
+    \caption{Trajetória do robô no plano $XY$ para uma referência em forma de U (linha traço-ponto). LMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:traj_traj_04}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/state_04.eps}
+    \caption{Estados $x$, $y$ e $\theta$. LMPC com função de custo em coordenadas cartesianas. A linha traço-ponto representa o estado de referência.}
+    \label{fig:traj_state_04}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/control_04.eps}
+    \caption{Entradas de controle $v$ e $w$. LMPC com função de custo em coordenadas cartesianas. A linha traço-ponto representa a entrada de referência.}
+    \label{fig:traj_control_04}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_traj/cost_04.eps}
+    \caption{Função de custo $\Phi$. LMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:traj_cost_04}
+\end{center}\end{figure}
+
+Então, pelas figuras acima, nota-se que o desempenho do LMPC para o seguimento de trajetória é satisfatória. Entretanto, como visto também anteriormente, existe uma taxa de convergência bastante baixa, e para a trajetória em U o robô encontra a referência apenas no fim da mesma.
+
+Assim, para aumentar a taxa de convergência, pode-se novamente aplicar a idéia desenvolvida em~\cite{essen01}, onde um custo terminal e uma matriz de ponderação de estado crescente exponencialmente ao longo do horizonte são utilizados. Tem-se então a seguinte função de custo:
+\begin{equation}\label{eqn:essencost}
+	\Phi(k) = \sum_{j=1}^{N-1}\tilde{\bf x}^T(k+j|k){\bf Q}(j)\tilde{\bf x}(k+j|k) + \sum_{j=0}^{N-1}\tilde{\bf u}^T(k+j|k){\bf R}\tilde{\bf u}(k+j|k) + \Omega(\tilde{\bf x}(k+N|k)),
+\end{equation}
+onde $\Omega(\tilde{\bf x}(k+N|k)) = \tilde{\bf x}^T(k+N|k){\bf P}\tilde{\bf x}(k+N|k)$. Esta função de custo pode ser igualmente transformada na forma da expressão~\req{eqn:quadcost}, com a qual o problema de LMPC pode ser transformado para um problema de QP.  Assim, utilizando na função de custo~\req{eqn:essencost} os seguintes parâmetros:
+\begin{equation*}
+	N = 5, \qquad {\bf Q}(j)=2^{j-1}{\bf Q}, \qquad 	
+	{\bf P} = 30{\bf Q}(N), \qquad
+	{\bf R} = \begin{bmatrix}
+		0.1 & 0 \\ 
+		0 & 0.1 \end{bmatrix},
+\end{equation*}
+tem-se que $\bar{\bf Q}$ é escrita como:
+\begin{equation*}
+	\bar{\bf Q}=\begin{bmatrix}
+		2^0{\bf Q} & {\bf 0} & {\bf 0} & \cdots & {\bf 0} & {\bf 0} \\
+		{\bf 0} & 2^1{\bf Q} & {\bf 0} & \cdots & {\bf 0} & {\bf 0} \\
+		{\bf 0} & {\bf 0} & 2^2{\bf Q} & \cdots & {\bf 0} & {\bf 0} \\
+		\vdots  & \vdots  & \vdots     & \ddots & \vdots  & \vdots  \\
+		{\bf 0} & {\bf 0} & {\bf 0}    & \cdots & 2^{N-2}{\bf Q} & {\bf 0} \\
+		{\bf 0} & {\bf 0} & {\bf 0}    & \cdots & {\bf 0} & 30\times 2^{N-1}{\bf Q}
+	\end{bmatrix}
+\end{equation*}
+e considerando uma restrição na amplitude das entradas de controle da forma da expressão~\req{eqn:restubar}, os seguintes resultados são obtidos, para uma trajetória de referência circular e condição inicial do robô de ${\bf x}_0=[-0,5~~-2,5~~0]^T$:
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/traj_04.eps}
+    \caption{Trajetória do robô no plano $XY$ para uma referência circular (linha traço-ponto). LMPC de~\cite{essen01}.}
+    \label{fig:essen_traj_14}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/state_04.eps}
+    \caption{Estados $x$, $y$ e $\theta$. LMPC de~\cite{essen01}. A linha traço-ponto representa o estado de referência.}
+    \label{fig:essen_state_14}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/control_04.eps}
+    \caption{Entradas de controle $v$ e $w$. LMPC de~\cite{essen01}. A linha traço-ponto representa a entrada de referência.}
+    \label{fig:essen_control_14}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/cost_04.eps}
+    \caption{Função de custo $\Phi$. LMPC de~\cite{essen01}.}
+    \label{fig:essen_cost_14}
+\end{center}\end{figure}
+
+Com os mesmo parâmetros na função de custo, para uma trajetória de referência em forma de U e condição inicial do robô de ${\bf x}_0=[-1~~-1~~\pi/2]^T$, obtém-se os seguintes resultados:
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/traj_05.eps}
+    \caption{Trajetória do robô no plano $XY$ para uma referência em forma de U (linha traço-ponto). LMPC de~\cite{essen01}.}
+    \label{fig:essen_traj_15}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/state_05.eps}
+    \caption{Estados $x$, $y$ e $\theta$. LMPC de~\cite{essen01}. A linha traço-ponto representa o estado de referência.}
+    \label{fig:essen_state_15}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/control_05.eps}
+    \caption{Entradas de controle $v$ e $w$. LMPC de~\cite{essen01}. A linha traço-ponto representa a entrada de referência.}
+    \label{fig:essen_control_15}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/cost_05.eps}
+    \caption{Função de custo $\Phi$. LMPC de~\cite{essen01}.}
+    \label{fig:essen_cost_15}
+\end{center}\end{figure}
+
+Assim, como observado pelos dois casos apresentados nas figuras~\ref{fig:essen_traj_14} a \ref{fig:essen_cost_15}, o LMPC com a função de custo de~\cite{essen01} apresenta resultados bastante satisfatórios. Além de acelerar a taxa com que o robô se aproxima da trajetória, esta aproximação é feita de forma bastante suave e as entradas de controle são tais que respeitam os limites de amplitude impostos.
+
+Nas figuras a seguir, apresenta-se uma comparação entre o desempenho do robô para o problema apresentado aqui em dois casos: o LMPC com função de custo original e o LMPC de~\cite{essen01}. A trajetória de referência é formada por três segmentos de retas, estes ligados por duas curvas. A condição inicial do robô é ${\bf x}_0=[0~~2~~-\pi/2]^T$.
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/traj_06.eps}
+    \caption{Trajetória do robô no plano $XY$. Linha contínua: LMPC de \cite{essen01}; linha tracejada: LMPC com função de custo original; linha traço-ponto: trajetória de referência.}
+    \label{fig:essen_traj_16}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/state_06.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Linha contínua: LMPC de \cite{essen01}; linha tracejada: LMPC com função de custo original; linha traço-ponto: trajetória de referência.}
+    \label{fig:essen_state_16}
+\end{center}\end{figure}
+
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/control_06.eps}
+    \caption{Entradas de controle $v$ e $w$. Linha contínua: LMPC de \cite{essen01}; linha tracejada: LMPC com função de custo original; linha traço-ponto: trajetória de referência.}
+    \label{fig:essen_control_16}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/cost_06.eps}
+    \caption{Função de custo $\Phi$. Linha contínua: LMPC de \cite{essen01}; linha tracejada: LMPC com função de custo original.}
+    \label{fig:essen_cost_16}
+\end{center}\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{O Custo Computacional do LMPC}
+
+O objetivo da seção anterior foi apresentar um método de solução alternativa à apresentada pelo MPC não linear. Foi desenvolvido um algoritmo de programação quadrática, QP, para a solução do problema de rastreamento de trajetória através de um MPC linear. Conforme destacado anteriormente, a solução de algoritmos de otimização não linear geralmente envolve um alto esforço computacional. Entretanto, este problema diminui consideravelmente se o MPC é linear, pois o problema de otimização agora é convexo e existe um número menor de variáveis de decisão. Para o caso não linear, o número de variáveis de decisão é de $N\times(n+m)$, onde $N$ é o horizonte, $n$ é o número de estados e $m$ é o número de entradas de controle. Entretanto, como visto, através da transformação do problema de MPC em QP as variáveis de decisão são apenas as entradas de controle, pois a dinâmica do sistema está incluída na função de custo (expressão~\req{eqn:quadcost}) e não é mais necessária uma restrição referente ao modelo cinemático do robô. Assim, o número de variáveis de decisão para o caso linear é de apenas $N\times m$.
+
+Novamente, como nas seções~\ref{sec:point_nmpc_cost} e \ref{sec:traj_nmpc_cost}, será feito um estudo com relação ao esforço computacional necessário para a solução no MPC, agora para o caso linear de rastreamento de trajetória.
+
+Assim, novamente utilizando-se como critério o número de operações em ponto flutuante, ou OPF, realizadas por período de amostragem e tomando por base o valor estimado por~\cite{aburto92} para um computador com processador Athlon XP 2600+, tem-se que o valor de flops é de 576.000.000. Assim, como o período de amostragem é de $T=0,1~\text{segundo}$, tem-se que o máximo custo computacional permitido é de 57.600.000 operações em ponto flutuante por período de amostragem.
+
+Dois casos do LMPC para rastreamento de trajetória são então estudados:
+\begin{itemize}
+\item {\em Caso 1}. O LMPC com função de custo original (Expressão~\req{eqn:cost3});
+\item {\em Caso 2}. O LMPC de \cite{essen01}, com função de custo com custo terminal e matriz $\bf Q$ crescente exponencialmente ao longo do horizonte (expressão~\req{eqn:essencost}).
+\end{itemize}
+
+Nos dois casos acima a restrição de amplitude das entradas de controle, ${\bf Du}\leq{\bf d}$, é considerada e a condição inicial do robô é ${\bf x}_0=[-0,5~~-2,5~~0]^T$. Como referência, é utilizada a trajetória circular apresentada anteriormente. Os resultados são mostrados na Tabela~\ref{tab:lmpc_traj}.
+
+\begin{table}[htpb]
+	\caption{Custo computacional do LMPC - rastreamento de trajetória.}
+ 	\label{tab:lmpc_traj}
+ 	\centering
+ 	\begin{tabular}{c|cc}
+  		\hline
+  		Horizonte & \multicolumn{2}{c} \mbox{No.} OPF por período de amostragem \\
+          		& Caso 1 & Caso 2 \\
+  		\hline\hline
+  		5	& 16.431	& 16.546 \\
+  		10	& 101.080	& 94.792 \\
+  		15	& 329.700	& 352.360 \\
+  		20	& 790.320 & 908.010 \\
+  		\hline
+ 	\end{tabular}
+\end{table}
+
+Observa-se então, através dos dados apresentados na tabela acima, que o LMPC para o problema de rastreamento de trajetória é satisfatoriamente resolvido dentro dos limites de custo computacional. Até mesmo para um horizonte de predição alto, como $N=20$, o limite de 57.600.000 de OPF não é alcançado.
+
+A necessidade de se desenvolver uma alternativa linear ao NMPC aparece então quando deseja-se reduzir o custo computacional envolvido no problema de otimização. Obviamente, com o LMPC, o desempenho não será o mesmo, pois, como já salientado, o modelo linearizado do robô é válido apenas em regiões próximas da trajetória de referência, o que acaba limitando a sua aplicabilidade. Entretanto, pode-se ser visto nas figuras a seguir que o LMPC ainda assim possui um bom desempenho, quando comparado com o caso não linear. Nos exemplos abaixo, tanto o LMPC quanto o NMPC utilizam a função de custo de~\cite{essen01}, com os mesmos parâmetros de sintonia, para todos os casos. Na Figura~\ref{fig:essen_traj_17} a condição inicial do robô é de ${\bf x}_0=[-0,5~~-2,5~~0]^T$, na Figura~\ref{fig:essen_traj_18}, ${\bf x}_0=[1~~-1~~\pi]^T$ e na Figura~\ref{fig:essen_traj_19} é de ${\bf x}_0=[-1~~1~~\pi]^T$.
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/traj_07.eps}
+    \caption{Trajetória do robô no plano $XY$. Linha contínua: NMPC; linha tracejada: LMPC; linha traço-ponto: trajetória de referência.}
+    \label{fig:essen_traj_17}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/traj_08.eps}
+    \caption{Trajetória do robô no plano $XY$. Linha contínua: NMPC; linha tracejada: LMPC; linha traço-ponto: trajetória de referência.}
+    \label{fig:essen_traj_18}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_traj/traj_09.eps}
+    \caption{Trajetória do robô no plano $XY$. Linha contínua: NMPC; linha tracejada: LMPC; linha traço-ponto: trajetória de referência.}
+    \label{fig:essen_traj_19}
+\end{center}\end{figure}

@@ -1,0 +1,353 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[dvips,ps2pdf]{hyperref}
+\usepackage{amsthm, amsfonts, amssymb, amsmath, graphicx}
+\pagestyle{plain}
+
+% Define área da folha
+\setlength{\vsize}{297mm} \setlength{\hsize}{210mm}
+\setlength{\textheight}{230mm} \setlength{\textwidth}{165mm}
+\voffset -1.5cm \hoffset -2.0cm
+
+\newcommand\real{\mathbb{R}}
+\newcommand{\req}[1]{(\ref{#1})}
+\renewcommand{\baselinestretch}{1.1} % Define espaçamento entre linhas
+\parskip 1.3mm % Define espaçamento entre parágrafos
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AQUI COMEÇA O DOCUMENTO %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+    {\LARGE\sc Controle da posição de um robô móvel utilizando realimentação linearizante e filtro de Kalman} \\
+    \vspace{3mm} {\bf Sérgio Suess\footnote{\tt srsuess@terra.com.br}, Carlos Claro\footnote{\tt 					     caclaro@uol.com.br} e Felipe Kühne\footnote{\tt kuhne@eletro.ufrgs.br}} \\
+    \vspace{2mm} ELE00071 -- Tópicos Especiais em Automação e Controle II \\
+	Prof. Dr. Walter Fetter Lages\footnote{\tt fetter@eletro.ufrgs.br} \\
+    \vspace{3mm} Universidade Federal do Rio Grande do Sul \\
+                 Departamento de Engenharia Elétrica \\
+                 Programa de Pós-Graduação em Engenharia Elétrica \\
+    \vspace{2mm} fevereiro de 2004
+\end{center}
+
+\vspace{4mm}
+
+\begin{abstract}
+{\it Sistemas mecânicos que possuem restrições cinemáticas não integráveis, como os robôs móveis dotados de rodas, possuem propriedades bastante particulares, que fazem com que a síntese de leis de controle para estes sistemas uma tarefa bastante complexa. Entretanto, considerando o modelo cinemático do sistema, é possível resolver o problema de rastreamento de trajetória para a posição do robô. Neste trabalho, desenvolveu-se uma realimentação linearizante para o modelo cinemático de um robô móvel com acionamento diferencial, considerando perturbações e imperfeições deste modelo. Foi considerado ainda a existência de três sensores, capazes de captar a movimentação do robô: {\em encoder}, GPS e bússola. Um filtro de Kalman descentralizado foi implementado como estimador ótimo de estados. O controlador e os sensores foram implementados em programas (processos) totalmente independentes, e a comunicação entre estes programas foi realizada através de {\em sockets}. Este trabalho é essencialmente uma continuação do exposto em \cite{kuhne}, onde apenas a estimação de estados por filtro de Kalman foi desenvolvida. Agora, então, fecha-se a malha de realimentação para realizar o controle. Resultados são mostrados na forma de gráficos para duas trajetórias diferentes: uma em forma de um oito, e outra em forma de quadrado. Os algoritmos foram implementados em linguagem C++, e executados em computadores com sistema operacional Linux.}
+\end{abstract}
+
+\section{Introdução}
+Por causa das restrições cinemáticas não integráveis ({\em não holonômicas}) que podem existir, e pelo fato de ser um sistema não linear, robôs móveis têm em seu controle um dos principais problemas, tornando a concepção de leis de controle para estes sistemas uma tarefa extremamente complicada. Assim, métodos desenvolvidos para sistemas lineares e sem restrições (como por exemplo os robôs manipuladores), não podem mais ser utilizadas neste caso.
+
+Esta relativa dificuldade na síntese do controle depende não apenas da natureza das restrições impostas pelo modelo do sistema, mas também de quais objetivos deseja-se alcançar com tal controle. Para alguns casos, abordagens clássicas de controle não linear são efetivas. Neste trabalho é utilizada uma realimentação linearizante para a posição do robô, desconsiderando a orientação do mesmo. Como continuação do trabalho desenvolvido em \cite{kuhne}, considera-se que o robô possui três sensores: {\em encoder}, GPS e bússola. Assim sendo, implementou-se o filtro de Kalman como um estimador ótimo dos estados, realizando então o controle com uma lei linear proporcional do tipo $v=Le$, onde $e$ é o erro entre a posição de referência e a posição estimada atual.
+
+O fato de se estar desconsiderando a orientação do sistema pode levar à pergunta sobre a dinâmica zero do sistema. De fato, ela existe, mas como a orientação é limitada em $-\frac{\pi}{2}\leq\theta\leq\frac{\pi}{2}$, a princípio não há problemas em desconsiderar-se o controle sobre esta variável. Contudo, será visto que à medida que o ganho do controle linear aumenta, o robô apresenta trajetórias altamente oscilatórias enquanto o mesmo está convergindo para a referência. Se forem considerados limites físicos por onde o robô pode passar (como as paredes em um corredor), estas oscilações terão que ser limitadas, impondo-se assim um limite para os valores do ganho $L$.
+
+Este documento está organizado como segue: no seguinte capítulo, é feita a descrição do modelo cinemático utilizado para o robô móvel. No Capítulo 3, é realizada a síntese do controle por realimentação linearizante para a posição do robô, onde considera-se então ruídos de processo e de medida e o uso do filtro de Kalman extendido descentralizado. No Capítulo 4, são apresentados os algoritmos desenvolvidos. Os resultados de simulação obtidos são apresentados no Capítulo 5. No último capítulo, são apresentadas as conclusões do grupo.
+
+\section{Modelagem cinemática do robô móvel}
+
+Robôs móveis com acionamento diferencial são comumente utilizados na literatura. Apresenta-se neste capítulo o modelo cinemático deste robô, considerando os sensores utilizados. Uma descrição física do mesmo é vista na Figura \ref{robo1}. 
+
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=80mm]{Figuras/robo1.eps}
+    \caption{\it Modelo geométrico de um robô móvel com acionamento diferencial.}
+    \label{robo1}
+\end{center}\end{figure}
+
+O robô possui três rodas, sendo que as duas rodas pertencentes ao mesmo eixo horizontal de rotação (ao longo da reta $\overline{WP}$) são acionadas por motores e a roda não centrada é passiva e serve apenas para apoio do robô ao solo. A rotação do robô é obtida quando as duas rodas ativas desenvolvem velocidades diferentes. A distância entre as rodas ativas é de 30 cm e o diâmetro das rodas é de 15 cm. É acoplado a cada eixo das rodas ativas um {\em encoder} incremental de 512 ppr (pulsos por rotação). O robô ainda possui um sistema de GPS diferencial que garante uma precisão da ordem de 10cm e uma bússola com resolução de 1 grau. 
+
+Considerando a distância $d$ nula, o modelo cinemático para este tipo de robô pode ser escrito como: \begin{equation}\label{kin}
+\begin{split}
+\dot x_c &= u_1\cos\theta \\
+\dot y_c &= u_1\sin\theta \\
+\dot{\theta} &= u_2
+\end{split}\end{equation}
+
+A configuração do robô com relação ao sistema global $\{O,X_o,Y_o\}$ é dada por $q=\left[x_c~~y_c~~\theta\right]^T$. $u_1$ e $u_2$ são as velocidades tangencial e rotacional, respectivamente. Assim, tem-se que a ordem do sistema é $n=3$, e a ordem da entrada de controle é $p=2$.
+
+Utilizando o método de Euler, com um período de amostragem de $\Delta T$ segundos, \[ \dot q(t) \approx \frac{q(k+1)-q(k)}{\Delta T}, \] pode-se reescrever o sistema \req{kin} em tempo discreto como: 
+\begin{equation*}
+\begin{split}
+q(k+1) &= f(q(k),u(k))+w(k) \\
+    z(k) &= h(q(k))+v(k),
+\end{split}\end{equation*}
+com
+\begin{align}
+f(q(k),u(k)) &= \left[\begin{array}{c} x_c(k)+u_1(k)\cos\theta(k)
+\Delta T \\ y_c(k)+u_1(k)\sin\theta(k)\Delta T \\
+\theta(k)+u_2(k)\Delta T
+\end{array}\right]\label{mtxf} \\
+h(q(k)) &= \left[
+x_{enc}(k)~~y_{enc}(k)~~x_{gps}(k)~~y_{gps}(k)~~\theta_{enc}(k)~~\theta_{bus}(k)\right]^T\label{mtxh}
+\end{align}
+($x_{enc}, y_{enc}$) é a posição dada pelos {\em encoders}, ($x_{gps}, y_{gps}$) é a posição dada pelo GPS, $\theta_{enc}$ é a orientação dada pelos {\em encoders} e $\theta_{bus}$ é a orientação dada pela bússola. $w(k)$ é o ruído do processo e $v(k)$ é o ruído de medida.
+
+\section{Controle por realimentação linearizante entrada-saída}
+Pode-se reescrever a equação de estados do sistema \req{kin} na seguinte forma:
+\begin{equation}\label{sist1}
+\dot q = f(q) + G(q)u \\
+\end{equation}
+
+Para o caso apresentado neste trabalho, a dimensão da entrada de controle $u$ é $p=2$. Então, é possível linearizar apenas dois estados\footnote{para garantir a existência da inversa $\beta^{-1}$, como será visto adiante.}. Assim sendo, escolhe-se os estados que representam a posição do robô com relação ao sistema global. Em muitos casos, isto é perfeitamente aceitável, dependendo do objetivo do controle e da geometria do robô.
+
+Elege-se ainda um ponto, {\em a priori} arbitrário, do corpo do robô como ponto de referência. Então, agora a posição do robô é tomada como sendo a posição deste ponto, e não mais o centro $C$. A este ponto de referência, associa-se um novo sistema de coordenadas, $\{R,X_r,Y_r\}$, como mostrado na Figura \ref{robo2}. A transformação para este novo ponto de referência é dada por:
+\[
+q_r = R^O_Cq^c_r+q_c = \left[\begin{array}{c} x_c+x^c_r\cos\theta-y^c_r\sin\theta \\ y_c+x^c_r\sin\theta+y^c_r\cos\theta \\ \theta \end{array}\right]
+\]
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=80mm]{Figuras/robo2.eps}
+    \caption{\it Sistemas de coordenadas do robô móvel com o ponto de referência $R$.}
+    \label{robo2}
+\end{center}\end{figure}
+
+Reescrevendo \req{sist1} e considerando a saída com relação a $R$, tem-se:
+\begin{align*}
+\dot q &= f(q) + g_1(q)u_1 + g_2(q)u_2 \\
+z_1(q) &= h_1(q) \\
+z_2(q) &= h_2(q),
+\end{align*}
+com
+\begin{align*}
+f(q) &= 0 \\
+g_1(q) &= \left[ \cos\theta~~\sin\theta~~0 \right]^T \\
+g_2(q) &= \left[ 0~~0~~1 \right]^T \\
+\end{align*}
+e
+\begin{align*}
+h_1(q) &= x_c+x_r^c\cos\theta-y_r^c\sin\theta \\
+h_2(q) &= y_c+x_r^c\sin\theta+y_r^c\cos\theta
+\end{align*}
+
+O método de linearização entrada-saída consiste em derivar a expressão de saída até que a entrada apareça na expressão. Define-se então $\gamma_j$ como sendo o menor valor inteiro tal que pelo menos uma das entradas apareça na saída $z^{(\gamma_j)}_j$, isto é\footnote{$L_fh_j$ e $L_gh_j$ representam, respectivamente, a derivada de Lie de $h_j(q)$ com relação a $f(q)$ e a $g(q)$, respectivamente. Detalhes sobre derivadas de Lie e sobre métodos de realimentação linearizante podem ser vistos em \cite{khalil}.},
+\begin{equation*}
+z^{(\gamma_j)}_j = L^{\gamma_j}_f+\sum_{i=1}^pL_{g_i}\left(L^{\gamma_j-1}_fh_j\right)u_i,
+\end{equation*}
+onde pelo menos um dos termos $L_{g_i}(L^{\gamma_j-1}_fh_j)\neq 0$, para todo $q$ pertencente à região onde a linearização é válida. 
+
+A primeira derivada de $z(q)$ com relação a $h_1(q)$ resulta em:
+\[
+\dot z_1(q) = L_fh_1+L_{g_1}h_1u_1+L_{g_2}h_1u_2
+\]
+com
+\begin{multline*}
+L_fh_1 = \frac{\partial h_1}{\partial q}f(q) = 0 \qquad L_{g_1}h_1 = \frac{\partial h_1}{\partial q}g_1(q) = \left[ 1~~0~~-\left(x_r^c\sin\theta+y_r^c\cos\theta\right) \right] \left[\begin{array}{c}\cos\theta \\ \sin\theta \\ 0 \end{array}\right] = \cos\theta \\ 
+L_{g_2}h_1 = \frac{\partial h_1}{\partial q}g_2(q) = \left[ 1~~0~~-\left(x_r^c\sin\theta+y_r^c\cos\theta\right) \right] \left[\begin{array}{c}0 \\ 0 \\ 1 \end{array}\right] = -\left(x_r^c\sin\theta+y_r^c\cos\theta\right)
+\end{multline*}
+
+A primeira derivada de $z(q)$ com relação a $h_2(q)$ resulta em:
+\[
+\dot z_2(q) = L_fh_2+L_{g_1}h_2u_1+L_{g_2}h_2u_2
+\]
+com
+\begin{multline*}
+Lfh_2 = \frac{\partial h_2}{\partial q}f(q) = 0 \qquad Lg_1h_1 = \frac{\partial h_2}{\partial q}g_1(q) = \left[ 0~~1~~x_r^c\cos\theta-y_r^c\sin\theta\right) \right] \left[\begin{array}{c}\cos\theta \\ \sin\theta \\ 0 \end{array}\right] = \sin\theta \\ 
+Lg_2h_2 = \frac{\partial h_2}{\partial q}g_2(q) = \left[ 0~~1~~x_r^c\cos\theta-y_r^c\sin\theta \right] \left[\begin{array}{c}0 \\ 0 \\ 1 \end{array}\right] = x_r^c\cos\theta-y_r^c\sin\theta
+\end{multline*}
+
+Como as entradas já aparecem em $\dot z_1(q)$ e $\dot z_2(q)$, a saída não pode mais ser derivada. Assim, tem-se que $\gamma_1=\gamma_2=1$. Define-se então uma matriz $\beta(q)$ de dimensão $p\times p$, como:
+\begin{equation*}
+\beta(q) = \left[\begin{array}{cc} L_{g_1}h_1 & L_{g_2}h_1 \\ L_{g_1}h_2 & L_{g_2}h_2 \end{array}\right] = \left[\begin{array}{cc} \cos\theta & -\left(x_r^c\sin\theta+y_r^c\cos\theta\right) \\ \sin\theta & x_r^c\cos\theta-y_r^c\sin\theta \end{array}\right]
+\end{equation*}
+e escreve-se o seguinte sistema:
+\begin{equation}\label{sist2}
+\left[\begin{array}{c} \dot z_1 \\ \dot z_2 \end{array}\right] = \beta(q)\left[\begin{array}{c}u_1 \\ u_2 \end{array}\right]
+\end{equation}
+
+Logo, a realimentação que lineariza o sistema \req{sist2} é a seguinte:
+\[
+u = \beta(q)^{-1}v,
+\]
+onde $v$ é uma lei de controle linear do tipo $v = Le$, com
+\[
+L = \left[\begin{array}{cc} l_x & 0 \\ 0 & l_y \end{array}\right] \qquad e=\left[\begin{array}{c}e_x \\ e_y \end{array}\right]=\left[\begin{array}{c}x_{ref}-x_c \\ y_{ref}-y_c \end{array}\right]
+\]
+
+É interessante verificar a existência da inversa de $\beta(q)$, que para existir, precisa ter determinante diferente de zero. Não é difícil de ver que, para isto acontecer, o valor de $x^c_r$ precisa ser diferente de zero, ou seja, o ponto de referência $R$ não pode estar sobre o eixo comum às rodas fixas (sobre a reta $\overline{WP}$, na Figura \ref{robo1}). Isto ocorre devido ao fato de que pontos sobre este eixo podem mover-se instantaneamente em apenas uma direção, enquanto que os demais pontos podem mover-se em duas direções \cite{lages2}.
+
+Neste trabalho, o ponto $R$ foi fixado ao longo do eixo $X_c$, a uma distância de $40cm$ do centro $C$.
+
+
+\subsection{Validação da realimentação linearizante}
+Para validar a lei de controle linearizante do sistema, considerou-se um sistema simplificado onde não existem ruídos de processo e de medida e os estados estão diretamente disponíveis para leitura. Tem-se então o seguinte diagrama de blocos:
+\\
+
+\begin{figure}[hhh]\begin{center}
+    \includegraphics[width=140mm]{Figuras/bloco_sem_k.eps}
+    \caption{\it Diagrama de blocos do sistema simplificado, sem ruídos e sem filtro de Kalman.}
+    \label{bloco_sem_k}
+\end{center}\end{figure}
+
+Observou-se então, em resultados de simulação, que para diversos valores de $l_x$ e $l_y$ e para diversas trajetórias a lei de controle e a linearização funcionaram perfeitamente, fazendo com que o robô convergisse assintoticamente para a trajetória de referência. Nas Figuras \ref{oito_sem_k} e \ref{quadrado_sem_k}, o comportamento do robô para $l_x=l_y=3$ para uma trajetória em forma de oito e para uma trajetória na forma de um quadrado.
+\begin{figure}\begin{center}
+    \includegraphics[width=120mm]{Figuras/oito_sem_k.eps}
+    \caption{\it Comportamento do robô para uma trajetória de referência em forma de oito, para o sistema sem ruído e sem filtro de Kalman.}
+    \label{oito_sem_k}
+\end{center}\end{figure}
+
+\begin{figure}[ttt]\begin{center}
+    \includegraphics[width=120mm]{Figuras/quadrado_sem_k.eps}
+    \caption{\it Comportamento do robô para uma trajetória de referência em forma de quadrado, para o sistema sem ruído e sem filtro de Kalman.}
+    \label{quadrado_sem_k}
+\end{center}\end{figure}
+
+Nota-se que nas Figuras \ref{oito_sem_k} e \ref{quadrado_sem_k}, as tajetórias parecem estar deformadas (veja as "pontas" que aparecem nos cantos do quadrado, por exemplo). Isto deve-se ao fato de que o que está sendo mostrado nos gráficos é a posição do ponto $R$, e não do ponto $C$. Ao longo deste trabalho, todos os gráficos estarão representando a evolução deste ponto.
+
+\subsection{Realimentação linearizante do sistema com o filtro de Kalman}
+Para o caso apresentado neste trabalho, onde apenas a leitura de sensores estão disponíveis para leitura, faz-se uso do filtro de Kalman como um estimador ótimo de estados. Ainda, como os sensores estão implementados de forma descentralizada, o filtro de Kalman realiza também a fusão de dados, a partir dos erros de estimativa, $e$, e de covariância, $E$, dos outros nodos sensores. Esta tarefa é realizada tanto nos sensores quanto no controlador. Detalhes sobre o funcionamento do algoritmo serão vistos na seção seguinte.
+
+Não é necessário projetar novamente o controle linearizante neste caso, pois, pelo {\em Princípio da separação} \cite{lages1}, a lei de controle pode ser projetada independentemente do filtro de Kalman. Além disso, a lei de controle obtida é a mesma que seria obtida substituindo a estimativa $\hat q$ no lugar do estado $q$ ({\em Princípio da equivalência à certeza}, também de \cite{lages1}. Então, temos que a saída, medida no ponto de referência $R$ da Figura \ref{robo2}, é:
+\begin{equation*}
+z(q)=\left[\begin{array}{c} h_1(q) \\ h_2(q) \end{array}\right] = \left[\begin{array}{c} \hat x_c+x_r^c\cos\theta-y_r^c\sin\theta \\ \hat y_c+x_r^c\sin\theta+y_r^c\cos\theta \end{array}\right]
+\end{equation*}
+e a lei de controle linear, $v=Le$, será calculada com base no erro entre o estado de referência e o estado estimado,
+\begin{equation*}
+e=\left[\begin{array}{c}e_x \\ e_y \end{array}\right]=\left[\begin{array}{c}x_{ref}-\hat x_c \\ y_{ref}-\hat y_c \end{array}\right]
+\end{equation*}
+
+O sistema completo é visto em forma de diagrama de blocos na Figura \ref{bloco1}.
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=140mm]{Figuras/bloco1.eps}
+    \caption{\it Diagrama de blocos do sistema em malha fechada.}
+    \label{bloco1}
+\end{center}\end{figure}
+
+No diagrama de blocos da Figura \ref{bloco1}, $\hat q^p$ é o vetor reduzido de estados $[\hat x_r~~\hat y_r]^T$, que significa a posição estimada do ponto $R$ em relação ao sistema global;  $q^p_{ref}$ é o vetor de estados reduzido $[x_{ref}~~y_{ref}]^T$, que significa a posição de referência do ponto $R$ com relação ao sistema global.
+
+\section{Algoritmo computacional para a implementação do controle linearizante}
+
+Serão explicados agora todos os programas desenvolvidos para executar o controle linearizante junto do filtro de Kalman extendido descentralizado. A estrutura de comunicação utilizada foi a mesma desenvolvida em \cite{kuhne}. 
+
+Os programas foram divididos em {\tt controlador.cpp}, {\tt encoder.cpp}, {\tt gps.cpp} e {\tt bussola.cpp}. As funções de cada um são as seguintes:
+\begin{itemize}
+\item {\tt controlador.cpp}:\begin{enumerate}\item calcular a posição estimada global $\hat q^p$ no ponto $R$; \item calcular a posição de referência $q^p_{ref}$ no ponto $R$; \item calcular a lei de controle linear: $v=Le$, onde $e=q^p_{ref}-\hat q^p$; \item calcular a realimentação linearizante: $u=\beta^{-1}(q)v$; \item calcular $q(k+1)=f(q(k),u(k))+w(k)$; \item enviar $q(k)$ e $u(k)$ para os nodos sensores ({\em encoder}, GPS e bússola). \item calcula a entrada de referência $u_{ref}$; \item calcular o estado de referência: $q_{ref}(k+1)=f(q_{ref}(k),u_{ref}(k))$ \item receber os erros $e$ e $E$ dos nodos sensores; \item calcular o estado estimado global, $\hat q(k|k+1)$, realizando a fusão dos dados recebidos dos outros sensores; \item gravar os dados em arquivo.\end{enumerate}
+\item {\tt encoder.cpp}:\begin{enumerate}\item receber $q(k)$ e $u(k)$ do controlador; \item calcular $z_{enc}(q)=h_{enc}(q(k),u(k))+v_{enc}(k)$; \item calcular a estimativa local dos estados, $\tilde q(k)$; \item calcular os erros $e_{enc}(k)$ e $E_{enc}(k)$; \item enviar os erros para os outros nodos sensores (GPS e bússola) e para o controlador; \item receber os erros do GPS e da bússola; \item calcular a estimativa global dos estados, $\hat q(k)$; \item gravar os dados em arquivo. \end{enumerate}
+\item {\tt gps.cpp}:\begin{enumerate}\item receber $q(k)$ e $u(k)$ do simulador; \item calcular $z_{gps}(q)=h_{gps}(q(k),u(k))+v_{gps}(k)$; \item calcular a estimativa local dos estados, $\tilde q(k)$; \item calcular os erros $e_{gps}(k)$ e $E_{gps}(k)$; \item enviar os erros para os outros nodos sensores ({\em encoder} e bússola) e para o controlador; \item receber os erros do {\em encoder} e da bússola; \item calcular a estimativa global dos estados, $\hat q(k)$; \item gravar os dados em arquivo. \end{enumerate}
+\item {\tt bussola.cpp}:\begin{enumerate}\item receber $q(k)$ e $u(k)$ do simulador; \item calcular $z_{bus}(q)=h_{bus}(q(k),u(k))+v_{bus}(k)$; \item calcular a estimativa local dos estados, $\tilde q(k)$; \item calcular os erros $e_{bus}(k)$ e $E_{bus}(k)$; \item enviar os erros para os outros nodos sensores ({\em encoder} e GPS) e para o controlador; \item receber os erros do {\em encoder} e do GPS; \item calcular a estimativa global dos estados, $\hat q(k)$; \item gravar os dados em arquivo. \end{enumerate}
+\end{itemize}
+
+Os programas ficam em um laço que acaba quando a trajetória realizada no controlador chega ao fim. Em cada passo deste laço, são realizadas as funções descritas acima. Os dados são gravados em um arquivo, onde cada linha contém as informações de cada passo, separadas por {\em tab}. Este formato é conveniente para o uso posterior de programas para gerar gráficos, como {\sc Gnuplot} e {\sc Matlab}. 
+
+{\bf Observação}: Para rodar o programa, é necessário abrir quatro terminais diferentes e executar, em cada um deles e nesta ordem, {\tt simulador.cpp}, {\tt encoder.cpp}, {\tt gps.cpp} e {\tt bussola.cpp}. Esta ordem é necessária apenas no momento das criações e conexões entre os servidores e clientes. Após isso, a comunicação entre os programas é feita em qualquer ordem.
+
+\section{Resultados obtidos}
+Serão agora mostrados os resultados obtidos em simulação. Para tanto, gráficos da evolução dos estados para diversas situações de trajetória, controle e ruído são mostradas.
+
+Em um primeiro caso, analisou-se o comportamento do robô para alguns valores do ganho do controle linear $L$, para duas trajetórias: uma em forma de oito e outra em forma de um quadrado. Resultados são mostrados nas figuras \ref{oito_L_02} a \ref{erro_quadrado_L_3}, onde o erro $q_{ref}-\hat q$ também é analisado. Observou-se que à medida que o ganho $L$ aumenta, o robô aproxima-se da trajetória de referência, embora no início ocorra uma grande oscilação.
+
+\begin{figure}[!ttt]\begin{center}
+    \includegraphics[width=120mm]{Figuras/oito_L_02.eps}
+    \caption{\it Comportamento do robô para uma trajetória em forma de oito e para $l_x=l_y=0,2$.}
+    \label{oito_L_02}
+\end{center}\end{figure}
+
+\begin{figure}[!hhh]\begin{center}
+    \includegraphics[width=120mm]{Figuras/erro_oito_L_02.eps}
+    \caption{\it Erro $q^p_{ref}-\hat q^p$ para uma trajetória em forma de oito e para $l_x=l_y=0,2$.}
+    \label{oito_L_02}
+\end{center}\end{figure}
+
+\begin{figure}[!ttt]\begin{center}
+    \includegraphics[width=120mm]{Figuras/oito_L_1.eps}
+    \caption{\it Comportamento do robô para uma trajetória em forma de oito e para $l_x=l_y=1,0$.}
+    \label{oito_L_1}
+\end{center}\end{figure}
+
+\begin{figure}[!hhh]\begin{center}
+    \includegraphics[width=120mm]{Figuras/erro_oito_L_1.eps}
+    \caption{\it Erro $q^p_{ref}-\hat q^p$ para uma trajetória em forma de oito e para $l_x=l_y=1,0$.}
+    \label{oito_L_1}
+\end{center}\end{figure}
+
+\begin{figure}[!ttt]\begin{center}
+    \includegraphics[width=120mm]{Figuras/oito_L_3.eps}
+    \caption{\it Comportamento do robô para uma trajetória em forma de oito e para $l_x=l_y=3,0$.}
+    \label{oito_L_1}
+\end{center}\end{figure}
+
+\begin{figure}[!hhh]\begin{center}
+    \includegraphics[width=120mm]{Figuras/erro_oito_L_3.eps}
+    \caption{\it Erro $q^p_{ref}-\hat q^p$ para uma trajetória em forma de oito e para $l_x=l_y=3,0$.}
+   \label{oito_L_3}
+\end{center}\end{figure}
+
+\begin{figure}[!ttt]\begin{center}
+    \includegraphics[width=120mm]{Figuras/quadrado_L_02.eps}
+    \caption{\it Comportamento do robô para uma trajetória em forma de quadrado e para $l_x=l_y=0,2$.}
+    \label{quadrado_L_02}
+\end{center}\end{figure}
+
+\begin{figure}[!hhh]\begin{center}
+    \includegraphics[width=120mm]{Figuras/erro_quadrado_L_02.eps}
+    \caption{\it Erro $q^p_{ref}-\hat q^p$ para uma trajetória em forma de quadrado e para $l_x=l_y=0,2$.}
+    \label{erro_quadrado_L_02}
+\end{center}\end{figure}
+
+\begin{figure}[!ttt]\begin{center}
+    \includegraphics[width=120mm]{Figuras/quadrado_L_1.eps}
+    \caption{\it Comportamento do robô para uma trajetória em forma de quadrado e para $l_x=l_y=1,0$.}
+    \label{quadrado_L_1}
+\end{center}\end{figure}
+
+\begin{figure}[!hhh]\begin{center}
+    \includegraphics[width=120mm]{Figuras/erro_quadrado_L_1.eps}
+    \caption{\it Erro $q^p_{ref}-\hat q^p$ para uma trajetória em forma de quadrado e para $l_x=l_y=1,0$.}
+    \label{erro_quadrado_L_1}
+\end{center}\end{figure}
+
+\begin{figure}[!ttt]\begin{center}
+    \includegraphics[width=120mm]{Figuras/quadrado_L_3.eps}
+    \caption{\it Comportamento do robô para uma trajetória em forma de quadrado e para $l_x=l_y=30$.}
+    \label{quadrado_L_3}
+\end{center}\end{figure}
+
+\begin{figure}[!hhh]\begin{center}
+    \includegraphics[width=120mm]{Figuras/erro_quadrado_L_3.eps}
+    \caption{\it Erro $q^p_{ref}-\hat q^p$ para uma trajetória em forma de quadrado e para $l_x=l_y=3,0$.}
+    \label{erro_quadrado_L_3}
+\end{center}\end{figure}
+
+É interessante também verificar a robustez do controle quanto a variações no ruído de processo. Nos gráficos das figuras \ref{oito_10w} a \ref{oito_50w}, o desvio padrão do ruído de processo $w(k)$ foi aumentado em até 50 vezes. Obviamente, a oscilação antes e depois de convergir para a trajetória é muito maior, porém o robô ainda comporta-se de maneira relativamente efetiva se for considerado o grande acréscimo de incerteza no sistema.
+\begin{figure}\begin{center}
+    \includegraphics[width=115mm]{Figuras/oito_10w.eps}
+    \caption{\it Comportamento do robô para uma trajetória em forma de oito e um aumento no ruído de processo de dez vezes.}
+    \label{oito_10w}
+\end{center}\end{figure}
+
+\begin{figure}\begin{center}
+    \includegraphics[width=115mm]{Figuras/oito_20w.eps}
+    \caption{\it Comportamento do robô para uma trajetória em forma de oito e um aumento no ruído de processo de vinte vezes.}
+    \label{oito_20w}
+\end{center}\end{figure}
+
+\begin{figure}[!ttt]\begin{center}
+    \includegraphics[width=115mm]{Figuras/oito_50w.eps}
+    \caption{\it Comportamento do robô para uma trajetória em forma de oito e um aumento no ruído de processo de 50 vezes.}
+    \label{oito_50w}
+\end{center}\end{figure}
+
+
+
+\section{Conclusões}
+Neste trabalho, foi desenvolvido um programa computacional para simular o comportamento de um robô móvel sujeito a um controle para o problema de rastreamento de trajetória. A fim de levar em conta erros de modelagem e perturbações de medida, o filtro de Kalman foi utilizado, considerando a existência de três sensores: {\em encoder}, GPS e bússola. O controle foi feito com base em uma realimentação estática de estados, considerando o controle apenas da posição do robô, desconsiderando a orientação do mesmo. Primeiramente, a fim de validar o controle projetado, foi considerado um sistema simplificado sem ruídos de processo e de medida, e desconsiderando o filtro de Kalman. Após, incluiu-se todos os outros componentes.
+
+O controlador e os sensores foram implementados como processos independentes. Para realizar a comunicação entre eles, foi empregada uma estrutura de comunicação baseada em {\em sockets}, onde para cada canal de comunicação foi estabelecido um par servidor/cliente. Esta estrutura de comunicação permite a execução de cada processo em computadores diferentes, ligados em rede.
+
+Resultados exaustivos de simulação foram feitos, sendo mostrados aqui aqueles mais representativos das variações dos diversos parâmetros de projeto: ganho linear $L$, posição do ponto $R$ (que durante o o trabalho foi considerado fixo, ao longo do eixo $X_c$) e níveis de ruído de processo e de medida. Viu-se que o ganho $L$ afeta de maneira bem significativa o comportamento do sistema, principalmente no que diz respeito ao estado não controlado, a orientação $\theta$.
+
+\begin{thebibliography}{6}
+\bibitem{kuhne}{Suess, S. R., Claro, C., Kühne, F. e Lages, W. F. {\it Estimação da configuração de um robô móvel utilizando filtro de Kalman}. UFRGS. Porto Alegre. 2004.}
+\bibitem{borenstein}{Borenstein, J., Everett, H. R. e Feng, L. {\it Where am I? -- Sensors
+and Methods for Mobile Robot Positioning}. The University of
+Michigan. 1996. Disponível {\em on-line} em {\mbox{\tt http://www-personal.umich.edu/{\~}johannb/position.html}}. Acessado em dezembro de 2003.}
+\bibitem{lages1}{Lages, W. F. {\it Tópicos especiais em automação e controle II -- Apostilas de
+Aula}. UFRGS. 2003. Disponível {\em on-line} em {\mbox{\tt http://www.eletro.ufrgs.br/{\~}fetter/ele00071}}. Acessado em dezembro de 2003.}
+\bibitem{lages2}{Lages, W. F. {\it Controle e estimação de posição e orientação de robôs móveis}. Tese de Doutorado. Instituto Tecnológico da Aeronáutica, São José dos Campos. 1998.}
+\bibitem{sockets}{Tougher, R. {\it Linux Socket Programming in C++}. Disponível {\em on line} em {\mbox {\tt http://www.linuxgazette.com/issue74/tougher.html}}. Acessado em janeiro de 2004.}
+\bibitem{hemerly}{Hemerly, E. M. {\it Controle por Computador de Sistemas Dinâmicos}. 2a. ed. Editora Edgar Blücher. São Paulo. 2000.}
+\bibitem{khalil}{Khalil, H. K.. {\it Nonlinear Systems}. Prentice Hall, Upper Saddle River, New Jersey. 1996.}
+\end{thebibliography}
+
+\end{document}

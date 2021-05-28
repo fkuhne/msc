@@ -1,0 +1,75 @@
+BODY {
+	
+}
+.topnavtext {
+	FONT-WEIGHT: normal; FONT-SIZE: 10px; COLOR: #ffffff; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.defaulttext {
+	FONT-SIZE: 10px; COLOR: #000000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.rightnavtext {
+	FONT-SIZE: 10px; COLOR: #990000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; TEXT-DECORATION: none
+}
+.subheading {
+	FONT-WEIGHT: bold; FONT-SIZE: 13px; COLOR: #cc0000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+.bdefaulttext {
+	FONT-WEIGHT: bold; FONT-SIZE: 10px; COLOR: #000000; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+.newsheading {
+	FONT-WEIGHT: bold; FONT-SIZE: 14px; COLOR: mediumblue; FONT-FAMILY: Verdana, Arial
+}
+.companyheading {
+	FONT-WEIGHT: bold; FONT-SIZE: 12px; COLOR: mediumblue; FONT-FAMILY: Verdana, Arial
+}
+.linktext {
+	FONT-SIZE: 10px; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif
+}
+TD.DPCatNum {
+	FONT-WEIGHT: bold; FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: Arial; BACKGROUND-COLOR: #c0c0c0
+}
+.DPStandard {
+	FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: Verdana; TEXT-DECORATION: none
+}
+.DPBold {
+	FONT-WEIGHT: bold; FONT-SIZE: 8pt; COLOR: black; FONT-FAMILY: Verdana; TEXT-DECORATION: none
+}
+.DPHeading {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: black; FONT-FAMILY: Verdana; TEXT-DECORATION: none
+}
+A.DPStandard {
+	FONT-WEIGHT: normal; FONT-SIZE: 8pt; COLOR: #0000cc; FONT-FAMILY: Verdana; TEXT-DECORATION: underline
+}
+A.DPBold {
+	FONT-WEIGHT: bold; FONT-SIZE: 8pt; COLOR: #0000cc; FONT-FAMILY: Verdana; TEXT-DECORATION: underline
+}
+A.DPHeading {
+	FONT-WEIGHT: bold; FONT-SIZE: 10pt; COLOR: #0000cc; FONT-FAMILY: Verdana; TEXT-DECORATION: underline
+}
+.DPInfounitTitleItalic {
+	FONT-WEIGHT: normal; FONT-SIZE: 8pt; COLOR: blue; FONT-STYLE: normal; FONT-FAMILY: Verdana; TEXT-DECORATION: none
+}
+.DPInfounitTitle {
+	FONT-WEIGHT: normal; FONT-SIZE: 16pt; COLOR: black; FONT-FAMILY: Verdana; TEXT-DECORATION: none
+}
+TD.InfoUnitGrid {
+	BORDER-RIGHT: gray 1px solid; BORDER-TOP: gray 1px solid; BORDER-LEFT: gray 1px solid; BORDER-BOTTOM: gray 1px solid
+}
+.articledate {
+	FONT-SIZE: 7pt; COLOR: gray; FONT-STYLE: italic; FONT-FAMILY: Verdana, Arial
+}
+TD.TitleBar {
+	PADDING-LEFT: 2px; FONT-WEIGHT: bolder; FONT-SIZE: 10pt; COLOR: white; FONT-FAMILY: Arial; BACKGROUND-COLOR: #3366cc; TEXT-DECORATION: none
+}
+.header {
+	FONT-WEIGHT: bold; FONT-SIZE: 13px; COLOR: #ffffff; FONT-FAMILY: Verdana
+}
+.hightlight {
+	BACKGROUND-COLOR: yellow
+}
+.imagetext {
+	FONT-WEIGHT: normal; FONT-SIZE: 10px; COLOR: black; FONT-FAMILY: Arial; TEXT-DECORATION: none
+}
+.MarketLeader {
+	FONT-WEIGHT: bold; FONT-SIZE: 15px; COLOR: #0000cc; FONT-FAMILY: Verdana
+}

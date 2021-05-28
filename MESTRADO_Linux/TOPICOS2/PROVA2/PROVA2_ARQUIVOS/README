@@ -1,0 +1,20 @@
+Este diretório contém arquivos para executar os prgramas simulador, encoder, gps e bussola, que geram uma estimativa do estado do sistema através do filtro de Kalman extendido descentralizado totalmente conectado.
+
+Descrição dos arquivos:
+-- README: este arquivo;
+-- Socket.cpp, Socket.h, ServerSocket.cpp, ServerSocket.h, ClientSocket.cpp, ClientSocket.h, SocketException.h: arquivos necessários para usar a classe de funções para a comunicação com sockets;
+-- func.cpp, func.h: funções genéricas;
+-- normal.c, normal.h: função que gera um número aleatório com distribuição normal;
+-- defines.h: definições comuns a todos os nodos;
+-- Makefile: arquivo para compilar os programas;
+-- simulador.cpp: nodo simulador do sistema;
+-- encoder: nodo sensor;
+-- gps.cpp: nodo sensor;
+-- bussola.cpp: nodo sensor;
+
+Para compilar, execute o programa Makefile.
+
+Para executar o programa, abra quatro terminais e rode em cada um e nesta ordem: simulador, encoder, gps, bussola.
+
+
+13.02.2004

@@ -1,0 +1,1274 @@
+This is e-TeX, Version 3.141592-2.2 (MiKTeX 2.4) (preloaded format=latex 2005.4.13)  4 OCT 2005 23:35
+entering extended mode
+**diss.tex
+(diss.tex
+LaTeX2e <2003/12/01>
+Babel <v3.8a> and hyphenation patterns for english, french, german, ngerman, po
+rtuguese, dumylang, nohyphenation, loaded.
+(C:\texmf\tex\latex\deletex\deletex.cls
+Document Class: deletex 2004/11/29 v0.4.0 DeleTeX class - Documents for DELET/E
+E/UFRGS
+(C:\texmf\tex\latex\base\report.cls
+Document Class: report 2004/02/16 v1.4f Standard LaTeX document class
+(C:\texmf\tex\latex\base\size12.clo
+File: size12.clo 2004/02/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) (C:\texmf\tex\generic\Babel\babel.sty
+Package: babel 2004/02/19 v3.8a The Babel package
+
+(C:\texmf\tex\generic\Babel\english.ldf
+Language: english 2004/02/19 v3.3m English support from the babel system
+ (C:\texmf\tex\generic\Babel\babel.def
+File: babel.def 2004/02/19 v3.8a Babel common definitions
+\babel@savecnt=\count88
+\U@D=\dimen103
+)
+\l@canadian = a dialect from \language\l@english 
+) (C:\texmf\tex\generic\Babel\portuges.ldf
+Language: portuges 2004/02/19 v1.2p Portuguese support from the babel system
+\l@brazilian = a dialect from \language\l@portuges 
+Package babel Info: Making " an active character on input line 145.
+))
+(C:\texmf\tex\latex\deletex\deletex_pt_BR.ldf
+Language: deletex_pt_BR 2004/11/29 v0.4.0 DeLeTex brazilian portuguese support
+)
+(C:\texmf\tex\latex\deletex\deletex_en.ldf
+Language: deletex_en 2004/11/29 v0.4.0 DeLeTex english support
+)
+(C:\texmf\tex\latex\lastpage\lastpage.sty
+Package: lastpage 1994/06/25 v0.1b LaTeX2e package for refs to last page number
+ (JPG)
+)
+(C:\texmf\tex\latex\tools\indentfirst.sty
+Package: indentfirst 1995/11/23 v1.03 Indent first paragraph (DPC)
+) (C:\texmf\tex\latex\base\fontenc.sty
+Package: fontenc 2004/02/22 v1.99f Standard LaTeX package
+(C:\texmf\tex\latex\base\t1enc.def
+File: t1enc.def 2004/02/22 v1.99f Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
+)) (C:\texmf\tex\latex\psnfss\times.sty
+Package: times 2004/09/15 PSNFSS-v9.2 (SPQR) 
+)
+(C:\texmf\tex\latex\deletex\deletexdefs.sty
+Package: deletexdefs 
+
+(C:\texmf\tex\latex\graphics\graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(C:\texmf\tex\latex\graphics\keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(C:\texmf\tex\latex\graphics\graphics.sty
+Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
+ (C:\texmf\tex\latex\graphics\trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+) (C:\texmf\tex\latex\00miktex\graphics.cfg
+File: graphics.cfg 2003/03/12 v1.1 MiKTeX 'graphics' configuration
+)
+Package graphics Info: Driver file: dvips.def on input line 80.
+
+(C:\texmf\tex\latex\graphics\dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen104
+\Gin@req@width=\dimen105
+))
+(C:\texmf\tex\latex\natbib\natbib.sty
+Package: natbib 2003/06/06 7.1 (PWD)
+\bibhang=\skip43
+\bibsep=\skip44
+LaTeX Info: Redefining \cite on input line 518.
+\c@NAT@ctr=\count89
+)
+\deletex@topmargin=\skip45
+\deletex@pagenummargin=\skip46
+\deletex@bottommargin=\skip47
+\deletex@sidemargin=\skip48
+\c@deletex@authorcount=\count90
+\c@deletex@examinercount=\count91
+\c@deletex@examinerinfocount=\count92
+\c@kwcounter=\count93
+\titlepagewinwidth=\skip49
+\titlepagewinheight=\skip50
+\titlepagewinvoffset=\skip51
+\deletex@chapnumindent=\skip52
+
+(C:\texmf\tex\latex\carlisle\remreset.sty))
+(C:\texmf\tex\latex\deletex\deletexdiss.def
+File: deletexdiss.def 2004/11/29 v0.4.0 DeLeTeX M. Sc. Dissertation
+)
+(C:\texmf\tex\latex\base\fontenc.sty
+Package: fontenc 2004/02/22 v1.99f Standard LaTeX package
+ (C:\texmf\tex\latex\base\t1enc.def
+File: t1enc.def 2004/02/22 v1.99f Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
+))
+(C:\texmf\tex\latex\base\inputenc.sty
+Package: inputenc 2004/02/05 v1.0d Input encoding file
+ (C:\texmf\tex\latex\base\latin1.def
+File: latin1.def 2004/02/05 v1.0d Input encoding file
+))
+(C:\texmf\tex\latex\amscls\amsthm.sty
+Package: amsthm 2004/08/06 v2.20
+\thm@style=\toks15
+\thm@bodyfont=\toks16
+\thm@headfont=\toks17
+\thm@notefont=\toks18
+\thm@headpunct=\toks19
+\thm@preskip=\skip53
+\thm@postskip=\skip54
+\thm@headsep=\skip55
+\dth@everypar=\toks20
+) (C:\texmf\tex\latex\psnfss\pifont.sty
+Package: pifont 2004/09/15 PSNFSS-v9.2 Pi font support (SPQR) 
+LaTeX Font Info:    Try loading font information for U+pzd on input line 63.
+
+(C:\texmf\tex\latex\psnfss\upzd.fd
+File: upzd.fd 2001/06/04 font definitions for U/pzd.
+)
+LaTeX Font Info:    Try loading font information for U+psy on input line 64.
+ (C:\texmf\tex\latex\psnfss\upsy.fd
+File: upsy.fd 2001/06/04 font definitions for U/psy.
+))
+(C:\texmf\tex\latex\amsfonts\amsfonts.sty
+Package: amsfonts 2001/10/25 v2.2f
+\@emptytoks=\toks21
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 132.
+)
+(C:\texmf\tex\latex\amsfonts\amssymb.sty
+Package: amssymb 2002/01/22 v2.2d
+)
+(C:\texmf\tex\latex\amsmath\amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip56
+
+For additional information on amsmath, use the `?' option.
+(C:\texmf\tex\latex\amsmath\amstext.sty
+Package: amstext 2000/06/29 v2.01
+ (C:\texmf\tex\latex\amsmath\amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks22
+\ex@=\dimen106
+)) (C:\texmf\tex\latex\amsmath\amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen107
+)
+(C:\texmf\tex\latex\amsmath\amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count94
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count95
+\leftroot@=\count96
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count97
+\DOTSCASE@=\count98
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box26
+\strutbox@=\box27
+\big@size=\dimen108
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count99
+\c@MaxMatrixCols=\count100
+\dotsspace@=\muskip10
+\c@parentequation=\count101
+\dspbrk@lvl=\count102
+\tag@help=\toks23
+\row@=\count103
+\column@=\count104
+\maxfields@=\count105
+\andhelp@=\toks24
+\eqnshift@=\dimen109
+\alignsep@=\dimen110
+\tagshift@=\dimen111
+\tagwidth@=\dimen112
+\totwidth@=\dimen113
+\lineht@=\dimen114
+\@envbody=\toks25
+\multlinegap=\skip57
+\multlinetaggap=\skip58
+\mathdisplay@stack=\toks26
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+) (C:\texmf\tex\latex\float\float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count106
+\float@exts=\toks27
+\float@box=\box28
+\@float@everytoks=\toks28
+\@floatcapt=\box29
+)
+(C:\texmf\tex\latex\ltxmisc\url.sty
+\Urlmuskip=\muskip11
+Package: url 2004/03/15  ver 3.1  Verb mode for urls, etc.
+) (C:\texmf\tex\latex\tools\enumerate.sty
+Package: enumerate 1999/03/05 v3.00 enumerate extensions (DPC)
+\@enLab=\toks29
+)
+\c@defin=\count107
+\c@teorem=\count108
+\c@definition=\count109
+\c@theorem=\count110
+
+(diss.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 52.
+LaTeX Font Info:    ... okay on input line 52.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 52.
+ (C:\texmf\tex\latex\psnfss\t1ptm.fd
+File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
+) (stuff.tex
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 1.
+LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 1.
+ [1
+
+] [1
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 1--1
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1--1
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1--1
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1--1
+
+ []
+
+[2
+
+]
+LaTeX Font Info:    Try loading font information for T1+phv on input line 3.
+ (C:\texmf\tex\latex\psnfss\t1phv.fd
+File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
+)
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <16> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 3.
+ [3
+
+
+] [4
+
+] [5
+
+] [6
+
+
+] (diss.toc
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <12> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 4.
+
+Underfull \hbox (badness 10000) in paragraph at lines 4--4
+ [][]  
+ []
+
+LaTeX Font Info:    Try loading font information for U+msa on input line 4.
+(C:\texmf\tex\latex\amsfonts\umsa.fd
+File: umsa.fd 2002/01/19 v2.2g AMS font definitions
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 4.
+ (C:\texmf\tex\latex\amsfonts\umsb.fd
+File: umsb.fd 2002/01/19 v2.2g AMS font definitions
+)
+Underfull \hbox (badness 10000) in paragraph at lines 5--5
+ [][]  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 6--6
+ [][]  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 7--7
+ [][]  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 8--8
+ [][]  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 10--10
+ [][]  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 25--25
+ [][]  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 32--32
+ [][]  
+ []
+
+[7
+
+]
+Overfull \hbox (7.72583pt too wide) in paragraph at lines 42--42
+ \T1/ptm/m/n/12 la-res e o Con-trole Va-ri-ante No Tempo de (SAM-SON; AIT-ABDER
+RAHIM, 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 47--47
+ [][]  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 55--55
+ [][]  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 57--57
+ [][]  
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 59--59
+ [][]  
+ []
+
+)
+\tf@toc=\write3
+ [8] (diss.lof
+Overfull \hbox (12.86159pt too wide) in paragraph at lines 28--28
+ [][][] []\T1/ptm/m/n/12 Trajetória no plano $\OML/cmm/m/it/12 XY$\T1/ptm/m/n/1
+2 . Con-trole de (SAM-SON; AIT-ABDERRAHIM, 
+ []
+
+
+Overfull \hbox (24.53922pt too wide) in paragraph at lines 30--30
+ [][][] []\T1/ptm/m/n/12 Entradas de con-trole $\OML/cmm/m/it/12 v$ \T1/ptm/m/n
+/12 e $\OML/cmm/m/it/12 w$\T1/ptm/m/n/12 . Con-trole de (SAM-SON; AIT-ABDERRAHI
+M, 
+ []
+
+[9
+
+]
+Overfull \hbox (8.74887pt too wide) in paragraph at lines 50--50
+ [][][] []\T1/ptm/m/n/12 Trajetória no plano $\OML/cmm/m/it/12 XY$\T1/ptm/m/n/1
+2 . O ponto de equi-lí-brio é agora $[][] \OT1/cmr/m/n/12 = [0  0  \OML/cmm/m/i
+t/12 =\OT1/cmr/m/n/12 2][]$\T1/ptm/m/n/12 . []  
+ []
+
+[10] [11]
+Overfull \hbox (0.22545pt too wide) in paragraph at lines 89--89
+ \T1/ptm/m/n/12 de custo em co-or-de-na-das po-la-res; Li-nha tra-ce-jada: con-
+trole de (SAM- 
+ []
+
+
+Overfull \hbox (2.88956pt too wide) in paragraph at lines 93--93
+ \T1/ptm/m/n/12 de custo em co-or-de-na-das po-la-res; Li-nha tra-ce-jada: con-
+trole de (TEEL; 
+ []
+
+[12] [13] [14])
+\tf@lof=\write4
+ [15] (diss.lot)
+\tf@lot=\write5
+ [16
+
+] [17
+
+] [18
+
+]) [19] (intro.tex
+File: Figuras/pig.eps Graphic file (type eps)
+
+<Figuras/pig.eps>
+File: Figuras/asimo.eps Graphic file (type eps)
+ <Figuras/asimo.eps>
+File: Figuras/wheeled1.eps Graphic file (type eps)
+ <Figuras/wheeled1.eps>
+File: Figuras/urbie.eps Graphic file (type eps)
+
+<Figuras/urbie.eps>
+File: Figuras/legged2.eps Graphic file (type eps)
+ <Figuras/legged2.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 20
+ []
+
+[20
+
+] [21]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 22
+ []
+
+[22]
+File: Figuras/sat.eps Graphic file (type eps)
+ <Figuras/sat.eps> [23]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 24
+ []
+
+[24]) [25] (wmr.tex
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 22.
+ (C:\texmf\tex\latex\psnfss\omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 22.
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 26
+ []
+
+[26
+
+] [27]
+File: Figuras/disco.eps Graphic file (type eps)
+ <Figuras/disco.eps>
+Overfull \hbox (26.42055pt too wide) in paragraph at lines 58--65
+[]\T1/ptm/m/n/12 que não po-dem ser in-te-gra-das para en-con-trar uma res-tri-
+ção ho-lonô-mica da forma $\OML/cmm/m/it/12 f\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 
+x; y; ; '\OT1/cmr/m/n/12 ) =
+ []
+
+File: Figuras/parking.eps Graphic file (type eps)
+<Figuras/parking.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 28
+ []
+
+[28]
+File: Figuras/robot.eps Graphic file (type eps)
+ <Figuras/robot.eps> [29]
+File: Figuras/nhcond2.eps Graphic file (type eps)
+ <Figuras/nhcond2.eps>
+Underfull \vbox (badness 2020) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 30
+ []
+
+[30] [31]
+Overfull \hbox (31.05437pt too wide) in paragraph at lines 225--226
+\T1/ptm/m/it/12 por re-a-li-men-ta-ção de es-ta-dos em torno de $\OT1/cmr/bx/n/
+12 x \OT1/cmr/m/n/12 = 0$ \T1/ptm/m/it/12 se e so-mente se $[]\OT1/cmr/m/n/12 [
+\OML/cmm/m/it/12 f[]\OT1/cmr/m/n/12 (0)   []   \OML/cmm/m/it/12 f[]\OT1/cmr/m/n
+/12 (0)] =
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 32
+ []
+
+[32] [33]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 34
+ []
+
+[34] [35]
+File: Figuras/pomet/traj_01.eps Graphic file (type eps)
+ <Figuras/pomet/traj_01.eps>
+File: Figuras/pomet/state_01.eps Graphic file (type eps)
+ <Figuras/pomet/state_01.eps>
+File: Figuras/pomet/control_01.eps Graphic file (type eps)
+
+<Figuras/pomet/control_01.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 36
+ []
+
+[36] [37]
+File: Figuras/samson/traj_01.eps Graphic file (type eps)
+ <Figuras/samson/traj_01.eps>
+Overfull \hbox (10.5537pt too wide) in paragraph at lines 361--366
+[][]\T1/ptm/m/n/12 E os re-sul-ta-dos são mos-tra-dos abaixo, para uma con-di-ç
+ão ini-cial $\OT1/cmr/bx/n/12 x[] \OT1/cmr/m/n/12 = [\OMS/cmsy/m/n/12  \OT1/cmr
+/m/n/12 2\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 5  1\OML/cmm/m/it/12 ; \OT1/cmr/m/n
+/12 3  \OML/cmm/m/it/12 =\OT1/cmr/m/n/12 2][]$\T1/ptm/m/n/12 . 
+ []
+
+File: Figuras/samson/state_01.eps Graphic file (type eps)
+<Figuras/samson/state_01.eps>
+File: Figuras/samson/control_01.eps Graphic file (type eps)
+ <Figuras/samson/control_01.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 38
+ []
+
+[38] [39]
+File: Figuras/murray/traj_01.eps Graphic file (type eps)
+ <Figuras/murray/traj_01.eps>
+File: Figuras/murray/state_01.eps Graphic file (type eps)
+ <Figuras/murray/state_01.eps>
+File: Figuras/murray/control_01.eps Graphic file (type eps)
+
+<Figuras/murray/control_01.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 40
+ []
+
+[40]
+File: Figuras/polar.eps Graphic file (type eps)
+ <Figuras/polar.eps> [41]
+File: Figuras/lages/traj_01.eps Graphic file (type eps)
+ <Figuras/lages/traj_01.eps>
+File: Figuras/lages/state_01.eps Graphic file (type eps)
+
+<Figuras/lages/state_01.eps>
+File: Figuras/lages/control_01.eps Graphic file (type eps)
+ <Figuras/lages/control_01.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 42
+ []
+
+[42] [43]
+File: Figuras/sordalen.eps Graphic file (type eps)
+ <Figuras/sordalen.eps>
+Overfull \hbox (11.21342pt too wide) in paragraph at lines 494--499
+[][]\T1/ptm/m/n/12 Este mé-todo tam-bém uti-liza uma trans-for-ma-ção des-con-t
+í-nua de co-or-de-na-das (Fi-gura 24[]). 
+ []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 44
+ []
+
+[44]
+File: Figuras/sordalen/traj_01.eps Graphic file (type eps)
+ <Figuras/sordalen/traj_01.eps>
+Overfull \hbox (16.37271pt too wide) in paragraph at lines 527--532
+[][]\T1/ptm/m/n/12 Assim, os se-guin-tes re-sul-ta-dos são ob-ti-dos, para uma 
+con-di-ção fi-nal de $\OT1/cmr/bx/n/12 x[] \OT1/cmr/m/n/12 = [\OMS/cmsy/m/n/12 
+ \OT1/cmr/m/n/12 0\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 2  3  0][]$\T1/ptm/m/n/12 
+. 
+ []
+
+File: Figuras/sordalen/state_01.eps Graphic file (type eps)
+<Figuras/sordalen/state_01.eps> [45]
+File: Figuras/sordalen/control_01.eps Graphic file (type eps)
+ <Figuras/sordalen/control_01.eps>)
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 46
+ []
+
+[46]
+Overfull \hbox (11.45778pt too wide) in paragraph at lines 71--71
+[]\T1/phv/b/n/16 3 FUN-DA-MEN-TOS DE CON-TROLE PRE-DI-TIVO BA-SE-ADO
+ []
+
+(mpc.tex
+Overfull \hbox (2.52907pt too wide) in paragraph at lines 7--8
+\T1/ptm/m/n/12 pers-pec-tiva his-tó-rica, si-tu-ando o de-sen-vol-vi-mento do c
+on-trole pre-di-tivo ao longo do tempo.
+ []
+
+[47
+
+]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 48
+ []
+
+[48] [49]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 50
+ []
+
+[50] [51]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 52
+ []
+
+[52]
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 140.
+ (C:\texmf\tex\latex\psnfss\t1pcr.fd
+File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
+)
+File: Figuras/mpc.eps Graphic file (type eps)
+ <Figuras/mpc.eps> [53]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 54
+ []
+
+[54] [55]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 56
+ []
+
+[56] [57])
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 58
+ []
+
+[58] (point.tex [59
+
+]
+File: Figuras/pure_mpc/traj_01.eps Graphic file (type eps)
+ <Figuras/pure_mpc/traj_01.eps>
+File: Figuras/pure_mpc/state_01.eps Graphic file (type eps)
+
+<Figuras/pure_mpc/state_01.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 60
+ []
+
+[60]
+File: Figuras/pure_mpc/control_01.eps Graphic file (type eps)
+ <Figuras/pure_mpc/control_01.eps>
+File: Figuras/pure_mpc/cost_01.eps Graphic file (type eps)
+ <Figuras/pure_mpc/cost_01.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [61]
+Underfull \hbox (badness 1178) in paragraph at lines 87--87
+[][]\T1/ptm/m/n/10 Conforme de-fi-nido no Apên-dice A[], os va-lo-res li-mi-tes
+ para $\OML/cmm/m/it/10 v$ \T1/ptm/m/n/10 e $\OML/cmm/m/it/10 w$ \T1/ptm/m/n/10
+ são de $\OMS/cmsy/m/n/10 \OT1/cmr/m/n/10 0\OML/cmm/m/it/10 ; \OT1/cmr/m/n/10 
+4712 \OML/cmm/m/it/10 m=s$ \T1/ptm/m/n/10 e
+ []
+
+File: Figuras/pure_mpc/horizon_effect.eps Graphic file (type eps)
+<Figuras/pure_mpc/horizon_effect.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 62
+ []
+
+[62]
+File: Figuras/pure_mpc/rotated_eq.eps Graphic file (type eps)
+ <Figuras/pure_mpc/rotated_eq.eps>
+Overfull \hbox (4.7215pt too wide) in paragraph at lines 114--115
+[][]\T1/ptm/m/n/12 A con-di-ção fi-nal dos es-ta-dos para o caso apre-sen-tado 
+acima é de $\OT1/cmr/bx/n/12 x[] \OT1/cmr/m/n/12 = [\OMS/cmsy/m/n/12  \OT1/cmr/
+m/n/12 0\OML/cmm/m/it/12 ; \OT1/cmr/m/n/12 83  0  \OML/cmm/m/it/12 =\OT1/cmr/m
+/n/12 2][]$\T1/ptm/m/n/12 .
+ []
+
+[63]
+File: Figuras/essen_mpc/traj_01.eps Graphic file (type eps)
+ <Figuras/essen_mpc/traj_01.eps>
+File: Figuras/essen_mpc/state_01.eps Graphic file (type eps)
+ <Figuras/essen_mpc/state_01.eps>
+File: Figuras/essen_mpc/control_01.eps Graphic file (type eps)
+
+<Figuras/essen_mpc/control_01.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 64
+ []
+
+[64]
+File: Figuras/essen_mpc/origin_01.eps Graphic file (type eps)
+ <Figuras/essen_mpc/origin_01.eps>
+File: Figuras/essen_mpc/lots_of_trajs.eps Graphic file (type eps)
+ <Figuras/essen_mpc/lots_of_trajs.eps>
+File: Figuras/essen_mpc/lots_of_origins.eps Graphic file (type eps)
+
+<Figuras/essen_mpc/lots_of_origins.eps>
+Underfull \vbox (badness 6236) has occurred while \output is active []
+
+ [65]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 66
+ []
+
+[66]
+File: Figuras/polar.eps Graphic file (type eps)
+ <Figuras/polar.eps> [67]
+File: Figuras/polar_mpc/traj_01.eps Graphic file (type eps)
+ <Figuras/polar_mpc/traj_01.eps>
+File: Figuras/polar_mpc/state_01.eps Graphic file (type eps)
+
+<Figuras/polar_mpc/state_01.eps>
+Underfull \vbox (badness 1158) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 68
+ []
+
+[68]
+File: Figuras/polar_mpc/control_01.eps Graphic file (type eps)
+ <Figuras/polar_mpc/control_01.eps>
+File: Figuras/polar_mpc/cost_01.eps Graphic file (type eps)
+ <Figuras/polar_mpc/cost_01.eps>
+File: Figuras/polar_mpc/origin_01.eps Graphic file (type eps)
+
+<Figuras/polar_mpc/origin_01.eps> [69]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 70
+ []
+
+[70]
+File: Figuras/restu_mpc/traj_01.eps Graphic file (type eps)
+ <Figuras/restu_mpc/traj_01.eps>
+File: Figuras/restu_mpc/state_01.eps Graphic file (type eps)
+ <Figuras/restu_mpc/state_01.eps> [71]
+File: Figuras/restu_mpc/control_01.eps Graphic file (type eps)
+
+<Figuras/restu_mpc/control_01.eps>
+File: Figuras/restu_mpc/cost_01.eps Graphic file (type eps)
+ <Figuras/restu_mpc/cost_01.eps>
+Underfull \vbox (badness 3815) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 72
+ []
+
+[72]
+File: Figuras/restu_mpc/traj_02.eps Graphic file (type eps)
+ <Figuras/restu_mpc/traj_02.eps>
+File: Figuras/restu_mpc/state_02.eps Graphic file (type eps)
+ <Figuras/restu_mpc/state_02.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [73]
+File: Figuras/restu_mpc/control_02.eps Graphic file (type eps)
+
+<Figuras/restu_mpc/control_02.eps>
+File: Figuras/restu_mpc/cost_02.eps Graphic file (type eps)
+ <Figuras/restu_mpc/cost_02.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 74
+ []
+
+[74]
+File: Figuras/corridor_mpc/corridor.eps Graphic file (type eps)
+ <Figuras/corridor_mpc/corridor.eps> [75]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 76
+ []
+
+[76]
+File: Figuras/corridor_mpc/traj_01.eps Graphic file (type eps)
+ <Figuras/corridor_mpc/traj_01.eps>
+File: Figuras/corridor_mpc/state_01.eps Graphic file (type eps)
+ <Figuras/corridor_mpc/state_01.eps>
+[77]
+File: Figuras/corridor_mpc/control_01.eps Graphic file (type eps)
+ <Figuras/corridor_mpc/control_01.eps>
+File: Figuras/corridor_mpc/cost_01.eps Graphic file (type eps)
+ <Figuras/corridor_mpc/cost_01.eps>
+File: Figuras/corridor_mpc/traj_comp.eps Graphic file (type eps)
+
+<Figuras/corridor_mpc/traj_comp.eps>
+File: Figuras/corridor_mpc/traj_02.eps Graphic file (type eps)
+ <Figuras/corridor_mpc/traj_02.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 78
+ []
+
+[78] [79]
+File: Figuras/comps/traj_01.eps Graphic file (type eps)
+ <Figuras/comps/traj_01.eps>
+File: Figuras/comps/state_01.eps Graphic file (type eps)
+ <Figuras/comps/state_01.eps>
+Underfull \vbox (badness 6001) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 80
+ []
+
+[80]
+File: Figuras/comps/control_01.eps Graphic file (type eps)
+ <Figuras/comps/control_01.eps>
+File: Figuras/comps/origin_01.eps Graphic file (type eps)
+ <Figuras/comps/origin_01.eps>
+File: Figuras/comps/traj_02.eps Graphic file (type eps)
+
+<Figuras/comps/traj_02.eps>
+Underfull \vbox (badness 1199) has occurred while \output is active []
+
+ [81]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 82
+ []
+
+[82]
+File: Figuras/comps/state_02.eps Graphic file (type eps)
+ <Figuras/comps/state_02.eps>
+File: Figuras/comps/control_02.eps Graphic file (type eps)
+ <Figuras/comps/control_02.eps> [83]
+File: Figuras/comps/origin_02.eps Graphic file (type eps)
+
+<Figuras/comps/origin_02.eps>
+File: Figuras/comps/traj_03.eps Graphic file (type eps)
+ <Figuras/comps/traj_03.eps>
+File: Figuras/comps/state_03.eps Graphic file (type eps)
+
+<Figuras/comps/state_03.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 84
+ []
+
+[84]
+File: Figuras/comps/control_03.eps Graphic file (type eps)
+ <Figuras/comps/control_03.eps>
+File: Figuras/comps/origin_03.eps Graphic file (type eps)
+ <Figuras/comps/origin_03.eps> [85]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 86
+ []
+
+[86]
+File: Figuras/comps/traj_04.eps Graphic file (type eps)
+ <Figuras/comps/traj_04.eps>
+File: Figuras/comps/state_04.eps Graphic file (type eps)
+ <Figuras/comps/state_04.eps>
+File: Figuras/comps/control_04.eps Graphic file (type eps)
+
+<Figuras/comps/control_04.eps>
+Underfull \vbox (badness 6125) has occurred while \output is active []
+
+ [87]
+File: Figuras/comps/origin_04.eps Graphic file (type eps)
+
+<Figuras/comps/origin_04.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 88
+ []
+
+[88]
+File: Figuras/comps/traj_05.eps Graphic file (type eps)
+ <Figuras/comps/traj_05.eps>
+File: Figuras/comps/state_05.eps Graphic file (type eps)
+ <Figuras/comps/state_05.eps> [89]
+File: Figuras/comps/control_05.eps Graphic file (type eps)
+
+<Figuras/comps/control_05.eps>
+File: Figuras/comps/traj_06.eps Graphic file (type eps)
+ <Figuras/comps/traj_06.eps>
+File: Figuras/comps/state_06.eps Graphic file (type eps)
+
+<Figuras/comps/state_06.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 90
+ []
+
+[90]
+File: Figuras/comps/control_06.eps Graphic file (type eps)
+ <Figuras/comps/control_06.eps> [91]
+Overfull \hbox (11.55109pt too wide) in paragraph at lines 739--740
+\T1/ptm/m/n/12 de flops. As-sim, considerando-se o pe-ríodo de amos-tra-gem uti
+-li-zado aqui, $\OML/cmm/m/it/12 T \OT1/cmr/m/n/12 = 0\OML/cmm/m/it/12 ; \OT1/c
+mr/m/n/12 1 []$\T1/ptm/m/n/12 ,
+ []
+
+
+Underfull \vbox (badness 1142) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 92
+ []
+
+[92] [93]
+File: Figuras/restu_mpc/traj_03.eps Graphic file (type eps)
+ <Figuras/restu_mpc/traj_03.eps>
+File: Figuras/restu_mpc/state_03.eps Graphic file (type eps)
+ <Figuras/restu_mpc/state_03.eps>
+Underfull \vbox (badness 1092) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 94
+ []
+
+[94]
+File: Figuras/restu_mpc/control_03.eps Graphic file (type eps)
+ <Figuras/restu_mpc/control_03.eps>
+File: Figuras/restu_mpc/cost_03.eps Graphic file (type eps)
+ <Figuras/restu_mpc/cost_03.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [95])
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 96
+ []
+
+[96] (traj.tex
+Overfull \hbox (9.88496pt too wide) in paragraph at lines 5--6
+\T1/ptm/m/n/12 NORMEY-RICO; GÓMEZ-ORTEGA; CA-MA-CHO, 1999; RA-MÍ-REZ et al., 19
+99; DONG;
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [97
+
+]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 98
+ []
+
+[98]
+File: Figuras/pure_traj/traj_01.eps Graphic file (type eps)
+ <Figuras/pure_traj/traj_01.eps>
+File: Figuras/pure_traj/state_01.eps Graphic file (type eps)
+ <Figuras/pure_traj/state_01.eps>
+File: Figuras/pure_traj/control_01.eps Graphic file (type eps)
+
+<Figuras/pure_traj/control_01.eps> [99]
+File: Figuras/pure_traj/cost_01.eps Graphic file (type eps)
+ <Figuras/pure_traj/cost_01.eps>
+File: Figuras/pure_traj/traj_02.eps Graphic file (type eps)
+
+<Figuras/pure_traj/traj_02.eps>
+File: Figuras/pure_traj/state_02.eps Graphic file (type eps)
+ <Figuras/pure_traj/state_02.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 100
+ []
+
+[100]
+File: Figuras/pure_traj/control_02.eps Graphic file (type eps)
+ <Figuras/pure_traj/control_02.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [101]
+File: Figuras/pure_traj/cost_02.eps Graphic file (type eps)
+
+<Figuras/pure_traj/cost_02.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 102
+ []
+
+[102]
+File: Figuras/essen_traj/traj_01.eps Graphic file (type eps)
+ <Figuras/essen_traj/traj_01.eps>
+File: Figuras/essen_traj/state_01.eps Graphic file (type eps)
+ <Figuras/essen_traj/state_01.eps>
+File: Figuras/essen_traj/control_01.eps Graphic file (type eps)
+
+<Figuras/essen_traj/control_01.eps>
+File: Figuras/essen_traj/cost_01.eps Graphic file (type eps)
+ <Figuras/essen_traj/cost_01.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [103]
+File: Figuras/essen_traj/traj_02.eps Graphic file (type eps)
+
+<Figuras/essen_traj/traj_02.eps>
+File: Figuras/essen_traj/state_02.eps Graphic file (type eps)
+ <Figuras/essen_traj/state_02.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 104
+ []
+
+[104]
+File: Figuras/essen_traj/control_02.eps Graphic file (type eps)
+ <Figuras/essen_traj/control_02.eps>
+File: Figuras/essen_traj/cost_02.eps Graphic file (type eps)
+ <Figuras/essen_traj/cost_02.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [105]
+File: Figuras/essen_traj/traj_03.eps Graphic file (type eps)
+
+<Figuras/essen_traj/traj_03.eps>
+File: Figuras/essen_traj/state_03.eps Graphic file (type eps)
+ <Figuras/essen_traj/state_03.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 106
+ []
+
+[106]
+File: Figuras/essen_traj/control_03.eps Graphic file (type eps)
+ <Figuras/essen_traj/control_03.eps>
+File: Figuras/essen_traj/cost_03.eps Graphic file (type eps)
+ <Figuras/essen_traj/cost_03.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [107]
+File: Figuras/essen_traj/comp_01.eps Graphic file (type eps)
+
+<Figuras/essen_traj/comp_01.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 108
+ []
+
+[108]
+Underfull \vbox (badness 1163) has occurred while \output is active []
+
+ [109]
+File: Figuras/essen_traj/traj_10.eps Graphic file (type eps)
+
+<Figuras/essen_traj/traj_10.eps>
+Underfull \vbox (badness 3068) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 110
+ []
+
+[110] [111]
+Underfull \vbox (badness 3250) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 112
+ []
+
+[112] [113]
+File: Figuras/pure_traj/traj_03.eps Graphic file (type eps)
+ <Figuras/pure_traj/traj_03.eps>
+File: Figuras/pure_traj/state_03.eps Graphic file (type eps)
+ <Figuras/pure_traj/state_03.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 114
+ []
+
+[114]
+File: Figuras/pure_traj/control_03.eps Graphic file (type eps)
+ <Figuras/pure_traj/control_03.eps>
+File: Figuras/pure_traj/cost_03.eps Graphic file (type eps)
+ <Figuras/pure_traj/cost_03.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [115]
+File: Figuras/pure_traj/traj_04.eps Graphic file (type eps)
+
+<Figuras/pure_traj/traj_04.eps>
+File: Figuras/pure_traj/state_04.eps Graphic file (type eps)
+ <Figuras/pure_traj/state_04.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 116
+ []
+
+[116]
+File: Figuras/pure_traj/control_04.eps Graphic file (type eps)
+ <Figuras/pure_traj/control_04.eps>
+File: Figuras/pure_traj/cost_04.eps Graphic file (type eps)
+ <Figuras/pure_traj/cost_04.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [117]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 118
+ []
+
+[118]
+File: Figuras/essen_traj/traj_04.eps Graphic file (type eps)
+ <Figuras/essen_traj/traj_04.eps>
+File: Figuras/essen_traj/state_04.eps Graphic file (type eps)
+ <Figuras/essen_traj/state_04.eps>
+File: Figuras/essen_traj/control_04.eps Graphic file (type eps)
+
+<Figuras/essen_traj/control_04.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [119]
+File: Figuras/essen_traj/cost_04.eps Graphic file (type eps)
+
+<Figuras/essen_traj/cost_04.eps>
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 120
+ []
+
+[120]
+File: Figuras/essen_traj/traj_05.eps Graphic file (type eps)
+ <Figuras/essen_traj/traj_05.eps>
+File: Figuras/essen_traj/state_05.eps Graphic file (type eps)
+ <Figuras/essen_traj/state_05.eps>
+File: Figuras/essen_traj/control_05.eps Graphic file (type eps)
+
+<Figuras/essen_traj/control_05.eps>
+File: Figuras/essen_traj/cost_05.eps Graphic file (type eps)
+ <Figuras/essen_traj/cost_05.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [121]
+File: Figuras/essen_traj/traj_06.eps Graphic file (type eps)
+
+<Figuras/essen_traj/traj_06.eps>
+File: Figuras/essen_traj/state_06.eps Graphic file (type eps)
+ <Figuras/essen_traj/state_06.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 122
+ []
+
+[122]
+File: Figuras/essen_traj/control_06.eps Graphic file (type eps)
+ <Figuras/essen_traj/control_06.eps>
+File: Figuras/essen_traj/cost_06.eps Graphic file (type eps)
+ <Figuras/essen_traj/cost_06.eps>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [123]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 124
+ []
+
+[124]
+Overfull \hbox (3.90446pt too wide) in paragraph at lines 666--667
+[][]\T1/ptm/m/n/12 A ne-ces-si-dade de se de-sen-vol-ver uma al-ter-na-tiva li-
+near ao NMPC apa-rece en-tão quando
+ []
+
+File: Figuras/essen_traj/traj_07.eps Graphic file (type eps)
+<Figuras/essen_traj/traj_07.eps>
+File: Figuras/essen_traj/traj_08.eps Graphic file (type eps)
+ <Figuras/essen_traj/traj_08.eps>
+Underfull \vbox (badness 3590) has occurred while \output is active []
+
+ [125]
+File: Figuras/essen_traj/traj_09.eps Graphic file (type eps)
+
+<Figuras/essen_traj/traj_09.eps>)
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 126
+ []
+
+[126] [127] (conclusions.tex
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 128
+ []
+
+[128
+
+]) [129] (diss.bbl
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 130
+ []
+
+[130] [131
+
+]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 132
+ []
+
+[132] [133]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 134
+ []
+
+[134]
+Underfull \hbox (badness 2671) in paragraph at lines 297--304
+[][]\T1/ptm/m/n/12 MATTHIES, L. et al. A Por-ta-ble, Au-to-no-mous, Ur-ban Re-c
+on-nais-sance Ro-bot.
+ []
+
+
+Underfull \hbox (badness 2142) in paragraph at lines 297--304
+\T1/ptm/m/n/12 TEMS, 6., 2000, Ve-nice, Italy. \T1/ptm/b/n/12 Pro-ce-e-dings...
+ \T1/ptm/m/n/12 Ams-ter-dam: IOS Press, 2000.
+ []
+
+
+Underfull \hbox (badness 3942) in paragraph at lines 297--304
+\T1/ptm/m/n/12 Dis-po-ní-vel em: $\T1/pcr/m/n/12 http : / / robotics . jpl . na
+sa . gov / tasks / tmr / papers /
+ []
+
+[135]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 136
+ []
+
+[136] [137]
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 138
+ []
+
+[138]) [139] (twil.tex
+File: Figuras/twil.ps Graphic file (type eps)
+ <Figuras/twil.ps>
+File: Figuras/twil_meas.eps Graphic file (type eps)
+ <Figuras/twil_meas.eps>
+Underfull \vbox (badness 1102) has occurred while \output is active []
+
+
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 140
+ []
+
+[140
+
+] [141]) AED: lastpage setting LastPage
+Underfull \hbox (badness 10000) has occurred while \output is active
+\T1/ptm/m/n/10.95 142
+ []
+
+[142] (diss.aux) ) 
+Here is how much of TeX's memory you used:
+ 4471 strings out of 95880
+ 50210 string characters out of 1195048
+ 107568 words of memory out of 1101591
+ 6411 multiletter control sequences out of 60000
+ 40330 words of font info for 66 fonts, out of 500000 for 1000
+ 16 hyphenation exceptions out of 607
+ 39i,16n,31p,1958b,456s stack positions out of 1500i,500n,5000p,200000b,32768s
+
+Output written on diss.dvi (143 pages, 396468 bytes).

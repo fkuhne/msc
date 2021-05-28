@@ -1,0 +1,104 @@
+\documentclass[conference,harvard,brazil,english]{sbatex}
+\usepackage[latin1]{inputenc}
+\usepackage{ae}
+%
+% LaTeX2e class SBATeX
+%
+% Versão 1.0 alpha
+%	Walter Fetter Lages
+%	w.fetter@ieee.org
+%
+% Este arquivo cba_esq.tex é um esqueleto para geração do artigo para o CBA
+%
+% --------------------------------------------------
+%
+% Para compilar este exemplo use a seqüência de comandos:
+%    
+%     latex cba_esq
+%     bibtex cba_esq
+%     latex cba_esq
+%     latex cba_esq
+% 
+% Para gerar um arquivo Postscript (.ps):
+%
+%     dvips -t a4 cba_esq
+%
+% Para gerar um arquivo Portable Document Format (.pdf):
+%
+%     dvips -Ppdf -t a4 cba_esq
+%     ps2pdf -dMaxSubsetPct=100 -dSubsetFonts=true -dEmbedAllFonts=true -dCompatibilityLevel=1.2 -sPAPERSIZE=a4 cba_esq.ps
+%
+
+
+\begin{document}
+
+% CABEÇALHO
+
+\title{Estimação e Controle da Posição de um Robô Móvel Utilizando Filtro de Kalman}
+
+\author{Carlos Claro}{caclaro@uol.com.br}
+\address{Grupo de Controle e Automação de Sistemas\\ Universidade Federal do Rio Grande do Sul\\ Porto Alegre, RS, Brasil}
+
+\author[1]{Sérgio R. Suess}{srsuess@terra.com.br}
+
+\author[1]{Felipe Kühne}{kuhne@eletro.ufrgs.br}
+
+\author[1]{Walter F. Lages}{lages@eletro.ufrgs.br}
+
+\twocolumn[
+
+\maketitle
+
+\selectlanguage{english}
+\begin{abstract}
+	One of the most important problems in navigation and control of mobile robots is to inform it's actual configuration with respect to a global frame. For this task, a very common solution is to use incremental encoders in the so called {\em odometry}, because it's ease and low cost. However, odometry's advantages falls off when the integration errors becames large.  With this in mind, it is necessary to use some error's minimization mechanism. In this paper, it is shown the use of Kalman filter as an aptimal state-estimator, and a static state-feedback position controller for trajectory tracking of a wheeled mobile robot with encoders, GPS and an electronic compass. Simulation results are shown with graphics of the reference and estimated states, and for the error covariance matrix, for two different trajectories.
+\end{abstract}
+
+\keywords{Kalman filtering, mobile robots, state-feedback control.}
+
+\selectlanguage{brazil}
+\begin{abstract} 
+	Um dos principais problemas quando se trata da navegação e controle de robôs móveis está em informar ao mesmo a sua localização com relação a um espaço de configuração. Para isto, geralmente usam-se {\em encoders}, pois possuem baixo custo e são de fácil implementação. Contudo, os {\encoders} geram erros que crescem indefinidamente durante a movimentação do robô, sendo necessário então algum mecanismo para a minimização destes erros. Neste artigo, é demostrado o uso do filtro de Kalman como estimador ótimo de estados, e a implementação de um controle por realimentação estática de estados para o problema de rastreamento de trajetória de um robô móvel dotado de rodas. Resultados de simulação são apresentados em forma de gráficos dos estados de referência, estados estimados e da covariância do filtro de Kalman, para dois tipos diferentes de trajetórias.
+\end{abstract}
+
+\keywords{Filtro de Kalman, robôs móveis, controle por realimentação de estados.}
+]
+
+
+\selectlanguage{brazil}
+
+
+% CONTRIBUIÇÃO
+
+\section{Introdução}
+
+	No problema de navegação e controle de um robô móvel autônomo, uma das principais informações que deve ser obtida é a sua atual configuração, dada pela posição e orientação deste robô com relação a algum sistema de coordenadas global. Para isso, utilizam-se sensores acoplados ao corpo do veículo. No caso de robôs com rodas, é comum o uso de encoders acoplados aos seus eixos de rotação. É possível então obter-se a posição e configuração atuais deste robô, dada a sua configuração anterior e conhecendo-se as características físicas do mesmo. A isso chama-se {\em odometria}.
+
+\subsection{Modelo cinemático do robô}
+
+	Esta é uma subseção.
+
+\subsection{Outra Subseção}
+
+	Esta é outra subseção.
+
+\subsubsection{Subsubseção}
+
+	Esta é uma subsubseção.
+
+\section{Outra Seção}
+	
+	Esta é outra seção.
+
+\section{Conclusões}
+
+	Estas são as conclusões.
+
+\section*{Agradecimentos}
+
+	Estes são os agradecimentos.
+
+% BIBLIOGRAFIA
+\bibliography{exemplo}
+
+\end{document}

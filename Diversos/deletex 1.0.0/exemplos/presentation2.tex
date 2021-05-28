@@ -1,0 +1,62 @@
+% This is the classical example of prosper style adapted to highlight 
+% the DeLeTeX prosper style features
+%
+% For presentations in portuguese, the option english should be removed.
+%
+% Color background and side bar
+%\documentclass[english,pdf,final,colorBG,slideColor,total,deletex]{prosper}
+
+% B&W background and color side bar
+%\documentclass[english,pdf,final,slideColor,total,deletex]{prosper}
+
+% Color background and B&W side bar
+\documentclass[english,pdf,final,colorBG,total,deletex]{prosper}
+
+% B&W background and side bar, should be adequate for printing
+%\documentclass[english,pdf,final,total,deletex]{prosper}
+
+\usepackage{amsmath} 	% needed to use the equation* environment
+
+\title{\DeLeTeX}
+\subtitle{Prosper Style}
+\author{Walter Fetter Lages}
+\email{w.fetter@ieee.org}
+\course{\ppgee}
+
+\slideCaption{\DeLeTeX\ Prosper Style}
+
+% logo at default place
+%\Logo{\includegraphics[height=1cm]{fe.eps}}
+
+% logo at specific place
+\Logo(4.5,-1,3){\includegraphics[height=1cm]{fe.eps}}
+
+%\displayVersion
+
+%\DefaultTransition{Split}
+%\DefaultTransition{Blinds}
+%\DefaultTransition{Box}
+%\DefaultTransition{Wipe}
+%\DefaultTransition{Dissolve}
+%\DefaultTransition{Glitter}
+\DefaultTransition{Replace}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{slide}{The quest for $\pi$}
+\begin{itemize}
+\item The following formula computes $8$ correct digits per iteration 
+  (Ramanujan):
+\end{itemize}
+  \begin{small}
+  \begin{equation*}
+    \frac{1}{\pi}=\sum_{n=0}^\infty \frac{(\frac{1}{4})_n(\frac{2}{4})_n(\frac{3}{4})_n}{n!^3}\bigl(2\sqrt{2}(1103+26390n)\bigr)\frac{1}{(99^2)^{2n+1}}
+  \end{equation*}
+  \end{small}
+\end{slide}
+
+\end{document}
+

@@ -1,0 +1,803 @@
+%%%%%%%%%%%%%%%%%%%%
+\section{Introdução}
+É bem conhecido o resultado do Teorema de Brockett~\cite{brockett82} em que não existe uma realimentação de estados suave e invariante no tempo que estabilize um sistema não holonômico sem deriva em uma dada postura fixa. Este problema pode ser resolvido através do MPC, que gera uma lei de controle (implícita) não suave, que pode ser então aplicada ao sistema em questão. As vantagens do MPC já foram descritas no capítulo anterior e em alguns dos trabalhos citados e serão abordadas agora através de extensivos resultados de simulação. 
+
+Primeiramente o NMPC é desenvolvido considerando-se uma função de custo em coordenadas cartesianas. Após, uma transformação em coordenadas polares é introduzida. As próximas seções tratam da inclusão de restrições nas entradas de controle e nas variáveis de estado. Após, testes comparativos com as leis clássicas de controle (Seção~\ref{sec:classical_control}) são vistas, mostrando as significativas vantagens do NMPC para a estabilização do robô na origem. Por fim, algumas considerações importantes acerca do custo computacional do NMPC são mostradas na última seção. 
+
+Os algoritmos utilizados neste capítulo foram desenvolvidos em Matlab utilizando a função {\tt fmincon} para a solução do problema de otimização não linear.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Formulação do Problema}
+O objetivo aqui é fazer com que o robô estabilize em um ponto fixo do espaço de configuração, ou seja, fazer com que
+\begin{equation}\label{eqn:point_obj}
+	{\bf x}(k) - {\bf x}_{ref} = 0,
+\end{equation}
+onde ${\bf x}_{ref}=[x_{ref}~~y_{ref}~~\theta_{ref}]^T$. Sem perda de generalidade, comumente ${\bf x}_{ref}$ é considerado a origem. 
+
+O MPC é resolvido em tempo discreto. Assim, discretizando o modelo cinemático~\req{eqn:model} pelo método de Euler, com $\dot{\bf x}\approx\frac{{\bf x}(k+1)-{\bf x}(k)}{T}$, tem-se que:
+\begin{equation}\label{eqn:discrete_model}
+	\left\{
+		\begin{aligned}
+			x(k+1)	  &= x(k) + v(k)\cos\theta(k)T \\
+			y(k+1)	  &= y(k) + v(k)\sin\theta(k)T \\
+			\theta(k+1) &= \theta(k) + w(k)T
+		\end{aligned}
+	\right.,
+\end{equation}
+ou, em uma forma mais compacta,
+\begin{equation*}
+	{\bf x}(k+1) = f({\bf x}(k),{\bf u}(k)),
+\end{equation*}
+com ${\bf x}(k)=[x(k)~~y(k)~~\theta(k)]^T$ e ${\bf u}(k)=[v(k)~~w(k)]^T$. Neste trabalho, considera-se que não existe diferença entre o sistema real e o modelo e que todos os estados estão sempre disponíveis para medida.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Função de Custo em Coordenadas Cartesianas}\label{sec:cart}
+Nesta seção o NMCP é resolvido através da solução do seguinte problema de otimização em cada instante de amostragem $k$:
+\begin{equation*}
+	{\bf u}^\star,~{\bf x}^\star = \arg\min_{{\bf u},{\bf x}}\left\{\Phi(k)\right\}
+\end{equation*}
+sujeito às restrições referentes à dinâmica do sistema~\req{eqn:discrete_model} e da condição inicial\footnote{Conforme mencionado anteriormente, o modelo cinemático da expressão~\req{eqn:model} é suficiente para capturar as características não holonômicas do sistema. Assim, a restrição não holonômica da expressão~\req{eqn:nhcond} não precisa ser incluída no MPC. As restrições lineares referentes a $\bf x$ e $\bf u$, respectivamente expressões~\req{eqn:restx} e \req{eqn:restu}, serão consideradas nas Seções~\ref{sec:control_rest} e \ref{sec:control_state_rest}.}:
+\begin{align*}
+	{\bf x}(k|k)   &= {\bf x}_0, \\
+	{\bf x}(k+j|k) &= f({\bf x}(k+j-1|k),{\bf u}(k+j-1|k)),
+\end{align*}
+e assumindo que $N_1=1$, $N_2=N$ e $N_u=N-1$ na expressão~\req{eqn:cost}, tem-se que $j\in[1,N]$ e a seguinte função de custo é utilizada:
+\begin{equation}\label{eqn:point_cost}
+	\Phi(k) = \sum_{j=1}^{N}{\bf x}^T(k+j|k){\bf Q}{\bf x}(k+j|k) + {\bf u}^T(k+j-1|k){\bf R}{\bf u}(k+j-1|k)
+\end{equation}
+
+Assim, considerando os seguintes parâmetros de sintonia:
+\begin{equation*}
+	N = 5, \qquad
+	{\bf Q} = \begin{bmatrix}	
+		1 & 0 & 0 \\
+		0 & 1 & 0 \\
+		0 & 0 & 0.5 \end{bmatrix}, \qquad
+	{\bf R} = \begin{bmatrix}
+		0.1 & 0 \\ 
+		0 & 0.1 \end{bmatrix}
+\end{equation*}
+e ${\bf x}_0=[-0,2~~3~~0]^T$ como configuração inicial do robô, obtém-se os resultados que são mostrados nas figuras a seguir.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_mpc/traj_01.eps}
+    \caption{Trajetória no plano $XY$. NMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:pure_traj_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_mpc/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. NMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:pure_state_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_mpc/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. NMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:pure_control_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_mpc/cost_01.eps}
+    \caption{Função de custo $\Phi$. NMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:pure_cost_01}
+\end{center}\end{figure}
+
+A condição final é ${\bf x}_f=[0~~0,91~~0]^T$. Nota-se um grande erro em regime na variável de estado $y$ (Figuras~\ref{fig:pure_traj_01} e \ref{fig:pure_state_01}) (as outras variáveis convergem para a origem). Uma possível explicação para este fato é que ambos os estados $x$ e $y$ dependem da velocidade linear $v$. Assim, quando $x$ e $v$ são minimizados, a função de custo atinge um valor (uma curva de nível da função de custo) que assume ser o seu mínimo, pelo menos com relação a $x$ e $v$. Assim, para minimizar $y$, $v$ e $\Phi$ teriam que aumentar de valor, o que não é possível dado ao comportamento monotônico da função de custo, ou seja, $\Phi(k)\leq\Phi(k-1)$ (Figura~\ref{fig:pure_cost_01}). 
+
+Na Figura~\ref{fig:pure_control_01} nota-se que os limite de velocidade, para o robô Twil, são ultrapassados\footnote{Conforme definido no Apêndice~\ref{app:twil}, os valores limites para $v$ e $w$ são de $\pm 0,4712~m/s$ e $\pm 3,7699~rad/s$, respectivamente.}. Para prevenir isto, restrições na amplitude dos sinais de controle serão consideradas na Seção~\ref{sec:control_rest}.
+
+O aumento do horizonte de predição parece fazer o erro diminuir assintoticamente (Figura~\ref{fig:horizon_effect}). Por outro lado, deseja-se que o horizonte seja o menor possível, já que o seu tamanho é o principal responsável, neste caso, pelo crescimento do custo computacional (vide Seção~\ref{sec:point_nmpc_cost}).
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_mpc/horizon_effect.eps}
+    \caption{Efeito do aumento do horizonte $N$ no erro em regime do estado $y$. Linha contínua: $N=5$; linha tracejada: $N=10$; linha traço-ponto: $N=20$; linha pontilhada: $N=50$.}
+    \label{fig:horizon_effect}
+\end{center}\end{figure}
+
+Além disso, outra alternativa para contornar este problema seria aumentar o peso na variável $y$ através da matriz $\bf Q$ na função de custo da expressão~\req{eqn:point_cost}. Entretanto, se o ponto de equilíbrio tiver sua orientação deslocada em $\pi/2$, o problema de erro em regime se transfere para a variável $x$, como pode ser observado pela Figura~\ref{fig:rotated_eq}.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_mpc/rotated_eq.eps}
+    \caption{Trajetória no plano $XY$. O ponto de equilíbrio é agora ${\bf x}_{ref}=[0~~0~~\pi/2]^T$.}
+    \label{fig:rotated_eq}
+\end{center}\end{figure}
+
+Os parâmetros usados no MPC para o caso acima são os mesmos do caso anterior, exceto pela matriz de ponderação $\bf Q$ e pelo ponto de equilíbrio, que agora são
+\begin{equation*}
+	{\bf Q} = \begin{bmatrix} 1 & 0 & 0 \\
+						 0 & 50 & 0 \\
+						 0 & 0 & 0,5
+			\end{bmatrix}, \qquad
+	{\bf x}_{ref}= \begin{bmatrix} 0 \\ 0 \\ \pi/2 \end{bmatrix}
+\end{equation*}
+			
+A condição final dos estados para o caso apresentado acima é de ${\bf x}_f=[-0,83~~0~~\pi/2]^T$. Observa-se então claramente que o erro em regime antes existente na variável de posição $y$ transfere-se para $x$ quando da rotação do ponto de equilíbrio em $\pi/2$, dada a simetria existente entre estas duas variáveis.
+
+Sendo assim, torna-se necessária outra forma de fazer com que todos os estados convirjam para a origem, sem o aumento do horizonte de predição.
+
+Ao invés da adição de uma restrição terminal, como por exemplo ${\bf x}(k+N|k)=0$ (o que pode tornar o problema de otimização não factível), em~\cite{essen01} é proposta uma modificação na função de custo a ser minimizada:
+\begin{equation}\label{eqn:essen_cost}
+	\Phi(k) = \sum_{j=1}^{N-1}{\bf x}^T(k+j|k){\bf Q}(j){\bf x}(k+j|k) + \sum_{j=0}^{N-1}{\bf u}^T(k+j|k){\bf R}{\bf u}(k+j|k) + \Omega({\bf x}(k+N|k)),
+\end{equation}
+onde a matriz de ponderação ${\bf Q}(j)$ agora cresce exponencialmente dentro do horizonte e $\Omega({\bf x}(k+N|k))$ é o chamado {\em custo terminal},
+\begin{equation*}
+	\Omega({\bf x}(k+N|k)) = {\bf x}^T(k+N|k){\bf P}{\bf x}(k+N|k)
+\end{equation*}
+e ${\bf P}$ é uma matriz tal que aumenta o peso dos estados no final do horizonte, fazendo com que ${\bf x}(k+N|k)$ se aproxime mais da origem. Aqui, escolhe-se
+\begin{equation*}
+	{\bf Q}(j) = 2^{j-1}{\bf Q}, \quad {\bf P} = 50{\bf Q}(N),
+\end{equation*}
+e
+\begin{equation*}
+	{\bf Q} = \begin{bmatrix}	
+		1 & 0 & 0 \\
+		0 & 1 & 0 \\
+		0 & 0 & 0.5 \end{bmatrix}, \quad
+	{\bf R} = \begin{bmatrix}
+		0.1 & 0 \\ 
+		0 & 0.1 \end{bmatrix}
+\end{equation*}
+
+Os resultados são mostrados abaixo, para uma condição inicial do robô de ${\bf x}_0=[-0,2~~3~~0]^T$.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_mpc/traj_01.eps}
+    \caption{Trajetória no plano $XY$. NMPC de \cite{essen01}.}
+    \label{fig:essen_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_mpc/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. NMPC de \cite{essen01}}
+    \label{fig:essen_state_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_mpc/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. NMPC de \cite{essen01}}
+    \label{fig:essen_control_01}
+\end{center}\end{figure}
+
+A condição final agora é de ${\bf x}_f=[0~~-0.003~~0]^T$. Pelos gráficos acima, observa-se uma grande diminuição do erro no estado $y$. Apesar de o esforço de controle ter aumentado, o tempo de convergência também diminuiu bastante. No primeiro caso, o robô leva cerca de 4 segundos para convergir para a sua configuração final. Agora, isto acontece em pouco mais de um segundo.
+
+Na Figura~\ref{fig:essen_origin_01} é mostrado um detalhe da origem no plano $XY$. Observa-se que, apesar de o erro em $y$ diminuir, ele não é nulo. Nas Figuras~\ref{fig:essen_lots_of_trajs} e~\ref{fig:essen_lots_of_origins}, é mostrado o comportamento do robô para diversas configurações iniciais e orientação inicial $\theta_0=0~rad$.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_mpc/origin_01.eps}
+    \caption{Detalhe da origem no plano $XY$. NMPC de \cite{essen01}}
+    \label{fig:essen_origin_01}
+\end{center}\end{figure}
+\begin{figure}[ht]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_mpc/lots_of_trajs.eps}
+    \caption{Comportamento do robô no plano $XY$ para várias posições de saída e $\theta_0=0~rad$. NMPC de \cite{essen01}}
+    \label{fig:essen_lots_of_trajs}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_mpc/lots_of_origins.eps}
+    \caption{Detalhe da origem no plano $XY$ para várias posições de saída e $\theta_0=0~rad$. NMPC de \cite{essen01}}
+    \label{fig:essen_lots_of_origins}
+\end{center}\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Função de Custo em Coordenadas Polares}\label{sec:point_mpc_polar}
+Foi visto que, com as modificações apresentadas em \cite{essen01}, é possível diminuir consideravelmente o erro em regime existente em um dos estados de configuração. Entretanto, um erro de cerca de 0,003~m em $y$ parece ser persistente, pelo menos nos casos apresentados. 
+
+E mais, ainda existe uma simetria entre os estados $x$ e $y$, ambos dependendo da mesma entrada de controle. Para resolver isto, uma transformação de coordenadas do modelo cinemático do robô é utilizada. Em~\cite{lages98b}, a seguinte transformação descontínua em coordenadas polares é introduzida (Figura~\ref{fig:polar}):
+\begin{align*}
+	e      &= \sqrt{x^2+y^2} \\
+	\phi   &= \atan(y,x) \\
+	\alpha &= \theta - \phi
+\end{align*}
+e o modelo cinemático do robô nesta base transforma-se em:
+\begin{equation}\label{eqn:polar_model}
+	\left\{
+		\begin{aligned}
+			\dot e     &= v\cos\alpha \\
+			\dot\phi   &= v\frac{\sin\alpha}{e} \\
+			\dot\alpha &= -v\frac{\sin\alpha}{e} + w
+		\end{aligned}
+	\right.
+\end{equation}
+onde o vetor de estados é ${\bf x}_p=[e~~\phi~~\alpha]^T$ e ${\bf u}=[v~~w]^T$ são as entradas de controle (velocidades linear e angular).
+\begin{figure}[hbtp]\begin{center}
+    \includegraphics[width=.45\linewidth]{Figuras/polar.eps}
+    \caption{Coordenadas polares para o robô com acionamento diferencial.}
+    \label{fig:polar}
+\end{center}\end{figure}
+
+\cite{lages98b} propõe também a seguinte função de Lyapunov que estabiliza o sistema~\req{eqn:polar_model} na origem:
+\begin{equation}\label{eqn:polar_lyapunov}
+	V = \frac{1}{2}\left(\lambda e^2 + h\phi^2 + \alpha^2\right),
+\end{equation}
+onde $\lambda$ e $h$ são constantes positivas.	
+
+Esta função de Lyapunov pode então ser utilizada como função de custo~\cite{chen82}. Reescrevendo a expressão \req{eqn:polar_lyapunov} em uma forma quadrática,
+\begin{equation*}
+	V = {\bf x}_p^T{\bf Q}_p{\bf x}_p, \qquad {\bf Q}_p = \begin{bmatrix}
+		\frac{1}{2}\lambda & 0 & 0 \\
+		0 & \frac{1}{2}h & 0 \\
+		0 & 0 & \frac{1}{2}
+	\end{bmatrix}
+\end{equation*}
+e incluindo um termo de penalização do controle, tem-se a seguinte função de custo para o sistema em coordenadas polares:
+\begin{equation}\label{eqn:polar_cost}
+	\Phi_p(k) = \sum_{j=1}^{N}{\bf x}_p^T(k+j|k){\bf Q}_p{\bf x}_p(k+j|k) + {\bf u}^T(k+j-1|k){\bf R}{\bf u}(k+j-1|k)
+\end{equation}
+
+considera-se então o seguinte problema de NMPC:
+\begin{equation*}
+{\bf u}^\star,~{\bf x}^\star = \arg\min_{{\bf u},{\bf x}}\left\{\Phi_p(k)\right\}
+\end{equation*}
+sujeito à:
+\begin{align*}
+	{\bf x}(k|k)   &= {\bf x}_0, \\
+	{\bf x}(k+j|k) &= f({\bf x}(k+j-1|k),{\bf u}(k+j-1|k)), \quad j\in[1,N]
+\end{align*}
+e com os seguintes parâmetros:
+\begin{equation*}
+	N=5, \quad \lambda=2, \quad h=2, \quad {\bf R} = \begin{bmatrix}
+		0.1 & 0 \\ 
+		0 & 0.1 \end{bmatrix},
+\end{equation*}
+obtendo-se os resultados que seguem, para uma condição inicial de ${\bf x}_0=[-0.2~~3~~0]^T$:
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/traj_01.eps}
+    \caption{Trajetória no plano $XY$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:polar_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:polar_state_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:polar_control_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/cost_01.eps}
+    \caption{Função de custo $\Phi$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:polar_cost_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/origin_01.eps}
+    \caption{Detalhe na origem do plano $XY$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:polar_origin_01}
+\end{center}\end{figure}
+
+Então, observa-se que, com a transformação em coordenadas polares na função de custo, sem aumentar o horizonte de predição e sem adição de outros termos, todos os estados convergem assintoticamente para a origem, sem apresentar erro em regime. Neste caso, o robô estabiliza exatamente na origem.
+
+O motivo pelo qual o uso de uma função de custo em coordenadas polares resolve o problema apresentado no início deste capítulo ainda está em estudo. Entretanto, com base nos resultados, pode-se conjecturar o seguinte:
+\begin{itemize}
+\item Em~\cite{lages98b} é visto que a convergência de um dos estados em coordenadas polares para zero faz com que todas as outras variáveis de estado também convirgam para zero. Assim, uma possível proposição é que esta propriedade também se estende para o caso do NMPC apresentado aqui;
+\item Com uma função de custo em coordenadas cartesianas, devido às restrições referentes ao modelo do sistema, o ponto ótimo encontrado pelo algoritmo de otimização não é único, fazendo com que o valor da função de custo fique preso em alguma curva de nível não nula. Com a mudança de base da função de custo para coordenadas polares, a estrutura da função de custo é modificada e provavelmente este problema é eliminado.
+\end{itemize}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{MPC com Restrições no Controle}\label{sec:control_rest}
+Até aqui, a única restrição imposta no problema de otimização foi aquela referente à dinâmica do modelo cinemático do robô. Nesta seção, serão inseridos limites nas amplitudes das entradas de controle, a serem respeitados durante a minimização da função de custo. Levando em conta as características do robô Twil, definidas no Apêndice~\ref{app:twil}, pode-se formular as seguintes restrições nas amplitudes das velocidades linear e angular:
+\begin{alignat*}{3}
+	-\overline v &\leq &v &\leq \overline v, &\quad \overline v &= 0,4712~m/s \\ 
+	-\overline w &\leq &w &\leq \overline w, &\quad \overline w &= 3,7699~rad/s
+\end{alignat*}
+
+Fazendo ${\bf u}=[v~~w]^T$, tem-se que $-\overline{\bf u}\leq{\bf u}\leq\overline{\bf u}$. Esta restrição pode ser reescrita na forma da desigualdade ${\bf Du}\leq{\bf d}$ (expressão~\req{eqn:restu}) com:
+\begin{equation}\label{eqn:mtx_restu}
+	{\bf D} = \begin{bmatrix}
+		\bf I \\ -\bf I
+	\end{bmatrix} \quad \text{e}\quad {\bf d}= \begin{bmatrix}
+		\overline{\bf u} \\ \overline{\bf u}
+	\end{bmatrix},
+\end{equation}
+ou seja,
+\begin{equation*}
+	\begin{bmatrix}
+		1 & 0 \\ 0 & 1 \\ -1 & 0 \\ 0 & -1
+	\end{bmatrix}	\begin{bmatrix} v \\ w 
+	\end{bmatrix} \leq \begin{bmatrix}
+		0,4712~m/s \\ 3,7699~rad/s \\ 0,4712~m/s \\ 3,7699~rad/s
+	\end{bmatrix}
+\end{equation*}
+
+Assim, tem-se o seguinte problema de otimização para o robô, utilizando a função de custo~\req{eqn:polar_cost} em coordenadas polares:
+\begin{equation*}
+	{\bf u}^\star,~{\bf x}^\star = \arg\min_{{\bf u},{\bf x}}\left\{\Phi_p(k)\right\}
+\end{equation*}
+sujeito à:
+\begin{alignat*}{2}
+	{\bf x}(k|k)	 &= {\bf x}_0, \\
+	{\bf x}(k+j|k)  &= f({\bf x}(k+j-1|k),{\bf u}(k+j-1|k)), &~~~ j&\in[1,N] \\
+	{\bf Du}(k+j|k) &\leq {\bf d}, &~~~ j&\in[0,N-1]
+\end{alignat*}
+com $\bf D$ e $\bf d$ definidos pela expressão~\req{eqn:mtx_restu}. Utilizando-se os seguintes parâmetros de sintonia:
+\begin{equation*}
+	N=5, \quad \lambda=2, \quad h=2, \quad {\bf R} = \begin{bmatrix}
+		0.1 & 0 \\ 
+		0 & 0.1 \end{bmatrix},
+\end{equation*}
+obtém-se então os seguintes resultados, para uma condição inicial de ${\bf x}_0=[-0.2~~3~~0]^T$:
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/traj_01.eps}
+    \caption{Trajetória no plano $XY$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:restu_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:restu_state_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:restu_control_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/cost_01.eps}
+    \caption{Função de custo $\Phi$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:restu_cost_01}
+\end{center}\end{figure}
+
+O ponto mais importante a ser ressaltado aqui é o de que a função de custo foi minimizada respeitando-se as restrições de amplitude das entradas de controle impostas pela expressão~\req{eqn:mtx_restu} nas velocidades linear e angular, o que pode ser claramente observado no gráfico da Figura~\ref{fig:restu_control_01}.
+
+Obviamente que, por causa destas restrições, as velocidades desenvolvidas estão muito abaixo das apresentadas nos casos anteriores, e por isso o robô demora um tempo maior para chegar ao seu objetivo. Por exemplo, no caso sem restrições da Figura~\ref{fig:polar_state_01} observa-se que o robô chega à origem em cerca de 4 segundos, o que agora acontece em pelo menos o dobro desse tempo.
+
+Nos próximos gráficos, é feita uma comparação entre este último caso, com a função de custo em coordenadas polares da expressão~\req{eqn:polar_cost}, o caso do NMPC de~\cite{essen01} (função de custo da espressão~\req{eqn:essen_cost}) e o caso com a função de custo original, em coordenadas cartesianas da expressão~\req{eqn:point_cost}, sem a adição do custo terminal e com uma matriz $\bf Q$ constante. Os resultados de cada caso são representados, nos gráficos abaixo, pelas linhas contínuas e tracejadas e traço-ponto, respectivamente. A matriz $\bf Q$ (${\bf Q}={\rm diag}(1;1;0,5)$) e todos os parâmetros de sintonia são os mesmos para os três casos. A condição inicial do robô é ${\bf x}_0=[3~~6~~0]^T$. 
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/traj_02.eps}
+    \caption{Trajetória no plano $XY$. Linha contínua: NMPC com função de custo em coordenadas polares; linha tracejada: NMPC de~\cite{essen01}; linha traço-ponto: NMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:restu_traj_02}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/state_02.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Linha contínua: NMPC com função de custo em coordenadas polares; linha tracejada: NMPC de~\cite{essen01}; linha traço-ponto: NMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:restu_state_02}
+\end{center}\end{figure}
+
+Observa-se então, pelas Figuras~\ref{fig:restu_traj_02} e \ref{fig:restu_state_02}, que existe um grande erro na variável $y$ quando se usa a função de custo original, fato já constatado nos primeiros casos apresentados neste capítulo. A condição final para o NMPC com função de custo em coordenadas polares é ${\bf x}_0=[0~~0~~0]^T$, ${\bf x}_0=[0~~0,003~~0]^T$ para o NMPC de~\cite{essen01} e de ${\bf x}_0=[-0,0022~~1,4407~~0,0014]^T$ para o NMPC com função de custo original. Ainda, a Figura~\ref{fig:restu_control_02} mostra que o esforço de controle é bem menor quando a função de custo é escrita em coordenadas polares. Todos os casos respeitam os limites impostos (Figura~\ref{fig:restu_control_02}), mesmo com uma condição inicial relativamente longe da origem, se comparado com os casos anteriores.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/control_02.eps}
+    \caption{Entradas de controle $v$ e $w$. Linha contínua: NMPC com função de custo em coordenadas polares; linha tracejada: NMPC de~\cite{essen01}; linha traço-ponto: NMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:restu_control_02}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/cost_02.eps}
+    \caption{Função de custo $\Phi$. Linha contínua: NMPC com função de custo em coordenadas polares; linha tracejada: NMPC de~\cite{essen01}; linha traço-ponto: NMPC com função de custo em coordenadas cartesianas.}
+    \label{fig:restu_cost_02}
+\end{center}\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{MPC Com Restrições no Controle e no Estado}\label{sec:control_state_rest}
+Nesta seção será mostrado um exemplo ilustrativo onde o objetivo é fazer com que o robô cruze um corredor sem tocar nas paredes. A existência de restrições de amplitude nas entradas de controle e nas variáveis de estado é então considerada. Assim, na Figura~\ref{fig:corridor_corridor} tem-se o espaço de configuração, no plano $XY$, no qual está inserido o robô.
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/corridor.eps}
+    \caption{Espaço de configuração no plano $XY$: um corredor em "L".}
+    \label{fig:corridor_corridor}
+\end{center}\end{figure}
+
+Os polígonos cinzas indicam a existência de paredes, ou seja, pontos onde o robô é impedido de cruzar. 
+
+De uma forma geral, a seguinte restrição na amplitude dos estados é formulada:
+\begin{equation*}
+	{\bf x}(k+j|k)\in\mathbb{X}, \quad j\in[0,N],
+\end{equation*}
+onde $\mathbb{X}$ é um conjunto convexo de possíveis estados e contém o ponto de equilíbrio em seu interior~\cite{mayne00}. Entretanto, nota-se na Figura~\ref{fig:corridor_corridor} que a região de configuração no plano $XY$ não é mais convexa, dada a existência das paredes do corredor.
+
+Isto pode ser solucionado se o problema for tratado de forma {\em multi-objetiva}, ou seja, separa-se o conjunto $\mathbb X$ em subregiões de forma que estas subregiões sejam convexas e contenham um ponto de equilíbrio em seu interior. Neste caso, definem-se $\mathbb{X}_1\subseteq\mathbb{X}$ e $\mathbb{X}_2\subseteq\mathbb{X}$ tal que:
+\begin{equation*}
+	\mathbb{X} = \mathbb{X}_1 \cup \mathbb{X}_2
+\end{equation*}
+
+No caso considerado, tem-se que:
+
+\begin{align}
+	\mathbb{X}_1 &= \{{\bf x}~|~x\leq -1; 3\leq y\leq 5\}  \label{eqn:subreg_1}\\
+	\mathbb{X}_2 &= \{{\bf x}~|~-1\leq x\leq 1; y\leq 5\} \label{eqn:subreg_2}
+\end{align}
+
+Os pontos de equilíbrio em $\mathbb{X}_1$ e $\mathbb{X}_2$ são, respectivamente,
+\begin{equation*}
+	{\bf x}_{ref,1}=\begin{bmatrix}0\\4\\0\end{bmatrix}, \quad{\text e}\quad
+	{\bf x}_{ref,2}=\begin{bmatrix}0\\0\\0\end{bmatrix}
+\end{equation*}
+
+Assim, enquanto o robô estiver se movimentando dentro da região pertencente a $\mathbb{X}_1$, o seu objetivo será estabilizar em ${\bf x}_{ref,1}$ respeitando as restrições de estado referentes à expressão~\req{eqn:subreg_1}. Atingido um ponto pertencente à região $\mathbb{X}_2$, o objetivo será então estabilizar na origem respeitando-se as restrições referentes à expressão~\req{eqn:subreg_2}. Neste caso, adotou-se $x=-1$ como fronteira entre as duas subregiões, ou seja,
+\begin{align*}
+	{\bf x}\in \mathbb{X}_1, \quad \text{se}~~x<-1, \\
+	{\bf x}\in \mathbb{X}_2, \quad \text{se}~~x\geq-1,
+\end{align*}
+ou, reescrevendo na forma da desigualdade~\req{eqn:restx},
+\begin{align*}
+	{\bf Cx} &\leq {\bf c}_1, \quad \text{se}~~x<-1, \\
+	{\bf Cx} &\leq {\bf c}_2, \quad \text{se}~~x\geq-1
+\end{align*}
+com
+\begin{equation*}
+	{\bf C}=\begin{bmatrix} {\bf I}\\-{\bf I} \end{bmatrix}, \qquad
+	{\bf c}_1 = \begin{bmatrix}-1\\5\\\infty\\\infty\\-3\\\infty\end{bmatrix}, \qquad
+	{\bf c}_2 = \begin{bmatrix}1\\5\\\infty\\1\\\infty\\\infty\end{bmatrix},
+\end{equation*}
+onde $\infty$ indica que a variável correspondente não possui restrição.	
+
+Assim, o MPC, para este caso, é resolvido da seguinte maneira, para cada instante de amostragem $k$:
+\begin{equation*}
+	{\bf u}^\star,~{\bf x}^\star = \arg\min_{{\bf u},{\bf x}}\left\{\Phi_p(k)\right\}
+\end{equation*}
+sujeito à:
+\begin{alignat*}{2}
+	{\bf x}(k|k)	 &= {\bf x}_0, \\
+	{\bf x}(k+j|k)  &= f({\bf x}(k+j-1|k),{\bf u}(k+j-1|k)), &\quad j &\in[1,N] \notag \\
+	{\bf Cx}(k+j|k) &\leq {\bf c}_1, \quad \text{se }~~x(k|k)<-1, &\quad j &\in[0,N] \\
+	{\bf Cx}(k+j|k) &\leq {\bf c}_2, \quad \text{se }~~x(k|k)\geq-1, &\quad j &\in[0,N] \\
+	{\bf Du}(k+j|k) &\leq {\bf d},   &\quad j &\in[0,N-1]
+\end{alignat*}
+com a seguinte função de custo:
+\begin{equation*}
+	\Phi_p(k) = \sum_{j=1}^{N}\tilde{\bf x}_p^T(k+j|k){\bf Q}_p\tilde{\bf x}_p(k+j|k) + {\bf u}^T(k+j-1|k){\bf R}{\bf u}(k+j-1|k),
+\end{equation*}
+onde
+\begin{equation*}
+	\tilde{\bf x}_p=\begin{bmatrix}
+		\tilde e\\\tilde\phi\\\tilde\alpha
+	\end{bmatrix} = \begin{bmatrix}
+		\sqrt{(x-x_{ref,i})^2+(y-y_{ref,i})^2} \\
+		\atan(y-y_{ref,i},x-x_{ref,i}) \\
+		\theta-\theta_{ref,i}-\phi
+	\end{bmatrix}, \quad i=1,2
+\end{equation*}			
+
+Então, com
+\begin{equation*}
+	N=5, \quad \lambda=2, \quad h=2, \quad {\bf R} = \begin{bmatrix}
+		0.1 & 0 \\ 
+		0 & 0.1 \end{bmatrix},
+\end{equation*}
+obtém-se os seguintes resultados, para um condição inicial de ${\bf x}_0=[-4~~4~~\pi]^T$:
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/traj_01.eps}
+    \caption{Trajetória no plano $XY$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:corridor_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:corridor_state_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:corridor_control_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/cost_01.eps}
+    \caption{Função de custo $\Phi$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:corridor_cost_01}
+\end{center}\end{figure}
+
+Nota-se então pelas Figuras~\ref{fig:corridor_traj_01} a \ref{fig:corridor_cost_01} que o resultado é bastante satisfatório. A condição final é do robô ${\bf x}_f=[0~~0~~0]^T$. o movimento do robô é bastante suave e o choque com as paredes do corredor é evitado com sucesso. As restrições de amplitude das entradas de controle são respeitadas. Observa-se também na Figura~\ref{fig:corridor_cost_01} que, como o ponto ao qual o robô deve convergir muda durante o percorrer da trajetória, a função de custo não é monotonicamente decrescente.
+
+Agora, da Figura~\ref{fig:corridor_traj_comp}, observa-se que, se não existissem as restrições nos estados $x$ e $y$, o robô iria de encontro à parede (linha tracejada do gráfico), provocando seu choque com a mesma.
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/traj_comp.eps}
+    \caption{Trajetória no plano $XY$. NMPC com função de custo em coordenadas polares. Linha contínua: com restrições nos estados; Linha tracejada: sem restrições nos estados.}
+    \label{fig:corridor_traj_comp}
+\end{center}\end{figure}
+
+E na Figura~\ref{fig:corridor_traj_02} é mostrado um caso semelhante ao anterior, mas agora com o corredor invertido em relação ao eixo $Y$ e com condição inicial em ${\bf x}_0=[4~~4.3~~\pi]^T$.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/traj_02.eps}
+    \caption{Trajetória no plano $XY$. NMPC com função de custo em coordenadas polares.}
+    \label{fig:corridor_traj_02}
+\end{center}\end{figure}
+%\begin{figure}[H]\begin{center}
+%    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/state_02.eps}
+%    \caption{Estados $x$, $y$ e $\theta$. NMPC com função de custo em coordenadas polares.}
+%    \label{fig:corridor_state_02}
+%\end{center}\end{figure}
+%\begin{figure}[H]\begin{center}
+%    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/control_02.eps}
+%    \caption{Entradas de controle $v$ e $w$. NMPC com função de custo em coordenadas polares.}
+%    \label{fig:corridor_control_02}
+%\end{center}\end{figure}
+%\begin{figure}[H]\begin{center}
+%    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/cost_02.eps}
+%    \caption{Função de custo $\Phi$. NMPC com função de custo em coordenadas polares.}
+%    \label{fig:corridor_cost_02}
+%\end{center}\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Análises Comparativas}\label{sec:point_comp}
+Nesta seção várias análises comparativas serão mostradas. Primeiramente as duas técnicas de NMPC desenvolvidas durante este capítulo serão mostradas, e após as comparações serão feitas entre o NMPC com função de custo em coordenadas polares e com restrição de amplitude nas entradas de controle e as leis de controle variantes no tempo e não suaves apresentadas das Seções~\ref{sec:timevar} e \ref{sec:disc}.
+
+Dentro desta seção, a restrição nas entradas de controle da expressão~\req{eqn:mtx_restu} é considerada e os seguintes parâmetros são utilizados no NMPC com função de custo em coordenadas polares: $\lambda=2$, $h=2$, $N = 5$ e
+\begin{equation*}
+	{\bf R} = \begin{bmatrix} 0.1 & 0 \\ 0 & 0.1 \end{bmatrix}
+\end{equation*}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comparação Entre o NMPC Com Função De Custo Em Coordenadas Polares e o NMPC de~\cite{essen01}}
+Para o NMPC de~\cite{essen01}, definido na Seção~\ref{sec:cart}, os parâmetros utilizados são os seguintes: $N=5$, ${\bf Q}(j)=2^{j-1}{\bf Q}$, ${\bf P}=50{\bf Q}(N)$ e
+\begin{equation*}
+	{\bf Q} = \begin{bmatrix}	
+		1 & 0 & 0 \\
+		0 & 1 & 0 \\
+		0 & 0 & 0.5 \end{bmatrix}, \quad
+		{\bf R} = \begin{bmatrix} 0.1 & 0 \\ 0 & 0.1 \end{bmatrix}
+\end{equation*}
+e para ambos os casos, restrições nas entradas de controle conforme a expressão~\req{eqn:mtx_restu} são consideradas.
+
+Os resultados são mostrados abaixo para uma condição inicial de ${\bf x}_0=[-2~~2~~\pi/2]^T$.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/traj_01.eps}
+    \caption{Trajetória no plano $XY$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: NMPC de~\cite{essen01}.}
+    \label{fig:comps_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: NMPC de~\cite{essen01}.}
+    \label{fig:comps_state_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: NMPC de~\cite{essen01}.}
+    \label{fig:comps_control_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/origin_01.eps}
+    \caption{Detalhe da origem no plano $XY$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: NMPC de~\cite{essen01}.}
+    \label{fig:comps_origin_01}
+\end{center}\end{figure}
+
+Das Figuras~\ref{fig:comps_traj_01} e \ref{fig:comps_state_01}, nota-se que, quando utilizada a função de custo em coordenadas polares, o resultado é uma trajetória de estado mais suave, além de todos os estados convergirem exatamente para a origem. No caso do NMPC de~\cite{essen01}, o estado $y$ ainda apresenta um pequeno erro, de 0,0068. A Figura~\ref{fig:comps_control_01} mostra que o controle gerado pelo NMPC proposto aqui é significativamente mais suave. A Figura~\ref{fig:comps_origin_01} mostra um detalhe da origem do plano $XY$, onde é facil de se observar que o robô converge para o seu objetivo suavemente e sem erro em regime quando é aplicada a função de custo em coordenadas polares.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comparação Entre o NMPC Com Função De Custo Em Coordenadas Polares e o Controle Variante No Tempo de~\cite{pomet92}}
+Para o controle de~\cite{pomet92}, definido na Seção~\ref{sec:pomet}, os seguintes parâmetros são utilizados: $a=4$, $\lambda=2,1$ (escolhidos de forma a apresentar uma melhor trajetória de estados). Os seguintes resultados são obtidos, para uma condição inicial de ${\bf x}_0=[2~~2~~0]^T$:
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/traj_02.eps}
+    \caption{Trajetória no plano $XY$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{pomet92}.}
+    \label{fig:comps_traj_02}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/state_02.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{pomet92}.}
+    \label{fig:comps_state_02}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/control_02.eps}
+    \caption{Entradas de controle $v$ e $w$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{pomet92}.}
+    \label{fig:comps_control_02}
+\end{center}\end{figure}
+
+Na Figura~\ref{fig:comps_control_02} observa-se a diferença mais marcante: enquanto que a lei de controle gerada pelo NMPC (linha contínua) permanece dentro dos limites impostos pelas restrições, a lei de controle variante no tempo (linha tracejada) ultrapassa e muito estes limites. Na Figura~\ref{fig:comps_origin_02} é visto o detalhe da origem no plano $XY$. Nota-se a baixa taxa de convergência e o comportamento oscilatório gerado pela lei de controle variante no tempo.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/origin_02.eps}
+    \caption{Detalhe da origem do plano $XY$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{pomet92}.}
+    \label{fig:comps_origin_02}
+\end{center}\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comparação Entre o NMPC Com Função De Custo Em Coordenadas Polares e o Controle Variante No Tempo de~\cite{samson91b}}
+
+A lei de controle de~\cite{samson91b} foi definida na Seção~\ref{sec:samson}. Os resultados da comparação com o NMPC, para uma condição inicial de ${\bf x_0}=[-2,5~~1,3~~0]^T$, são mostrados abaixo.
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/traj_03.eps}
+    \caption{Trajetória no plano $XY$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{samson91b}.}
+    \label{fig:comps_traj_03}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/state_03.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{samson91b}.}
+    \label{fig:comps_state_03}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/control_03.eps}
+    \caption{Entradas de controle $v$ e $w$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{samson91b}.}
+    \label{fig:comps_control_03}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/origin_03.eps}
+    \caption{Detalhe da origem do plano $XY$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{samson91b}.}
+    \label{fig:comps_origin_03}
+\end{center}\end{figure}
+Novamente, observa-se o comportamento característico do controle variante no tempo para a lei de~\cite{samson91b}: trajetórias altamente oscilatórias e uma baixa taxa de convergência. As amplitudes das entradas de controle também ultrapassam os limites do robô Twil, enquanto que para o NMPC estes limites são respeitados (Figura~\ref{fig:comps_control_03}). A taxa de convergência para o NMPC também é maior, sendo que o robô atinge o seu objetivo em cerca de 10 segundos. Na Figura~\ref{fig:comps_origin_03}, um detalhe da origem do plano $XY$ é mostrado. Observa-se assim que, com o NMPC, o robô aproxima-se suavemente da origem. Com a lei de~\cite{samson91b}, esta aproximação é feita de forma demasiadamente lenta e oscilatória.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comparação Entre o NMPC Com Função De Custo Em Coordenadas Polares e o Controle Variante No Tempo De~\cite{teel95}}
+
+A lei de controle variante no tempo de~\cite{teel95} foi definida na Seção~\ref{sec:teel}. Os resultados da comparação desta lei de controle e do NMPC com função de custo em coordenadas polares da seção~\ref{sec:point_mpc_polar} são mostrados nas figuras a seguir, para uma condição inicial de ${\bf x}_0=[0~~-3,2~~\pi/4]^T$.
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/traj_04.eps}
+    \caption{Trajetória no plano $XY$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{teel95}.}
+    \label{fig:comps_traj_04}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/state_04.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{teel95}.}
+    \label{fig:comps_state_04}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/control_04.eps}
+    \caption{Entradas de controle $v$ e $w$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{teel95}.}
+    \label{fig:comps_control_04}
+\end{center}\end{figure}
+
+Novamente, observam-se trajetórias oscilatórias e uma baixa taxa de convergência para a lei variante no tempo de~\cite{teel95}. Ainda, o estado $x$, para esta lei de controle, desenvolve uma amplitude muito maior se comparado com o NMPC (Figura~\ref{fig:comps_traj_04}). A amplitude da velocidade linear é largamente ultrapassado para a lei de~\cite{teel95}, enquanto que a velocidade angular permanece dentro do intervalo aceitável para o robô Twil (Figura~\ref{fig:comps_control_04}). Para o NMPC, todas as restrições de controle são respeitadas. Novamente a taxa de convergência para o NMPC é significativamente maior, cerca de 10 segundos. Na Figura~\ref{fig:comps_origin_04}, nota-se um detalhe da origem do plano $XY$.
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/origin_04.eps}
+    \caption{Detalhe da origem do plano $XY$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{teel95}.}
+    \label{fig:comps_origin_04}
+\end{center}\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comparação Entre o NMPC Com Função De Custo Em Coordenadas Polares e o Controle Descontínuo De~\cite{lages98a}}
+Para o controle em coordenadas polares de~~\cite{lages98b}, os seguintes parâmetros são utilizados: $\gamma_1=0,1$, $\gamma_2=0,2$ e $h=2$. Esta lei de controle é definida na Seção~\ref{sec:lages}.
+
+Os resultados são mostrados abaixo para uma condição inicial de ${\bf x}_0=[0~~4~~0]^T$.
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/traj_05.eps}
+    \caption{Trajetória no plano $XY$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{lages98b}.}
+    \label{fig:comps_traj_05}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/state_05.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{lages98b}.}
+    \label{fig:comps_state_05}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/control_05.eps}
+    \caption{Entradas de controle $v$ e $w$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{lages98b}.}
+    \label{fig:comps_control_05}
+\end{center}\end{figure}
+
+Pelos gráficos acima, observa-se que o robô, quando aplicado o controle de~\cite{lages98b}, leva cerca de 80 segundos para atingir a origem. Nota-se ainda que as amplitudes das entradas de controle estão dentro do intervalo admissível, respeitando os limites do robô Twil (Figura~\ref{fig:comps_control_05}), e por isso esta lei de controle, com estes parâmetros, pode ser aplicada neste robô. Entretanto, como já visto anteriormente, com o NMPC pode-se limitar o controle através de restrições nestas variáveis. Assim, é possível fazer com que as velocidades desenvolvidas sejam maiores, fazendo com que o robô atinga seu objetivo cerca de 10 vezes mais rápido, e ainda assim fazer com que as amplitudes destas velocidades estejam dentro dos limites impostos pelas restrições. Observa-se também pela Figura~\ref{fig:comps_traj_05} que, com o controle descontínuo, o estado $x$ desenvolve uma amplitude muito maior se comparada com a trajetória gerada pelo NMPC. Ambas as leis de controle fazem com que o robô aproxime-se suavemente da origem.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comparação Entre o NMPC Com Função De Custo Em Coordenadas Polares e o Controle Descontínuo De~\cite{sordalen93a}}
+
+Esta lei de controle é definida na Seção~\ref{sec:sordalen}. A condição inicial do robô é de \mbox{${\bf x}_0=[0,5~~1~~-\pi/2]^T$} e os resultados são mostrados abaixo.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/traj_06.eps}
+    \caption{Trajetória no plano $XY$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{sordalen93a}.}
+    \label{fig:comps_traj_06}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/state_06.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{sordalen93a}.}
+    \label{fig:comps_state_06}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/control_06.eps}
+    \caption{Entradas de controle $v$ e $w$. Linha contínua: NMPC com função de custo em coordenadas polares; Linha tracejada: controle de~\cite{sordalen93a}.}
+    \label{fig:comps_control_06}
+\end{center}\end{figure}
+
+Neste caso observa-se que ambas as leis de controle geram uma trajetória de estado bastante suave, fazendo com que o robô se aproxime suavemente da origem. Ambas apresentam um tempo de estabilização praticamente igual: cerca de 7 segundos, sendo que o controle de~\cite{sordalen93a} força a convergência da orientação em $2\pi$ (O ponto de equilíbrio para esta lei de controle é $\{(x,y,\theta)|x=0,y=0,\theta=2\pi n\},~n\in0, \pm 1, \pm 2\ldots$, conforme definido na Seção~\ref{sec:sordalen}). Entretanto, pela Figura~\ref{fig:comps_control_06}, a lei de controle descontínua de~\cite{sordalen93a} ultrapassa largamente os limites do robô Twil, enquanto que o NMPC gera um controle que respeita as restrições. Talvez a amplitude do controle descontínuo possa ser diminuída através da sintonia adequada dos parâmetros. Entretanto, não existe um método sistemático com o qual isso possa ser feito.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{O Custo Computacional do NMPC}\label{sec:point_nmpc_cost}
+É bem conhecido o fato de os algoritmos de controle preditivo necessitarem de um grande esforço computacional para o cálculo da lei de controle. Este problema se agrava mais ainda quando se tem um MPC não linear, onde o problema de otimização é não convexo. Tanto é que, em seus primórdios, o MPC era aplicado apenas em plantas com modelos lineares e com grandes constantes de tempo. Entretanto, o rápido avanço das capacidades dos processadores atuais e dos algoritmos de otimização fazem com que o uso do MPC em sistemas com dinâmicas rápidas e não lineares seja cada vez mais possível.
+
+Nesta seção, serão vistas então algumas considerações acerca do custo computacional envolvido na resolução do problema de estabilização em um ponto através do NMPC. Para isto, o critério utilizado será o número de operações em ponto flutuante realizadas em cada período de amostragem, que neste caso é de $0,1~\text{segundo}$. Assim, com base nestas informações, é possível avaliar a viabilidade de uma aplicação em tempo real dos algoritmos desenvolvidos aqui.
+
+Atualmente existem softwares capazes de estimar o número de operações em ponto flutuante por segundo ({\em floating-point operations per second, flops}) realizados por um computador~\cite{aburto92}. Neste caso, tomando por base um computador com um processador Athlon XP 2600+, tem-se que este número é de 576 Mflops, ou 576.000.000 de flops. Assim, considerando-se o período de amostragem utilizado aqui, $T=0,1~\text{segundo}$, tem-se que, para uma aplicação em tempo real ser possível, o número máximo de operações em ponto flutuante, OPF, por período de amostragem não pode ser maior que 57.600.000. Este número será utilizado como base comparativa no estudo desenvolvido nesta seção. A contagem das operações em ponto flutuante por período de amostragem é realizada através da função {\tt flops} do Matlab.
+
+Na Seção~\ref{sec:classical_control} foram vistas diversas leis de controle clássicas para o problema de estabilização em um ponto. Para todas elas existe uma forma analítica da lei de controle. Assim, em princípio, o custo computacional envolvido neste caso é muito baixo, sendo capaz de se implementar estas leis de controle em computadores de menor capacidade computacional ou até mesmo em microprocessadores. Na Tabela~\ref{tab:classical} são mostrados o número de operações em ponto flutuante realizadas por período de amostragem para o cálculo do controle através destas leis.
+
+\begin{table}[htpb]
+ \caption{Custo computacional de algumas leis clássicas de controle de robôs móveis.}
+ \label{tab:classical}
+ \centering
+ \begin{tabular}{l|c}
+  \hline
+  Lei de controle	 & No. OPF por período de amostragem \\
+  \hline\hline
+  \cite{pomet92}	 & 46 \\
+  \cite{samson91b}	 & 35 \\
+  \cite{teel95}	 & 35 \\
+  \cite{lages98a} 	 & 32 \\
+  \cite{sordalen93a} & 67 \\
+  \hline
+ \end{tabular}
+\end{table}
+
+Nota-se então, pelos dados acima, que o esforço computacional realizado por estas leis de controle é cerca de 1.000.000 de vezes menor que o máximo permitido. 
+
+Agora o NMPC será analisado. Os três casos vistos anteriormente são aqui identificados como:
+\begin{itemize}
+\item {\em Caso 1}. O NMPC original, com função de custo quadrática em coordenadas cartesianas(expressão~\req{eqn:point_cost}).;
+\item {\em Caso 2}. O NMPC desenvolvido por~\cite{essen01}, com função de custo com custo terminal e matriz $\bf Q$ crescente exponencialmente (Expressão~\req{eqn:essen_cost});
+\item {\em Caso 3}. O NMPC desenvolvido neste trabalho (Seção~\ref{sec:point_mpc_polar}), com função de custo quadrática e com as variáveis de estado em coordenadas polares (Expressão~\req{eqn:polar_cost}).
+\end{itemize}
+
+Em todos os casos acima a restrição de amplitude das entradas de controle, ${\bf Du}\leq{\bf d}$, será considerada e a condição inicial do robô é ${\bf x}_0=[1~~1~~0]^T$. Os parâmetros de sintonia do MPC são iguais em todos os estados. Conforme foi observado no início deste capítulo, o NMPC em seu formato original (Caso 1) falha quando é utilizado para a estabilização do robô na origem, dadas as características do modelo cinemático utilizado. Um aumento do horizonte de predição poderia diminuir este efeito (Figura~\ref{fig:horizon_effect}), mas isso implica no aumento do custo computacional, como observa-se na Tabela~\ref{tab:nmpc_caso1} abaixo.
+
+\begin{table}[H]
+ \caption{Custo computacional do NMPC - estabilização na origem - caso 1.}
+ \label{tab:nmpc_caso1}
+ \centering
+ \begin{tabular}{c|c|c}
+  \hline
+  Horizonte & No. OPF por período de amostragem & Condição final do robô\\
+  \hline\hline
+  5	& 640.970 & $[0~~0,85~~0]^T$ \\
+  10	& 11.399.000 & $[0~~0,62~~0]^T$ \\
+  12	& 24.589.000 & $[0~~0,52~~0]^T$ \\
+  15 & 62.619.000 & $[0~~0,40~~0]^T$ \\
+  \hline
+ \end{tabular}
+\end{table}
+
+Observa-se então que um horizonte de $N\geq 15$ já torna o NMPC não implementável para este caso, além de o erro em $y$ ainda persistir. Ainda, nota-se uma incrível diferença no número de OPF entre o NMPC e as leis clássicas de controle (Tabela~\ref{tab:classical}). A fim de resolver o problema do erro em regime que o NMPC apresenta,~\cite{essen01} propõe a sua versão do NMPC (Caso 2), com uma função de custo quadrática e a inclusão de um custo terminal (forçando os estados no fim do horizonte a convergirem para a origem) e uma matriz de ponderação de estados que cresce exponencialmente ao longo do horizonte, ${\bf Q}(j)$. Os resultados são mostrados na Tabela~\ref{tab:nmpc_caso2} abaixo.
+\begin{table}[H]
+ \caption{Custo computacional do NMPC - estabilização na origem - caso 2.}
+ \label{tab:nmpc_caso2}
+ \centering
+ \begin{tabular}{c|c|c}
+  \hline
+  Horizonte & No. OPF por período de amostragem & Condição final do robô\\
+  \hline\hline
+  5	& 1.401.900 & $[0~~0,0018~~0]^T$ \\
+  10	& 38.388.000 & $[0~~0,0001~~0]^T$ \\
+  12	& 92.569.000 & $[0~~0~~0]^T$ \\
+  15 & 607.710.000 & $[0~~0~~0]^T$ \\
+  \hline
+ \end{tabular}
+\end{table}
+
+
+Os autores destacam ainda que este método não aumenta o custo computacional do algoritmo. Mas não é isso que se observa nos dados da Tabela~\ref{tab:nmpc_caso2} acima. Apesar de o erro na origem ser eliminado para $N\geq 10$, o custo computacional é consideravelmente maior que no caso anterior, e para $N\geq 12$ o problema mostra-se não mais implementável para este caso. Além disso, o custo computacional parece crescer mais rapidamente à medida que se aumenta o horizonte.
+
+Nota-se então que a modificação da função de custo aplicada por~\cite{essen01} faz com que o custo computacional seja mais elevado. Além disso, ainda existe um acoplamento entre os estados $x$ e $y$.
+
+A seguir serão mostrados os resultados com respeito ao esforço computacional para o Caso 3: o NMPC com função de custo em coordenadas polares dos estados. Já foram estudados, na Seção~\ref{sec:point_mpc_polar}, diversos exemplos de simulação que mostram a eficácia do método para o problema tratado aqui, com relação aos dois casos anteriores. Os resultados são então mostrados na Tabela~\ref{tab:nmpc_caso3} abaixo.
+
+\begin{table}[htpb]
+ \caption{Custo computacional do NMPC - estabilização na origem - caso 3.}
+ \label{tab:nmpc_caso3}
+ \centering
+ \begin{tabular}{c|c|c}
+  \hline
+  Horizonte & No. OPF por período de amostragem & Condição final do robô\\
+  \hline\hline
+  5	& 816.800 & $[0~~0~~0]^T$ \\
+  10	& 12.827.000 & $[0~~0~~0]^T$ \\
+  12	& 43.442.000 & $[0~~0~~0]^T$ \\
+  15 & 139.210.000 & $[0~~0~~0]^T$ \\
+  \hline
+ \end{tabular}
+\end{table}
+
+Comparando-se os número acima com os mostrados nos Casos 1 e 2 observa-se que, além de o NMPC com função de custo em coordenadas polares levar o robô exatamente para a origem para qualquer horizonte, o custo computacional é consideravelmente menor do que no Caso 2.
+
+Ainda, este método mostrou-se bem satisfatório para qualquer valor do horizonte de predição. No Caso 1, por exemplo, observou-se que para $N=50$ o erro em regime quase desaparece (Figura~\ref{fig:horizon_effect}), mas da Tabela~\ref{tab:nmpc_caso1} nota-se que $N\geq 15$ já torna este NMPC não implementável. Assim sendo, é possível, no Caso 3, manter um valor baixo para o horizonte, mantendo-se assim também um bom compromisso entre o esforço computacional e o desempenho com relação à trajetória desempenhada pelo robô. Nas figuras~\ref{fig:restu_traj_03} a \ref{fig:restu_cost_03} é mostrado o resultado do NMPC com função de custo em coordenadas polares do Caso 3, para dois valores do horizonte de predição, $N=5$ e $N=12$.
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/traj_03.eps}
+    \caption{Trajetória no plano $XY$. NMPC com função de custo em coordenadas polares. Linha contínua: $N=5$; linha tracejada: $N=12$.}
+    \label{fig:restu_traj_03}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/state_03.eps}
+    \caption{Estados $x$, $y$ e $\theta$. NMPC com função de custo em coordenadas polares. Linha contínua: $N=5$; linha tracejada: $N=12$.}
+    \label{fig:restu_state_03}
+\end{center}\end{figure}
+
+Assim, observa-se nas figuras acima que o aumento do horizonte de predição, no caso apresentado, não é justificável, visto que não existe um significativo aumento de desempenho ao aumentar o horizonte de $N=5$ (linha contínua) para $N=12$ (linha tracejada).
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/control_03.eps}
+    \caption{Entradas de controle $v$ e $w$. NMPC com função de custo em coordenadas polares. Linha contínua: $N=5$; linha tracejada: $N=12$.}
+    \label{fig:restu_control_03}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/cost_03.eps}
+    \caption{Função de custo $\Phi$. NMPC com função de custo em coordenadas polares. Linha contínua: $N=5$; linha tracejada: $N=12$.}
+    \label{fig:restu_cost_03}
+\end{center}\end{figure}

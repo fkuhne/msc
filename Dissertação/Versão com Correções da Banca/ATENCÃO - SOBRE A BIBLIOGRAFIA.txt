@@ -1,0 +1,546 @@
+ESTE É O DISS.BBL COM ALGUMAS ENTRADAS EDITADAS À MÃO CONFORME ÚLTIMA REVISÃO DA JUNE
+
+COMPILAR O A DISSERTAÇÃO, COPIAR O TEXTO ABAIXO NO ARQUIVO DISS.BBL E COMPILAR NOVAMENTE.
+
+
+\begin{thebibliography}{\hspace{\parindent}}
+
+\bibitem[ABURTO(1992)ABURTO]{aburto92} ABURTO, A\@. \textbf{FLOPS C Program
+  (Double Precision) V2.0 18 Dec 1992}. Disponível em:
+  \url{ftp://ftp.nosc.mil/pub/aburto/flops}. Acesso em: Jan. 2005.
+
+\bibitem[AGUIAR; ATASSI; PASCOAL(2000)AGUIAR; ATASSI; PASCOAL]{aguiar00}
+  AGUIAR, A.~P.; ATASSI, A.~N.; PASCOAL, A.~M\@. Regulation of a Nonholonomic
+  Dynamic Wheeled Mobile Robot with Parametric Uncertainty using Lyapunov
+  Functions. In: IEEE CONFERENCE ON DECISION AND CONTROL, 39., 2000, Sydney,
+  Australia. \textbf{Proceedings{\ldots}} Piscataway: IEEE, 2000.
+
+\bibitem[ALLGÖWER et~al.(1999)ALLGÖWER et~al.]{allgower99} ALLGÖWER, F.
+  et~al\@. Nonlinear Predictive Control and Moving Horizon Estimation: an
+  introductory overview. In: FRANK, P.~M\@.~(Ed.). \textbf{Advances in
+  Control}: highlights of {ECC}'99. New York: Springer-Verlag, 1999.
+  p.391--449.
+
+\bibitem[ASTOLFI(1994)ASTOLFI]{astolfi94} ASTOLFI, A\@. On The Stabilization of
+  Nonholonomic Systems. In: IEEE CONFERENCE ON DECISION AND CONTROL, 33., 1994,
+  Lake Buena Vista, FL. \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1994.
+  p.3481--3486.
+
+\bibitem[BARRAQUAND; LATOMBE(1989)BARRAQUAND; LATOMBE]{latombe89} BARRAQUAND,
+  J.; LATOMBE, J.~C\@. On Nonholonomic Mobile Robots and Optimal Maneuvering.
+  In: IEEE INTERNATIONAL SYMPOSIUM ON INTELLIGENT CONTROL, 1989, Albany, {NY}.
+  \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1989. p.340--347.
+
+\bibitem[BEMPORAD et~al.(2002)BEMPORAD et~al.]{bemporad02} BEMPORAD, A.
+  et~al\@. The Explicit Linear Quadratic Regulator for Constrained Systems.
+  \textbf{Automatica}, New York, v.38, n.1, p.3--20, Jan.~2002.
+
+\bibitem[BITMEAD; GEVERS; WERTZ(1990)BITMEAD; GEVERS; WERTZ]{bitmead90}
+  BITMEAD, R.~R.; GEVERS, M.; WERTZ, V\@. \textbf{Adaptive Nonlinear Control}:
+  the thinking man's gpc. Englewood Cliffs, NJ: Prentice Hall, 1990.
+
+\bibitem[BLOCH; MCCLAMROCH(1989)BLOCH; MCCLAMROCH]{bloch89} BLOCH, A.~M.;
+  MCCLAMROCH, N.~H\@. Control of Mechanical Systems with Classical Nonholonomic
+  Constraints. In: IEEE CONFERENCE ON DECISION AND CONTROL, 28., 1989, Tampa,
+  FL. \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1989. p.201--205.
+
+\bibitem[BLOCH; REYHANOGLU; MCCLAMROCH(1992)BLOCH; REYHANOGLU;
+  MCCLAMROCH]{bloch92} BLOCH, A.~M.; REYHANOGLU, M.; MCCLAMROCH, N.~H\@.
+  Control and Stabilization of Nonholonomic Dynamic Systems. \textbf{IEEE
+  Transactions on Automatic Control}, New York, v.37, n.11, p.1746--1757,
+  Nov.~1992.
+
+\bibitem[BROCKETT(1982)BROCKETT]{brockett82} BROCKETT, R.~W\@. \textbf{New
+  Directions in Applied Mathematics}. New York: Springer-Verlag, 1982.
+
+\bibitem[BROYDEN(1970)BROYDEN]{broyden70} BROYDEN, C.~G\@. The Convergence Of a
+  Class of Double-Rank Minimization Algorithms. \textbf{Journal of the
+  Institute of Mathematics and Its Applications}, London, Oxford University
+  Press, v.6, p.76--90, 1970.
+
+\bibitem[BULLO; LEONARD; LEWIS(2000)BULLO; LEONARD; LEWIS]{bullo00} BULLO, F.;
+  LEONARD, N.~E.; LEWIS, A.~D\@. Controllability and Motion Algorithms for
+  Underactuated Lagrangian Systems on Lie Groups. \textbf{IEEE Transactions on
+  Automatic Control}, New York, v.45, n.8, p.1437--1454, Aug.~2000.
+
+\bibitem[CAMACHO; BORDONS(1999)CAMACHO; BORDONS]{camacho99} CAMACHO, E.~F.;
+  BORDONS, C\@. \textbf{Model Predictive Control}. London: Springer-Verlag,
+  1999. (Advanced Textbooks in Control and Signal Processing).
+
+\bibitem[CAMPION; BASTIN; D'ANDRÉA-NOVEL(1991a)CAMPION; BASTIN;
+  D'ANDRÉA-NOVEL]{campion91b} CAMPION, G.; BASTIN, G.; D'ANDRÉA-NOVEL, B\@.
+  Modelling and State Feedback Control of Nonholonomic Mechanical Systems. In:
+  IEEE CONFERENCE ON DECISION AND CONTROL, 30., 1991, Brighton, England.
+  \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1991. p.1184--1189.
+
+\bibitem[CAMPION; BASTIN; D'ANDRÉA-NOVEL(1991b)CAMPION; BASTIN;
+  D'ANDRÉA-NOVEL]{campion91a} CAMPION, G.; BASTIN, G.; D'ANDRÉA-NOVEL, B\@.
+  Modelling and Control of Nonholonomic Wheeled Mobile Robots. In: IEEE
+  INTERNATIONAL CONFERENCE ON ROBOTICS AND AUTOMATION, 1991, Sacramento, {CA}.
+  \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1991. p.1130--1135.
+
+\bibitem[CAMPION; BASTIN; D'ANDRÉA-NOVEL(1996)CAMPION; BASTIN;
+  D'ANDRÉA-NOVEL]{campion96} CAMPION, G.; BASTIN, G.; D'ANDRÉA-NOVEL, B\@.
+  Structural Properties and Classifications of Kinematic and Dynamic Models of
+  Wheeled Mobile Robots. \textbf{IEEE Transactions on Robotics and Automation},
+  New York, v.12, n.1, p.47--62, Feb.~1996.
+
+\bibitem[CHACAL; SIRA-RAMÍREZ(1994)CHACAL; SIRA-RAMÍREZ]{chacal94} CHACAL,
+  J.~A.; SIRA-RAMÍREZ, H\@. On the Sliding Mode Control of Wheeled Mobile
+  Robots. In: IEEE INTERNATIONAL CONFERENCE ON SYSTEMS, MAN \& CYBERNETICS --
+  HUMANS, INFORMATION AND TECHNOLOGY, 1994, Texas. \textbf{Proceedings{\ldots}}
+  Piscataway: IEEE, 1994. p.1938--1943.
+
+\bibitem[CHAVES(2000)CHAVES]{chaves00} CHAVES, L.~F\@. \textbf{Projeto,
+  Construção, Modelagem e Controle de um Robô Móvel}. 2000. Dissertação
+  (Mestrado em engenharia elétrica) --- Pontifícia Universidade Católica do Rio
+  Grande do Sul, Porto Alegre, RS, 2000.
+
+\bibitem[CHEN; ALLGÖWER(1998)CHEN; ALLGÖWER]{chen98} CHEN, C.~C.; ALLGÖWER,
+  F\@. A Quasi-Infinite Horizon Nonlinear Nodel Predictive Control with
+  Guaranteed Stability. \textbf{Automatica}, New York, v.34, n.10,
+  p.1205--1217, Oct.~1998.
+
+\bibitem[CHEN; SHAW(1982)CHEN; SHAW]{chen82} CHEN, C.~C.; SHAW, L\@. On
+  Receding Horizon Feedback Control. \textbf{Automatica}, New York, v.18, n.3,
+  p.349--352, May~1982.
+
+\bibitem[CHWA(2004)CHWA]{chwa04} CHWA, D\@. Sliding-Mode Tracking Control of
+  Nonholonomic Wheeled Mobile Robots in Polar Coordinates. \textbf{IEEE
+  Transactions on Control Systems Technology}, Piscataway, NJ, v.12, n.4,
+  p.637--644, July~2004.
+
+\bibitem[CLARKE; MOHTADI; TUFFS(1987)CLARKE; MOHTADI; TUFFS]{clarke87} CLARKE,
+  D.~W.; MOHTADI, C.; TUFFS, P.~S\@. Generalised Predictive Control -- Part I.
+  the basic algoritm. \textbf{Automatica}, New York, v.23, n.2, p.137--148,
+  Mar.~1987.
+
+\bibitem[CUTLER; RAMACKER(1980)CUTLER; RAMACKER]{cutler80} CUTLER, C.~R.;
+  RAMACKER, B.~L\@. Dynamic Matrix Control: a computer control algorithm. In:
+  JOINT AUTOMATIC CONTROL CONFERENCE, 1980, San Francisco, CA.
+  \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1980. p.1119--1167.
+
+\bibitem[DENG; BRADY(1993)DENG; BRADY]{deng93} DENG, Z.; BRADY, M\@. Dynamic
+  Tracking of a Wheeled Mobile Robot. In: IEEE/RSJ INTERNATIONAL CONFERENCE ON
+  INTELLIGENT ROBOTS AND SYSTEMS, 1993, Yokohama, Japan.
+  \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1993. p.1295--1298.
+
+\bibitem[DIXON et~al.(1999)DIXON et~al.]{dixon99} DIXON, W.~E. et~al\@. Global
+  Exponential Setpoint Control of Mobile Robots. In: IEEE/ASME INTERNATIONAL
+  CONFERENCE ON ADVANCED INTELLIGENT MECHATRONICS, 1999, Atlanta, GA.
+  \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1999. p.683--688.
+
+\bibitem[DO; JIANG; PAN(2002)DO; JIANG; PAN]{do02} DO, K.~D.; JIANG, Z.~P.;
+  PAN, J\@. A Universal Saturation Controller Design for Mobile Robots. In:
+  IEEE CONFERENCE ON DECISION AND CONTROL, 41., 2002, Las Vegas, NV.
+  \textbf{Proceedings{\ldots}} Piscataway: IEEE, 2002. p.2044--2049.
+
+\bibitem[DONG; XU(2001)DONG; XU]{dong01} DONG, W.; XU, W.~L\@. Adaptive
+  Tracking Control of Uncertain Nonholonomic Dynamic System. \textbf{IEEE
+  Transactions on Automatic Control}, New York, v.46, n.3, p.450--454,
+  Mar.~2001.
+
+\bibitem[DURAISKI(2001)DURAISKI]{duraiski01} DURAISKI, R.~G\@. \textbf{Controle
+  Preditivo Não Linear Utilizando Linearizações Sucessivas ao Longo da
+  Trajetória}. 2001. Dissertação (Mestrado em engenharia química) ---
+  Departamento de Engenharia Química, Universidade Federal do Rio Grande do
+  Sul, Porto Alegre, RS, 2001.
+
+\bibitem[{DYNAMIC Optimization Technology Products}(1996){DYNAMIC Optimization
+  Technology Products}]{dynamic96} {DYNAMIC Optimization Technology Products}.
+  Technical Description of NOVA Nonlinear Controller. \textbf{Hydrocarbon
+  Processing, Issue on Advanced Control and Information Systems}, Houston, TX,
+  1996.
+
+\bibitem[ENCARNAÇÃO; PASCOAL(2002)ENCARNAÇÃO; PASCOAL]{pascoal02} ENCARNAÇÃO,
+  P.; PASCOAL, A\@. Combined Trajectory Tracking and Path Following Control for
+  Dynamic Wheeled Mobile Robots. In: IFAC TRIENNIAL WORLD CONGRESS, 15., 2002,
+  Barcelona, Spain. \textbf{Proceedings{\ldots}} Barcelona: IFAC, 2002.
+
+\bibitem[ESSEN; NIJMEIJER(2001)ESSEN; NIJMEIJER]{essen01} ESSEN, H.~V.;
+  NIJMEIJER, H\@. Non-Linear Model Predictive Control of Constrained Mobile
+  Robots. In: EUROPEAN CONTROL CONFERENCE, 2001, Porto, Portugal.
+  \textbf{Proceedings{\ldots}} Porto: FEUP, 2001. p.1157--1162.
+
+\bibitem[FLETCHER(1970)FLETCHER]{fletcher70} FLETCHER, R\@. A New Approach to
+  Variable Metric Algorithms. \textbf{Computer Journal}, [S.l.], v.13,
+  p.317--322, 1970.
+
+\bibitem[FLETCHER(1981)FLETCHER]{fletcher87} FLETCHER, R\@. \textbf{Practical
+  Methods of Optimization}. [S.l.]: John Wiley, 1981.
+
+\bibitem[FUKAO; NAKAGAWA; ADACHI(2000)FUKAO; NAKAGAWA; ADACHI]{fukao00} FUKAO,
+  T.; NAKAGAWA, H.; ADACHI, N\@. Adaptive Tracking Control of a Nonholonomic
+  Mobile Robot. \textbf{IEEE Transactions on Automatic Control}, New York,
+  v.16, n.5, p.609--615, Oct.~2000.
+
+\bibitem[GARCÍA; PRETT; MORARI(1989)GARCÍA; PRETT; MORARI]{garcia89} GARCÍA,
+  C.~E.; PRETT, D.~M.; MORARI, M\@. Model Predictive Control: theory and
+  practice -- a survey. \textbf{Automatica}, New York, v.25, n.3, p.335--348,
+  May~1989.
+
+\bibitem[GARCIA; MORSHEDI(1986)GARCIA; MORSHEDI]{garcia86} GARCIA, C.~E.;
+  MORSHEDI, A.~M\@. Quadratic Programming Solution of Dynamic Matrix Control
+  (QDMC). \textbf{Chemical Engineering Communications}, New York, p.73--87,
+  1986.
+
+\bibitem[GIL; MURRAY; WRIGHT(1970)GIL; MURRAY; WRIGHT]{gil81} GIL, P.~E.;
+  MURRAY, W.; WRIGHT, M.~H\@. Practical Optimization. \textbf{Mathematics of
+  Computing}, [S.l.], v.24, p.23--26, 1970.
+
+\bibitem[GÓMEZ-ORTEGA; CAMACHO(1996)GÓMEZ-ORTEGA; CAMACHO]{ortega96}
+  GÓMEZ-ORTEGA, J.; CAMACHO, E.~F\@. Mobile Robot Navigation in a Partially
+  Structured Static Environment Using Neural Predictive Control.
+  \textbf{Control Engineering Practice}, Oxford, v.4, n.12, p.1669--1679,
+  Dec.~1996.
+
+\bibitem[GOLDFARB(1970)GOLDFARB]{goldfarb70} GOLDFARB, D\@. A Family of
+  Variable Metric Updates Derived by Variational Means. \textbf{Mathematics of
+  Computing}, [S.l.], v.24, p.23--26, 1970.
+
+\bibitem[GURVITS; LI(1993)GURVITS; LI]{gurvits93} GURVITS, L.; LI, Z\@. Smooth
+  Time-Periodic Feedback Solutions for Nonholonomic Motion Planning. In: LI,
+  Z.; CANNY, J\@.~(Ed.). \textbf{Nonholonomic Motion Planning}. Boston, MA:
+  Kluwer Academic Publishers, 1993. p.53--108. v.26 (Kluwer International Series in
+  Engineering and Computer Science, 192).
+
+\bibitem[HENRION; LASSERRE(2004)HENRION; LASSERRE]{henrion04} HENRION, D.;
+  LASSERRE, J.-B\@. Solving Nonconvex Optimization Problems. \textbf{IEEE
+  Control Systems Magazine}, New York, v.24, n.3, p.72--83, June~2004.
+
+\bibitem[HENSON(1998)HENSON]{henson98} HENSON, M.~A\@. Nonlinear Model
+  Predictive Control: current status and future directions. \textbf{Computers
+  and Chemical Engineering}, New York, v.23, n.2, p.187--202, Dec.~1998.
+
+\bibitem[HOCK; SCHITTKOWSKI(1983)HOCK; SCHITTKOWSKI]{hock83} HOCK, W.;
+  SCHITTKOWSKI, K\@. A Comparative Performance Evaluation of 27 Linear
+  Programming Codes. \textbf{Computing}, [S.l.], v.30, p.335, 1983.
+
+\bibitem[INDIVIERI(1999)INDIVIERI]{indivieri99} INDIVIERI, G\@. Kinematic
+  Time-Invariant Control of a 2D Nonholonomic Vehicle. In: IEEE CONFERENCE ON
+  DECISION AND CONTROL, 38., 1999, Phoenix, AZ. \textbf{Proceedings{\ldots}}
+  Piscataway: IEEE, 1999. p.2112--2117.
+
+\bibitem[ISIDORI(1995)ISIDORI]{isidori95} ISIDORI, A\@. \textbf{Nonlinear
+  Control Systems}. 3.ed. New York: Springer Verlag, 1995.
+
+\bibitem[KANAYAMA; MIYAZAKI; NOGUCHI(1990)KANAYAMA; MIYAZAKI;
+  NOGUCHI]{kanayama90} KANAYAMA, Y.; MIYAZAKI, Y. K.~F.; NOGUCHI, T\@. A Stable
+  Tracking Control Method for an Autonomous Mobile Robot. In: IEEE
+  INTERNATIONAL CONFERENCE ON ROBOTICS AND AUTOMATION, 1990, Cincinnati, OH.
+  \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1990.
+
+\bibitem[KEERTHI; GILBERT(1988)KEERTHI; GILBERT]{keerthi88} KEERTHI, S.~S.;
+  GILBERT, E.~G\@. Optimal, Infinite Horizon Feedback Laws for a General Class
+  of Constrained Discrete Time Systems: stability and moving-horizon
+  approximations. \textbf{Journal of Optimization Theory and Application}, New
+  York, v.57, p.265--293, 1988.
+
+\bibitem[{KEYSER}; {VAN CUAWENBERGHE}(1985){KEYSER}; {VAN
+  CUAWENBERGHE}]{dekeyser85} {KEYSER}, R. M. C.~D.; {VAN CUAWENBERGHE}, A.~R\@.
+  Extended Prediction Self-Adaptive Control. In: IFAC SYMPOSIUM ON
+  IDENTIFICATION AND SYSTEMS PARAMETER ESTIMATION, 1985, York, UK.
+  \textbf{Proceedings{\ldots}} UK: IFAC, 1985.
+
+\bibitem[KHALIL(1996)KHALIL]{khalil96} KHALIL, H.~K\@. \textbf{Nonlinear
+  Systems}. 2.ed. Upper Saddle River, NJ: Prentice Hall, 1996.
+
+\bibitem[KÜHNE et~al.(2004)KÜHNE et~al.]{kuhne04a} KÜHNE, F. et~al\@. Estimação
+  e Controle da Posição de um Robô Móvel Utilizando Filtro de Kalman
+  Descentralizado. In: CONGRESSO BRASILEIRO DE AUTOMÁTICA, 15., 2004, Gramado,
+  RS. \textbf{Anais{\ldots}} Porto Alegre: UFRGS, 2004.
+
+\bibitem[KÜHNE; LAGES; {GOMES DA SILVA JR.}(2004)KÜHNE; LAGES; {GOMES DA SILVA
+  JR.}]{kuhne04b} KÜHNE, F.; LAGES, W.~F.; {GOMES DA SILVA JR.}, J.~M\@. Model
+  Predictive Control of a Mobile Robot Using Linearization. In: IEEE
+  INTERNATIONAL CONFERENCE ON MECHATRONICS AND ROBOTICS, 4., 2004, Aachen,
+  Germany. \textbf{Proceedings{\ldots}} Piscataway: IEEE, 2004.
+
+\bibitem[KOLMANOVSKY; MCCLAMROCH(1995)KOLMANOVSKY; MCCLAMROCH]{kolmanovsky95}
+  KOLMANOVSKY, I.; MCCLAMROCH, N.~H\@. Developments in Nonholonomic Control
+  Problems. \textbf{IEEE Control Systems Magazine}, New York, v.15, n.6,
+  p.20--36, Dec.~1995.
+
+\bibitem[KOTHARE; MORARI(2000)KOTHARE; MORARI]{oliveira00} KOTHARE, S. L.
+  D.~O.; MORARI, M\@. Contractive Model Predictive Control for Constrained
+  Nonlinear Systems. \textbf{IEEE Transactions on Automatic Control}, New York,
+  v.45, n.6, p.1053--1071, June~2000.
+
+\bibitem[KWAKERNAAK; SIVAN(1972)KWAKERNAAK; SIVAN]{kwakernaak72} KWAKERNAAK,
+  H.; SIVAN, R\@. \textbf{Linear Optimal Control Systems}. New York: Wiley
+  Interscience, 1972.
+
+\bibitem[LAGES(1998)LAGES]{lages98a} LAGES, W.~F\@. \textbf{Controle e
+  Estimação de Posição e Orientação de Robôs Móveis}. 1998. Tese (Doutorado em
+  engenharia eletrônica e computação) --- Instituto Tecnológico de Aeronáutica,
+  São José dos Campos, SP, 1998.
+
+\bibitem[LAGES; HEMERLY(1998)LAGES; HEMERLY]{lages98b} LAGES, W.~F.; HEMERLY,
+  E.~F\@. Smooth Time-Invariant Control of Wheeled Mobile Robots. In:
+  INTERNATIONAL CONGRESS ON SYSTEMS SCIENCE, 13., 1998, Wroclaw, Poland.
+  \textbf{Proceedings{\ldots}} [S.l.:~s.n.], 1998.
+
+\bibitem[LEE; MARKUS(1967)LEE; MARKUS]{lee67} LEE, E.~B.; MARKUS, L\@.
+  \textbf{Foundations of Optimal Control Theory}. New York: John Wiley and
+  Sons, 1967.
+
+\bibitem[LEE; LEE; TENG(1999)LEE; LEE; TENG]{lee99} LEE, T.~C.; LEE, C.~H.;
+  TENG, C.~C\@. Adaptive Tracking Control of Nonholonomic Mobile Robots by
+  Computed Torque. In: IEEE CONFERENCE ON DECISION AND CONTROL, 38., 1999,
+  Phoenix, AZ. \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1999.
+  p.1254--1259.
+
+\bibitem[LUENBERGER(1989)LUENBERGER]{luenberger89} LUENBERGER, D.~G\@.
+  \textbf{Linear and Nonlinear Programming}. 2.ed. Reading, MA: Addison-Wesley,
+  1989.
+
+\bibitem[MARTIN(1997)MARTIN]{martin97} MARTIN, G\@. Nonlinear Model Predictive
+  Control with Integrated Steady-State Model-based Optimization. In: ALCHE
+  NATIONAL MEETING, 1997, Houston, TX. \textbf{Proceedings{\ldots}} USA: AlChe,
+  1997.
+
+\bibitem[MATTHIES et~al.(2000)MATTHIES et~al.]{matthies02} MATTHIES, L.
+  et~al\@. A Portable, Autonomous, Urban Reconnaissance Robot. In:
+  INTERNATIONAL CONFERENCE ON INTELLIGENT AUTONOMOUS SYSTEMS, 6., 2000, Venice,
+  Italy. \textbf{Proceedings{\ldots}} Amsterdam: IOS Press, 2000. Disponível
+  em:
+  \url{http://robotics.jpl.nasa.gov/tasks/tmr/papers/UrbanRobotPaper0700.pdf}.
+  Acesso em: Fev. 2005.
+
+\bibitem[MAYNE et~al.(2000)MAYNE et~al.]{mayne00} MAYNE, D.~Q. et~al\@.
+  Constrained Model Predictive Control: stability and optimality.
+  \textbf{Automatica}, New York, v.36, n.6, p.789--814, June~2000.
+
+\bibitem[MAYNE; MICHALSKA(1990)MAYNE; MICHALSKA]{mayne90} MAYNE, D.~Q.;
+  MICHALSKA, H\@. Receding Horizon Control of Nonlinear Systems. \textbf{IEEE
+  Transactions on Automatic Control}, New York, v.35, n.7, p.789--814,
+  July~1990.
+
+\bibitem[MCCLOSKEY; MURRAY(1997)MCCLOSKEY; MURRAY]{murray97} MCCLOSKEY, R.~T.;
+  MURRAY, R.~M\@. Exponential Stabilization of Driftless Control Systems Using
+  Homogeneous Feedback. \textbf{IEEE Transactions on Automatic Control}, New
+  York, v.42, n.5, p.614--628, May~1997.
+
+\bibitem[MICHALSKA; MAYNE(1993)MICHALSKA; MAYNE]{michalska93} MICHALSKA, H.;
+  MAYNE, D.~Q\@. Robust Receding Horizon Control of Constrained Nonlinear
+  Systems. \textbf{IEEE Transactions on Automatic Control}, New York, v.38,
+  n.11, p.1623--1632, Nov.~1993.
+
+\bibitem[MORARI; LEE(1997)MORARI; LEE]{morari97} MORARI, M.; LEE, J.~H\@. Model
+  Predictive Control: past, present and future. In: INTERNATIONAL SYMSPOSIUM ON
+  PROCESS SYSTEMS ENGINEERING AND 30TH EUROPEAN SYMPOSIUM ON COMPUTER AIDED
+  PROCESS ENGINEERING, 6., 1997, Trondheim, Norway.
+  \textbf{Proceedings{\ldots}} Elsevier, 1997.
+
+\bibitem[MURRAY; SASTRY(1994)MURRAY; SASTRY]{murray93} MURRAY, M.; SASTRY,
+  S.~S\@. Nonholonomic Motion Planning: steering using sinusoids. \textbf{IEEE
+  Transactions on Automatic Control}, New York, v.38, n.5, p.700--717,
+  May~1994.
+
+\bibitem[MURRAY; SASTRY(1990)MURRAY; SASTRY]{murray90} MURRAY, R.~M.; SASTRY,
+  S.~S\@. Steering Nonholonomic Systems Using Sinusoids. In: IEEE CONFERENCE ON
+  DECISION AND CONTROL, 29., 1990, Phoenix, AZ. \textbf{Proceedings{\ldots}}
+  Piscataway: IEEE, 1990. p.2097--2101.
+
+\bibitem[NEIMARK; FUFAEV(1972)NEIMARK; FUFAEV]{neimark72} NEIMARK, J.~I.;
+  FUFAEV, F.~A\@. Dynamics of Nonholonomic Systems. \textbf{American
+  Mathematical Society Translations of Mathematical Monographs}, Providence,
+  RI, USA, v.33, p.330--374, 1972.
+
+\bibitem[NORMEY-RICO; GÓMEZ-ORTEGA; CAMACHO(1999)NORMEY-RICO; GÓMEZ-ORTEGA;
+  CAMACHO]{rico99} NORMEY-RICO, J.~E.; GÓMEZ-ORTEGA, J.; CAMACHO, E.~F\@. A
+  Smith-Predictor-Based Generalised Predictive Controller for Mobile Robot
+  Path-Tracking. \textbf{Control Engineering Practice}, London, v.7, n.6,
+  p.729--740, June~1999.
+
+\bibitem[OLLERO; AMIDI(1991)OLLERO; AMIDI]{ollero91} OLLERO, A.; AMIDI, O\@.
+  Predictive Path Tracking of Mobile Robots: application to the {CMU} {N}avlab.
+  In: IEEE INTERNATIONAL CONFERENCE ON ADVANCED ROBOTICS, 5., 1991, Pisa,
+  Italy. \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1991. p.1081--1086.
+
+\bibitem[ORIOLO; LUCA; VENDITTELLI(2002)ORIOLO; LUCA; VENDITTELLI]{oriolo02}
+  ORIOLO, G.; LUCA, A.~D.; VENDITTELLI, M\@. WMR Control Via Dynamic Feedback
+  Linearization: design, implementation and experimental validation.
+  \textbf{IEEE Transactions on Control Systems Technology}, New York, v.10,
+  n.6, p.835--852, Nov.~2002.
+
+\bibitem[OYA; YU; KATOH(2003)OYA; YU; KATOH]{oya03} OYA, M.; YU, C.~H.; KATOH,
+  R\@. Robust Adaptive Motion/Force Tracking Control of Uncertain Nonholonomic
+  Mechanical Systems. \textbf{IEEE Transactions on Robotics and Automation},
+  New York, v.19, n.1, p.175--181, Feb.~2003.
+
+\bibitem[POMET et~al.(1992)POMET et~al.]{pomet92} POMET, J.~B. et~al\@. A
+  Hybrid Strategy for the Feedback Stabilization of Nonholonomic Mobile Robots.
+  In: IEEE INTERNATIONAL CONFERENCE ON ROBOTICS AND AUTOMATION, 1992, Nice,
+  France. \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1992. p.129--134.
+
+\bibitem[QIN; BADGWELL(1997)QIN; BADGWELL]{qin97} QIN, S.~J.; BADGWELL, T.~A\@.
+  An Overview of Industrial Model Predictive Control Technology. In:
+  INTERNATIONAL CONFERENCE ON CHEMICAL PROCESS CONTROL, 5., 1997, Tahoe City,
+  CA. \textbf{Proceedings{\ldots}} USA: AlChe, 1997. v.93, n.316, p.232--256.
+
+\bibitem[QIN; BADGWELL(2000)QIN; BADGWELL]{qin00} QIN, S.~J.; BADGWELL, T.~A\@.
+  An Overview of Nonlinear Model Predictive Control Applications. In: ALLGÖWER,
+  F.; ZHENG, A\@.~(Ed.). \textbf{Nonlinear Model Predictive Control}. Basel,
+  Switzerland: Birkhäuser Verlag, 2000. v.26, p.369--393.
+
+\bibitem[RAMÍREZ et~al.(1999)RAMÍREZ et~al.]{ramirez99} RAMÍREZ, D.~R. et~al\@.
+  Nonlinear MBPC for Mobile Robots Navigation Using Genetic Algorithms. In:
+  IEEE INTERNATIONAL CONFERENCE ON ROBOTICS \& AUTOMATION, 1999, Detroit, MI.
+  \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1999.
+
+\bibitem[RAWLINGS(2000)RAWLINGS]{rawlings00} RAWLINGS, J.~B\@. Tutorial
+  Overview of Model Predictive Control. \textbf{IEEE Control Systems Magazine},
+  New York, v.20, n.3, p.38--52, June~2000.
+
+\bibitem[RICHALET et~al.(1976)RICHALET et~al.]{richalet76} RICHALET, J.
+  et~al\@. Algorithmic Control of Industrial Processes. In: IFAC SYMPOSIUM ON
+  IDENTIFICATION AND SYSTEM PARAMETER ESTIMATION, 4., 1976, Tucson, AZ.
+  \textbf{Proceedings{\ldots}} [S.l.:~s.n.], 1976. p.1119--1167.
+
+\bibitem[ROSSITER(2003)ROSSITER]{rossiter03} ROSSITER, J.~A\@. \textbf{Model
+  Based Predictive COntrol}: a practical approach. Boca Ratón, FL: CRC Press,
+  2003.
+
+\bibitem[SAKAGAMI et~al.(2002)SAKAGAMI et~al.]{sakagami02} SAKAGAMI, Y.
+  et~al\@. The Intelligent ASIMO: system overview and integration. In: IEEE/RSJ
+  INTERNATIONAL CONFERENCE ON INTELLIGENT ROBOTS AND SYSTEMS, 2002, Lausanne,
+  Switzerland. \textbf{Proceedings{\ldots}} Piscataway: IEEE, 2002.
+
+\bibitem[SAMSON(1990)SAMSON]{samson90} SAMSON, C\@. Velocity and Torque
+  Feedback Control of a Nonholonomic Cart. In: INTERNATIONAL WORKSHOP IN
+  ADAPTIVE AND NONLINEAR CONTROL: issues in robotics, 1990, Grenoble, France.
+  \textbf{Proceedings{\ldots}} London: Springer-Verlag, 1990.
+
+\bibitem[SAMSON(1995)SAMSON]{samson95} SAMSON, C\@. Control of Chained Systems:
+  application to path following and time-varying point-stabilization of mobile
+  robots. \textbf{IEEE Transactions on Automatic Control}, New York, v.40, n.1,
+  p.64--77, Jan.~1995.
+
+\bibitem[SAMSON; AIT-ABDERRAHIM(1991a)SAMSON; AIT-ABDERRAHIM]{samson91b}
+  SAMSON, C.; AIT-ABDERRAHIM, K\@. Feedback Control of a Nonholonomic Wheeled
+  Cart in Cartesian Space. In: IEEE INTERNATIONAL CONFERENCE ON ROBOTICS AND
+  AUTOMATION, 1991, Sacramento, CA. \textbf{Proceedings{\ldots}} Piscataway:
+  IEEE, 1991. p.1136--1141.
+
+\bibitem[SAMSON; AIT-ABDERRAHIM(1991b)SAMSON; AIT-ABDERRAHIM]{samson91a}
+  SAMSON, C.; AIT-ABDERRAHIM, K\@. Feedback Stabilization of a Nonholonomic
+  Wheeled Mobile Robot. In: IEEE/RSJ INTERNATIONAL WORKSHOP ON INTELLIGENT
+  ROBOTS AND SYSTEMS, 1991, Osaka, Japan. \textbf{Proceedings{\ldots}}
+  Piscataway: IEEE, 1991. p.1242--1247.
+
+\bibitem[SARKAR; YUN; KUMAR(1993)SARKAR; YUN; KUMAR]{sarkar93} SARKAR, N.; YUN,
+  X.; KUMAR, V\@. Dynamic Path Following: a new control algorithm for mobile
+  robots. In: IEEE CONFERENCE ON DECISION AND CONTROL, 32., 1993, San Antonio,
+  TX. \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1993. p.2670--2675.
+
+\bibitem[SCHRAFT(1994)SCHRAFT]{schraft94} SCHRAFT, R.~D\@. Mechatronics and
+  Robotics for Service Applications. \textbf{IEEE Robotics \& Automation
+  Magazine}, New York, v.1, n.4, p.31--35, Dec.~1994.
+
+\bibitem[SHANNO(1970)SHANNO]{shanno70} SHANNO, D.~F\@. Conditioning of
+  Quasi-Newton Methods for Function Minimization. \textbf{Mathematics of
+  Computing}, [S.l.], v.24, p.647--656, 1970.
+
+\bibitem[SONTAG(1990)SONTAG]{sontag90} SONTAG, E.~D\@. \textbf{Mathematical
+  Control Theory. Deterministic Finite Dimensional Systems}. New York:
+  Springer-Verlag, 1990.
+
+\bibitem[S{\O}RDALEN(1993a)S{\O}RDALEN]{sordalen93a} S{\O}RDALEN, O.~J\@.
+  \textbf{Feedback Control of Nonholonomic Mobile Robots}. 1993. Tese (Dr.
+  ing.) --- The Norwegian Institute of Technology, Trondheim, Norway, 1993.
+
+\bibitem[S{\O}RDALEN(1993b)S{\O}RDALEN]{sordalen93b} S{\O}RDALEN, O.~J\@.
+  Conversion of the Kinematics of a Car with $n$ Trailers Into a Chained Form.
+  In: IEEE INTERNATIONAL CONFERENCE ON ROBOTICS AND AUTOMATION, 1993, Atlanta,
+  GA. \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1993. p.382--387.
+
+\bibitem[SU; STEPANENKO(1994)SU; STEPANENKO]{su94} SU, C.~Y.; STEPANENKO, Y\@.
+  Robust Motion/Force Control of Mechanical Systems with Classical Nonholonomic
+  Constraints. \textbf{IEEE Transactions on Automatic Control}, New York, v.39,
+  n.3, p.609--614, Mar.~1994.
+
+\bibitem[SUN(2005)SUN]{sun05} SUN, S\@. Designing Approach on Trajectory
+  Tracking Control of Mobile Robot. \textbf{Robotics and Computer-Integrated
+  Manufacturing}, New York, Elsevier, v.21, n.1, p.81--85, Feb.~2005.
+
+\bibitem[TAR{Í}N et~al.(1999)TAR{Í}N et~al.]{tarin99} TAR{Í}N, C. et~al\@.
+  Adaptive Self-Tunning Path Control System for an Autonomous Mobile Robot. In:
+  IEEE CONFERENCE ON DECISION AND CONTROL, 38., 1999, Phoenix, AZ.
+  \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1999. p.3886--3887.
+
+\bibitem[TEEL; MURRAY; WALSH(1992)TEEL; MURRAY; WALSH]{teel92} TEEL, A.~R.;
+  MURRAY, R.~M.; WALSH, G\@. Nonholonomic Control Systems: from steering to
+  stabilization with sinusoids. In: IEEE CONFERENCE ON DECISION AND CONTROL,
+  31., 1992, Tucson, AZ. \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1992.
+  p.1603--1609.
+
+\bibitem[TEEL; MURRAY; WALSH(1995)TEEL; MURRAY; WALSH]{teel95} TEEL, A.~R.;
+  MURRAY, R.~M.; WALSH, G.~C\@. Non-holonomic Control Systems: from steering to
+  stabilization with sinusoids. \textbf{International Journal of Control},
+  [S.l.], v.62, n.4, p.849--870, 1995.
+
+\bibitem[T{\O}NDEL; JOHANSEN; BEMPORAD(2003)T{\O}NDEL; JOHANSEN;
+  BEMPORAD]{tondel03} T{\O}NDEL, P.; JOHANSEN, T.~A.; BEMPORAD, A\@. An
+  Algorithm for Multi-Parametric Quadratic Programming and Explicit MPC
+  Solutions. \textbf{Automatica}, New York, v.39, n.3, p.489--497, Mar.~2003.
+
+\bibitem[TRIERWEILER; SECCHI(2000)TRIERWEILER; SECCHI]{jorge00} TRIERWEILER,
+  J.~O.; SECCHI, A.~R\@. Exploring the Potentiality of Using Multiple Model
+  Approach in Nonlinear Model Predictive Control. In: ALLGÖWER, F.; ZENG,
+  A\@.~(Ed.). \textbf{Nonlinear model predictive control}. Basel, Switzerland:
+  Birkh{\"{a}}user Verlag AG, 2000. v.26, p.191--203.
+
+\bibitem[WEISBIN; LAVERY(1994)WEISBIN; LAVERY]{weisbin94} WEISBIN, C.~R.;
+  LAVERY, D\@. NASA Rover and Telerobotics Technology Program. \textbf{IEEE
+  Robotics \& Automation Magazine}, New York, v.1, n.4, p.14--21, Dec.~1994.
+
+\bibitem[WIT; BERGHUIS; NIJMEIJER(1994)WIT; BERGHUIS; NIJMEIJER]{canudas94}
+  WIT, C.~C.; BERGHUIS, H.; NIJMEIJER, H\@. Practical Stabilization of
+  Nonlinear Systems in Chained Form. In: IEEE CONFERENCE ON DECISION AND
+  CONTROL, 33., 1994, Lake Buena Vista, FL. \textbf{Proceedings{\ldots}}
+  Piscataway: IEEE, 1994. v.4, p.3475--3480.
+
+\bibitem[WIT et~al.(1993)WIT et~al.]{canudas93} WIT, C.~C. et~al\@.
+  \textbf{Nonlinear Control Design for Mobile Robots}. Singapore: World
+  Scientific Publisher, 1993. p.121--157. (Recent Trends in Mobile Robots).
+
+\bibitem[WIT et~al.(1995)WIT et~al.]{canudas95} WIT, C.~C. et~al\@. Hybrid
+  Stabilizing Control on a Real Mobile Robot. \textbf{IEEE Robotics \&
+  Automation Magazine}, New York, v.2, n.2, p.16--23, June~1995.
+
+\bibitem[WIT; SICILIANO; BASTIN(1996)WIT; SICILIANO; BASTIN]{canudas96} WIT,
+  C.~C.; SICILIANO, B.; BASTIN, G\@. \textbf{Theory of Robot Control}. London:
+  Springer-Verlag, 1996.
+
+\bibitem[WIT; S{\O}RDALEN(1992)WIT; S{\O}RDALEN]{canudas92} WIT, C.~C.;
+  S{\O}RDALEN, O.~J\@. Exponential Stabilization of Mobile Robots with
+  Nonholonomic Constraints. \textbf{IEEE Transactions on Automatic Control},
+  New York, v.37, n.11, p.1791--1797, Nov.~1992.
+
+\bibitem[WORLD ROBOTICS 2004(2004)WORLD ROBOTICS 2004]{unece04} \textbf{WORLD
+  ROBOTICS 2004}. Geneva, Switzerland: United Nations Economic Commission for
+  Europe, UNECE, 2004.
+
+\bibitem[WU et~al.(1999)WU et~al.]{wu99} WU, W. et~al\@. Adaptive Exponential
+  Stabilization of Mobile Robots with Uncertainties. In: IEEE CONFERENCE ON
+  DECISION AND CONTROL, 38., 1999, Phoenix, AZ. \textbf{Proceedings{\ldots}}
+  Piscataway: IEEE, 1999. p.3484--3489.
+
+\bibitem[YAMAMOTO; YUN(1994)YAMAMOTO; YUN]{yamamoto94} YAMAMOTO, Y.; YUN, X\@.
+  Coordinating Locomotion and Manipulation of a Mobile Manipulator.
+  \textbf{IEEE Transactions on Automatic Control}, New York, v.39, n.6,
+  p.1326--1332, June~1994.
+
+\bibitem[YANG; KIM(1999)YANG; KIM]{yang99} YANG, J.~M.; KIM, J.~H\@. Sliding
+  Mode Control for Trajectory Tracking of Nonholonmic Wheeled Mobile Robots.
+  \textbf{IEEE Transactions on Robotics and Automation}, New York, v.15, n.3,
+  p.578--587, June~1999.
+
+\bibitem[YANG et~al.(1998)YANG; HE; GUO; ZHANG]{yang98} YANG, X.; HE, K.; GUO,
+  M.; ZHANG, B\@. An Intelligent Predictive Control Approach to Path Tracking
+  Problem of Autonomous Mobile Robot. In: IEEE INTERNATIONAL CONFERENCE ON
+  SYSTEMS, MAN, AND CYBERNETICS, 1998, San Diego, CA.
+  \textbf{Proceedings{\ldots}} Piscataway: IEEE, 1998.
+
+\end{thebibliography}

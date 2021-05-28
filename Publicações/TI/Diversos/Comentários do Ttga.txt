@@ -1,0 +1,99 @@
+COMENTÁRIOS AO MEU TI - TTGA
+
+Dei uma olhadinha naquilo que tu escreveu do TI e tenho uns 
+comentários. No 
+geral achei muito legal teu trabalho e acho que está ficando melhor que 
+o 
+meu! Muito legal o uso que tu fez dos rodapés.
+
+Só observei o seguinte (acho melhor tu abrir o arquivo e acompanhar 
+olhando 
+ele e dando uns "search")
+
+1) "...dada a sua capacidade de executar tarefas com maior eficiência e 
+outras 
+que seres humanos são incapazes de executar."
+
+2) Esta afirmação está muito forte: "..., e robôs que se parecem e se 
+comportam quase como um ser humano..." pois eles não se comportam nem 
+perto 
+de um ser humano ainda... existem robôs que se comportam quase como 
+certos 
+insetos, mas ainda estão longe da complexidade do comportamento de 
+qualquer 
+mamífero, pior ainda um ser humano... tu podia dizer inspirados no 
+comportamento humano ou algo parecido...
+
+3) Sugiro fazer diagrama separando as classificações dos robôs móveis:
+
+Exemplo:
+
+rodas
+	holonômicos
+		-omnidrive
+	não holonômicos
+		de equilíbrio estável
+			-maioria (2, 3, 4, N rodas)
+		de equilíbrio instável
+			-tipo segway (pêndulo invertido)
+esteira
+	-duas esteiras
+	-sei lá tb...
+pernas
+	estáticos
+		-aquelas aranhas de 6 pernas
+	dinâmicos auto balançados
+		-aibo, outros que pulam do MIT, etc...
+
+4) Achei estranho citar as revistas consultadas no meio do texto... o 
+professor não comentou nada?? Eu teria deixado a frase "Este trabalho 
+trata 
+basicamente bla bla..." e cortaria tudo até a frase "Até meados da 
+década de 
+90, bla bla bla...".
+
+5) "O trabalho termina com a conclusão..." dãa... é óbvio... hehehehe
+
+6) Meu Deus! O quê são "campos vetoriais suaves" e o que é uma 
+"distribuição 
+suave" ??
+
+7) "sndo" -> "sendo"
+
+8) na figura 3.1, mostrando o robô em vista de topo, tu usou linha do 
+tipo 
+traço ponto, mas este tipo de linha é geralmente utilizado somente para 
+representar eixos. De repente seria uma boa mudar para tracejado 
+simples.
+
+9) Só uma pergunta pra mim mesmo: "de onde tu tirou o termo 'rodas 
+suecas' 
+hein?"
+
+10) Seria legal usar algum tipo de marcador para o fim das proposições 
+e 
+definições. Acho que geralmente usam um quadradinho, ou uma cruz.
+
+11) "O limite superior é óbvio. O limite inferior bla bla bla" --> 
+Melhor não 
+dizer que algo é óbvio sem dizer o que é. Em inglês tudo bem, mas em 
+português parece meio forte. Simplesmente não diga nada, fale apenas do 
+limite inferior.
+
+12) Na classe 1,1 tem uma referência "quebrada" à uma figura.
+
+13) Tu mencionou as propriedades de irredutibilidade, controlabilidade, 
+linearidade antes de ter definido elas. Sugiro tu colocar uma 
+referência 
+dizendo algo do tipo (ver seção 3.5.1) ou coisa do tipo lá no início 
+onde a 
+palavra apareceu primeiro.
+
+E era isso... desculpa se eu não pude dar uma olhada mais detalhada, 
+por 
+exemplo conferindo equações, mas acho que não é para tanto... afinal é 
+só um 
+TI.
+
+[ ]'s
+Rodrigo

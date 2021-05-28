@@ -1,0 +1,38 @@
+% deletexespec.def - Specialization course definitions
+% Copyright (C) 2004 Walter Fetter Lages <w.fetter@ieee.org>
+%
+% This file was adapted from:
+% $Id: espec.def,v 4.2 2003/11/21 22:36:13 avila Exp $
+%
+% This is free software, distributed under the GNU GPL; please take
+% a look in `deletex.cls' to see complete information on using, copying
+% and redistributing these files
+%
+\ProvidesFile{deletexespec.def}[2004/11/29 v0.4.0 Specialization Monography]
+\newcommand{\titlepagespecificinfo}{\especspecificinfo}
+\def\@cipspecificinfo{\especname}
+\course{\especcoursename\ \delet@espec}
+\def\coordname{\especcoordname\ \especcoursename\ \delet@espec}
+
+\newcommand{\espec}[1]{\gdef\delet@espec{#1}}
+\DeclareRobustCommand{\coord}[3][]{
+        \gdef\@coordlast{#2}
+        \gdef\@coordfirst{#3}
+        \gdef\@coord{#1~#3 #2}
+}
+\renewcommand{\titlepageadvisorinfo}{%
+%       \@ifundefined{@advisor}{}{\vfill\@advisor\\\advisorname}
+%       \@ifundefined{@coadvisor}{}{\\[6ex]\@coadvisor\\\coadvisorname}
+        \vfill\@coord\\\coordname
+}
+\newcommand{\nominataCEname}{\especcoordname\ \especcoursename\ \delet@espec}
+\renewcommand{\nominata}{%
+        \MakeUppercase{\ufrgs}\\
+        \nominataReitname: \nominataReit\\
+        \nominataPREname: \nominataPRE\\
+        \nominataPRAPGname: \nominataPRAPG\\
+        \nominataDirname: \nominataDir\\
+        \csname nominataChefe\@dept name\endcsname: \csname nominataChefe\@dept\endcsname\\
+        \nominataCEname: \@coord\\
+        \nominataBibchefename: \nominataBibchefe
+}

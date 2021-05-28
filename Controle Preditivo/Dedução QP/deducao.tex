@@ -1,0 +1,110 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[dvips,ps2pdf]{hyperref}
+\usepackage{amsthm, amsfonts, amssymb, amsmath, graphicx}
+\pagestyle{plain}
+
+% Define área da folha
+\setlength{\vsize}{297mm} \setlength{\hsize}{210mm}
+\setlength{\textheight}{245mm} \setlength{\textwidth}{165mm}
+\voffset -2.4cm \hoffset -2.5cm
+
+\begin{document}
+
+Considerando o sistema:
+\begin{equation*}
+	x(k+1) = Ax(k)+Bu(k) \\
+\end{equation*}
+
+Função de custo:
+\begin{equation*}
+	\Phi(k) = \sum_{j=1}^Nx^T(k+j|k)Qx(k+j|k) + u^T(k+j-1|k)Ru(k+j-1|k),
+\end{equation*}
+onde $N$ é o horizonte de predição.
+
+Recursivamente aplicando
+\begin{equation*}
+	x(k+j|k) = A^jx(k|k) + \sum_{i=0}^{j-1}A^{j-1-i}Bu(k+i|k)
+\end{equation*}
+e escrevendo
+\begin{equation}\label{xbar}
+	\overline x = \overline A x(k|k) + S\overline u,
+\end{equation}
+onde
+\begin{equation*}
+	\overline x \triangleq \begin{bmatrix}
+		x(k+1|k) \\ x(k+2|k) \\ \vdots \\ x(k+N|k)
+	\end{bmatrix}
+\end{equation*}	
+\begin{equation*}
+	\overline u \triangleq \begin{bmatrix}
+		u(k|k) \\ u(k+1|k) \\ \vdots \\ u(k+N-1|k)
+	\end{bmatrix}
+\end{equation*}
+\begin{equation*}
+	\overline A \triangleq \begin{bmatrix}
+		A \\ A^2 \\ \vdots \\ A^N
+	\end{bmatrix}
+\end{equation*}	
+\begin{equation*}
+	{\bf S} \triangleq \begin{bmatrix}
+		B                 & {\bf 0} 					& \cdots & {\bf 0}       \\
+		AB       & B      			& \cdots & {\bf 0}       \\
+		\vdots	                 & \vdots		     		& \ddots & \vdots        \\
+		A^{N-1}B & A^{N-2}B & \cdots & B
+	\end{bmatrix},
+\end{equation*}
+tem-se que:
+\begin{equation}\label{phi}
+	\Phi(k) = \overline x^T\overline Q\overline x + \overline u^T\overline R\overline u,
+\end{equation}
+onde
+\begin{align*}
+	\overline Q &\triangleq \begin{bmatrix}
+		Q & {\bf 0} & \cdots & {\bf 0} \\
+		{\bf 0} & Q & \cdots & {\bf 0} \\
+		\vdots  & \vdots  & \ddots & \vdots  \\
+		{\bf 0} & {\bf 0} & \cdots & Q \\
+	\end{bmatrix} \qquad
+	\overline R \triangleq \begin{bmatrix}
+		R & {\bf 0} & \cdots & {\bf 0} \\
+		{\bf 0} & R & \cdots & {\bf 0} \\
+		\vdots  & \vdots  & \ddots & \vdots  \\
+		{\bf 0} & {\bf 0} & \cdots & R \\
+	\end{bmatrix}
+\end{align*} 
+
+Expandindo a função de custo (\ref{phi}) com (\ref{xbar}), tem-se:
+\begin{align*}
+	\Phi(k) &= \left[x^T(k|k)\overline A^T + \overline u^TS^T\right]\overline Q\left[\overline A^Tx(k|k)+S\overline u\right] + \overline u^T\overline R\overline u \\
+	     &= x^T(k|k)\overline A^T\overline Q\overline Ax(k|k) + x^T(k|k)\overline A^T\overline QS\overline u + \overline u^TS^T\overline Q\overline Ax(k|k) + \overline u^TS^T\overline QS\overline u + \overline u^T\overline R\overline u
+\end{align*}
+
+Os termos quadráticos em $\overline u$ são
+\begin{align*}
+	\frac{1}{2}\overline u^TH\overline u &= \overline u^TS^T\overline QS\overline u + \overline u^T\overline R\overline u \\
+								  &= \overline u^T\left(S^T\overline QS+\overline R\right)\overline u
+\end{align*}	
+e
+\begin{equation*}
+	H = 2\left(S^T\overline QS+\overline R\right)
+\end{equation*}
+
+Os termos lineares em $\overline u$ são:
+\begin{align*}
+	f^T\overline u &= x^T(k|k)\overline A^T\overline QS\overline u + \overline u^TS^T\overline Q\overline Ax(k|k) \\
+				&= 2x^T(k|k)\overline A^T\overline QS\overline u
+\end{align*}
+e
+\begin{equation*}
+	f = 2S^T\overline Q\overline Ax(k|k)
+\end{equation*}
+
+Assim, $\Phi(k)$ é escrita na forma quadrática padrão
+\begin{equation*}
+	\Phi(k) = \frac{1}{2}\overline u^T\overline H\overline u + f^T\overline u + c
+\end{equation*}
+onde $c$ é independente de $\overline u$ e não importa para o problema de minimização.
+
+\end{document}

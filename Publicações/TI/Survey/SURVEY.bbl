@@ -1,0 +1,305 @@
+\begin{thebibliography}{10}
+
+\bibitem{aguiar1}
+A.~P. Aguiar, A.~N. Atassi, and A.~M. Pascoal.
+\newblock Regulation of a nonholonomic dynamic wheeled mobile robot with
+  parametric uncertainty using lyapunov functions.
+\newblock In {\em IEEE Conference on Decision and Control. Sydney, Australia},
+  dez. 2000.
+
+\bibitem{asensio1}
+J.~R. Asensio and L.~Montano.
+\newblock A kinematic and dynamic model-based motion controller for mobile
+  robots.
+\newblock {\em IFAC Triennial World Congress}, 2002.
+
+\bibitem{astolfi1}
+A.~Astolfi.
+\newblock On the stabilization of nonholonomic systems.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  3481--3486, dez. 1994.
+
+\bibitem{bacciotti1}
+A.~Bacciotti.
+\newblock {\em Local stabilization of nonlinear control systems}.
+\newblock World Scientific, 1992.
+
+\bibitem{latombe1}
+J.~Barraquand and J.~C. Latombe.
+\newblock On nonholonomic mobile robots and optimal maneuvering.
+\newblock In {\em IEEE International Symposium on Intelligent Control}, pages
+  340--347, 1989.
+
+\bibitem{bloch2}
+A.~M. Bloch and N.~H. McClamroch.
+\newblock Control of mechanical systems with classical nonholonomic
+  constraints.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  201--205, dez. 1989.
+
+\bibitem{bloch1}
+A.~M. Bloch, M.~Reyhanoglu, and N.~H. McClamroch.
+\newblock Control and stabilization of nonholonomic dynamic systems.
+\newblock {\em IEEE Transactions on Automatic Control}, 37(11):1746--1757, nov.
+  1992.
+
+\bibitem{brockett1}
+R.~W. Brockett.
+\newblock {\em New directions in applied mathematics}.
+\newblock Springer-Verlag, 1982.
+
+\bibitem{campion1}
+G.~Campion, G.~Bastin, and B.~D'Andréa-Novel.
+\newblock Modelling and control of nonholonomic wheeled mobile robots.
+\newblock In {\em IEEE International Conference on Robotics and Automation},
+  pages 1130--1135, abr. 1991.
+
+\bibitem{campion2}
+G.~Campion, G.~Bastin, and B.~D'Andréa-Novel.
+\newblock Modelling and state feedback control of nonholonomic mechanical
+  systems.
+\newblock In {\em IEEE European Conference on Decision and Control}, pages
+  1184--1189, dez. 1991.
+
+\bibitem{campion3}
+G.~Campion, G.~Bastin, and B.~D'Andréa-Novel.
+\newblock Dynamic feedback linearization of nonholonomic wheeled mobile robots.
+\newblock In {\em IEEE International Conference on Robotics and Automation},
+  pages 2527--2532, mai. 1992.
+
+\bibitem{campion4}
+G.~Campion, G.~Bastin, and B.~D'Andréa-Novel.
+\newblock Structural properties and classifications of kinematic and dynamic
+  models of wheeled mobile robots.
+\newblock {\em IEEE Transactions on Robotics and Automation}, 12(1):47--62,
+  fev. 1996.
+
+\bibitem{chaves1}
+L.~F. Chaves.
+\newblock Projeto, construção, modelagem e controle de um robô móvel.
+\newblock Master's thesis, Pontifícia Universidade Católica do Rio Grande do
+  Sul, nov. 2000.
+
+\bibitem{canudas1}
+C.~Canudas de~Wit and O.~J. S{\o}rdalen.
+\newblock Exponential stabilization of mobile robots with nonholonomical
+  constraints.
+\newblock {\em IEEE Transactions on Automatic Control}, 37(11):1791--1797, nov.
+  1992.
+
+\bibitem{deng1}
+Z.~Deng and M.~Brady.
+\newblock Dynamic tracking of a wheeled mobile robot.
+\newblock In {\em IEEE/RSJ International Conference on Intelligent Robots and
+  Systems}, pages 1295--1298, jul. 1993.
+
+\bibitem{dixon1}
+W.~E. Dixon, D.~M. Dawson, F.~Zhang, and E.~Zergeroglu.
+\newblock Global exponential setpoint control of mobile robots.
+\newblock In {\em IEEE/ASME International Conference on Advanced Intelligent
+  Mechatronics}, pages 683--688, set. 1999.
+
+\bibitem{do1}
+K.~D. Do, Z.~P. Jiang, and J.~Pan.
+\newblock A universal saturation controller design for mobile robots.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  2044--2049, dez. 2002.
+
+\bibitem{dong1}
+W.~Dong and W.~L. Xu.
+\newblock Adaptive tracking control of uncertain nonholonomic dynamic system.
+\newblock {\em IEEE Transactions on Automatic Control}, 46(3):450--454, mar.
+  2001.
+
+\bibitem{pascoal1}
+P.~Encarnação and A.~Pascoal.
+\newblock Combined trajectory tracking and path following control for dynamic
+  wheeled mobile robots.
+\newblock {\em IFAC Triennial World Congress}, 2002.
+
+\bibitem{fierro1}
+R.~Fierro and F.~L. Lewis.
+\newblock Control of a nonholonomic mobile robot using neural networks.
+\newblock {\em IEEE Transactions on Neural Networks}, 9(4):589--600, mai. 1998.
+
+\bibitem{fukao1}
+T.~Fukao, H.~Nakagawa, and N.~Adachi.
+\newblock Adaptive tracking control of a nonholonomic mobile robot.
+\newblock {\em IEEE Transactions on Automatic Control}, 16(5):609--615, out.
+  2000.
+
+\bibitem{indivieri1}
+G.~Indivieri.
+\newblock Kinematic time-invariant control of a 2d nonholonomic vehicle.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  2112--2117, dez. 1999.
+
+\bibitem{jiang1}
+Z.~P. Jiang and J.~B. Pomet.
+\newblock Global stabilization of parametric chained-form systems by
+  time-varying dynamic feedback.
+\newblock {\em International Journal of Adaptive Control and Signal
+  Processing}, 10:47--59, 1996.
+
+\bibitem{kanayama1}
+Y.~Kanayama, Y.~Kimuand~F. Miyazaki, and T.~Noguchi.
+\newblock A stable tracking control method for an autonomous mobile robot.
+\newblock In {\em IEEE International Conference on Robotics and Automation},
+  1990.
+
+\bibitem{khalil1}
+H.~K. Khalil.
+\newblock {\em Nonlinear Systems}.
+\newblock Prentice Hall, Upper Saddle River, New Jersey, 1996.
+
+\bibitem{kolmanovsky1}
+I.~Kolmanovsky and N.~H. McClamroch.
+\newblock Developments in nonholonomic control problems.
+\newblock {\em IEEE Control Systems Magazine}, 15(6):20--36, dez. 1995.
+
+\bibitem{lages1}
+W.~F. Lages.
+\newblock {\em Controle e estimação de posição e orientação de robôs móveis}.
+\newblock PhD thesis, Instituto Tecnológico da Aeronáutica, 1998.
+
+\bibitem{lee1}
+T.~C. Lee, C.~H. Lee, and C.~C. Teng.
+\newblock Adaptive tracking control of nonholonomic mobile robots by computed
+  torque.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  1254--1259, dez. 1999.
+
+\bibitem{murray2}
+R.~Murray and S.~Sastry.
+\newblock Nonholonomic motion planning: Steering using sinusoids, 1993.
+\newblock Disponível on-line em {\tt
+  citeseer.nj.nec.com/murray93nonholonomic.html}.
+
+\bibitem{murray1}
+R.~M. Murray and S.~S. Sastry.
+\newblock Steering nonholonomic systems using sinusoids.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  2097--2101, dez. 1990.
+
+\bibitem{canudas2}
+W.~Oelen, H.~Berghuis, H~Nijmeijer, and C.~Canudas de~Wit.
+\newblock Hybrid stabilizing control on a real mobile robot.
+\newblock {\em IEEE Robotics \& Automation Magazine}, pages 16--23, jun. 1995.
+
+\bibitem{oya1}
+M.~Oya, C.~H. Yu, and R.~Katoh.
+\newblock Robust adaptive motion/force tracking control of uncertain
+  nonholonomic mechanical systems.
+\newblock {\em IEEE Transactions on Robotics and Automation}, 19(1):175--181,
+  fev. 2003.
+
+\bibitem{pomet1}
+J.~B. Pomet, B.~Thuilot, G.~Bastin, and G.~Campion.
+\newblock A hybrid strategy for the feedback stabilization of nonholonomic
+  mobile robots.
+\newblock In {\em IEEE International Conference on Robotics and Automation},
+  pages 129--134, mai. 1992.
+
+\bibitem{ribeiro1}
+M.~I. Ribeiro and P.~Lima.
+\newblock Nonlinear control of wheeled mobile robots.
+\newblock Technical report, Instituto Superior Técnico, Lisboa, Portugal, mai.
+  2002.
+\newblock Disponível on-line em {\tt
+  http://omni.isr.ist.utl.pt/~mir/cadeiras/robmovel/Guidance.pdf}.
+
+\bibitem{samson2}
+C.~Samson.
+\newblock Control of chained systems: application to path following and
+  time-varying point-stabilization of mobile robots.
+\newblock {\em IEEE Transactions on Automatic Control}, 40(1):64--77, jan.
+  1995.
+
+\bibitem{samson1}
+C.~Samson and K.~Ait-Abderrahim.
+\newblock Feedback stabilization of a nonholonomic wheeled mobile robot.
+\newblock {\em IEEE International Workshop on Intelligent Robots and Systems},
+  pages 1242--1247, nov. 1991.
+
+\bibitem{sarkar1}
+N.~Sarkar, X.~Yun, and V.~Kumar.
+\newblock Dynamic path following: a new control algorithm for mobile robots.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  2670--2675, dez. 1993.
+
+\bibitem{schraft1}
+R.~D. Schraft.
+\newblock Mechatronics and robotics for service applications.
+\newblock {\em IEEE Robotics \& Automation Magazine}, 1(4), dez. 1994.
+
+\bibitem{siciliano1}
+B.~Siciliano.
+\newblock Control in robotics: Open problems and future directions.
+\newblock In {\em IEEE International Conference on Control Applications}, pages
+  81--84, set. 1998.
+
+\bibitem{slotine1}
+J.-J.~E. Slotine and W.~Li.
+\newblock {\em Applied nonlinear control}.
+\newblock Prentice-Hall, 1997.
+
+\bibitem{sordalen1}
+O.~J. S{\o}rdalen.
+\newblock {\em Feedback control of nonholonomic mobile robots}.
+\newblock PhD thesis, The Norwegian Institute of Technology, 1993.
+
+\bibitem{su1}
+C.~Y. Su and Y.~Stepanenko.
+\newblock Robust motion/force control of mechanical systems with classical
+  nonholonomic constraints.
+\newblock {\em IEEE Transactions on Automatic Control}, 39(3):609--614, mar.
+  1994.
+
+\bibitem{tarin1}
+C.~Tarín, H.~Brugger, B.~Tibken, and E.~P. Hofer.
+\newblock Adaptive self-tunning path control system for an autonomous mobile
+  robot.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  3886--3887, dez. 1999.
+
+\bibitem{tarin2}
+C.~Tarín, H.~Brugger, B.~Tibken, and E.~P. Hofer.
+\newblock Optimal feedback position control for an autonomous mobile robot.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  1491--1492, jun. 2000.
+
+\bibitem{teel1}
+A.~R. Teel, R.~M Murray, and G.~Walsh.
+\newblock Nonholonomic control systems: from steering to stabilization with
+  sinusoids.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  1603--1609, dez. 1992.
+
+\bibitem{wu1}
+W.~Wu, H.~Chen, Y.~Wang, and P.~Woo.
+\newblock Adaptive exponential stabilization of mobile robots with
+  uncertainties.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  3484--3489, dez. 1999.
+
+\bibitem{yamamoto1}
+Y.~Yamamoto and X.~Yun.
+\newblock Coordinating locomotion and manipulation of a mobile manipulator.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  2643--2648, dez. 1992.
+
+\bibitem{yang1}
+J.~M. Yang and J.~H. Kim.
+\newblock Sliding mode control for trajectory tracking of nonholonmic wheeled
+  mobile robots.
+\newblock {\em IEEE Transactions on Robotics and Automation}, 15(3):578--587,
+  jun. 1999.
+
+\bibitem{yun1}
+X.~Yun and N.~Sarkar.
+\newblock Unified formulation of robotic systems with holnomic and nonholonomic
+  constraints.
+\newblock {\em IEEE Transactions on Robotics and Automation}, 14(4):640--650,
+  ago. 1998.
+
+\end{thebibliography}

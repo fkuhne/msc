@@ -1,0 +1,115 @@
+%==============================================================================
+% PPRdeletex - Prosper style for DELET/EE/UFRGS
+% Copyright (C) 2004 Walter Fetter Lages <w.fetter@ieee.org>
+%
+% This program is free software; you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation; either version 2 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should have received a copy of the GNU General Public License
+% along with this program; if not, write to the Free Software
+% Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+%
+%==============================================================================
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{PPRdeletex}[2004/11/29 v0.4.0 PPRdeletex - Prosper style for DELET/EE/UFRGS]
+\DeclareOption{english}{\@englishtrue\OptionNotUsed}\newif\if@english
+\ProcessOptions\relax
+\IfFileExists{pst-grad}{\RequirePackage{pst-grad}}{\RequirePackage{gradient}}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{times}
+\RequirePackage[english,brazilian]{babel}
+\input{deletex_pt_BR.ldf}
+\input{deletex_en.ldf}
+\if@english
+        \selectlanguage{english}
+        \AtBeginDocument{\selectlanguage{english}}
+\fi
+\RequirePackage{deletexdefs}
+
+\ifcolorBG
+	\def\bglight{blue}
+	\def\bgdark{black}
+	\global\let\titlecolor=\cyan
+	\global\let\textcolor=\white
+	\global\let\footcolor=\white
+\else
+	\newgray{whitegray}{0.99}
+	\def\bgsolid{whitegray}
+	\global\let\titlecolor=\blue
+	\global\let\textcolor=\black
+	\global\let\footcolor=\black
+\fi
+
+\ifinColor
+	\def\sblight{blue}
+	\def\sbdark{black}
+\else
+	\def\sblight{white}
+	\def\sbdark{lightgray}
+	\newgray{whitegray}{0.99}
+\fi
+
+
+\FontTitle{%
+  \usefont{T1}{ptm}{b}{n}\fontsize{20.74pt}{20pt}\selectfont\titlecolor}{%
+  \usefont{T1}{ptm}{b}{n}\fontsize{20.74pt}{20pt}\selectfont\titlecolor}
+\FontText{%
+  \usefont{T1}{ptm}{m}{n}\fontsize{14.4pt}{13pt}\selectfont\textcolor}{%
+  \usefont{T1}{ptm}{m}{n}\fontsize{14.4pt}{13pt}\selectfont\textcolor}
+
+\ColorFoot{\footcolor}
+
+\newcommand{\slidetitle}[1]{ %
+	\rput[c](5.25,4.4){\fontTitle{#1}}
+}
+
+\newcommand{\course}[1]{\gdef\@course{#1}}
+
+\gdef\@institution{\ufrgs\\
+\ee\\
+\delet\\
+\@ifundefined{@course}{}{\@course}}
+
+\LogoPosition{-1.75,-1.2}
+
+\newcommand{\thedeletexstyle}[1]{%
+	\ifcolorBG
+		\psframe[fillstyle=gradient,gradbegin=\bgdark,gradend=\bglight,gradmidpoint=1](-2,-1.4)(12.5,9)
+	\else
+		% This avoids a problem when using figures with some versions of Acrobat Reader.
+		\psframe[fillstyle=solid,fillcolor=\bgsolid,linestyle=none](-2,-1.4)(12.5,9)
+	\fi
+	\psframe[fillstyle=gradient,gradbegin=\sblight,gradend=\sbdark,gradmidpoint=.5,linestyle=none](-2,-1.4)(0,5.9)
+  	\multirput(-1.1,-1)(0,.35){20}{%
+    		\psframe[fillstyle=solid,fillcolor=\sblight,linestyle=none](0,0)(.25,.25)
+	}
+	\psframe[fillstyle=solid,fillcolor=\sblight,linestyle=none](-2,9)(0,5.85)
+	\ifinColor
+		\rput[lb](-1.7cm,7.4cm){\includegraphics[scale=0.3]{logo_ufrgs_on_blue.eps}}
+		\rput[lb](-1.54cm,5.9cm){\includegraphics[scale=0.17]{brasao_ee_on_blue.eps}}
+	\else
+		\rput[lb](-1.7cm,7.4cm){\includegraphics[scale=0.3]{logo_ufrgs.eps}}
+		\rput[lb](-1.54cm,5.9cm){\includegraphics[scale=0.17]{brasao_ee.eps}}
+	\fi
+
+	\PutLogo{#1}
+}
+
+\DefaultTransition{Replace}
+
+\NewSlideStyle{t}{6,3}{thedeletexstyle}
+%\PDFCroppingBox{10 40 594 820}	% iiufrgs
+%\PDFCroppingBox{0 0 595 895}	% A4 dimmensions
+%\PDFCroppingBox{10 40 594 800}	% Prosper default
+%\PDFCroppingBox{10 15 594 840} % Prosper azure
+
+\PDFCroppingBox{0 0 594 820}
+
+\endinput

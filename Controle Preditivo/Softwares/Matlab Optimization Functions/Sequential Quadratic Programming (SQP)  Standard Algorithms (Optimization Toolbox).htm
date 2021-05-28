@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0073)http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor16b.html -->
+<HTML><HEAD><TITLE>Sequential Quadratic Programming (SQP) :: Standard Algorithms (Optimization Toolbox)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!-- $Revision$  $Date$ --><!-- DOCNAME: Optimization Toolbox --><!-- CHUNKNAME: Sequential Quadratic Programming (SQP) --><!-- CHAPNAME: Standard Algorithms --><!-- HEADSTUFF --><LINK 
+href="Sequential Quadratic Programming (SQP)  Standard Algorithms (Optimization Toolbox)_files/docset.css" 
+type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2900.2627" name=GENERATOR></HEAD>
+<BODY class=support bgColor=#ffffff>
+<SCRIPT language=Javascript>
+if (parent.frames.length<2) document.write('<p><a href="../../helpdesk.html" target=_top><b>Documentation</b></a> <img src="../../arrowr.gif"> <a HREF="optim.html"><b>Optimization Toolbox</b></a></p>');
+</SCRIPT>
+<!-- NAVBARTOP -->
+<TABLE class=support cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=baseline bgColor=#e7ebf7><B>Optimization Toolbox</B></TD>
+    <TD vAlign=baseline align=right bgColor=#e7ebf7><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor15b.html"><IMG 
+      alt="Previous page" 
+      src="Sequential Quadratic Programming (SQP)  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      border=0></A>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor17b.html"><IMG 
+      alt="Next Page" 
+      src="Sequential Quadratic Programming (SQP)  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      border=0></A></TD></TR></TBODY></TABLE><A 
+name=sequential_quadratic_programming_(sqp)></A><!-- H2 --><A name=26622></A>
+<P><FONT class=Head3 size=+1><B>Sequential Quadratic Programming 
+(SQP)</B></FONT><BR class=hdr>
+<P><A name=26624></A>SQP methods represent the state of the art in nonlinear 
+programming methods. Schittkowski&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33429">[38]</A>, 
+for example, has implemented and tested a version that outperforms every other 
+tested method in terms of efficiency, accuracy, and percentage of successful 
+solutions, over a large number of test problems. </P>
+<P><A name=26625></A>Based on the work of Biggs&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33185">[1]</A>, 
+Han&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33337">[24]</A>, 
+and Powell&nbsp;(<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33415">[34]</A>,<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33408">[35]</A>), 
+the method allows you to closely mimic Newton's method for constrained 
+optimization just as is done for unconstrained optimization. At each major 
+iteration, an approximation is made of the Hessian of the Lagrangian function 
+using a quasi-Newton updating method. This is then used to generate a QP 
+subproblem whose solution is used to form a search direction for a line search 
+procedure. An overview of SQP is found in Fletcher&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33282">[15]</A>, 
+Gill et al.&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33310">[21]</A>, 
+Powell&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33422">[37]</A>, 
+and Schittkowski&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33344">[25]</A>. 
+The general method, however, is stated here.</P>
+<P><A name=26626></A>Given the problem description in GP (<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori2b.html#15026">Eq.&nbsp;3-1</A>) 
+the principal idea is the formulation of a QP subproblem based on a quadratic 
+approximation of the Lagrangian function.</P>
+<P><A name=26631></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="L(x, lambda) = f(x) + sum from i = 1 to m of lambda sub i times g sub i (x)" 
+      src="Sequential Quadratic Programming (SQP)  Standard Algorithms (Optimization Toolbox)_files/tutor233.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-24)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26632></A>Here you simplify <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori2b.html#15026">Eq.&nbsp;3-1</A> 
+by assuming that bound constraints have been expressed as inequality 
+constraints. You obtain the QP subproblem by linearizing the nonlinear 
+constraints.</P>
+<P><BR>
+<P>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#e7ebf7 border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD align=left width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor15b.html"><IMG 
+      alt="Previous page" 
+      src="Sequential Quadratic Programming (SQP)  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      align=bottom border=0></A>&nbsp;</TD>
+    <TD align=left>&nbsp;Constrained Optimization</TD>
+    <TD>&nbsp;</TD>
+    <TD align=right>Quadratic Programming (QP) Subproblem&nbsp;</TD>
+    <TD align=right width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor17b.html"><IMG 
+      alt="Next page" 
+      src="Sequential Quadratic Programming (SQP)  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      align=bottom border=0></A></TD></TR></TBODY></TABLE><BR><!-- Copyright 2005 The MathWorks, Inc. --><!-- Last updated: Thu Jan 13 23:15:24 2005 --><!-- SiteCatalyst code version: G.7.
+Copyright 1997-2004 Omniture, Inc. More info available at
+http://www.omniture.com -->
+<SCRIPT language=JavaScript type=text/javascript><!--
+/* You may give each page an identifying name, server, and channel on
+the next lines. */
+var s_pageName=document.title
+var s_server=""
+var s_channel=""
+var s_pageType=""
+var s_prop1=""
+var s_prop2=""
+var s_prop3=""
+var s_prop4=""
+var s_prop5=""
+/* E-commerce Variables */
+var s_campaign=""
+var s_state=""
+var s_zip=""
+var s_events=""
+var s_products=""
+var s_purchaseID=""
+var s_eVar1=""
+var s_eVar2=""
+var s_eVar3=""
+var s_eVar4=""
+var s_eVar5=""
+//--></SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Sequential Quadratic Programming (SQP)  Standard Algorithms (Optimization Toolbox)_files/s_code_remote.js" 
+type=text/javascript></SCRIPT>
+<!-- End SiteCatalyst code version: G.7. -->
+<TABLE style="BORDER-TOP: #ed8000 2px solid; BACKGROUND-COLOR: #ffffff" 
+cellSpacing=0 cellPadding=3 width="100%" align=center summary=layout border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>&nbsp;© 1994-2005 The MathWorks, Inc. &nbsp;&nbsp;&nbsp; 
+      -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/trademarks.html" 
+      target=_parent>Trademarks</A>&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/" 
+      target=_parent>Privacy Policy</A> </TD></TR></TBODY></TABLE></P></BODY></HTML>

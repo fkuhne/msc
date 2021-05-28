@@ -1,0 +1,109 @@
+\begin{thebibliography}{10}
+\providecommand{\url}[1]{#1}
+\csname url@rmstyle\endcsname
+\providecommand{\newblock}{\relax}
+\providecommand{\bibinfo}[2]{#2}
+\providecommand\BIBentrySTDinterwordspacing{\spaceskip=0pt\relax}
+\providecommand\BIBentryALTinterwordstretchfactor{4}
+\providecommand\BIBentryALTinterwordspacing{\spaceskip=\fontdimen2\font plus
+\BIBentryALTinterwordstretchfactor\fontdimen3\font minus
+  \fontdimen4\font\relax}
+\providecommand\BIBforeignlanguage[2]{{%
+\expandafter\ifx\csname l@#1\endcsname\relax
+\typeout{** WARNING: IEEEtran.bst: No hyphenation pattern has been}%
+\typeout{** loaded for the language `#1'. Using the pattern for}%
+\typeout{** the default language instead.}%
+\else
+\language=\csname l@#1\endcsname
+\fi
+#2}}
+
+\bibitem{brockett82}
+R.~W. Brockett, \emph{New directions in applied mathematics}.\hskip 1em plus
+  0.5em minus 0.4em\relax Springer-Verlag, New York, 1982.
+
+\bibitem{bloch89}
+A.~M. Bloch and N.~H. McClamroch, ``Control of mechanical systems with
+  classical nonholonomic constraints,'' in \emph{Conference on Decision and
+  Control}, Tampa, Florida, 1989, pp. 201--205.
+
+\bibitem{samson91}
+C.~Samson and K.~Ait-Abderrahim, ``Feedback control of a nonholonomic wheeled
+  cart in cartesian space,'' in \emph{IEEE International Conference on Robotics
+  and Automation}, Sacramento, California, 1991, pp. 1136--1141.
+
+\bibitem{canudas92}
+C.~Canudas~de Wit and O.~J. S{\o}rdalen, ``Exponential stabilization of mobile
+  robots with nonholonomic constraints,'' \emph{IEEE Transactions on Automatic
+  Control}, vol. 37(11), pp. 1791--1797, Nov. 1992.
+
+\bibitem{yamamoto94}
+Y.~Yamamoto and X.~Yun, ``Coordinating locomotion and manipulation of a mobile
+  manipulator,'' \emph{IEEE Transactions on Automatic Control}, vol. 39(6), pp.
+  1326--1332, Jun. 1994.
+
+\bibitem{murray97}
+R.~T. McCloskey and R.~M. Murray, ``Exponential stabilization of driftless
+  control systems using homogeneous feedback,'' \emph{IEEE Transactions on
+  Automatic Control}, vol. 42(5), pp. 614--628, May. 1997.
+
+\bibitem{ollero91}
+A.~Ollero and O.~Amidi, ``Predictive path tracking of mobile robots.
+  {A}pplication to the {CMU} {N}avlab,'' in \emph{5th IEEE International
+  Conference on Advanced Robotics}, Pisa, Italy, 1991, pp. 1081--1086.
+
+\bibitem{rico99}
+J.~E. Normey-Rico, J.~G\'{o}mez-Ortega, and E.~F. Camacho, ``A
+  {S}mith-predictor-based generalised predictive controller for mobile robot
+  path-tracking,'' \emph{Control Engineering Practice}, vol. 7(6), pp.
+  729--740, Jun. 1999.
+
+\bibitem{ortega96}
+J.~Gómez-Ortega and E.~F. Camacho, ``Mobile robot navigation in a partially
+  structured static environment using neural predictive control,''
+  \emph{Control Engineering Practice}, vol.~4, no.~12, pp. 1669--1679, Dec.
+  1996.
+
+\bibitem{yang98}
+X.~Yang, K.~He, M.~Guo, and B.~Zhang, ``An intelligent predictive control
+  approach to path tracking problem of autonomous mobile robot,'' in
+  \emph{Proceedings of the IEEE International Conference on Systems, Man, and
+  Cybernetics}, San Diego, CA, Oct. 1998.
+
+\bibitem{essen01}
+H.~V. Essen and H.~Nijmeijer, ``Non-linear model predictive control of
+  constrained mobile robots,'' in \emph{European Control Conference}, Porto,
+  Portugal, 2001, pp. 1157--1162.
+
+\bibitem{Campion:TRA-12-1}
+G.~Campion, G.~Bastin, and B.~D'Andr\'ea-Novel, ``Structural properties and
+  classification of kinematic and dynamical models of wheeled mobile robots,''
+  \emph{{IEEE} Transactions on Robotics and Automation}, vol.~12, no.~1, pp.
+  47--62, Feb. 1996.
+
+\bibitem{lages98a}
+W.~F. Lages, ``Control and estimation of the position and orientation of mobile
+  robots (in portuguese),'' Thesis ({D.Sc.}), Instituto Tecnológico de
+  Aeronáutica, São José dos Campos, Brazil, 1998.
+
+\bibitem{kuhne05}
+F.~Kühne, ``Predictive control of nonholonomic mobile robots (in portuguese),''
+  Dissertation (M.Sc.), Universidade Federal do Rio Grande do Sul, Porto
+  Alegre, Brazil, Mar. 2005.
+
+\bibitem{lages98b}
+W.~F. Lages and E.~F. Hemerly, ``Smooth time-invariant control of wheeled
+  mobile robots,'' in \emph{Proceedings of the 13rd International Congress on
+  Systems Science}, Wroc\l aw, Poland, Set. 1998.
+
+\bibitem{mayne00}
+D.~Q. Mayne, J.~B. Rawlings, C.~V. Rao, and P.~O.~M. Scokaert, ``Constrained
+  model predictive control: stability and optimality,'' \emph{Automatica}, vol.
+  36(6), pp. 789--814, Jun. 2000.
+
+\bibitem{aburto92}
+A.~Aburto, ``{FLOPS} {C} program (double precision) {V}2.0 18 dec 1992,'' Dec.
+  1992, available at \url{ftp://ftp.nosc.mil/pub/aburto/flops}. Acessed in Jan.
+  2005.
+
+\end{thebibliography}

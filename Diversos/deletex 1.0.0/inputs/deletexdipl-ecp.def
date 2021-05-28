@@ -1,0 +1,15 @@
+% deletexdipl-ecp.def - graduation project definitions
+% Copyright (C) 2004 Walter Fetter Lages <w.fetter@ieee.org>
+%
+% This file was adapted from the similar one in iiufrgs-4.2.0 package.
+%
+% This is free software, distributed under the GNU GPL; please take
+% a look in `deletex.cls' to see complete information on using, copying
+% and redistributing these files
+%
+\ProvidesFile{deletexdipl.def}[2004/11/29 v0.4.0 DeLeTeX Graduation Project in Computer Engineering]
+\newcommand{\titlepagespecificinfo}{\diplecpspecificinfo}
+\def\@approvalspecificinfo{\diplapproval}
+\def\coordname{\DELETheadname}
+\def\coord{\nominataChefeDELET}
+\course{\cgecp}

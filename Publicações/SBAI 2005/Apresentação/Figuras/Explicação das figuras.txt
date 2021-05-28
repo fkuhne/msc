@@ -1,0 +1,11 @@
+Os diretórios que são efetivamente usados nesta apresentação são o 'nmpc' e 'lmpc'.
+
+O primeiro contém figuras referentes à implementação do MPC não linear.
+traj_01,state_01,control_01,cost_01: nmpc com função de custo normal
+traj_02,state_02,control_02,cost_02: nmpc com função de custo com função terminal
+
+O diretório 'lmpc' contém figuras relativas ao MPC linear,.
+traj_14,state_14,control_14: lmpc com função de custo com função terminal (linha contínua) e nmpc com função de custo com função terminal (linha tracejada).
+
+Os outros diretórios contém várias figuras que podem ser utilizadas em outros casos...
+

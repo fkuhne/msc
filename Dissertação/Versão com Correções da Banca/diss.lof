@@ -1,0 +1,152 @@
+\select@language {brazilian}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\select@language {english}
+\addvspace {10\p@ }
+\select@language {brazilian}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {Figura\nobreakspace 1:}{\ignorespaces {\em PIG}: rob\^o utilizado para inspe\c c\~ao, limpeza e reparos em tubula\c c\~oes.}}{20}
+\contentsline {figure}{\numberline {Figura\nobreakspace 2:}{\ignorespaces O human\'oide ASIMO, desenvolvido pela Honda do Jap\~ao.}}{21}
+\contentsline {figure}{\numberline {Figura\nobreakspace 3:}{\ignorespaces Rob\^o m\'ovel dotado de rodas.}}{21}
+\contentsline {figure}{\numberline {Figura\nobreakspace 4:}{\ignorespaces O rob\^o-lagarta URBIE, subindo uma escada~\citep {matthies02}.}}{21}
+\contentsline {figure}{\numberline {Figura\nobreakspace 5:}{\ignorespaces Rob\^o dotado de pernas, capaz de se locomover em ambientes n\~ao estruturados, como por exemplo um vulc\~ao.}}{22}
+\contentsline {figure}{\numberline {Figura\nobreakspace 6:}{\ignorespaces Ilustra\c c\~ao do efeito da satura\c c\~ao dos atuadores na entrada de controle.}}{23}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {Figura\nobreakspace 7:}{\ignorespaces Exemplo cl\'assico de um sistema n\~ao holon\^omico: um disco rolando em um plano.}}{28}
+\contentsline {figure}{\numberline {Figura\nobreakspace 8:}{\ignorespaces Exemplo de trajet\'orias para um carro estacionando.}}{29}
+\contentsline {figure}{\numberline {Figura\nobreakspace 9:}{\ignorespaces Modelo geom\'etrico de um rob\^o m\'ovel com acionamento diferencial.}}{30}
+\contentsline {figure}{\numberline {Figura\nobreakspace 10:}{\ignorespaces A restri\c c\~ao n\~ao holon\^omica.}}{31}
+\contentsline {figure}{\numberline {Figura\nobreakspace 11:}{\ignorespaces Trajet\'oria no plano $XY$. Controle de~\citep {pomet92}.}}{36}
+\contentsline {figure}{\numberline {Figura\nobreakspace 12:}{\ignorespaces Estados $x$, $y$ e $\theta $. Controle de~\citep {pomet92}.}}{36}
+\contentsline {figure}{\numberline {Figura\nobreakspace 13:}{\ignorespaces Entradas de controle $v$ e $w$. Controle de~\citep {pomet92}.}}{37}
+\contentsline {figure}{\numberline {Figura\nobreakspace 14:}{\ignorespaces Trajet\'oria no plano $XY$. Controle de~\citep {samson91b}.}}{38}
+\contentsline {figure}{\numberline {Figura\nobreakspace 15:}{\ignorespaces Estados $x$, $y$ e $\theta $. Controle de~\citep {samson91b}.}}{38}
+\contentsline {figure}{\numberline {Figura\nobreakspace 16:}{\ignorespaces Entradas de controle $v$ e $w$. Controle de~\citep {samson91b}.}}{39}
+\contentsline {figure}{\numberline {Figura\nobreakspace 17:}{\ignorespaces Trajet\'oria no plano $XY$. Controle de~\citep {teel95}.}}{40}
+\contentsline {figure}{\numberline {Figura\nobreakspace 18:}{\ignorespaces Estados $x$, $y$ e $\theta $. Controle de~\citep {teel95}.}}{40}
+\contentsline {figure}{\numberline {Figura\nobreakspace 19:}{\ignorespaces Entradas de controle $v$ e $w$. Controle de~\citep {teel95}.}}{41}
+\contentsline {figure}{\numberline {Figura\nobreakspace 20:}{\ignorespaces Coordenadas polares para o rob\^o com acionamento diferencial.}}{42}
+\contentsline {figure}{\numberline {Figura\nobreakspace 21:}{\ignorespaces Trajet\'oria no plano $XY$. Controle de~\citep {lages98a}.}}{42}
+\contentsline {figure}{\numberline {Figura\nobreakspace 22:}{\ignorespaces Estados $x$, $y$ e $\theta $. Controle de~\citep {lages98a}.}}{43}
+\contentsline {figure}{\numberline {Figura\nobreakspace 23:}{\ignorespaces Entradas de controle $v$ e $w$. Controle de~\citep {lages98a}.}}{43}
+\contentsline {figure}{\numberline {Figura\nobreakspace 24:}{\ignorespaces Transforma\c c\~ao descont\IeC {\'\i }nua de coordenadas.}}{44}
+\contentsline {figure}{\numberline {Figura\nobreakspace 25:}{\ignorespaces Trajet\'oria no plano $XY$. Controle de \citep {sordalen93a}.}}{45}
+\contentsline {figure}{\numberline {Figura\nobreakspace 26:}{\ignorespaces Estados $x$, $y$ e $\theta $. Controle de \citep {sordalen93a}.}}{45}
+\contentsline {figure}{\numberline {Figura\nobreakspace 27:}{\ignorespaces Entradas de controle $v$ e $w$. Controle de \citep {sordalen93a}.}}{46}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {Figura\nobreakspace 28:}{\ignorespaces O controle preditivo.}}{54}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {Figura\nobreakspace 29:}{\ignorespaces Trajet\'oria no plano $XY$. NMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{61}
+\contentsline {figure}{\numberline {Figura\nobreakspace 30:}{\ignorespaces Estados $x$, $y$ e $\theta $. NMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{61}
+\contentsline {figure}{\numberline {Figura\nobreakspace 31:}{\ignorespaces Entradas de controle $v$ e $w$. NMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{62}
+\contentsline {figure}{\numberline {Figura\nobreakspace 32:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. NMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{62}
+\contentsline {figure}{\numberline {Figura\nobreakspace 33:}{\ignorespaces Efeito do aumento do horizonte $N$ no erro em regime permanente do estado $y$. Linha cont\IeC {\'\i }nua: $N=5$; linha tracejada: $N=10$; linha tra\c co-ponto: $N=20$; linha pontilhada: $N=50$.}}{63}
+\contentsline {figure}{\numberline {Figura\nobreakspace 34:}{\ignorespaces Trajet\'oria no plano $XY$. O ponto de equil\IeC {\'\i }brio \'e agora ${\bf x}_{ref}=[0~~0~~\pi /2]^T$.}}{63}
+\contentsline {figure}{\numberline {Figura\nobreakspace 35:}{\ignorespaces Trajet\'oria no plano $XY$. NMPC de \citep {essen01}.}}{64}
+\contentsline {figure}{\numberline {Figura\nobreakspace 36:}{\ignorespaces Estados $x$, $y$ e $\theta $. NMPC de \citep {essen01}}}{65}
+\contentsline {figure}{\numberline {Figura\nobreakspace 37:}{\ignorespaces Entradas de controle $v$ e $w$. NMPC de \citep {essen01}}}{65}
+\contentsline {figure}{\numberline {Figura\nobreakspace 38:}{\ignorespaces Detalhe da origem no plano $XY$. NMPC de \citep {essen01}}}{66}
+\contentsline {figure}{\numberline {Figura\nobreakspace 39:}{\ignorespaces Comportamento do rob\^o no plano $XY$ para v\'arias posi\c c\~oes de sa\IeC {\'\i }da e $\theta _0=0~rad$. NMPC de \citep {essen01}}}{66}
+\contentsline {figure}{\numberline {Figura\nobreakspace 40:}{\ignorespaces Detalhe da origem no plano $XY$ para v\'arias posi\c c\~oes de sa\IeC {\'\i }da e $\theta _0=0~rad$. NMPC de \citep {essen01}}}{67}
+\contentsline {figure}{\numberline {Figura\nobreakspace 41:}{\ignorespaces Coordenadas polares para o rob\^o com acionamento diferencial.}}{68}
+\contentsline {figure}{\numberline {Figura\nobreakspace 42:}{\ignorespaces Trajet\'oria no plano $XY$. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{69}
+\contentsline {figure}{\numberline {Figura\nobreakspace 43:}{\ignorespaces Estados $x$, $y$ e $\theta $. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{69}
+\contentsline {figure}{\numberline {Figura\nobreakspace 44:}{\ignorespaces Entradas de controle $v$ e $w$. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{70}
+\contentsline {figure}{\numberline {Figura\nobreakspace 45:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{70}
+\contentsline {figure}{\numberline {Figura\nobreakspace 46:}{\ignorespaces Detalhe na origem do plano $XY$. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{70}
+\contentsline {figure}{\numberline {Figura\nobreakspace 47:}{\ignorespaces Trajet\'oria no plano $XY$. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{72}
+\contentsline {figure}{\numberline {Figura\nobreakspace 48:}{\ignorespaces Estados $x$, $y$ e $\theta $. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{72}
+\contentsline {figure}{\numberline {Figura\nobreakspace 49:}{\ignorespaces Entradas de controle $v$ e $w$. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{73}
+\contentsline {figure}{\numberline {Figura\nobreakspace 50:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{73}
+\contentsline {figure}{\numberline {Figura\nobreakspace 51:}{\ignorespaces Trajet\'oria no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; linha tracejada: NMPC de~\citep {essen01}; linha tra\c co-ponto: NMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{74}
+\contentsline {figure}{\numberline {Figura\nobreakspace 52:}{\ignorespaces Estados $x$, $y$ e $\theta $. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; linha tracejada: NMPC de~\citep {essen01}; linha tra\c co-ponto: NMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{74}
+\contentsline {figure}{\numberline {Figura\nobreakspace 53:}{\ignorespaces Entradas de controle $v$ e $w$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; linha tracejada: NMPC de~\citep {essen01}; linha tra\c co-ponto: NMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{75}
+\contentsline {figure}{\numberline {Figura\nobreakspace 54:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; linha tracejada: NMPC de~\citep {essen01}; linha tra\c co-ponto: NMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{75}
+\contentsline {figure}{\numberline {Figura\nobreakspace 55:}{\ignorespaces Espa\c co de configura\c c\~ao no plano $XY$: um corredor em "L".}}{76}
+\contentsline {figure}{\numberline {Figura\nobreakspace 56:}{\ignorespaces Trajet\'oria no plano $XY$. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{78}
+\contentsline {figure}{\numberline {Figura\nobreakspace 57:}{\ignorespaces Estados $x$, $y$ e $\theta $. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{78}
+\contentsline {figure}{\numberline {Figura\nobreakspace 58:}{\ignorespaces Entradas de controle $v$ e $w$. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{79}
+\contentsline {figure}{\numberline {Figura\nobreakspace 59:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{79}
+\contentsline {figure}{\numberline {Figura\nobreakspace 60:}{\ignorespaces Trajet\'oria no plano $XY$. NMPC com fun\c c\~ao de custo em coordenadas polares. Linha cont\IeC {\'\i }nua: com restri\c c\~oes nos estados; Linha tracejada: sem restri\c c\~oes nos estados.}}{79}
+\contentsline {figure}{\numberline {Figura\nobreakspace 61:}{\ignorespaces Trajet\'oria no plano $XY$. NMPC com fun\c c\~ao de custo em coordenadas polares.}}{80}
+\contentsline {figure}{\numberline {Figura\nobreakspace 62:}{\ignorespaces Trajet\'oria no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: NMPC de~\citep {essen01}.}}{81}
+\contentsline {figure}{\numberline {Figura\nobreakspace 63:}{\ignorespaces Estados $x$, $y$ e $\theta $. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: NMPC de~\citep {essen01}.}}{81}
+\contentsline {figure}{\numberline {Figura\nobreakspace 64:}{\ignorespaces Entradas de controle $v$ e $w$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: NMPC de~\citep {essen01}.}}{82}
+\contentsline {figure}{\numberline {Figura\nobreakspace 65:}{\ignorespaces Detalhe da origem no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: NMPC de~\citep {essen01}.}}{82}
+\contentsline {figure}{\numberline {Figura\nobreakspace 66:}{\ignorespaces Trajet\'oria no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {pomet92}.}}{83}
+\contentsline {figure}{\numberline {Figura\nobreakspace 67:}{\ignorespaces Estados $x$, $y$ e $\theta $. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {pomet92}.}}{83}
+\contentsline {figure}{\numberline {Figura\nobreakspace 68:}{\ignorespaces Entradas de controle $v$ e $w$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {pomet92}.}}{84}
+\contentsline {figure}{\numberline {Figura\nobreakspace 69:}{\ignorespaces Detalhe da origem do plano $XY$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {pomet92}.}}{84}
+\contentsline {figure}{\numberline {Figura\nobreakspace 70:}{\ignorespaces Trajet\'oria no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {samson91b}.}}{85}
+\contentsline {figure}{\numberline {Figura\nobreakspace 71:}{\ignorespaces Estados $x$, $y$ e $\theta $. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {samson91b}.}}{85}
+\contentsline {figure}{\numberline {Figura\nobreakspace 72:}{\ignorespaces Entradas de controle $v$ e $w$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {samson91b}.}}{86}
+\contentsline {figure}{\numberline {Figura\nobreakspace 73:}{\ignorespaces Detalhe da origem do plano $XY$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {samson91b}.}}{86}
+\contentsline {figure}{\numberline {Figura\nobreakspace 74:}{\ignorespaces Trajet\'oria no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {teel95}.}}{87}
+\contentsline {figure}{\numberline {Figura\nobreakspace 75:}{\ignorespaces Estados $x$, $y$ e $\theta $. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {teel95}.}}{87}
+\contentsline {figure}{\numberline {Figura\nobreakspace 76:}{\ignorespaces Entradas de controle $v$ e $w$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {teel95}.}}{88}
+\contentsline {figure}{\numberline {Figura\nobreakspace 77:}{\ignorespaces Detalhe da origem do plano $XY$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {teel95}.}}{88}
+\contentsline {figure}{\numberline {Figura\nobreakspace 78:}{\ignorespaces Trajet\'oria no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {lages98b}.}}{89}
+\contentsline {figure}{\numberline {Figura\nobreakspace 79:}{\ignorespaces Estados $x$, $y$ e $\theta $. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {lages98b}.}}{89}
+\contentsline {figure}{\numberline {Figura\nobreakspace 80:}{\ignorespaces Entradas de controle $v$ e $w$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {lages98b}.}}{90}
+\contentsline {figure}{\numberline {Figura\nobreakspace 81:}{\ignorespaces Trajet\'oria no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {sordalen93a}.}}{91}
+\contentsline {figure}{\numberline {Figura\nobreakspace 82:}{\ignorespaces Estados $x$, $y$ e $\theta $. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {sordalen93a}.}}{91}
+\contentsline {figure}{\numberline {Figura\nobreakspace 83:}{\ignorespaces Entradas de controle $v$ e $w$. Linha cont\IeC {\'\i }nua: NMPC com fun\c c\~ao de custo em coordenadas polares; Linha tracejada: controle de~\citep {sordalen93a}.}}{92}
+\contentsline {figure}{\numberline {Figura\nobreakspace 84:}{\ignorespaces Trajet\'oria no plano $XY$. NMPC com fun\c c\~ao de custo em coordenadas polares. Linha cont\IeC {\'\i }nua: $N=5$; linha tracejada: $N=12$.}}{95}
+\contentsline {figure}{\numberline {Figura\nobreakspace 85:}{\ignorespaces Estados $x$, $y$ e $\theta $. NMPC com fun\c c\~ao de custo em coordenadas polares. Linha cont\IeC {\'\i }nua: $N=5$; linha tracejada: $N=12$.}}{95}
+\contentsline {figure}{\numberline {Figura\nobreakspace 86:}{\ignorespaces Entradas de controle $v$ e $w$. NMPC com fun\c c\~ao de custo em coordenadas polares. Linha cont\IeC {\'\i }nua: $N=5$; linha tracejada: $N=12$.}}{96}
+\contentsline {figure}{\numberline {Figura\nobreakspace 87:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. NMPC com fun\c c\~ao de custo em coordenadas polares. Linha cont\IeC {\'\i }nua: $N=5$; linha tracejada: $N=12$.}}{96}
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {Figura\nobreakspace 88:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$ para uma refer\^encia circular (linha tra\c co-ponto). NMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{99}
+\contentsline {figure}{\numberline {Figura\nobreakspace 89:}{\ignorespaces Estados $x$, $y$ e $\theta $. NMPC com fun\c c\~ao de custo em coordenadas cartesianas. A linha tra\c co-ponto representa o estado de refer\^encia.}}{99}
+\contentsline {figure}{\numberline {Figura\nobreakspace 90:}{\ignorespaces Entradas de controle $v$ e $w$. NMPC com fun\c c\~ao de custo em coordenadas cartesianas. A linha tra\c co-ponto representa a entrada de refer\^encia.}}{100}
+\contentsline {figure}{\numberline {Figura\nobreakspace 91:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. NMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{100}
+\contentsline {figure}{\numberline {Figura\nobreakspace 92:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$ para uma refer\^encia em U (linha tra\c co-ponto). NMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{101}
+\contentsline {figure}{\numberline {Figura\nobreakspace 93:}{\ignorespaces Estados $x$, $y$ e $\theta $. NMPC com fun\c c\~ao de custo em coordenadas cartesianas. A linha tra\c co-ponto representa o estado de refer\^encia.}}{101}
+\contentsline {figure}{\numberline {Figura\nobreakspace 94:}{\ignorespaces Entradas de controle $v$ e $w$. NMPC com fun\c c\~ao de custo em coordenadas cartesianas. A linha tra\c co-ponto representa a entrada de refer\^encia.}}{102}
+\contentsline {figure}{\numberline {Figura\nobreakspace 95:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. NMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{102}
+\contentsline {figure}{\numberline {Figura\nobreakspace 96:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$ para uma refer\^encia circular (linha tra\c co-ponto). NMPC de~\citep {essen01}.}}{103}
+\contentsline {figure}{\numberline {Figura\nobreakspace 97:}{\ignorespaces Estados $x$, $y$ e $\theta $. NMPC de~\citep {essen01}. A linha tra\c co-ponto representa o estado de refer\^encia.}}{103}
+\contentsline {figure}{\numberline {Figura\nobreakspace 98:}{\ignorespaces Entradas de controle $v$ e $w$. NMPC de~\citep {essen01}. A linha tra\c co-ponto representa a entrada de refer\^encia.}}{104}
+\contentsline {figure}{\numberline {Figura\nobreakspace 99:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. NMPC de~\citep {essen01}.}}{104}
+\contentsline {figure}{\numberline {Figura\nobreakspace 100:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$ para uma refer\^encia em U (linha tra\c co-ponto).}}{105}
+\contentsline {figure}{\numberline {Figura\nobreakspace 101:}{\ignorespaces Estados $x$, $y$ e $\theta $. NMPC de~\citep {essen01}. A linha tra\c co-ponto representa o estado de refer\^encia.}}{105}
+\contentsline {figure}{\numberline {Figura\nobreakspace 102:}{\ignorespaces Entradas de controle $v$ e $w$. NMPC de~\citep {essen01}. A linha tra\c co-ponto representa a entrada de refer\^encia.}}{106}
+\contentsline {figure}{\numberline {Figura\nobreakspace 103:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. NMPC de~\citep {essen01}.}}{106}
+\contentsline {figure}{\numberline {Figura\nobreakspace 104:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC de \citep {essen01}; linha tracejada: NMPC com fun\c c\~ao de custo original; linha tra\c co-ponto: trajet\'oria de refer\^encia.}}{107}
+\contentsline {figure}{\numberline {Figura\nobreakspace 105:}{\ignorespaces Estados $x$, $y$ e $\theta $. Linha cont\IeC {\'\i }nua: NMPC de \citep {essen01}; linha tracejada: NMPC com fun\c c\~ao de custo original; linha tra\c co-ponto: trajet\'oria de refer\^encia.}}{107}
+\contentsline {figure}{\numberline {Figura\nobreakspace 106:}{\ignorespaces Entradas de controle $v$ e $w$. Linha cont\IeC {\'\i }nua: NMPC de \citep {essen01}; linha tracejada: NMPC com fun\c c\~ao de custo original; linha tra\c co-ponto: trajet\'oria de refer\^encia.}}{108}
+\contentsline {figure}{\numberline {Figura\nobreakspace 107:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. Linha cont\IeC {\'\i }nua: NMPC de \citep {essen01}; linha tracejada: NMPC com fun\c c\~ao de custo original.}}{108}
+\contentsline {figure}{\numberline {Figura\nobreakspace 108:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. Linha cont\IeC {\'\i }nua: NMPC de \citep {essen01} com $N=5$; linha tracejada: NMPC com fun\c c\~ao de custo original e $N=20$.}}{109}
+\contentsline {figure}{\numberline {Figura\nobreakspace 109:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC de \citep {essen01} com $N=5$; linha tracejada: NMPC de \citep {essen01} com $N=15$; linha tra\c co-ponto: trajet\'oria de refer\^encia.}}{110}
+\contentsline {figure}{\numberline {Figura\nobreakspace 110:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$ para uma refer\^encia circular (linha tra\c co-ponto). LMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{115}
+\contentsline {figure}{\numberline {Figura\nobreakspace 111:}{\ignorespaces Estados $x$, $y$ e $\theta $. LMPC com fun\c c\~ao de custo em coordenadas cartesianas. A linha tra\c co-ponto representa o estado de refer\^encia.}}{115}
+\contentsline {figure}{\numberline {Figura\nobreakspace 112:}{\ignorespaces Entradas de controle $v$ e $w$. LMPC com fun\c c\~ao de custo em coordenadas cartesianas. A linha tra\c co-ponto representa a entrada de refer\^encia.}}{116}
+\contentsline {figure}{\numberline {Figura\nobreakspace 113:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. LMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{116}
+\contentsline {figure}{\numberline {Figura\nobreakspace 114:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$ para uma refer\^encia em forma de U (linha tra\c co-ponto). LMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{117}
+\contentsline {figure}{\numberline {Figura\nobreakspace 115:}{\ignorespaces Estados $x$, $y$ e $\theta $. LMPC com fun\c c\~ao de custo em coordenadas cartesianas. A linha tra\c co-ponto representa o estado de refer\^encia.}}{117}
+\contentsline {figure}{\numberline {Figura\nobreakspace 116:}{\ignorespaces Entradas de controle $v$ e $w$. LMPC com fun\c c\~ao de custo em coordenadas cartesianas. A linha tra\c co-ponto representa a entrada de refer\^encia.}}{118}
+\contentsline {figure}{\numberline {Figura\nobreakspace 117:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. LMPC com fun\c c\~ao de custo em coordenadas cartesianas.}}{118}
+\contentsline {figure}{\numberline {Figura\nobreakspace 118:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$ para uma refer\^encia circular (linha tra\c co-ponto). LMPC de~\citep {essen01}.}}{119}
+\contentsline {figure}{\numberline {Figura\nobreakspace 119:}{\ignorespaces Estados $x$, $y$ e $\theta $. LMPC de~\citep {essen01}. A linha tra\c co-ponto representa o estado de refer\^encia.}}{120}
+\contentsline {figure}{\numberline {Figura\nobreakspace 120:}{\ignorespaces Entradas de controle $v$ e $w$. LMPC de~\citep {essen01}. A linha tra\c co-ponto representa a entrada de refer\^encia.}}{120}
+\contentsline {figure}{\numberline {Figura\nobreakspace 121:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. LMPC de~\citep {essen01}.}}{120}
+\contentsline {figure}{\numberline {Figura\nobreakspace 122:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$ para uma refer\^encia em forma de U (linha tra\c co-ponto). LMPC de~\citep {essen01}.}}{121}
+\contentsline {figure}{\numberline {Figura\nobreakspace 123:}{\ignorespaces Estados $x$, $y$ e $\theta $. LMPC de~\citep {essen01}. A linha tra\c co-ponto representa o estado de refer\^encia.}}{121}
+\contentsline {figure}{\numberline {Figura\nobreakspace 124:}{\ignorespaces Entradas de controle $v$ e $w$. LMPC de~\citep {essen01}. A linha tra\c co-ponto representa a entrada de refer\^encia.}}{122}
+\contentsline {figure}{\numberline {Figura\nobreakspace 125:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. LMPC de~\citep {essen01}.}}{122}
+\contentsline {figure}{\numberline {Figura\nobreakspace 126:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$. Linha cont\IeC {\'\i }nua: LMPC de \citep {essen01}; linha tracejada: LMPC com fun\c c\~ao de custo original; linha tra\c co-ponto: trajet\'oria de refer\^encia.}}{123}
+\contentsline {figure}{\numberline {Figura\nobreakspace 127:}{\ignorespaces Estados $x$, $y$ e $\theta $. Linha cont\IeC {\'\i }nua: LMPC de \citep {essen01}; linha tracejada: LMPC com fun\c c\~ao de custo original; linha tra\c co-ponto: trajet\'oria de refer\^encia.}}{123}
+\contentsline {figure}{\numberline {Figura\nobreakspace 128:}{\ignorespaces Entradas de controle $v$ e $w$. Linha cont\IeC {\'\i }nua: LMPC de \citep {essen01}; linha tracejada: LMPC com fun\c c\~ao de custo original; linha tra\c co-ponto: trajet\'oria de refer\^encia.}}{124}
+\contentsline {figure}{\numberline {Figura\nobreakspace 129:}{\ignorespaces Fun\c c\~ao de custo $\Phi $. Linha cont\IeC {\'\i }nua: LMPC de \citep {essen01}; linha tracejada: LMPC com fun\c c\~ao de custo original.}}{124}
+\contentsline {figure}{\numberline {Figura\nobreakspace 130:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC; linha tracejada: LMPC; linha tra\c co-ponto: trajet\'oria de refer\^encia.}}{126}
+\contentsline {figure}{\numberline {Figura\nobreakspace 131:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC; linha tracejada: LMPC; linha tra\c co-ponto: trajet\'oria de refer\^encia.}}{126}
+\contentsline {figure}{\numberline {Figura\nobreakspace 132:}{\ignorespaces Trajet\'oria do rob\^o no plano $XY$. Linha cont\IeC {\'\i }nua: NMPC; linha tracejada: LMPC; linha tra\c co-ponto: trajet\'oria de refer\^encia.}}{127}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }

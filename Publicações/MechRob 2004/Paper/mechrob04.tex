@@ -1,0 +1,30 @@
+\documentclass[11pt, a4paper]{article, IEEEtran}
+\pagestyle{empty}
+
+% Define área da folha
+\setlength{\vsize}{297mm} \setlength{\hsize}{210mm}
+\setlength{\textheight}{240mm} \setlength{\textwidth}{165mm}
+\voffset -10mm \hoffset -20mm
+
+%---------------------------------------------------------------
+% INÍCIO DO DOCUMENTO:
+\begin{document}
+
+{\bf MODEL PREDICTIVE CONTROL OF A MOBILE ROBOT USING A SUCCESSIVE-LINEARIZATION APPROACH}
+
+\begin{abstract}
+This paper presents an optimal control scheme for trajectory tracking of a wheeled mobile robot (WMR) with nonholonomic constraints. It is well known that a WMR with nonholonomic constraints cannot be stabilized through continuous or smooth time-invariant control laws. Using Model Predictive Control (MPC), a discontinuous control law is naturally obtained. By successive linearization of the kinematic model of the WMR, it is possible to use a linear MPC approach, which is feasible in terms of real-time implementation. Simulation results are shown.
+\end{abstract}
+
+The field of mobile robot control has been the focus of great research effort in the past decades. The existence of nonholonomic (or non-integrable) constraints in a wheeled mobile robot (WMR) turns the design of stabilizing control laws for that system a real challenge. Due to Brocket's conditions (REFERENCES), a continuous or smooth time-invariant  stabilizing control law cannot be obtained. Most works in that sense shows discontinuous (non-smooth) control laws (REFERENCES) and time-variant control laws (REFERENCES).
+
+However, none of the cited authors has taken into account constraints due input or state limitations. This can be done in a direct way when using a MPC scheme. for a WMR, this is an important advantage, becouse the position of the robot can be restricted to belong to a secure region, like in a corridor, for example. With input limitations, the control action can be restricted to prevent actuators' saturations.
+
+MPC is a control strategy that uses the model of the system being controlled to obtain an optimal control sequence by minimizing an objective function. Implemented in discrete-time, at each sample interval, the model provides a prediction of process outputs over a prediction horizon $N$. Based on this, an objective function $J$ is optimised with respect to the future control inputs of the system. Although prediction and optimisation are computed over a future horizon, only the values of the inputs for the next sample interval are used and the same procedure is repeated at the next sample instant. This mechanism is known as {\it moving} or {\it receding horizon} strategy.
+
+Bla bla bla...
+
+\section{WMR Kinematic Model}
+
+
+\end{document}

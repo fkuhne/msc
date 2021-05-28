@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0073)http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori4b.html -->
+<HTML><HEAD><TITLE>Quasi-Newton Methods :: Standard Algorithms (Optimization Toolbox)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!-- $Revision$  $Date$ --><!-- DOCNAME: Optimization Toolbox --><!-- CHUNKNAME: Quasi-Newton Methods --><!-- CHAPNAME: Standard Algorithms --><!-- HEADSTUFF --><LINK 
+href="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/docset.css" 
+type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2900.2627" name=GENERATOR></HEAD>
+<BODY class=support bgColor=#ffffff>
+<SCRIPT language=Javascript>
+if (parent.frames.length<2) document.write('<p><a href="../../helpdesk.html" target=_top><b>Documentation</b></a> <img src="../../arrowr.gif"> <a HREF="optim.html"><b>Optimization Toolbox</b></a></p>');
+</SCRIPT>
+<!-- NAVBARTOP -->
+<TABLE class=support cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=baseline bgColor=#e7ebf7><B>Optimization Toolbox</B></TD>
+    <TD vAlign=baseline align=right bgColor=#e7ebf7><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori3b.html"><IMG 
+      alt="Previous page" 
+      src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      border=0></A>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori5b.html"><IMG 
+      alt="Next Page" 
+      src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      border=0></A></TD></TR></TBODY></TABLE><A name=quasi-newton_methods></A><!-- H2 --><A name=137></A>
+<P><FONT class=Head3 size=+1><B>Quasi-Newton Methods</B></FONT><BR class=hdr>
+<P><A name=13504></A>Of the methods that use gradient information, the most 
+favored are the quasi-Newton methods. These methods build up curvature 
+information at each iteration to formulate a quadratic model problem of the 
+form</P>
+<P><A name=13505></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG alt="" 
+      src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/tutor28b.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-3)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=13577></A>where the Hessian matrix,<EM> H</EM>, is a positive 
+definite symmetric matrix,<STRONG> </STRONG><EM>c</EM> is a constant vector, and 
+<EM>b</EM> is a constant. The optimal solution for this problem occurs when the 
+partial derivatives of <EM>x</EM> go to zero, i.e.,</P>
+<P><A name=13581></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="gradient f( x *) = H times x * + c = 0" 
+      src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/tutor332.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-4)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=14955></A>The optimal solution point, <IMG alt="x *" 
+src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/tuto131a.gif" 
+align=bottom>, can be written as</P>
+<P><A name=14959></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="x * = minus the negative inverse of H times c" 
+      src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/tutor251.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-5)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=14960></A>Newton-type methods (as opposed to quasi-Newton methods) 
+calculate <EM>H</EM> directly and proceed in a direction of descent to locate 
+the minimum after a number of iterations. Calculating <EM>H</EM><STRONG> 
+</STRONG>numerically involves a large amount of computation. Quasi-Newton 
+methods avoid this by using the observed behavior of <EM>f(x)</EM> and <IMG 
+alt="gradient of f(x)" 
+src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/tutor146.gif" 
+align=bottom> to build up curvature information to make an approximation to 
+<EM>H</EM> using an appropriate updating technique.</P>
+<P><A name=144></A>A large number of Hessian updating methods have been 
+developed. However, the formula of Broyden&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33206">[3]</A>, 
+Fletcher&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33275">[14]</A>, 
+Goldfarb&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33324">[22]</A>, 
+and Shanno&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#27502">[39]</A> 
+(BFGS) is thought to be the most effective for use in a General Purpose 
+method.</P>
+<P><A name=15466></A>The formula given by BFGS is</P>
+<P><A name=5349></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp; <IMG alt="BFGS formula" 
+      src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/tutor26b.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-6)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=29985></A>where</P>
+<P>
+<UL class=continued><A name=40081></A>
+  <LI class=continued><IMG 
+  alt="definition of s ub k and q sub k in the BFGS formula" 
+  src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/tutor258.gif" 
+  align=bottom> </LI></UL>
+<P><A name=29984></A>As a starting point, <IMG alt="H sub 0" 
+src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/tuto120a.gif" 
+align=bottom>can be set to any symmetric positive definite matrix, for example, 
+the identity matrix <EM>I</EM>. To avoid the inversion of the Hessian 
+<EM>H</EM>, you can derive an updating method that avoids the direct inversion 
+of <EM>H</EM> by using a formula that makes an approximation of the inverse 
+Hessian <IMG alt="H to the negative 1" 
+src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/tuto134a.gif" 
+align=bottom> at each update. A well known procedure is the DFP formula of 
+Davidon&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33240">[9]</A>, 
+Fletcher, and Powell&nbsp;<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#33268">[16]</A>. 
+This uses the same formula as the BFGS method (<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori4b.html#5349">Eq.&nbsp;3-6</A>) 
+except that <IMG alt="q sub k" 
+src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/tuto127a.gif" 
+align=bottom>is substituted for <IMG alt="s sub k" 
+src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/tuto113a.gif" 
+align=bottom>.</P>
+<P><A name=2751></A>The gradient information is either supplied through 
+analytically calculated gradients, or derived by partial derivatives using a 
+numerical differentiation method via finite differences. This involves 
+perturbing each of the design variables, <EM>x</EM>, in turn and calculating the 
+rate of change in the objective function. </P>
+<P><A name=2758></A>At each major iteration, <EM>k</EM>, a line search is 
+performed in the direction</P>
+<P><A name=2767></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="d = negative  inverse of H sub k times gradient of f (x sub k)" 
+      src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/tutor368.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-7)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=2779></A>The quasi-Newton method is illustrated by the solution path 
+on Rosenbrock's function (<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori3b.html#2741">Eq.&nbsp;3-2</A>) 
+in <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori4b.html#26299">Figure&nbsp;3-2, 
+BFGS Method on Rosenbrock's Function</A>. The method is able to follow the shape 
+of the valley and converges to the minimum after 140 function evaluations using 
+only finite difference gradients.</P>
+<P><A name=41938></A><IMG alt="plot of BFGS method on Rosenbrock\xd5 s function" 
+src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/optim2.gif" 
+align=bottom> </P>
+<P><A name=26299></A><B>Figure 3-2: BFGS Method on Rosenbrock's Function 
+</B></P>
+<P><BR>
+<P>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#e7ebf7 border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD align=left width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori3b.html"><IMG 
+      alt="Previous page" 
+      src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      align=bottom border=0></A>&nbsp;</TD>
+    <TD align=left>&nbsp;Unconstrained Optimization</TD>
+    <TD>&nbsp;</TD>
+    <TD align=right>Line Search&nbsp;</TD>
+    <TD align=right width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori5b.html"><IMG 
+      alt="Next page" 
+      src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      align=bottom border=0></A></TD></TR></TBODY></TABLE><BR><!-- Copyright 2005 The MathWorks, Inc. --><!-- Last updated: Thu Jan 13 23:15:24 2005 --><!-- SiteCatalyst code version: G.7.
+Copyright 1997-2004 Omniture, Inc. More info available at
+http://www.omniture.com -->
+<SCRIPT language=JavaScript type=text/javascript><!--
+/* You may give each page an identifying name, server, and channel on
+the next lines. */
+var s_pageName=document.title
+var s_server=""
+var s_channel=""
+var s_pageType=""
+var s_prop1=""
+var s_prop2=""
+var s_prop3=""
+var s_prop4=""
+var s_prop5=""
+/* E-commerce Variables */
+var s_campaign=""
+var s_state=""
+var s_zip=""
+var s_events=""
+var s_products=""
+var s_purchaseID=""
+var s_eVar1=""
+var s_eVar2=""
+var s_eVar3=""
+var s_eVar4=""
+var s_eVar5=""
+//--></SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Quasi-Newton Methods  Standard Algorithms (Optimization Toolbox)_files/s_code_remote.js" 
+type=text/javascript></SCRIPT>
+<!-- End SiteCatalyst code version: G.7. -->
+<TABLE style="BORDER-TOP: #ed8000 2px solid; BACKGROUND-COLOR: #ffffff" 
+cellSpacing=0 cellPadding=3 width="100%" align=center summary=layout border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>&nbsp;© 1994-2005 The MathWorks, Inc. &nbsp;&nbsp;&nbsp; 
+      -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/trademarks.html" 
+      target=_parent>Trademarks</A>&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/" 
+      target=_parent>Privacy Policy</A> </TD></TR></TBODY></TABLE></P></BODY></HTML>

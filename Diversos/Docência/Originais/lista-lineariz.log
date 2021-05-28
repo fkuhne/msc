@@ -1,0 +1,159 @@
+This is pdfTeX, Version 3.14159-13d (Web2C 7.3.1) (format=pdflatex 2001.5.15)  15 MAY 2003 15:26
+**lista-lineariz
+(lista-lineariz.tex[/var/lib/texmf/pdftex/config/pdftex.cfg]
+LaTeX2e <2000/06/01>
+Babel <v3.7h> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+(/usr/share/texmf/tex/latex/base/article.cls
+Document Class: article 2000/05/19 v1.4b Standard LaTeX document class
+(/usr/share/texmf/tex/latex/base/size10.clo
+File: size10.clo 2000/05/19 v1.4b Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texmf/tex/generic/babel/babel.sty
+Package: babel 2001/03/01 v3.7h The Babel package
+
+(/usr/share/texmf/tex/generic/babel/portuges.ldf
+Language: portuges 2001/02/16 v1.2o Portuguese support from the babel system
+
+(/usr/share/texmf/tex/generic/babel/babel.def
+File: babel.def 2001/03/01 v3.7h Babel common definitions
+\babel@savecnt=\count87
+\U@D=\dimen103
+)
+
+Package babel Warning: No hyphenation patterns were loaded for
+(babel)                the language `Portuguese'
+(babel)                I will use the patterns loaded for \language=0 instead.
+
+\l@portuges = a dialect from \language0
+Package babel Info: Making " an active character on input line 126.
+) (/usr/share/texmf/tex/generic/babel/portuges.ldf
+Language: portuges 2001/02/16 v1.2o Portuguese support from the babel system
+\l@brazil = a dialect from \language\l@portuges 
+))
+(/usr/share/texmf/tex/latex/misc/isolatin1.sty
+ISO-latin-1 input coding, version 1.0pf of 30-Mar-1995.)
+(/usr/share/texmf/tex/latex/misc/a4wide.sty
+Package: a4wide 1994/08/30
+
+(/usr/share/texmf/tex/latex/ntgclass/a4.sty
+Package: a4 1999/03/03 v1.2f A4 based page layout
+))
+(/usr/share/texmf/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 1999/02/16 v1.0l Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/share/texmf/tex/latex/config/graphics.cfg)
+Package graphics Info: Driver file: pdftex.def on input line 80.
+
+(/usr/share/texmf/tex/latex/graphics/pdftex.def
+File: pdftex.def 2000/06/16 v0.03a graphics/color for pdftex
+\Gread@gobject=\count88
+))
+\Gin@req@height=\dimen104
+\Gin@req@width=\dimen105
+)
+(/usr/share/texmf/tex/latex/misc/psfrag.sty
+Package: psfrag 1998/04/11 v3.04 PSfrag (MCG)
+\pfg@pcount=\count89
+\pfg@scount=\count90
+\pfg@temp=\write3
+)
+(/usr/share/texmf/tex/latex/misc/float.sty
+Package: float 1999/05/29 v1.2d Float enhancements (AL)
+\c@float@type=\count91
+\float@box=\box26
+\@floatcapt=\box27
+)
+(/usr/share/texmf/tex/latex/misc/subfigure.sty
+Package: subfigure 1995/03/06 v2.0 subfigure package
+
+Package: subfigure 1995/03/06 v2.0
+\c@subfigure=\count92
+\c@lofdepth=\count93
+\c@subtable=\count94
+\c@lotdepth=\count95
+) (/usr/share/texmf/tex/latex/misc/floatflt.sty
+Package: floatflt 1997/07/16 v. 1.31
+\c@OptionTest=\count96
+\figbox=\box28
+\tabbox=\box29
+\pagebox=\box30
+\ffigcount=\count97
+\ftabcount=\count98
+\fftest=\count99
+\hangcount=\count100
+\nosuccesstryfig=\count101
+\nosuccesstrytab=\count102
+\figgutter=\dimen106
+\tabgutter=\dimen107
+\htdone=\dimen108
+\pageht=\dimen109
+\startpageht=\dimen110
+\tabbredd=\dimen111
+\floatfltwidth=\dimen112
+\fltitemwidth=\dimen113
+\outputpretest=\toks15
+) (lista-lineariz.aux)
+\openout1 = `lista-lineariz.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 19.
+LaTeX Font Info:    ... okay on input line 19.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 33.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 33.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 63.
+
+(/usr/share/texmf/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 63.
+ [1
+Non-PDF special ignored![/var/lib/texmf/dvips/config/pdftex.map]
+
+]
+(lista-lineariz.aux) ) 
+Here is how much of TeX's memory you used:
+ 1191 strings out of 25620
+ 13660 string characters out of 193431
+ 66462 words of memory out of 384000
+ 4199 multiletter control sequences out of 10000+15000
+ 4906 words of font info for 18 fonts, out of 400000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 25i,6n,24p,205b,207s stack positions out of 300i,100n,500p,50000b,4000s
+<cmbx12.pfb><cmsy10.pfb><cmr7.pfb><cmmi7.pfb><cmmi10.pfb>
+<cmbx10.pfb><cmr10.pfb><cmsl10.pfb>
+Output written on lista-lineariz.pdf (1 page, 60704 bytes).

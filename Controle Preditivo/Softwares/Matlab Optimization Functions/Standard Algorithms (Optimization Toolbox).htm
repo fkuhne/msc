@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0073)http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutoriaa.html -->
+<HTML><HEAD><TITLE>Standard Algorithms (Optimization Toolbox)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!-- $Revision$  $Date$ --><!-- DOCNAME: Optimization Toolbox --><!-- CHUNKNAME: Standard Algorithms --><!-- CHAPNAME: Standard Algorithms --><!-- HEADSTUFF --><LINK 
+href="Standard Algorithms (Optimization Toolbox)_files/docset.css" type=text/css 
+rel=stylesheet>
+<META content="MSHTML 6.00.2900.2627" name=GENERATOR></HEAD>
+<BODY class=support bgColor=#ffffff>
+<SCRIPT language=Javascript>
+if (parent.frames.length<2) document.write('<p><a href="../../helpdesk.html" target=_top><b>Documentation</b></a> <img src="../../arrowr.gif"> <a HREF="optim.html"><b>Optimization Toolbox</b></a></p>');
+</SCRIPT>
+<!-- NAVBARTOP -->
+<TABLE class=support cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=baseline bgColor=#e7ebf7><B>Optimization Toolbox</B></TD>
+    <TD vAlign=baseline align=right bgColor=#e7ebf7><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori44.html"><IMG 
+      alt="Previous page" 
+      src="Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      border=0></A>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori2b.html"><IMG 
+      alt="Next Page" 
+      src="Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      border=0></A></TD></TR></TBODY></TABLE><A name=standard_algorithms></A><A 
+name=10204></A>
+<H1>Standard <A name=optim_medium_scale></A>Algorithms</H1>
+<HR>
+<A name=49892></A>Standard Algorithms provides an introduction to the different 
+optimization problem formulations, and describes the <EM>medium-scale</EM> 
+(i.e., standard) algorithms used in the toolbox functions. These algorithms have 
+been chosen for their robustness and iterative efficiency. The choice of problem 
+formulation (e.g., unconstrained, least-squares, constrained, minimax, 
+multiobjective, or goal attainment) depends on the problem being considered and 
+the required execution efficiency.<BR><A name=49651></A>This chapter consists of 
+these sections:
+<TABLE cellPadding=5 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD class=topiclist vAlign=top width=300><A name=49654></A><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori2b.html#33771">Optimization 
+      Overview</A><BR></TD>
+    <TD vAlign=top width=600><A name=49921></A>Introduces optimization as a 
+      way of finding a set of parameters that can in some way be defined as 
+      optimal. These parameters are obtained by minimizing or maximizing an 
+      objective function, subject to equality or inequality constraints and/or 
+      parameter bounds.<BR></TD>
+  <TR>
+    <TD class=topiclist vAlign=top width=300><A name=49658></A><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori3b.html#130">Unconstrained 
+      Optimization</A><BR></TD>
+    <TD vAlign=top width=600><A name=49940></A>Discusses the use of 
+      quasi-Newton and line search methods for unconstrained optimization. 
+    <BR></TD>
+  <TR>
+    <TD class=topiclist vAlign=top width=300><A name=59053></A><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori6b.html#166">Quasi-Newton 
+      Implementation</A><BR></TD>
+    <TD vAlign=top width=600><A name=59055></A>Provides implementation details 
+      for the Hessian update and line search phases of the quasi-Newton 
+      algorithm.<BR></TD>
+  <TR>
+    <TD class=topiclist vAlign=top width=300><A name=49662></A><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori9b.html#189">Least-Squares 
+      Optimization</A><BR></TD>
+    <TD vAlign=top width=600><A name=49967></A>Discusses the use of the 
+      Gauss-Newton and Levenberg-Marquardt methods for nonlinear least-squares 
+      (LS) optimization. Also provides implementation details for the 
+      Gauss-Newton and Levenberg-Marquardt methods used in the nonlinear 
+      least-squares optimization routines, <CODE>lsqnonlin</CODE> and 
+      <CODE>lsqcurvefit</CODE>.<BR></TD>
+  <TR>
+    <TD class=topiclist vAlign=top width=300><A name=49666></A><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor13b.html#45514">Nonlinear 
+      Systems of Equations</A><BR></TD>
+    <TD vAlign=top width=600>
+      <P><A name=49986></A>Discusses the use of Gauss-Newton, Newton's, and 
+      trust-region dogleg methods for the solution of nonlinear systems of 
+      equations. Also provides implementation details for the Gauss-Newton and 
+      trust-region dogleg methods used by the <CODE>fsolve</CODE> function.</P>
+      <P></P></TD>
+  <TR>
+    <TD class=topiclist vAlign=top width=300><A name=49873></A><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor15b.html#51152">Constrained 
+      Optimization</A><BR></TD>
+    <TD vAlign=top width=600>
+      <P><A name=50085></A>Discusses the use of the Kuhn-Tucker (KT) equations 
+      as the basis for sequential quadratic programming (SQP) methods. Provides 
+      implementation details for the Hessian matrix update, quadratic 
+      programming problem solution, and line search and merit function 
+      calculation phases of the SQP algorithm used in <CODE>fmincon</CODE>, 
+      <CODE>fminimax</CODE>, <CODE>fgoalattain</CODE>, and <CODE>fseminf</CODE>. 
+      Explains the simplex algorithm, which is an optional algorithm for 
+      <CODE>linprog</CODE>.</P>
+      <P></P></TD>
+  <TR>
+    <TD class=topiclist vAlign=top width=300><A name=49869></A><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor20b.html#27003">Multiobjective 
+      Optimization</A><BR></TD>
+    <TD vAlign=top width=600>
+      <P><A name=50216></A>Introduces multiobjective optimization and discusses 
+      strategies for dealing with competing objectives. It discusses in detail 
+      the use of the goal attainment method, and suggests improvements to the 
+      SQP method for use with the goal attainment method.</P>
+      <P></P></TD>
+  <TR>
+    <TD class=topiclist vAlign=top width=300><A name=49670></A><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor24d.html#27496">Selected 
+      Bibliography</A><BR></TD>
+    <TD vAlign=top width=600>
+      <P><A name=50258></A>Lists published materials that support concepts 
+      implemented in the medium-scale algorithms.</P>
+      <P></P></TD></TR></TBODY></TABLE><BR>
+<UL>
+  <TABLE cellSpacing=0 cellPadding=5 border=1>
+    <TBODY>
+    <TR width="90%">
+      <TD bgColor=#e7ebf7><A name=34749></A><B>Note </B>&nbsp;&nbsp; 
+        Medium-scale is not a standard term and is used here only to 
+        differentiate these algorithms from the large-scale algorithms described 
+        in <A 
+        href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutoriab.html#7867">Large-Scale 
+        Algorithms</A>. </TD></TR></TBODY></TABLE></UL>
+<P><BR>
+<P>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#e7ebf7 border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD align=left width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori44.html"><IMG 
+      alt="Previous page" 
+      src="Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      align=bottom border=0></A>&nbsp;</TD>
+    <TD align=left>&nbsp;Selected Bibliography</TD>
+    <TD>&nbsp;</TD>
+    <TD align=right>Optimization Overview&nbsp;</TD>
+    <TD align=right width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori2b.html"><IMG 
+      alt="Next page" 
+      src="Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      align=bottom border=0></A></TD></TR></TBODY></TABLE><BR><!-- Copyright 2005 The MathWorks, Inc. --><!-- Last updated: Thu Jan 13 23:15:24 2005 --><!-- SiteCatalyst code version: G.7.
+Copyright 1997-2004 Omniture, Inc. More info available at
+http://www.omniture.com -->
+<SCRIPT language=JavaScript type=text/javascript><!--
+/* You may give each page an identifying name, server, and channel on
+the next lines. */
+var s_pageName=document.title
+var s_server=""
+var s_channel=""
+var s_pageType=""
+var s_prop1=""
+var s_prop2=""
+var s_prop3=""
+var s_prop4=""
+var s_prop5=""
+/* E-commerce Variables */
+var s_campaign=""
+var s_state=""
+var s_zip=""
+var s_events=""
+var s_products=""
+var s_purchaseID=""
+var s_eVar1=""
+var s_eVar2=""
+var s_eVar3=""
+var s_eVar4=""
+var s_eVar5=""
+//--></SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Standard Algorithms (Optimization Toolbox)_files/s_code_remote.js" 
+type=text/javascript></SCRIPT>
+<!-- End SiteCatalyst code version: G.7. -->
+<TABLE style="BORDER-TOP: #ed8000 2px solid; BACKGROUND-COLOR: #ffffff" 
+cellSpacing=0 cellPadding=3 width="100%" align=center summary=layout border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>&nbsp;© 1994-2005 The MathWorks, Inc. &nbsp;&nbsp;&nbsp; 
+      -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/trademarks.html" 
+      target=_parent>Trademarks</A>&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/" 
+      target=_parent>Privacy Policy</A> </TD></TR></TBODY></TABLE></P></BODY></HTML>

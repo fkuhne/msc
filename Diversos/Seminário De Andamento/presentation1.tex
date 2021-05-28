@@ -1,0 +1,337 @@
+\documentclass[pdf,final,total,deletex]{prosper}
+\usepackage{amssymb,amsmath,graphicx,float,array,pifont,subfigure,wrapfig}
+
+\slideCaption{SIDE2004 - \DeLeTeX}
+\DefaultTransition{Replace}
+
+\newcommand\real{\mathbb{R}}
+\newcommand\cd{\ding{52}}
+
+%\newenvironment{mitemize}{\renewcommand{\labelitemi}{\bullet}\begin{itemize}}{\end{itemize}}
+
+\title{CONTROLE PREDITIVO DE \\ ROBÔS MÓVEIS NÃO HOLONÔMICOS}
+\author{Felipe Kühne \\ {\small {\tt kuhne@eletro.ufrgs.br}} \\ Prof. Dr. João Manoel Gomes da Silva Jr. \\ {\small {\tt jmgomes@eletro.ufrgs.br}} \\ Prof. Dr. Walter Fetter Lages \\ {\small {\tt fetter@eletro.ufrgs.br}}}
+\course{\ppgee}
+
+\begin{document}
+
+\maketitle
+
+\begin{slide}{Objetivos Propostos}
+Estudo e desenvolvimento de algoritmos de controle preditivo (MPC) para robôs móveis dotados de rodas e com restrições não holonômicas abordando:
+\begin{dingautolist}{202}
+	\item proposta de um algoritmo MPC baseado em linearizações sucessivas sobre a trajetória;
+	\item implementação de algoritmos de controle preditivo não linear (NMPC);
+	\item comparação entre as estratégias acima em termos de: {\em complexidade, tempo de execução} e {\em desempenho}.
+\end{dingautolist}
+\end{slide}
+
+
+\begin{slide}{Motivação}
+{\bf O problema do controle de robôs móveis:}
+\begin{itemize}
+	\item Devido às condições de Brockett (Brockett, 1982), leis de controle suaves e invariantes no tempo não podem ser utilizadas para a estabilização de sistemas não holonômicos através de realimentação estática de estados;
+	\item Solução:	Leis de controle {\em descontínuas} (Bloch {\em et al}., 1990) e {\em variantes no tempo} (Samson, 1990).
+\end{itemize}
+\end{slide}
+
+
+\begin{slide}{Motivação}
+{\bf Desvantagens das abordagens clássicas:}
+\begin{itemize}
+	\item baixas taxas de convergência;
+	\item trajetórias altamente oscilatórias;
+	\item síntese e sintonia do controlador não é intuitiva;
+	\item em implementações reais é difícil de se obter boa performance, devido às restrições nas entradas de controle e nos estados que naturalmente existem.
+\end{itemize}	
+\end{slide}
+
+
+\begin{slide}{Motivação}
+{\bf Através do uso de Controle Preditivo:}
+\begin{itemize}
+	\item uma lei de controle variante no tempo é implicitamente gerada;
+	\item restrições nas entradas de controle:
+	\begin{itemize}
+		\item saturação e limites de torque dos atuadores podem ser considerados;
+	\end{itemize}
+	\item restrições nos estados:
+	\begin{itemize}
+		\item movimentação dentro de uma região segura.
+	\end{itemize}
+\end{itemize}
+\end{slide}
+
+
+\begin{slide}{Robôs Móveis}
+{\bf Modelagem matemática:}
+\begin{wrapfigure}[4]{l}{54mm}
+	\mbox{\includegraphics[width=58mm]{Figures/robot.eps}}
+\end{wrapfigure}
+
+\vspace{2mm}
+	
+\begin{equation*}
+	\left\{
+		\begin{aligned}
+			\dot x	  &= v\cos\theta \\
+			\dot y	  &= v\sin\theta \\
+			\dot \theta &= w
+		\end{aligned}
+	\right.
+\end{equation*}
+
+\vspace{16mm}
+
+${\bf x}\triangleq[x~~y~~\theta]^T$: configuração do robô;
+
+${\bf u}\triangleq[v~~w]^T$: entradas de controle.
+\end{slide}
+
+
+\begin{slide}{Controle de Robôs Móveis}
+{\bf Objetivos:}
+\begin{itemize}
+	\item[(a)] estabilização em uma trajetória (rastreamento de trajetória);
+	\item[(b)] estabilização em um ponto.	
+\end{itemize}
+\begin{figure}
+	\centering\mbox{
+		\subfigure[]{\includegraphics[width=.48\linewidth]{Figures/traj_nl.eps}} 
+		\subfigure[]{\includegraphics[width=.48\linewidth]{Figures/pt.eps}}}
+\end{figure}
+\end{slide}
+
+
+\begin{slide}{Controle de Robôs Móveis}
+{\bf Rastreamento de trajetória:}
+\begin{itemize}
+\item Robô de referência:
+\begin{small}\begin{equation*}
+	\left\{
+		\begin{aligned}
+			\dot x_r	  &= v_r\cos\theta_r \\
+			\dot y_r	  &= v_r\sin\theta_r \\
+			\dot \theta_r &= w_r
+		\end{aligned}
+	\right.
+\end{equation*}\end{small}
+\item O problema de rastreamento de trajetória pode ser posto como encontrar uma lei de controle tal que
+\begin{small}\begin{equation*}
+	{\bf x}(t)-{\bf x}_r(t)=0
+\end{equation*}\end{small}
+em um intervalo de tempo finito.
+\end{itemize}
+\end{slide}
+
+
+\begin{slide}{Controle de Robôs Móveis}
+{\bf Estabilização em um ponto:}
+\begin{itemize}
+\item Dada uma postura qualquer ${\bf x}_d$, encontrar uma lei de controle tal que
+\begin{small}\begin{equation*}
+	{\bf x}(t)-{\bf x}_d=0
+\end{equation*}\end{small}
+em um intervalo de tempo finito.
+\item Por causa da Condição de Brockett, não existe lei de controle suave e invariante no tempo que resolva este problema.
+\end{itemize}
+\end{slide}
+
+
+\begin{slide}{Controle Preditivo}
+\begin{itemize}
+\item O método de controle preditivo baseia-se em um {\em modelo do sistema} para obter uma seqüência ótima de controle através da minimização de uma {\em função de custo} (Allgöwer, 1999);
+\item A cada instante de amostragem, é feita uma predição dos estados dentro de um intervalo de tempo finito, chamado {\em horizonte de predição}. Baseado nessas predições, a função de custo é minimizada com relação às futuras ações de controle em malha aberta; 
+\item A função de custo é minimizada respeitando-se restrições nos estados e nas entradas de controle.
+\end{itemize}
+\end{slide}
+
+
+\begin{slide}{Controle Preditivo}
+{\bf Problema de minimização da função de custo:}
+
+Resolvido {\em on line}, repetidamente a cada instante de amostragem $k$.
+\begin{small}\begin{equation*}
+	{\bf u}^\star = \arg\min_{\bf u}\left\{\Phi(k)\right\}
+\end{equation*}
+\begin{align*}
+	\text{sujeito a:}~~\qquad{\bf u}(k+i-1|k) &\in \mathbb{U} \\ 
+				      {\bf x}(k+i|k) &\in \mathbb{X}
+\end{align*}\end{small}
+onde $i\in[1,\ldots,N]$, obtendo-se uma sequência de controle ótima 
+\begin{small}\begin{equation*}
+	{\bf u}^\star\triangleq\left\{{\bf u}^\star(k|k), {\bf u}^\star(k+1|k), \cdots, {\bf u}^\star(k+N-1|k)\right\}
+\end{equation*}\end{small}	
+\end{slide}
+
+
+\begin{slide}{Controle Preditivo}
+\begin{itemize}
+\item Apenas o controle para o instante atual -- ${\bf u}^\star(k|k)$ -- é aplicado na planta e o mesmo procedimento repete-se para o próximo instante de amostragem; 
+\item Este mecanismo é comumente chamado de {\em Estratégia de Horizonte Móvel} ({\em moving} ou {\em receding horizon}), em referência ao modo com que a janela de tempo desloca-se de um instante de amostragem para o próximo;
+\end{itemize}
+\end{slide}
+
+
+\begin{slide}{Controle Preditivo}
+\vfill
+\begin{figure}
+	\centering\includegraphics[width=.9\linewidth]{Figures/mpc3.eps}
+\end{figure}
+\vfill
+\end{slide}
+
+
+\begin{slide}{Controle Preditivo}
+\begin{itemize}
+\item O controle preditivo tornou-se bem aceito em indústrias de processo, principalmente onde as plantas a serem controladas são suficientemente {\em lentas} para permitir a sua implementação;
+\item Entretanto, para sistemas não lineares e/ou com dinâmicas rápidas, a implementação de tal técnica permanece limitada, devido principalmente ao grande custo computacional envolvido na solução da otimização, que precisa ser resolvida {\em on-line}.
+\end{itemize}
+\end{slide}
+
+\begin{slide}{Controle Preditivo de Robôs Móveis}
+{\bf ABORDAGEM 1: \\ Linearizações sucessivas ao longo de uma trajetória de referência.}
+\begin{itemize}
+	\item O modelo é linearizado sucessivamente em torno de uma trajetória de referência $\Rightarrow$ modelo linear variante no tempo;
+\begin{small}\begin{equation*}
+	\tilde{\bf x}(k+1) = {\bf A}(k)\tilde{\bf x}(k)+{\bf B}(k)\tilde{\bf u}(k),
+\end{equation*}
+\begin{equation*}	
+	\tilde{\bf x}(k)\triangleq{\bf x}(k)-{\bf x}_r(k), \quad \tilde{\bf u}(k)\triangleq{\bf u}(k)-{\bf u}_r(k)
+\end{equation*}\end{small}
+	\item O problema de otimização é transformado em um problema de {\em Programação Quadrática}.
+\end{itemize}
+\end{slide}
+
+\begin{slide}{ABORDAGEM 1}
+Função de custo: 
+\begin{small}\begin{equation*}
+	\Phi(k) = \sum_{j=1}^{N}\tilde{\bf x}^T(k+j|k){\bf Q}\tilde{\bf x}(k+j|k) + \tilde{\bf u}^T(k+j-1|k){\bf R}\tilde{\bf u}(k+j-1|k)
+\end{equation*}\end{small}
+
+Variável de otimização: $\tilde{\bf u}\triangleq[\tilde{\bf u}^T(k|k)~~\cdots~~\tilde{\bf u}^T(k|k+N-1)]^T$
+
+\begin{align*}
+	\text{Restrição:}~~~{\bf u}_{min}\leq{\bf u}&(k)\leq{\bf u}_{max} \\
+	&\Downarrow \\
+	{\bf u}_{min}-{\bf u}_r(k)\leq\tilde{\bf u}&(k)\leq{\bf u}_{max}-{\bf u}_r(k)
+\end{align*}
+\end{slide}
+
+
+\begin{slide}{ABORDAGEM 1 - Resultados}
+\begin{small}\begin{align*}
+	N = 5 \qquad {\bf Q} &= diag(1,1,0.5) \qquad {\bf R} = 0.1{\bf I} \\
+     -0.4\leq v &\leq 0.4 \qquad -0.4\leq w \leq 0.4
+\end{align*}\end{small}
+\begin{figure}
+	\centering\mbox{
+		\subfigure{\includegraphics[width=.48\linewidth]{Figures/traj_linear.eps}} 
+		\subfigure{\includegraphics[width=.48\linewidth]{Figures/control_linear.eps}}}	
+\end{figure}
+\end{slide}
+
+
+\begin{slide}{Controle Preditivo de Robôs Móveis}
+{\bf ABORDAGEM 2: MPC Não Linear - Estabilização em uma trajetória.}
+
+\begin{small}
+Função de custo: 
+\begin{equation*}
+	\Phi(k) = \sum_{j=1}^{N}\tilde{\bf x}^T(k+j|k){\bf Q}\tilde{\bf x}(k+j|k) + \tilde{\bf u}^T(k+j-1|k){\bf R}\tilde{\bf u}(k+j-1|k)
+\end{equation*}
+\begin{equation*}\begin{split}
+\text{Variáveis de otimização: } &{\bf u}\triangleq[{\bf u}^T(k|k)~\cdots~{\bf u}^T(k+N-1|k)]^T \\
+						   &{\bf x}\triangleq[{\bf x}^T(k+1|k)~\cdots~{\bf x}^T(k+N|k)]^T \\
+					&\phantom{l} \\
+\text{Restrições: } &{\bf x}(k+1) = f({\bf x}(k),{\bf u}(k)) \\
+				&{\bf u}_{min} \leq {\bf u}(k) \leq {\bf u}_{max}
+\end{split}\end{equation*}\end{small}
+\vfill
+\end{slide}
+
+
+\begin{slide}{ABORDAGEM 2 - Resultados}
+\begin{small}\begin{align*}
+	N = 5 \quad {\bf Q} &= diag(1,1,0.5) \quad {\bf Q}_N = 50{\bf Q} \quad {\bf R} = 0.1{\bf I} \\
+     -0.4\leq v &\leq 0.4 \qquad -0.4\leq w \leq 0.4
+\end{align*}\end{small}
+\begin{figure}	\centering\mbox{
+		\subfigure{\includegraphics[width=.48\linewidth]{Figures/traj_nl.eps}} 
+		\subfigure{\includegraphics[width=.48\linewidth]{Figures/control_nl.eps}}}	
+\end{figure}
+\end{slide}
+
+
+\begin{slide}{Controle Preditivo de Robôs Móveis}
+{\bf ABORDAGEM 3: MPC Não Linear - Estabilização em um ponto.}
+
+\begin{small}
+Função de custo: 
+\begin{equation*}
+	\Phi(k) = \sum_{j=1}^{N}{\bf x}^T(k+j|k){\bf Q}{\bf x}(k+j|k) + {\bf u}^T(k+j-1|k){\bf R}{\bf u}(k+j-1|k)
+\end{equation*}
+\begin{equation*}\begin{split}
+\text{Variáveis de otimização: } &{\bf u}\triangleq[{\bf u}^T(k|k)~\cdots~{\bf u}^T(k+N-1|k)]^T \\
+						   &{\bf x}\triangleq[{\bf x}^T(k+1|k)~\cdots~{\bf x}^T(k+N|k)]^T \\
+\text{Restrições: } &{\bf x}(k+1) = f({\bf x}(k),{\bf u}(k)) \\
+				&{\bf u}_{min} \leq {\bf u}(k) \leq {\bf u}_{max} \\
+				&{\bf x}_{min} \leq {\bf x}(k) \leq {\bf x}_{max}
+\end{split}\end{equation*}\end{small}
+\vfill
+\end{slide}
+
+
+\begin{slide}{ABORDAGEM 3 - Resultados}
+\begin{small}\begin{align*}
+	N = 5 \quad {\bf Q} &= diag(1,1,0.5) \quad {\bf Q}_N = 100{\bf Q} \quad {\bf R} = 0.01{\bf I} \\
+     -2\leq v &\leq 2 \qquad -2\leq w \leq 2 \qquad -0.5 \leq x \leq 0.5
+\end{align*}\end{small}
+
+\begin{figure}
+	\centering\mbox{
+		\subfigure{\includegraphics[width=.48\linewidth]{Figures/traj_pt_nl.eps}} 
+		\subfigure{\includegraphics[width=.48\linewidth]{Figures/control_pt_nl.eps}}}	
+\end{figure}
+\end{slide}
+
+
+\begin{slide}{Trabalhos Futuros}
+\begin{itemize}
+	\item Obtenção de trajetórias de aproximação para o modelo linearizado;
+	\item Testes dos algoritmos com diversas funções de custo e matrizes de peso;
+	\item Estudo de estabilidade;
+	\item Implementação em tempo-real.
+\end{itemize}
+\end{slide}
+
+
+\begin{slide}{Publicações}
+\begin{itemize}
+	\item {\em Estimação e Controle da Posição de um Robô Móvel Utilizando Filtro de Kalman}. XV Congresso Brasileiro de Automática. Gramado, 2004;
+	\item {\em Model Predictive Control of a Mobile Robot Using Linearization}. 4th Conference on Mechatronics and Robotics. Aachen, Germany, 2004.
+	\item {\em Point Stabilization of Mobile Robots with Model Predictive Control}. A ser submetido.
+\end{itemize}
+\end{slide}
+
+\begin{slide}{Restrições Não Holonômicas}
+\begin{itemize}
+	\item a velocidade no ponto de contato entre a roda e o solo (ponto $C$) é nula;
+	\item a velocidade perpendicular ao plano da roda ($\pi_2$) é nula.
+\end{itemize}	
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.85\linewidth]{Figures/disco.eps}
+\end{figure}
+\end{slide}
+
+
+\begin{slide}{Restrições Não Holonômicas}
+{\bf Exemplo:} carro
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.9\linewidth]{Figures/parking.eps}
+\end{figure}
+\end{slide}
+
+
+\end{document}
+

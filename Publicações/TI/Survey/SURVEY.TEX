@@ -1,0 +1,3233 @@
+\documentclass[11pt, a4paper]{report}
+\usepackage[latin1]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage{amsthm, pifont, amsfonts, amssymb, amsmath, graphicx}
+\usepackage[dvips,ps2pdf]{hyperref}
+\pagestyle{headings}
+
+% Define área da folha
+\setlength{\vsize}{297mm} \setlength{\hsize}{210mm}
+\setlength{\textheight}{240mm} \setlength{\textwidth}{165mm}
+\voffset -10mm \hoffset -20mm
+
+\newcounter{propos}
+\newcounter{defin}
+\newcounter{propr}
+\newcounter{teorem}
+
+\newcommand{\fimpropos}{\hfill $\Diamond$}
+\newcommand{\fimdef}{\hfill $\Box$}
+\newcommand{\fimpropr}{\hfill $\triangle$}
+\newcommand{\fimteo}{\hfill $\Box$}
+
+\theoremstyle{plain}
+\newtheorem{proposicao}{Proposição\refstepcounter{propos}}
+\newtheorem{definicao}{Definição\refstepcounter{defin}}
+\newtheorem{propriedade}{Propriedade\refstepcounter{propr}}
+\newtheorem{teorema}{Teorema\refstepcounter{teorem}}
+
+\DeclareMathOperator{\col}{col}
+%\DeclareMathOperator{\span}{span}
+\DeclareMathOperator{\sign}{sign}
+
+\newcommand\real{\mathbb{R}}
+\newcommand{\req}[1]{(\ref{#1})}
+\renewcommand{\baselinestretch}{1.2} % Define espaçamento entre linhas
+\parskip 2mm % Define o espaçamento entre parágrafos
+\renewcommand\bibname{Bibliografia}
+
+%---------------------------------------------------------------
+% INÍCIO DO DOCUMENTO:
+\begin{document}
+
+% Capa:
+\thispagestyle{empty}
+\begin{center}
+{\sf\huge Felipe Kühne} \vfill {\sf\Huge TRABALHO INDIVIDUAL}
+\vfill
+\includegraphics[width=16mm]{Figuras/logo_ufrgs.eps} \\ \vspace{2mm}
+{\sf\Large Universidade Federal do Rio Grande do Sul}
+\end{center}
+\pagebreak
+
+%-----------------------------------------------------------------------
+% Folha de rosto:
+\thispagestyle{empty} \setcounter{page}{1}
+
+\begin{center}
+
+{\Large Felipe Kühne}
+
+\vfill
+
+{\Large Trabalho Individual}
+
+\vspace{20mm}
+
+{\bf\huge Modelagem e Controle de Robôs Móveis Não Holonômicos}
+
+\vspace{30mm}{\large ORIENTADOR: Prof. Dr. João Manoel Gomes da
+Silva Jr. \\
+CO-ORIENTADOR: Prof. Dr. Walter Fetter Lages}
+
+\vfill
+
+Programa de Pós-Graduação em Engenharia Elétrica \\
+Departamento de Engenharia Elétrica \\
+Universidade Federal do Rio Grande do Sul
+
+\vspace{10mm}
+
+{\large Porto Alegre \\
+Fevereiro 2004}
+\end{center}
+\pagebreak
+
+%-----------------------------------------------------------------------
+\pagestyle{plain} \pagenumbering{roman} \tableofcontents
+
+
+
+%-----------------------------------------------------------------------
+\chapter{Introdução}
+\label{cap1} \pagestyle{headings} \pagenumbering{arabic}
+\thispagestyle{empty}
+
+Atualmente, o uso de robôs para as mais variadas aplicações
+(industriais, comerciais ou residenciais) tem se tornado cada vez
+mais comum, dada a sua capacidade de executar tarefas com maior
+eficiência, ou aquelas que seres-humanos são incapazes de
+executar. O uso de robôs em ambientes industriais aumentou de 70
+mil para 420 mil entre 1983 e 1991, considerando Japão, Estados
+Unidos e Europa \cite{schraft1}. Para o ano de 2003, este número
+está estimado em 900 mil robôs\footnote{Retirado
+de {\tt http://www.ferret.com.au/articles/14/0c01b114.asp}, em
+novembro de 2003.}.
+
+Para garantir a qualidade e aumentar a produtividade, a indústria
+automobilística utiliza robôs manipuladores que realizam operações
+de soldagem e montagem. Em tubulações de petróleo ou gás natural,
+por exemplo, utiliza-se um tipo de robô chamado {\em PIG} ({\em
+Pipeline Inspection Gauge}, Figura \ref{pig}) que realiza a
+limpeza e inspeção da tubulação pela sua parte interna, tarefa que
+obviamente seria impossível de uma pessoa realizar. Existem
+também robôs capazes de realizar explorações em outros planetas,
+como no projeto {\em Mars Surveyor}, da Agência Espacial
+Norte-Americana (NASA), e robôs cuja sua concepção é inspirada no
+comportamento de um ser humano (Figura \ref{asimo}). Em
+terremotos, são utilizados robôs-serpentes que são capazes de
+explorar os escombros, auxiliando na busca e resgate de
+sobreviventes. Enfim, a lista de aplicações de robôs atualmente é
+bastante vasta.
+
+Dentro da categoria de robôs móveis,
+distingüem-se três tipos: os {\em dotados de rodas} (que será aqui
+abordado com maior profundidade), os do tipo {\em lagarta} (Figura
+\ref{urbie}) e os {\em acionados por pernas} (Figura
+\ref{legged}), os dois últimos reservados principalmente a
+ambientes externos e não estruturados, dada à maior capacidade que
+estes têm de transpor obstáculos e irregularidades do terreno. Um
+exemplo de um robô móvel dotado de rodas é mostrado na Figura
+\ref{wheeled1}. Os robôs móveis dotados de rodas são utilizados,
+por exemplo, no transporte de cargas, robôs de segurança,
+cortadores de grama, aspiradores de pó, etc. Robôs deste tipo têm
+uma concepção mais fácil se comparada aos do tipo lagarta e aos
+dotados com pernas, dada a sua simplicidade
+estrutural\footnote{Robôs-lagarta e robôs dotados de pernas
+possuem articulações de difícil concepção, enquanto que os
+mecanismos responsáveis pelo movimento de robôs dotados de rodas
+são constituídos de motores e rodas apenas.}. Contudo, estes robôs
+móveis possuem restrições ao seu movimento, como aquelas devidas
+ao não escorregamento das rodas, como será visto adiante. Por
+causa destas restrições (que podem ser {\em holonômicas} ou {\em
+não holonômicas}), e pelo fato de ser um sistema não linear, os
+robôs móveis têm em seu controle um dos principais problemas,
+tornando a concepção de leis de controle para estes sistemas uma
+tarefa extremamente complicada. Assim, os métodos desenvolvidos
+para robôs manipuladores, que não possuem estas restrições, não
+podem ser aplicados neste caso.
+
+\begin{figure}\begin{center}
+    \includegraphics[width=65mm]{Figuras/pig.eps}
+    \caption{\it {\em PIG}: robô utilizado para inspeção, limpeza e reparos em tubulações.}
+    \label{pig}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=50mm]{Figuras/asimo.eps}
+    \caption{\it O humanóide ASIMO, desenvolvido pela Honda do Japão.}
+    \label{asimo}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=65mm]{Figuras/urbie.eps}
+    \caption{\it O robô-lagarta URBIE, subindo uma escada.}
+    \label{urbie}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=50mm]{Figuras/legged2.eps}
+    \caption{\it Robô dotado de pernas, capaz de se locomover em ambientes não estruturados, como por exemplo um vulcão.}
+    \label{legged}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=63mm]{Figuras/wheeled1.eps}
+    \caption{\it Robô móvel dotado de rodas.}
+    \label{wheeled1}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=98mm]{Figuras/esquema.eps}
+    \caption{\it Funções desempenhadas por um robô móvel autônomo.}
+    \label{esquema}
+\end{center}\end{figure}
+
+Esta relativa dificuldade na síntese de controle depende não
+apenas da natureza da não holonomicidade do sistema mas também de
+quais objetivos deseja-se alcançar com tal controle
+\cite{kolmanovsky1}. Para alguns objetivos, abordagens clássicas
+de controle não linear (como por exemplo linearização por
+realimentação) são efetivas. O controle de robôs móveis pode ter
+como objetivo fazer com que o robô siga uma determinada trajetória
+(ou caminho) ou que o mesmo estabilize em uma dada postura
+(posição e orientação) de referência. Para esta última tarefa,
+existem algumas limitações apresentadas por Brocket
+\cite{brockett1} em que um sistema não holonômico sem
+deriva\footnote{Do inglês, {\em drift}. O sistema $\dot x=f(x)+g(x)u$ é dito sem deriva quando $f(x)=0$.} não pode ser estabilizado
+por meio de uma realimentação de estados suave (infinitamente
+diferenciável) e invariante no tempo. Entretanto, leis de controle
+{\em variantes no tempo} ou {\em descontínuas} podem resolver este
+problema, como desenvolvido em, por exemplo,
+\cite{do1,oya1,samson1,su1,tarin1,yang1}.
+
+As funções desempenhadas por um robô móvel para que o mesmo possua
+características de locomoção autônoma pode ser esquematizado, de
+uma forma geral, como mostrado na Figura \ref{esquema}
+\cite{ribeiro1}.
+
+Este trabalho trata basicamente de um estudo da modelagem e de
+técnicas de controle aplicadas a robôs móveis dotados de rodas e
+sujeitos a restrições não holonômicas. Importantes trabalhos
+existentes na literatura se destacam: Campion et al. \cite{campion1,campion3,campion4},
+Barraquand e Latombe \cite{latombe1}, Kolmanovsky e McClamroch
+\cite{kolmanovsky1}, Bloch et al. \cite{bloch1} e Canudas de Wit
+et al. \cite{canudas1}. Até meados da década de 90, vários
+trabalhos foram desenvolvidos tratando da modelagem cinemática e
+dinâmica de robôs móveis \cite{latombe1,yamamoto1}, pesquisa que
+culminou com o artigo de Campion et al. \cite{campion4}, onde o
+assunto é tratado de forma sistemática. É mostrado que, para uma
+grande classe de possíveis configurações, os robôs móveis dotados
+de rodas podem ser classificados em cinco tipos distintos,
+caracterizados por estruturas genéricas das equações diferenciais
+dos modelos matemáticos. Paralelamente, trabalhos tratando do
+controle destes sistemas foram desenvolvidos, sendo motivante para
+isto os artigos de Bloch et al. \cite{bloch2,bloch1}. Uma revisão
+completa pode ser encontrada em \cite{kolmanovsky1}. Atualmente,
+esforços estão concentrados em métodos robustos e adaptativos,
+considerando controle cinemático e dinâmico para a estabilização
+em uma trajetória ou caminho e em um ponto de equilíbrio
+\cite{lages1,lee1,fukao1,oya1}.
+
+Este documento está organizado como segue: no Capítulo \ref{cap2}
+é dada uma breve descrição matemática de sistemas não holonômicos.
+No capítulo seguinte é apresentada a descrição estrutural de robôs
+móveis, considerando a sua cinemática e dinâmica, com base no
+trabalho desenvolvido por Campion et al. em \cite{campion4}. No
+Capítulo \ref{cap4} é feito um estudo das técnicas de controle
+encontradas na literatura. No capítulo seguinte é dado como
+exemplo o desenvolvimento de equações para a cinemática e a
+dinâmica de um robô móvel dotado de rodas e com acionamento
+diferencial. É apresentado também algumas técnicas de controle
+para este tipo de robô. O trabalho termina então com a conclusão e
+com sugestões para trabalhos futuros.
+
+
+%---------------------------------------------------------------
+\chapter{Sistemas Mecânicos Não Holonômicos}
+\label{cap2} \thispagestyle{empty}
+
+%---------------------------------------------------------------
+\section{Introdução}
+
+Em muitos casos, o movimento de sistemas mecânicos é submetido a
+várias restrições que são permanentemente satisfeitas durante este
+movimento, e que tomam a forma de relações algébricas entre
+posições e velocidades de pontos particulares do sistema
+\cite{campion2}. Seja então um sistema mecânico de ordem $n$
+representado pelas coordenadas generalizadas $q_1, q_2, \ldots,
+q_n$. Pode-se ter assim dois tipos distintos de restrições: \\
+{\bf Restrições geométricas:} são representadas por relações
+analíticas entre as coordenadas generalizadas $q$ de um sistema
+mecânico, como:
+\begin{equation}\label{rgeom}
+f_i(q_1,\ldots,q_n;t)=0 \qquad i=1\ldots,m
+\end{equation}
+
+Quando o sistema é submetido a $m$ restrições geométricas
+independentes, $m$ coordenadas generalizadas podem ser eliminadas
+e $n-m$ coordenadas são suficientes para fornecer uma
+total descrição da configuração do sistema. \\
+{\bf Restrições cinemáticas:} São representadas por relações
+analíticas entre as coordenadas $q$ e as velocidades $\dot{q}$,
+como:
+\begin{equation*}
+f_i(q_1,\ldots,q_n;\dot{q}_1,\ldots,\dot{q}_n;t)=0 \qquad
+i=1\ldots,m
+\end{equation*}
+
+Na maioria dos casos, estas restrições são lineares com respeito
+às velocidades generalizadas. Ao contrário das restrições
+geométricas, restrições cinemáticas não necessariamente levam à
+eliminação de coordenadas generalizadas da descrição do sistema.
+Como será visto, esta eliminação apenas é possível quando a
+restrição é {\em holonômica}, ou integrável, e pode ser reduzida
+para a forma da equação \req{rgeom}.
+
+Um exemplo clássico de um sistema mecânico não holonômico é um
+disco rolando em um plano horizontal, conforme uma trajetória $s$,
+sem escorregamento ({\em derrapagem}), conforme Figura
+\ref{disco}.
+\\
+\\
+\begin{figure}[htb]\begin{center}
+    \includegraphics[width=95mm]{Figuras/disco.eps}
+    \caption{\it Exemplo clássico de um sistema não holonômico: um disco rolando em um plano.}
+    \label{disco}
+\end{center}\end{figure}
+
+As coordenadas que descrevem o movimento são: posição, dada pelos
+eixos $x$ e $y$, orientação dada pelo ângulo $\theta$ e o ângulo
+de rotação $\phi$. $\pi_1$ é o espaço de configuração e $\pi_2$ é
+o plano de rotação do disco. Por causa da restrição de que o disco
+não derrapa (a velocidade no ponto de contato $C$ do disco com o
+plano $\pi_1$ é zero), a magnitude da velocidade $v$ do centro do
+disco é proporcional à velocidade angular $\dot{\phi}$:
+\[ v=r\dot{\phi}, \]
+onde $r$ é o raio do disco. A direção da velocidade é
+perpendicular ao eixo de rotação do disco, isto é,
+\begin{align*}
+\dot{x} &= v\sin\theta \\
+\dot{y} &= -v\cos\theta
+\end{align*}
+
+Estas condições levam às seguintes restrições:
+\begin{align*}
+\dot{x} - r\sin\theta\dot{\phi}&= 0 \\
+\dot{y} + r\cos\theta\dot{\phi}&= 0
+\end{align*}
+
+Estas restrições não podem ser integradas para encontrar uma
+restrição holonômica da forma $f(x,y,\theta,\phi)=0$. Portanto são
+restrições {\em não holonômicas}.
+
+Outro exemplo: um carro é um sistema mecânico não holonômico. Um
+desenho de um carro estacionando é mostrado na Figura
+\ref{parking}. Na ausência de obstáculos, ele pode assumir
+qualquer configuração no plano. Logo, o espaço de configuração
+possui três graus de liberdade (dois para a posição um para a
+orientação). Entretanto, assumindo que a componente da velocidade
+ortogonal ao plano de rotação $\pi_2$ das rodas é zero (na direção
+de $y'$), a velocidade no ponto central entre duas rodas ativas (o
+ponto $P$) é sempre tangente à orientação do carro (na direção de
+$x'$). Com isso, o espaço das velocidades, em qualquer
+configuração, terá apenas dois graus de liberdade. Se não
+existissem restrições ao seu movimento, o caminho tomado para
+chegar à configuração final seria, por exemplo, o dado pela linha
+tracejada. Agora, considerando as restrições, o carro deve seguir
+uma trajetória como a mostrada pela linha contínua. Contudo, robôs
+omnidirecionais, que podem assumir qualquer postura
+instantaneamente, podem realizar a trajetória que para robôs com
+restrições seria impossível. Um exemplo deste tipo de robô
+encontra-se na Figura \ref{omni}.
+
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=100mm]{Figuras/parking.eps}
+    \caption{\it Exemplo de trajetórias para um carro estacionando.}
+    \label{parking}
+\end{center}\end{figure}
+
+
+%---------------------------------------------------------------
+\section{Equações não holonômicas}
+
+A dedução de modelos para sistemas dinâmicos com restrições não
+holonômicas é feita com base em equações clássicas de
+Euler-Lagrange, sujeitas a um conjunto de restrições não
+integráveis \cite{campion2} e envolvendo conceitos avançados de
+geometria diferencial e teoria de sistemas não lineares. Frente a isto, é dada
+nesta seção uma breve e superficial descrição da matemática
+envolvida em sistemas com estas restrições\footnote{Uma descrição
+mais detalhada pode ser encontrada em \cite{bloch1}.}. Restrições
+deste tipo são causadas geralmente quando existem contatos
+girantes (por exemplo, rodas) entre dois corpos rígidos e
+expressam que a velocidade relativa entre dois pontos de contato é
+zero \cite{latombe1}. Isto faz com que a dimensão do espaço das
+velocidades seja menor que a dimensão do espaço de configuração do
+sistema não holonômico.
+
+Um sistema mecânico de ordem $n$ cuja configuração pode ser
+descrita por um vetor
+\[
+q=[q_{1}~~q_{2}~~\cdots~~q_{n}]^{T}
+\]
+de coordenadas generalizadas, pode ser submetido a $m$ restrições cinemáticas
+independentes ($m < n$) da forma:
+\begin{equation}\label{rest1}
+    a_j(q)\dot{q} = 0,
+\end{equation}
+onde $a_1,a_2,\ldots,a_m$ são campos vetoriais suaves pertencentes
+ao $\real^n$. Seja agora a matriz $A(q)$ de dimensão $(m \times
+n)$ formada por estes vetores, como segue:
+\begin{equation}\label{rest12}
+A(q)=[a_{1}(q)~~a_{2}(q)~~\cdots~~a_{m}(q)]^T
+\end{equation}
+
+Como as restrições são linearmente independentes, $A(q)$ tem posto
+$m$ para todo $q \in \real^{n}$. O número de graus de liberdade do
+sistema é definido como a diferença entre o número de coordenadas
+generalizadas e o número de restrições independentes ($n - m$)
+\cite{campion1}.
+
+Das equações \req{rest1} e \req{rest12}, vê-se que a matriz $A$ define uma base
+para o espaço nulo das velocidades lineares, ou seja, $A^T(q)\dot q=0$. Define-se então uma
+distribuição suave $\Delta$, de dimensão $n-m$, associada às
+restrições em \req{rest1}\footnote{${\cal N}\{A\}$ significa o
+núcleo, ou o espaço nulo, de $A$.}:
+\[ \Delta(q) = {\cal N}\{A(q)\} \]
+
+As restrições são holonômicas ou completamente integráveis se e
+seomente se $\Delta$ é integrável, ou, pelo Teorema de Frobenius,
+se $\Delta$ é {\em involutiva} (veja o Apêndice \ref{appa}).
+Do contrário as restrições são não
+holonômicas. Seja um conjunto $\bar{\Delta}$ de dimensão
+$n-\bar{m}$, onde $\bar{\Delta}$ é completamente integrável e
+$\dim(\Delta) \leq \dim(\bar{\Delta})$. Dependendo da dimensão de
+$\bar{\Delta}$, tem-se, conforme \cite{campion2}:
+\begin{enumerate}
+\item[a)] Se $\bar{m}=m$, o sistema é completamente holonômico, e
+todas as $m$ restrições são integráveis. O espaço de configuração
+é caracterizado por apenas $n-m$ coordenadas generalizadas.
+\item[b)] Se $\bar{m}=0$ (ou seja, $\dim(\bar{\Delta})=n$), as
+restrições são completamente não holonômicas. A caracterização do
+espaço de coordenadas é feita com $n$ coordenadas generalizadas.
+\item[c)] Se $0<\bar{m}<m$, é possível eliminar $\bar{m}$
+coordenadas do sistema. Então, o espaço de configuração tem
+dimensão $n-\bar{m}$.
+\end{enumerate}
+
+Considerando que existam $k$ restrições holonômicas independentes
+e continuamente diferenciáveis em um sistema, então $k$
+coordenadas generalizadas podem ser resolvidas em termos das
+outras $n-k$ coordenadas \cite{yun1}.
+
+Usando o formalismo de Euler-Lagrange, o comportamento dinâmico de
+um sistema mecânico não holonômico pode ser escrito como\cite{sarkar1,yang1,chaves1}:
+\begin{align}
+    M(q)\ddot{q} + V(q,\dot{q}) &= E(q)u - A^T(q)\lambda\label{eulag1}\\
+    A(q)\dot{q} &= 0 \label{eulag2}
+\end{align}
+onde $M(q)$ é uma matriz de inércia de ordem $n$ simétrica e
+positiva-definida, $V(q,\dot{q})$ é um vetor de ordem $n$ de
+torques causados pelas forças centrífugas e de Coriolis, $A(q)$ é
+a matriz de ordem ($n \times m$) de restrições não holonômicas,
+$\lambda$ é um vetor de ordem $m$ de multiplicadores de Lagrange
+associados às restrições (que podem ser interpretados fisicamente
+como sendo as forças lineares atuantes), $E(q)$ é uma matriz de
+ordem ($n \times r$) e $u$ é o vetor de forças externas aplicadas
+ao sistema, de ordem $r$.
+
+As equações \req{eulag1}--\req{eulag2} fornecem uma completa
+descrição do comportamento dinâmico do sistema. Entretanto, é
+conveniente manipular algebricamente estas expressões com o
+objetivo de obter uma representação na forma de espaço de estados,
+onde as características associadas às restrições de deslocamento
+sejam mapeadas em um vetor de velocidades a ser utilizado para
+descrever o modelo \cite{kolmanovsky1}. Além disso, a
+representação das equações do modelo dinâmico na forma de espaço
+de estados é desejável para a determinação de estratégias de
+controle.
+
+Seja então um conjunto de $n - m$ vetores continuamente
+diferenciáveis e linearmente independentes $s_{1}(q), \ldots,
+s_{n-m}(q)$ que formam uma matriz $S(q)$ de ordem ($(n-m) \times
+n$) tal que $S(q) = [s_{1}(q)~~s_{2}(q)~~\cdots~~s_{n-m}(q)]^T$.
+Admitindo que $S(q) \in {\cal N}\{A(q)\}$, tem-se:
+\begin{equation}\label{rest2}
+    A(q)S(q)=0
+\end{equation}
+
+As restrições \req{rest1} e \req{rest2} implicam na existência de
+um vetor integrável $\eta(q,\dot{q}$), de ordem $n-m$, que
+satisfaz
+\begin{equation}\label{qdot}
+    \dot{q} = S(q)\eta.
+\end{equation}
+
+Pré-multiplicando \req{eulag1} por $S^{T}(q)$ e usando
+\req{rest2}, pode-se eliminar os multiplicadores de Lagrange
+$\lambda$, pois $S^T(q)A^T(q)=0$. Assim:
+\begin{equation}\label{eulag3}
+    S^{T}(q)M(q)\ddot{q}+S^{T}(q)V(q,\dot{q}) = S^{T}(q)E(q)u
+\end{equation}
+
+Diferenciando \req{qdot}, tem-se
+$\ddot{q}=S(q)\dot{\eta}+\dot{S}(q)\eta$. substituindo em
+\req{eulag3} e assumindo que a matriz $S^{T}(q)E(q)$ tem posto
+completo\footnote{isto não é restritivo, visto que apenas
+significa que o sistema possui atuadores de forma que este seja
+realmente (fisicamente) controlável com estes atuadores
+\cite{campion2}.}, tem-se que (ignorando os argumentos para
+simplificar as expressões)
+\[ S^TMS\dot{\eta}+S^TM\dot{S}\eta+S^TV=S^TEu \]
+
+Pré-multiplicando por $(S^TMS)^{-1}$, chega-se a:
+\[
+\dot{\eta}+(S^TMS)^{-1}\left[S^TM\dot{S}\eta+S^TV\right]=(S^TMS)^{-1}S^TEu
+\]
+
+Escolhendo o vetor de estados como $x=[q~~\eta]^T$ é possível
+representar as equações de movimento e de restrições que descrevem
+o sistema na forma de espaço de estados:
+\begin{equation}\label{steq}
+\dot{x} =
+\left[\begin{array}{c}S\eta\\f_1\end{array}\right]+\left[\begin{array}{c}0\\
+f_2\end{array}\right]u,
+\end{equation}
+onde
+\begin{align*}
+f_1 &= -[(S^TMS)^{-1}(S^TM\dot{S}\eta+S^TV)] \\
+f_2 &= (S^TMS)^{-1}S^TE
+\end{align*}
+
+Assumindo que o número de atuadores de entrada é maior ou igual ao
+número de graus de liberdade do sistema mecânico ($r\geq n-m$), e
+$f_2$ possui posto $n-m$, é possível aplicar a seguinte
+realimentação não linear:
+\[ u =
+\left[\left(S^TMS\right)^{-1}S^TE\right]^{-1}\left(v-f_1\right)
+\]
+
+Assim, a equação em espaço de estados \req{steq} pode ser
+reescrita da forma
+\[ \dot{x} = f(x)+g(x)v, \]
+onde
+\begin{equation*}
+f(x) = \left[\begin{array}{c}S(q)\eta\\0\end{array}\right]\qquad
+g(x) = \left[\begin{array}{c}0\\I\end{array}\right],
+\end{equation*}
+onde $I$ é uma matriz identidade de dimensão $n-m$.
+
+
+%---------------------------------------------------------------
+\chapter{Cinemática e Dinâmica de Robôs Móveis}
+\label{cap3} \thispagestyle{empty}
+
+
+%---------------------------------------------------------------
+\section{Introdução}
+
+Um robô móvel é um exemplo típico de um sistema mecânico não
+holonômico. É considerado aqui um robô que se move em um plano
+horizontal, constituido de um corpo rígido e rodas não
+deformáveis. O contato entre as rodas e o plano é considerado
+puntual. Considera-se também que:
+\begin{itemize}
+    \item as rodas {\em não derrapam} (ou seja, a componente da velocidade
+    do ponto de contato da roda com o plano, no plano de rotação da
+    roda, é zero) e
+    \item as rodas {\em não deslizam} (ou seja, a componente da
+    velocidade do ponto de contato, ortogonal ao plano de rotação da
+    roda, é zero\footnote{Também pode ser dito que a velocidade no
+    centro de massa do robô é ortogonal ao eixo que liga as duas rodas
+    ativas \cite{kolmanovsky1}.})
+\end{itemize}
+
+O movimento do robô é realizado através de atuadores que fornece
+torque para a rotação e/ou orientação de algumas das rodas (rodas
+{\em ativas}).
+
+Este capítulo é baseado no desenvolvimento feito por Campion et
+al. em \cite{campion4}, que trata o assunto da modelagem
+cinemática e dinâmica de robôs móveis dotados de rodas de uma
+forma sistemática. O objetivo com isto é mostrar as propriedades
+estruturais dos modelos cinemáticos e dinâmicos, levando em conta
+as restrições que os robôs sofrem em seu movimento. É mostrado
+também que, dentre os tipos de robôs considerados (os quais englobam
+boa parte dos robôs comercialmente disponíveis), estes podem ser
+divididos essencialmente em cinco classes distintas.
+
+Os modelos de robôs móveis podem ser divididos em quatro tipos:
+\begin{enumerate}
+\item[a)] {\em modelo cinemático de postura}: é o modelo mais
+simples capaz de descrever um robô móvel globalmente. É visto que
+em todas as as cinco classes, este modelo tem uma estrutura
+genérica, que permite um melhor entendimento das propriedades de
+locomoção do robô; \item[b)] {\em modelo cinemático de
+configuração}: usado para a análise do comportamento do robô
+conforme a teoria de sistemas não holonômicos; \item[c)] {\em
+modelo dinâmico de configuração}: é o modelo mais geral. Dá uma
+descrição completa da dinâmica do sistema incluindo as forças
+fornecidas pelos atuadores; \item[d)] {\em modelo dinâmico de
+postura}: equivalente ao modelo dinâmico de configuração. Útil
+para analisar propriedades como {\em irredutibilidade}, {\em
+controlabilidade} e {\em estabilizabilidade}.
+\end{enumerate}
+
+
+%---------------------------------------------------------------
+\section{Cinemática de robôs móveis}
+
+A configuração (posição e orientação) do robô é descrito conforme
+a Figura \ref{robo1}. Define-se um sistema de coordenadas global
+\{$O, X_o, Y_o$\} e um sistema de coordenadas móvel, associado ao centro
+de massa do robô \{$C, X_c, Y_c$\}. Então, a configuração do
+robô com relação ao sistema global pode ser dada por
+\begin{equation*}
+\xi = \left[ \begin{array}{c} x \\ y \\ \theta \end{array}
+\right],
+\end{equation*}
+onde $\theta$ é a orientação do robô com relação ao eixo $X_o$. A
+matriz de rotação que leva do sistema global para o sistema do centro do robô, ou seja, $\xi_c=R^C_O\xi$, é
+dada por:
+\begin{equation*}
+R^C_O = \left[ \begin{array}{ccc} \cos \theta & \sin \theta & 0 \\
+-\sin \theta & \cos \theta & 0 \\ 0 & 0 & 1
+\end{array} \right]
+\end{equation*}
+
+\begin{figure}[tb]\begin{center}
+    \includegraphics[width=80mm]{Figuras/robo1.eps}
+    \caption{\it Sistemas de coordenadas de um robô dotado de rodas.}
+    \label{robo1}
+\end{center}\end{figure}
+
+A fim de equacionar as restrições com respeito ao movimento do
+robô, precisa-se fazer uma descrição das rodas do mesmo, como
+segue.
+
+
+%---------------------------------------------------------------
+\section{Descrição das rodas}
+Assume-se aqui que o plano de cada roda permanece vertical e as
+mesmas possuem rotação em torno de seu eixo horizontal, onde a
+orientação deste com relação ao sistema de coordenadas do robô
+pode ser fixa ou variável. Duas classes de rodas podem ser
+explicitadas: as rodas {\em convencionais} e as {\em universais},
+ou {\em suecas}. Para as rodas convencionais existem duas
+restrições com relação ao plano de rolamento, ou seja, as rodas
+{\em não derrapam} e {\em não deslizam}. Isto significa que, no
+ponto de contato da roda com o plano, as componentes paralela e
+ortogonal da velocidade são nulas. Para as rodas universais,
+apenas uma destas restrições é satisfeita, que é a de rotação pura
+da roda (não derrapam).
+
+Agora então será feita a descrição matemática do movimento de cada
+tipo de roda.
+
+\begin{itemize}
+\item {\bf Rodas convencionais fixas} \\
+Neste caso, o centro da roda, denotado $W$, é fixo. Associa-se a
+este ponto o sistema de coordenadas \{$W, X_w, Y_w$\}. A posição
+deste ponto em relação ao sistema \{$C, X_c, Y_c$\} do robô é dado
+em coordenadas polares por ($l, \alpha$), conforme Figura
+\ref{rcf}. A orientação do plano da roda com relação a $l$ é
+constante e dada pelo ângulo $\beta$. A rotação da roda em torno
+de seu eixo horizontal é dado por $\varphi(t)$ e o raio da roda é
+dado por $r$.
+
+A velocidade do robô em relação ao sistema de coordenadas
+inercial, descrita com relação ao sistema do robô, é dada por:
+
+\[ \dot{\xi}_c = R^C_O\dot{\xi} \]
+
+Descrevendo esta velocidade em relação ao sistema \{$W, X_w,
+Y_w$\}, cuja origem é o centro da roda, tem-se\footnote{$A\times
+B$ significa o produto vetorial entre $A$ e $B$.}:
+\begin{equation}\label{velw1}
+\dot\xi_w = R^W_C \dot{\xi}_c + l_w \times \left[
+\begin{array}{ccc} 0&0&0 \\ 0&0&0 \\ 0&0&1 \end{array} \right]
+R^W_C \dot{\xi}_c,
+\end{equation}
+onde $l_w$ é o braço de giro e $R^W_C$ é a matriz de rotação entre
+o centro da roda e o centro de massa do robô, como segue:
+\begin{align}
+l_w &= \left[ \begin{array}{c} -l\sin\beta \\ -l \cos\beta \\ 0
+\end{array} \right] \label{braco1} \\
+R^W_C &= \left[ \begin{array}{ccc} \cos\psi & \sin\psi & 0 \\
+-\sin\psi & \cos\psi & 0 \\ 0 & 0 & 1 \end{array} \right]
+\label{rotwo1}
+\end{align}
+\\
+\\
+\begin{figure}[!bbb]\begin{center}
+    \includegraphics[width=100mm]{Figuras/rcf.eps}
+    \caption{\it Roda convencional fixa em seu sistema de coordenadas.}
+    \label{rcf}
+\end{center}\end{figure}
+
+Sendo que $\psi=\alpha+\beta-\frac{\pi}{2}$, pode-se escrever a
+equação \req{rotwo1} como:
+\begin{equation}\label{rotwo2}
+R^W_C = \left[ \begin{array}{ccc} \sin(\alpha+\beta) &
+-\cos(\alpha+\beta) & 0 \\ \cos(\alpha+\beta) & \sin(\alpha+\beta)
+& 0 \\ 0 & 0 & 1 \end{array} \right]
+\end{equation}
+
+Logo, substituindo as equações \req{braco1} e \req{rotwo2} em
+\req{velw1}, temos que a velocidade da roda com relação ao centro
+da mesma é dada por:
+\begin{equation*}
+\dot{\xi}_w = \left[ \begin{array}{ccc} \sin(\alpha+\beta) &
+-\cos(\alpha+\beta) & -l\cos\beta \\ \cos(\alpha+\beta) &
+\sin(\alpha+\beta) & l\sin\beta \\ 0 & 0 & 1 \end{array} \right]
+R^C_O \dot{\xi}
+\end{equation*}
+
+Como $\dot{\xi}_w = [r\dot{\varphi}~~0~~\dot{\theta}]^T$, pode-se
+escrever as restrições do movimento do robô com respeito a este
+tipo de roda como:
+\begin{align}
+[-\sin(\alpha+\beta) ~~ \cos(\alpha+\beta) ~~
+l\cos\beta]R^C_O\dot{\xi} + r\dot{\varphi} &= 0 \label{restrcf1} \\
+[\cos(\alpha+\beta) ~~ \sin(\alpha+\beta) ~~
+l\sin\beta]R^C_O\dot{\xi} &= 0, \label{restrcf2}
+\end{align}
+onde \req{restrcf1} representa a restrição do movimento ao longo
+do plano da roda e \req{restrcf2} representa a restrição do
+movimento ortogonal ao plano da roda.
+
+\item {\bf Rodas convencionais orientáveis centradas} \\
+A descrição matemática para este tipo de roda é análoga à
+desenvolvida para as rodas convencionais fixas. A diferença é que
+agora a orientação do plano da roda, dada pelo ângulo $\beta$, não
+é mais fixa. As equações de restrição são idênticas às
+apresentadas anteriormente, pelas equações \req{restrcf1} e
+\req{restrcf2}.
+
+\item {\bf Rodas convencionais orientáveis não centradas} \\
+A particularidade desta roda é que o seu centro de rotação não
+passa pelo centro da roda, como vê-se na Figura \ref{rnc}. Neste
+caso, as equações que descrevem precisam de mais parâmetros. O
+centro da roda é dado por $W$, que é conectado ao corpo do robô
+por uma haste rígida $AW$ de comprimento constante $d$. O ponto
+$W$ pode rotacionar em torno do eixo vertical no ponto fixo $A$,
+especificado em coordenadas polares por ($l, \alpha$). O plano da
+roda é alinhado ao longo de $AW$.
+
+A posição da roda é descrita por quatro constantes, $\alpha$, $l$,
+$r$ e $d$ e seu movimento por dois ângulos, $\beta(t)$ e
+$\varphi(t)$. Com isto, temos as seguintes equações representando
+as restrições ao movimento para este tipo de roda:
+\begin{align}
+\left[-\sin(\alpha+\beta) ~~ \cos(\alpha+\beta) ~~
+l\cos\beta\right]R^C_O\dot{\xi} + r\dot{\varphi} &= 0 \label{restrnc1} \\
+\left[\cos(\alpha+\beta) ~~ \sin(\alpha+\beta) ~~
+d+l\sin\beta\right]R^C_O\dot{\xi} + d\dot{\beta}&= 0,
+\label{restrnc2}
+\end{align}
+
+Nota-se que as equações são bastante semelhantes com as dadas em
+\req{restrcf1} e \req{restrcf2} para as rodas convencionais fixas.
+
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=100mm]{Figuras/rnc.eps}
+    \caption{\it Roda convencional orientável não centrada e seu sistema de coordenadas.}
+    \label{rnc}
+\end{center}\end{figure}
+
+\item {\bf Rodas universais} \\
+A posição da roda universal (ou roda {\em sueca}) com relação ao
+robô é descrita por três parâmetros constantes, $\alpha$, $\beta$
+e $l$. Um parâmetro adicional é necessário para determinar a
+direção, com respeito ao plano da roda, da componente nula da
+velocidade no ponto de contato da roda com o plano de rolagem,
+representado pelo ângulo $\gamma$, conforme a Figura \ref{ru}.
+\\
+\\
+\begin{figure}[htb]\begin{center}
+    \includegraphics[width=58mm]{Figuras/ru.eps}
+    \caption{\it Roda universal e seu sistema de coordenadas.}
+    \label{ru}
+\end{center}\end{figure}
+
+A orientação da roda com relação ao sistema de coordenadas do robô
+pode ser escrita como $\psi=\alpha+\beta+\gamma-\frac{\pi}{2}$.
+Então temos as seguintes equações:
+\begin{align*}
+l_w &= \left[ \begin{array}{c} -l\sin(\beta+\gamma) \\ -l \cos(\beta+\gamma) \\
+0 \end{array} \right] \\
+R^W_O &= \left[ \begin{array}{ccc}
+\sin(\alpha+\beta+\gamma) & -\cos(\alpha+\beta+\gamma) & 0 \\
+\cos(\alpha+\beta+\gamma) & \sin(\alpha+\beta+\gamma) & 0 \\
+0 & 0 & 1 \end{array} \right]
+\end{align*}
+
+Agora, o vetor de velocidade $\dot{\xi}_w$ é diferente dos casos
+anteriores, pois a restrição de {\em não deslizamento} das rodas
+não existe mais (a não ser quando $\gamma=\frac{\pi}{2}$, pois
+assim o movimento desta roda seria idêntico ao da roda
+convencional fixa\footnote{o valor $\gamma=\frac{\pi}{2}$
+significa que a direção da componente nula da velocidade é
+ortogonal ao plano da roda.}). Então:
+\begin{equation*}
+\dot{\xi}_w = [ r\dot{\varphi}\cos\gamma ~~ * ~~ \dot{\theta} ]^T,
+\end{equation*}
+onde $*$ não é conhecido, mas não será necessário para a
+determinação da restrições.
+
+Usando novamente a equação \req{velw1}, temos a seguinte restrição
+para o movimento do robô referente à roda universal:
+\begin{equation}\label{restru}
+[-\sin(\alpha+\beta+\gamma) ~~ \cos(\alpha+\beta+\gamma) ~~
+l\cos(\beta+\gamma)]R^C_O\dot{\xi} + r\cos\gamma\dot{\varphi} = 0
+\end{equation}
+
+\end{itemize}
+
+
+%---------------------------------------------------------------
+\section{Restrições à mobilidade de um robô móvel}
+\label{restmob}
+
+Considera-se agora um robô equipado com $N$ rodas dos quatro tipos
+descritos acima, conforme a seguinte expressão:
+\begin{equation}\label{nrodas}
+N = N_f + N_c + N_{oc} + N_{sw},
+\end{equation}
+onde $N_f$ é o número de rodas convencionais fixas, $N_c$ é o
+número de rodas orientáveis centradas, $N_{oc}$ é o número de
+rodas orientáveis não centradas e $N_{sw}$ é o número de rodas
+universais. Os subscritos são então assim definidos: $f$ para
+rodas convencionais fixas, $c$ para rodas orientáveis centradas,
+$oc$ para rodas orientáveis não centradas e $sw$ para rodas
+universais.
+
+A configuração do robô é completamente descrita pelos seguintes
+vetores de coordenadas:
+\begin{itemize}
+\item {\em Coordenadas de postura} (posição no plano de rolagem):
+\[ \xi(t) \triangleq [ x(t) ~~ y(t) ~~ \theta(t) ]^T; \]
+\item {\em Coordenadas angulares}: $\beta_c(t)$ para rodas
+orientáveis centradas e $\beta_{oc}(t)$ para rodas orientáveis não
+centradas; \item {\em Coordenadas de rotação} (rotação da roda em
+torno do eixo horizontal de rotação):
+\[ \varphi(t) \triangleq [ \varphi^T_f(t) ~~ \varphi^T_c(t) ~~ \varphi^T_{oc}(t) ~~
+\varphi^T_{sw}(t) ]^T \]
+\end{itemize}
+
+Então, a postura completa do robô é dada pelas seguintes {\em
+coordenadas de configuração}: $\xi$, $\beta_c$, $\beta_{oc}$ e
+$\varphi$, e o número total de coordenadas de configuração será
+$N_f+2N_c+2N_{oc}+N_{sw}+3$.
+
+Com as notações expostas acima, pode-se escrever as restrições, de
+uma forma generalizada, como:
+\begin{align}
+J_1(\beta_c,\beta_{oc})R^C_O\dot{\xi} +
+J_2\dot{\varphi} &= 0 \label{genrest1} \\
+C_1(\beta_c,\beta_{oc})R^C_O\dot{\xi} + C_2\dot{\beta}_{oc} &= 0
+\label{genrest2}
+\end{align}
+com as seguintes definições:
+\begin{equation}\label{jotas}
+J_1(\beta_c,\beta_{oc}) \triangleq \left[ \begin{array}{c} J_{1f}
+\\ J_{1c}(\beta_c) \\ J_{1oc}(\beta_{oc}) \\ J_{1sw} \end{array} \right],
+\end{equation}
+onde $J_{1f}$, $J_{1c}$, $J_{oc}$ e $J_{sw}$ são, respectivamente,
+matrizes de dimensão ($N_f \times 3$), ($N_c \times 3$), ($N_{oc}
+\times 3$) e ($N_{sw} \times 3$), cujas formas são derivadas das
+restrições dadas pelas equações \req{restrcf1} (para rodas
+convencionais fixas e orientáveis centradas), \req{restrnc1} e
+\req{restru}. $J_2$ é uma matriz constante de dimensão ($N \times
+N$) cujos elementos na diagonal principal são os raios das rodas,
+exceto pelos raios das rodas universais, que são multiplicados por
+$\cos\gamma$.
+\begin{equation}\label{ces}
+C_1(\beta_c,\beta_{oc}) \triangleq \left[ \begin{array}{c} C_{1f}
+\\ C_{1c}(\beta_c) \\ C_{1oc}(\beta_{oc}) \end{array}\right]
+\qquad C_2 \triangleq \left[ \begin{array}{c} 0\\0\\C_{2oc}
+\end{array}\right],
+\end{equation}
+onde $C_{1f}$, $C_{1c}$ e $C_{1oc}$ são, respectivamente, matrizes
+de dimensão ($N_f\times3$), ($N_c\times3$) e ($N_{oc}$) cujas
+colunas são obtidas das equações \req{restrcf2} (para rodas
+convencionais fixas e orientáveis centradas) e \req{restrnc2}.
+$C_{2oc}$ é uma matriz onde os elementos da diagonal principal são
+iguais a $d$ para as rodas orientáveis não centradas.
+
+Sejam agora as ($N_f+N_c$) restrições dadas por \req{genrest2}, e
+escritas da seguinte forma:
+\begin{align*}
+C_{1f}R^C_O\dot{\xi} &= 0 \\
+C_{1c}(\beta_c)R^C_O\dot{\xi} &= 0
+\end{align*}
+
+As equações acima podem ser escritas de uma forma mais compacta
+como:
+\begin{equation}\label{c1rxi}
+C^*_1(\beta_c)R^C_O\dot{\xi} = 0,
+\end{equation}
+onde $C^*_1(\beta_c) = [ C_{1f} ~~ C_{1c}(\beta_c) ]^T$, de
+dimensão $((N_f+N_c)\times3)$. Portanto, o vetor
+$R^C_O\dot{\xi}$ pertence ao espaço nulo da matriz
+$C^*_1(\beta_c)$, ou seja,
+\[R^C_O\dot{\xi} \in {\cal N}\{C^*_1(\beta_c)\} \]
+
+Da equação \req{c1rxi}, vê-se que\footnote{$\rho\{A\}$ significa o
+posto, ou {\em rank}, de A.} $\rho\{C^*_1(\beta_c)\} \leq 3$. Se
+$\rho\{C^*_1(\beta_c)\}=3$, $R^C_O\dot{\xi}=0$, o que
+impossibilita qualquer movimento do robô no plano, pois
+$\dot{\xi}=0$. Portanto, a mobilidade do robô está relacionada ao
+posto de $C^*_1(\beta_c)$, e obviamente este valor depende da
+concepção do robô. Neste sentido, tem-se a seguinte definição:
+
+\begin{definicao}\label{deltam} ~\\
+Define-se o {\em grau de mobilidade} $\delta_m$ de um robô como
+\begin{align*}
+\delta_m &= \dim({\cal N}\{C^*_1(\beta_c)\}) \\
+         &= 3-\rho\{C^*_1(\beta_c)\}
+\end{align*}\fimdef
+\end{definicao}
+
+É examinado agora o caso em que $\rho\{C_{1f}\}=2$, o que
+implica o robô ter ao menos duas rodas fixas e, se tiver mais
+que duas, os seus eixos são concorrentes com o {\em centro
+instantâneo de rotação}, ou {\em CIR} (Figura \ref{cir}), cuja
+posição em relação ao corpo do robô é fixa. Neste caso, o único movimento possível é a
+rotação em torno do {\em CIR} fixo. Obviamente esta restrição não
+pode ser aceita na prática, sendo necessário que o posto de
+$C_{1f}$ seja menor que 2, ou seja, $\rho\{C_{1f}\}\leq1$.
+\\
+\begin{figure}\begin{center}
+    \includegraphics[width=47mm]{Figuras/cir.eps}
+    \caption{\it Exemplo de um robô móvel e seu centro instantâneo de rotação (CIR).}
+    \label{cir}
+\end{center}\end{figure}
+
+Assume-se também que o robô é {\em não degenerado}, como segue:
+
+\begin{proposicao} ~\\
+Um robô é {\em não degenerado} se:
+\begin{enumerate}
+\item[i)] $\rho\{C_{1f}\}\leq1$; \item[ii)]
+$\rho\{C^*_1(\beta_c)\}=\rho\{C_{1f}\}+\rho\{C_{1c}(\beta_c)\}\leq2$
+\end{enumerate}\fimpropos
+\end{proposicao}
+
+A proposição acima é equivalente às seguintes condições:
+\begin{enumerate}
+\item Se o robô tem mais que uma roda convencional fixa, então
+estas estão em um único e comum eixo de rotação; \item Os centros
+de rotação das rodas orientáveis centradas não pertencem ao eixo
+comum das rodas fixas; \item O número
+$\rho\{C_{1c}(\beta_c)\}\leq2$ é o número de rodas orientáveis
+centradas que podem ser orientadas independentemente, a fim de
+{\em guiar} o robô. Desta forma é definido o {\em grau de
+dirigibilidade}.
+\begin{definicao}\label{deltas} ~\\
+O {\em grau de dirigibilidade} $\delta_s$ de um robô móvel é dado
+por:
+\[ \delta_s = \rho\{C_{1c}(\beta_c)\} \]\fimdef
+\end{definicao}
+
+Se um robô possuir mais que $\delta_s$ rodas orientáveis centradas
+($N_c > \delta_s$), o movimento destas rodas extras pode ser
+coordenado para garantir a existência do centro instantâneo de
+rotação {\em CIR}.
+\end{enumerate}
+
+Com isto, as estruturas de interesse para um robô móvel podem
+então ser descritas em cinco casos, conforme a configuração das
+rodas:
+\begin{enumerate}
+\item o grau de mobilidade $\delta_m$ satisfaz
+$1\leq\delta_m\leq3$ (o limite superior é óbvio. O limite inferior
+significa que considera-se apenas casos onde o movimento do robô é
+possível, ou seja, $\delta_m\neq0$); \item o grau de
+dirigibilidade satisfaz $0\leq\delta_s\leq2$ ($\delta_s=2$
+acontece apenas para robôs sem rodas fixas ($N_f=0$), e o limite
+inferior acontece apenas para robôs ser rodas orientáveis
+centradas, ou seja, $N_c=0$); \item A seguinte inequação é
+satisfeita: $2\leq\delta_m+\delta_s\leq3$ (o caso
+$\delta_m+\delta_s=1$ não é aceitável, pois isto corresponde à
+rotação do robô em torno de um {\em CIR} fixo. Os casos
+$\delta_m\geq2$ e $\delta_s=2$ são excluídos, pois $\delta_s=2$
+implica em $\delta_m=1$).
+\end{enumerate}
+
+Então, considerando as condições anteriores, existem apenas cinco
+classes de robôs dotados de rodas, correspondentes a cinco pares de
+valores para $\delta_m$ e $\delta_s$, de acordo com a Tabela \ref{tabdeltas} a seguir.
+\begin{table}[h]
+\caption{\it Valores aceitáveis para $\delta_m$ e $\delta_s$.}
+\label{tabdeltas}
+\begin{center}\begin{tabular}{| r | r r r r r |}
+\hline
+$\delta_m$ & 3 & 2 & 2 & 1 & 1 \\
+\hline $\delta_s$ & 0 & 0 & 1 & 1 & 2 \\
+\hline
+\end{tabular}\end{center}
+\end{table}
+
+Na sequência, cada estrutura será denominada {\em robô móvel da
+classe ($\delta_m,\delta_s$)}.
+
+As principais características de cada classe serão agora
+explicitadas.
+\begin{itemize}
+\item {\bf Classe (3,0)} $\delta_m=\dim({\cal
+N}\{C^*_1(\beta_c)\})=3$, e $\delta_s=0$. Estes robôs não possuem
+rodas convencionais fixas ($N_f=0$) e rodas orientáveis centradas
+($N_c=0$). São os chamados robôs {\em omnidirecionais}, pois têm
+uma completa mobilidade no plano, significando que podem se mover
+para qualquer ponto sem a necessidade de se reorientar. Em
+contraste, as outras quatro classes de robôs possuem uma mobilidade
+restrita ($\delta_m\leq3$). Um exemplo deste tipo de robô é
+mostrado na Figura \ref{omni}\footnote{foto retirada de {\tt
+http://www.acroname.com} em dezembro de 2003.}.
+
+\begin{figure}[tb]\begin{center}
+    \includegraphics[width=65mm]{Figuras/omni.eps}
+    \caption{\it Exemplo de um robô omnidirecional, com três rodas universais.}
+    \label{omni}
+\end{center}\end{figure}
+
+\item {\bf Classe (2,0)} $\delta_m=\dim({\cal
+N}\{C^*_1(\beta_c)\})=\dim({\cal N}\{C_{1f}\})=2$, e $\delta_s=0$.
+Estes robôs não possuem nenhuma roda orientável centrada
+($N_c=0$), e possuem ou uma roda convencional fixa ou várias rodas
+convencionais fixas em um eixo comum de rotação. Esta classe de robô é bastante comum na literatura, onde geralmente são utilizados robôs comacionamento diferencial.
+
+\item {\bf Classe (2,1)} $\delta_m=\dim({\cal
+N}\{C^*_1(\beta_c)\})=\dim({\cal N}\{C_{1c}(\beta_c)\})=2$, e
+$\delta_s=1$. Estes robôs não possuem rodas convencionais fixas
+($N_f=0$) e possuem pelo menos uma roda orientável centrada
+($N_c\geq1$). Se há mais de uma roda orientável centrada, as
+orientações devem ser coordenadas de modo que
+$\rho\{C_{1c}(\beta_c)\}=\delta_s=1$.
+
+\item {\bf Classe (1,1)} $\delta_m=\dim({\cal
+N}\{C^*_1(\beta_c)\})=1$, e $\delta_s=1$. Este tipo de robô possui
+uma ou várias rodas convencionais fixas em um eixo comum de
+rotação. Possuem também uma ou várias rodas orientáveis centradas,
+com a condição que uma destas não está localizada no eixo das
+rodas convencionais fixas e as suas orientações devem ser
+coordenadas de forma que $\rho\{C_{1c}(\beta_c)\}=\delta_s=1$. A
+velocidade $\dot{\xi}(t)$ pertence a uma distribuição
+unidimensional parametrizada pelo ângulo de orientação de alguma
+roda orientável centrada. Um exemplo é mostrado na Figura
+\ref{piteco} \cite{chaves1}.
+
+\item {\bf Classe (1,2)} $\delta_m=\dim({\cal
+N}\{C^*_1(\beta_c)\})=\dim({\cal N}\{C_{1c}(\beta_c)\})=1$, e
+$\delta_s=2$. Este tipo de robô não possui roda convencional fixa
+($N_f=0$). Possui pelo menos duas rodas orientáveis centradas
+($N_c\geq2$). Se há mais que duas rodas orientáveis centradas, as
+orientações destas rodas devem ser coordenadas de forma que
+$\rho\{C_{1c}(\beta_c)\}=\delta_s=2$. A velocidade $\dot{\xi}(t)$
+pertence a uma distribuição unidimensional parametrizada pela
+orientação de duas rodas orientáveis centradas arbitrariamente
+escolhidas.
+\end{itemize}
+
+\begin{figure}[ttt]\begin{center}
+    \includegraphics[width=70mm]{Figuras/piteco.eps}
+    \caption{\it Exemplo de um robô do tipo (1,1).}
+    \label{piteco}
+\end{center}\end{figure}
+
+
+
+%---------------------------------------------------------------
+\section{Modelo cinemático de postura}
+Foi visto que, qualquer que seja o tipo do robô, a velocidade
+$\dot{\xi}(t)$ pertence a uma distribuição $\Delta_c$ de dimensão
+($3\times\delta_m$), definida como
+\[
+\dot{\xi}(t) \in \Delta_c \triangleq span\{\col
+\left(R^O_C\Sigma(\beta_c)\right)\},\quad\forall t,
+\]
+onde as colunas da matriz $\Sigma(\beta_c)$ formam uma base para o
+núcleo de $[C^*_1(\beta_c)]$, ou seja, ${\cal
+N}\{[C^*_1(\beta_c)]\}=span\{\col(\Sigma(\beta_c))\}$ e lembrando
+que $(R^C_O)^{-1}=(R^C_O)^T=R^O_C$. Então, para todo $t$, existe
+um vetor variante no tempo $\eta(t)$, de dimensão
+($1\times\delta_m$), tal que:
+\begin{equation}\label{xidot1}
+\dot{\xi}(t) = R^O_C\Sigma(\beta_c)\eta(t)
+\end{equation}
+
+A dimensão da distribuição $\Delta_c$ e do vetor $\eta(t)$ é o
+grau de mobilidade $\delta_m$ do robô. Para o caso onde o robo não
+possui rodas orientáveis centradas ($\delta_s$=0), a matriz
+$\Delta$ é constante e a expressão \req{xidot1} reduz-se a
+\begin{equation}\label{xidot2}
+\dot{\xi}(t) = R^O_C\Sigma\eta(t)
+\end{equation}
+
+No caso em que $\delta_s\geq1$, a matriz $\Delta$ depende
+explicitamente das coordenadas angulares $\beta_c$ e a expressão
+\req{xidot1} pode ser aumentada, como segue:
+\begin{align}
+\dot{\xi}(t)     &= R^O_C\Sigma(\beta_c)\eta(t) \label{xidot3} \\
+\dot{\beta_c}(t) &= \zeta(t) \label{betadot1}
+\end{align}
+
+As expressões \req{xidot2} ou \req{xidot3}--\req{betadot1} podem
+ser pensadas como uma representação em espaço de estados do
+sistema (chamado {\em modelo cinemático de postura}), com as
+coordenadas de postura $\xi$ e possivelmente as coordenadas
+angulares $\beta_c$ como variáveis de estado, enquanto $\eta$ e
+$\zeta$ podem ser interpretadas como entradas de controle.
+Entretanto, esta representação precisa ser tomada com cautela,
+pois na verdade as entradas de controle serão os torques
+fornecidos aos motores. O modelo cinemático em espaço de estados é
+portanto apenas um subsistema do modelo dinâmico geral, que será
+apresentado mais adiante.
+
+Considerando então o vetor de estados $z \triangleq [ \xi ~~
+\beta_c ]^T$ e o vetor de entrada $u \triangleq [ \eta ~~ \zeta
+]^T$, pode-se reescrever \req{xidot3}--\req{betadot1} na seguinte
+forma compacta:
+\begin{equation}\label{pkm}
+\dot{z} = B(z)u,
+\end{equation}
+onde
+\[ B(z) \triangleq \left[ \begin{array}{cc}
+R^O_C\Sigma(\beta_c) & 0 \\ 0 & I
+\end{array} \right], \]
+onde $I$ é uma matriz identidade.
+
+O modelo cinemático de postura para cada tipo de robô móvel é
+mostrado abaixo.
+
+\begin{itemize}
+\item {\bf Classe (3,0)}:
+\begin{equation*}
+\left[\begin{array}{c} \dot{x} \\ \dot{y} \\ \dot {\theta}
+\end{array}\right] = \left[\begin{array}{ccc}
+\cos\theta & -\sin\theta & 0 \\ \sin\theta & \cos\theta & 0 \\
+0&0&1 \end{array}\right]\left[\begin{array}{c}
+\eta_1\\\eta_2\\\eta_3
+\end{array}\right], \quad \Sigma = I
+\end{equation*}
+\item {\bf Classe (2,0)}:
+\begin{equation*}
+\left[\begin{array}{c} \dot{x} \\ \dot{y} \\ \dot{\theta}
+\end{array}\right] = \left[\begin{array}{cc}
+\cos\theta & 0 \\ \sin\theta & 0 \\
+0&1 \end{array}\right]\left[\begin{array}{c} \eta_1\\\eta_2
+\end{array}\right], \quad \Sigma =
+\left[\begin{array}{cc}1&0\\0&0\\0&1\end{array}\right]
+\end{equation*}
+\item {\bf Classe (2,1)}:
+\begin{equation*}
+\left[\begin{array}{c} \dot{x} \\ \dot{y} \\ \dot {\theta} \\
+\dot{\beta}_c \end{array}\right] = \left[\begin{array}{cccc}
+-\sin(\theta+\beta_c) & 0&0 \\ \cos(\theta+\beta_c) &0&0 \\
+0&1&0\\0&0&1 \end{array}\right]\left[\begin{array}{c}
+\eta_1\\\eta_2\\\zeta_1 \end{array}\right], \quad \Sigma(\beta_c)
+= \left[\begin{array}{cc} -\sin\beta_{c1} & 0 \\ \cos\beta_{c1} &
+0 \\ 0&1 \end{array}\right]
+\end{equation*}
+\item {\bf Classe (1,1)}\footnote{$b$ é a distância
+entre o centro da roda e o centro de rotação do corpo do robô.
+Veja Figura \ref{robo1}.}:
+\begin{equation*}
+\left[\begin{array}{c} \dot{x} \\ \dot{y} \\ \dot {\theta} \\
+\dot{\beta}_c \end{array}\right] = \left[\begin{array}{cc}
+-b\sin\theta\sin\beta_c & 0 \\b\cos\theta\sin\beta_c & 0 \\
+\cos\beta_c & 0 \\ 0&1
+\end{array}\right]\left[\begin{array}{c}\eta_1\\\zeta_1
+\end{array}\right], \quad \Sigma(\beta_c) = \left[\begin{array}{c}
+0\\b\sin\beta_c\\\cos\beta_c \end{array}\right]
+\end{equation*}
+\item {\bf Classe (1,2)}:
+\begin{multline*}
+\left[\begin{array}{c} \dot{x} \\ \dot{y} \\ \dot {\theta} \\
+\dot{\beta}_{c1} \\ \dot{\beta}_{c2} \end{array}\right] =
+\left[\begin{array}{ccc}
+-b[\sin\beta_{c1}\cos(\theta+\beta_{c2})+\sin\beta_{c2}\sin(\theta+\beta_{c1})] & 0&0 \\
+b[\sin\beta_{c1}\cos(\theta+\beta_{c2})+\sin\beta_{c2}\cos(\theta+\beta_{c1})] & 0&0 \\
+\sin(\beta_{c2}-\beta_{c1}) &0&0 \\ 0&1&1 \\ 0&0&1
+\end{array}\right]\left[\begin{array}{c}\eta_1\\\zeta_1\\\zeta_2
+\end{array}\right] \\ \Sigma(\beta_c) = \left[\begin{array}{c}
+-2b\sin\beta_{c1}\sin\beta_{c2}, \\ b\sin(\beta_{c1}+\beta_{c2}) \\
+\sin(\beta_{c2}-\beta_{c1}) \end{array}\right]
+\end{multline*}
+\end{itemize}
+
+Para todo o robô móvel não degenerado, sempre é possível escolher
+um ponto de referência $C$ e uma base \{$X_c, Y_c$\} de tal modo
+que o modelo cinemático de postura corresponda a um dos modelos
+acima, como segue.
+\begin{itemize}
+\item Para um robô da Classe (3,0), o ponto $C$ e a base \{$X_c,
+Y_c$\} podem ser escolhidos arbitrariamente; \item Para um robô da
+Classe (2,0), $C$ é escolhido como um ponto do eixo comum das
+rodas fixas, com $X_c$ ao longo deste eixo; \item Para um robô da
+Classe (2,1), $C$ é escolhido como o centro de alguma das rodas
+orientáveis centradas, com \{$X_c, Y_c$\} escolhida
+arbitrariamente; \item Para um robô da Classe (1,1), $C$ é
+escolhido na intersecção do eixo das rodas fixas e da menor reta
+ligando este eixo e o centro de uma das rodas orientáveis
+centradas; \item Para um robô da Classe (1,2), escolhe-se duas
+rodas orientáveis centradas. $C$ está a meia distância do centro
+destas duas rodas, com $X_c$ alinhado ao longo da linha que une os
+dois centros. $b$ é a distância entre o centro de uma destas rodas
+e o ponto $C$.
+\end{itemize}
+
+O modelo cinemático de postura da equação \req{pkm} permite uma
+melhor análise da {\em manobrabilidade} de cada classe de robô
+móvel. Em face disto, é feita a seguinte definição:
+\begin{definicao}\label{deltaM} ~\\
+O grau de manobrabilidade $\delta_M$ é o número de graus de
+liberdade que podem ser manipulados pelas entradas $\eta$ e
+$\zeta$, e é calculado como:
+\[ \delta_M = \delta_m + \delta_s \]\fimdef
+\end{definicao}
+
+Dois robôs com o mesmo $\delta_M$, mas diferentes $\delta_m$, não
+são equivalentes. Para robôs com $\delta_M=3$, é possível alocar o
+centro instantâneo de rotação ({\em CIR}) livremente, como é o
+caso dos robôs omnidirecionais (Figura \ref{omni}), os quais
+possuem máxima manobrabilidade. Similarmente, um robô com mesmo
+$\delta_m$, mas diferentes $\delta_M$, não são equivalentes.
+
+\subsubsection{Propriedades do modelo cinemático de postura}
+Serão mostradas agora importantes propriedades do modelo cinemático de postura (equação \ref{pkm}). Para maiores detalhes, consultar o Apêndice \ref{appa}. 
+
+{\bf Irredutibilidade}: \\
+Um modelo em espaço de estados é
+{\em redutível} se existe uma transformação de coordenadas de
+forma que alguma das novas coordenadas seja nula ao longo da
+trajetória do sistema. No caso do sistema não-linear \req{pkm}, a
+redutibilidade está relacionada com o conjunto involutivo
+$\bar{\Delta}$ da distribuição $\Delta$, expressa em
+coordenadas locais como $\Delta(z) \triangleq span\{col(B(z))\}$,
+e pelo Teorema de Frobenius, o sistema é redutível apenas se
+$\dim(\bar{\Delta}) \leq \dim(z)$. Com base nisto, tem-se a
+seguinte propriedade relacionada com a irredutibilidade do modelo
+cinemático de postura dos robôs móveis:
+\begin{propriedade} ~\\
+Para o modelo descrito por $\dot{z}=B(z)u$, tem-se que:
+\begin{enumerate}\label{pirred}
+\item[a)] a matriz $B(z)$ tem posto completo, isto é,
+$\rho\{B(z)\}=\delta_m+\delta_s$, $\forall z$; \item[b)] a
+distribuição involutiva $\bar{\Delta}
+\triangleq inv(span\{col\left(B(z)\right)\})$ possui máxima
+dimensão constante dada por $\dim(\bar{\Delta}(z))=3+\delta_s$,
+$\forall z$.
+\end{enumerate}
+Com base nesta propriedade, tem-se que o modelo cinemático de
+postura para robôs móveis é irredutível.\fimpropr
+\end{propriedade}
+
+{\bf Controlabilidade}: \\
+Seja uma aproximação linear em torno de um estado de equilíbrio
+arbitrário $\bar{z}\triangleq(\bar{\xi},\bar{\beta}_c)$, com
+velocidade nula ($\bar{u}=0$). Tem-se assim a seguinte
+propriedade:
+\begin{propriedade} ~\\
+O posto de controlabilidade de um modelo cinemático de postura
+$\dot{z}=B(z)u$ nas vizinhanças de um ponto de equilíbrio é
+$\delta_m+\delta_s$. De fato, a aproximação linear em torno de
+($\bar{z},\bar{u}=0$) é escrita como:
+\[ \frac{d}{dt}(z-\bar{z})=B(\bar{z})u, \]
+e segue-se que a matriz de controlabilidade reduz-se a
+$B(\bar{z})$, que tem posto $\delta_m+\delta_s$, $\forall
+\bar{z}$, conforme a Propriedade \ref{pirred}.\fimpropr
+\end{propriedade}
+
+Assim, tem-se que o modelo cinemático de postura $\dot{z}=B(z)u$
+de robôs móveis é sempre controlável, visto que a distribuição
+involutiva $\bar{\Delta}(z)$ tem posto máximo constante, o que
+implica na controlabilidade para sistemas sem
+deriva\footnote{vide Apêndice \ref{appa} para maiores detalhes em geometria diferencial.}.
+
+Na prática, isto significa que um robô móvel pode ser {\em guiado}
+de qualquer postura inicial $\xi_0$ para qualquer postura final
+$\xi_f$, em um tempo finito, manipulando as entradas de controle
+$u=[\eta~~\zeta]^T$. Isto vale inclusive para robôs com mobilidade
+restrita ($\delta_m \leq 3$).
+
+{\bf Linearizabilidade}: \\
+Considera-se agora a existência de uma realimentação de controle
+$u(z)$ que {\em lineariza} o robô em um estado particular $z^*$.
+
+Para robôs omnidirecionais, a lei de controle
+\[ u(z)=B(z)^{-1}A(z-z^*), \]
+com $A$ arbitrária e {\em Hurwitz}\footnote{uma matriz é {\em
+Hurwitz} quando todos os autovetores desta matriz têm parte real
+negativa.}, é uma lei de controle suave e linearizante que
+estabiliza o estado do robô a $z^*$ exponencialmente. Note que,
+para robôs omnidirecionais, a matriz $B(z)$ é sempre inversível.
+De fato, o sistema em malha fechada é escrito como
+\[ \frac{d}{dt}(z-z^*)=A(z-z^*) \]
+
+Robôs móveis com mobilidade restrita
+($\delta_M\leq3$) não são completamente ({\em full state})
+linearizáveis. Entretanto, pode-se definir um subsistema que pode ser
+linearizável por uma realimentação estática de controle (vide exemplo prático na Seção \ref{kinlin}, ou ainda quando o modelo cinemático de postura é completamente linearizável
+por realimentação dinâmica de estados (Seção \ref{dinlin}. Assim, tem-se as seguintes
+propriedades:
+\begin{propriedade}\label{plin} ~
+\begin{enumerate}
+\item[a)] A dimensão do maior subsistema do modelo cinemático de
+postura que pode ser linearizável por realimentação estática é
+$\delta_m+\delta_s$; \item[b)] O modelo cinemático de postura de
+robôs com mobilidade restrita é um {\em sistema flat}
+diferenciável . Isto implica que este sistema é completamente
+linearizável por realimentação dinâmica, com $\eta$ entradas não
+nulas.
+\end{enumerate}\fimpropr
+\end{propriedade}
+
+{\bf Estabilizabilidade}: \\
+Outro problema interessante é de se ter uma lei de controle suave
+que faz com que o robô vá de um estado $z_0=[\xi_0~~\beta_{c0}]^T$
+a um dado equilíbrio $\bar{z}=[\bar{\xi}~~\bar{\beta}]^T$, e fazer
+com que este equilíbrio seja atrativo e estável. Novamente, para
+robôs omnidirecionais o resultado é trivial, mas para robôs com
+mobilidade têm-se as seguintes propriedades:
+\begin{propriedade} ~
+\begin{enumerate}
+\item[a)] Para robôs com mobilidade restrita o modelo cinemático
+de postura não é estabilizável por uma realimentação de estados
+contínua, estática e invariante $u(z)$.
+
+De fato, a condição necessária de Brockett \cite{brockett1} não é
+satisfeita: o mapeamento $(z,u)\rightarrow B(z)u$ não leva à
+vizinhança do equilíbrio $\bar{z}=[\bar{\xi}^T~~\bar{\beta}^T_c]^T$,
+$\bar{u}=0$; \item[b)] O modelo cinemático de postura é
+estabilizável por uma realimentação estática contínua e {\em
+variante no tempo} $u(z,t)$.
+\end{enumerate}\fimpropr
+\end{propriedade}
+
+
+
+%---------------------------------------------------------------
+\section{Modelo cinemático de configuração}
+
+Até agora, foram abordadas apenas as restrições relativas às rodas
+convencionais fixas e orientáveis centradas, expressas no sistema
+\req{c1rxi}. O restantes das restrições é agora usado para obter
+equações para as velocidades angulares e de rotação,
+$\dot{\beta}_{oc}$ e $\dot{\varphi}$, que não aparecem no modelo
+cinemático de postura \req{xidot3}--\req{betadot1}.
+
+De \req{genrest1}--\req{genrest2}, tem-se que:
+\begin{align}
+\dot{\beta}_{oc}&=D(\beta_{oc})\Sigma(\beta_c)\eta \label{betadot2} \\
+\dot{\varphi}&=E(\beta_c,\beta_{oc})\Sigma(\beta_c)\eta,\label{phidot1}
+\end{align}
+onde
+\begin{align*}
+D(\beta_{oc}) &\triangleq -C^{-1}_{2oc}C_{1oc}(\beta_{oc}) \\
+E(\beta_c,\beta_{oc}) &\triangleq -J^{-1}_2J_1(\beta_c,\beta_{oc})
+\end{align*}
+
+Definindo as coordenadas de configuração como:
+\[
+q \triangleq [\xi^T ~~ \beta^T_c ~~ \beta^T_{oc} ~~ \varphi^T ]^T,
+\]
+pode-se escrever uma expressão compacta para $\dot{q}$, de
+\req{xidot3}, \req{betadot1}, \req{betadot2} e \req{phidot1}.
+Tem-se então o seguinte {\em modelo cinemático de configuração}:
+\begin{equation}\label{qdot2}
+\dot{q} = S(q)u,
+\end{equation}
+onde
+\begin{equation}
+S(q) \triangleq \left[ \begin{array}{cc}
+R^O_C\Sigma(\beta_c) & 0 \\
+0 & I \\
+D(\beta_{oc})\Sigma(\beta_c) & 0 \\
+E(\beta_c,\beta_{oc})\Sigma(\beta_c) & 0 \\
+\end{array}\right], \quad u \triangleq \left[
+\begin{array}{c} \eta \\ \zeta \\ \end{array}\right]
+\end{equation}
+
+De forma análoga à desenvolvida anteriormente para o modelo
+cinemático de postura, a redutibilidade de \req{qdot2} está
+diretamente relacionada à dimensão do conjunto involutivo da
+distribuição $\Delta_1$, tal que:
+\[ \Delta_1(q) \triangleq  span\{col (S(q))\} \]
+
+Então, tem-se:
+\begin{align*}
+\delta_m+N_c &= \dim(\Delta_1) \leq \dim(inv(\Delta_1)) \leq \dim(q) \\
+             &= 3+N_c+N_{oc}+N
+\end{align*}
+
+Com isto, formula-se a seguinte definição:
+\begin{definicao}\label{nholon} ~\\
+O {\em grau de não holonomicidade} $M$ de um robô móvel é dado
+por:
+\[ M = \dim(inv(\Delta_1))-(\delta_m+N_c) \]\fimdef
+\end{definicao}
+
+Este número representa  a quantidade de restrições de velocidade
+que não são integráveis e não podem ser eliminadas. Este número
+depende particularmente da estrutura, e não tem relação com a
+classe do robô. Portanto, dois robôs pertencentes a uma mesma
+classe podem ter diferentes graus de não holonomicidade.
+
+Por outro lado, para um conjunto particular de coordenadas
+generalizadas, o número de equações que podem ser eliminadas por
+integração (restrições holonômicas) é igual à diferença entre
+$\dim(q)$ e $\dim(inv(\Delta_1))$.
+
+Assim, tem-se a seguinte propriedade:
+\begin{propriedade} ~
+\begin{enumerate}
+\item[a)] o modelo cinemático de configuração $\dot{q}=S(q)u$ de
+um robô móvel dotado de rodas é não holonômico, isto é, $M>0$,
+para todas as classes de robôs; \item[b)] O modelo cinemático de
+configuração de um robô móvel é redutível, isto é,
+$\dim(q)>\dim(inv(\Delta_1))$, para todas as classes de robôs.
+\end{enumerate}\fimpropr
+\end{propriedade}
+
+
+
+%---------------------------------------------------------------
+\section{Modelo dinâmico de configuração}
+O modelo dinâmico de configuração descreve as relacões dinâmicas
+existentes entre as coordenadas de configuração $\xi$, $\beta_c$,
+$\beta_{oc}$ e $\varphi$ e os torques desenvolvidos pelos motores.
+Este modelo é constituido de seis tipos de equações de estados:
+uma para cada coordenada de configuração $\xi$, $\beta_c$,
+$\varphi$, $\beta_{oc}$, e uma para cada coordenada interna,
+$\eta$ e $\zeta$.
+
+É assumido que o robô é equipado de motores que forçam a
+orientação das rodas orientáveis (coordenadas angulares $\beta_c$
+e $\beta_{oc}$) e a rotação das rodas (coordenadas $\varphi$). Os
+torques providos aos motores são: $\tau_\varphi$ para a rotação
+das rodas, $\tau_{oc}$ para a orientação das rodas não centradas e
+$\tau_c$ para a orientação das rodas centradas.
+
+Usando o formalismo de Lagrange, a dinâmica de robôs móveis é
+descrita pelas seguintes ($3+N_{oc}+N+N_c$) equações de Lagrange:
+\begin{align}
+\frac{d}{dt}\left(\frac{\partial T}{\partial \dot{\xi}}\right) -
+\frac{\partial T}{\partial \xi} &=
+R^O_CJ_1^T(\beta_c,\beta_{oc})\lambda+R^O_CC_1^T(\beta_c,\beta_{oc})\mu \label{lagr1}\\
+\frac{d}{dt}\left(\frac{\partial T}{\partial \beta_{oc}}\right) -
+\frac{\partial T}{\partial \beta_{oc}} &= C_2^T\mu+\tau_{oc} \label{lagr2}\\
+\frac{d}{dt}\left(\frac{\partial T}{\partial
+\dot{\varphi}}\right)-\frac{\partial T}{\partial \varphi} &=
+J_2^T\lambda+\tau_\varphi \label{lagr3} \\
+\frac{d}{dt}\left(\frac{\partial T}{\partial
+\dot{\beta_c}}\right)-\frac{\partial T}{\partial \beta_c} &=
+\tau_c, \label{lagr4}
+\end{align}
+onde $T$ representa a energia cinética e $\lambda$, $\mu$
+representa os coeficientes de Lagrange associados às restrições
+\req{genrest1} e \req{genrest2}, respectivamente.
+
+Para eliminar os coeficientes de Lagrange, as três primeiras
+equações, \req{lagr1}, \req{lagr2} e \req{lagr3}, são
+pré-multiplicadas por $\Sigma^T(\beta_c)R^C_O$,
+$\Sigma^T(\beta_c)D(\beta_{oc})$ e
+$\Sigma^T(\beta_c)E(\beta_c,\beta_{oc})$, respectivamente e
+somadas. Então, das expressões \req{betadot2} e \req{phidot1}, tem-se que:
+\begin{align}
+\Sigma^T(\beta_c)R^C_O[T]_\xi+D(\beta_{oc})[T]_{\beta_{oc}}+E(\beta_c,\beta_{oc})[T]_\varphi
+&= \Sigma^T(\beta_c)\left\{D^T(\beta_{oc})\tau_{oc}+E^T(\beta_c,\beta_{oc})\tau_\varphi\right\} \label{lagr5}\\
+[T]_{\beta_c} &= \tau_c \label{lagr6}
+\end{align}
+com a seguinte notação:
+\[
+[T]_\psi \triangleq \frac{d}{dt}\left(\frac{\partial
+T}{\partial \dot{\psi}}\right)-\frac{\partial T}{\partial \psi}
+\]
+
+A energia cinética de robôs móveis pode ser expressa como:
+\[ T =
+\dot{\xi}^TR^O_C\left[M(\beta_{oc})R^C_O\dot{\xi}+2V(\beta_{oc})\dot{\beta}_{oc}+2W\dot{\beta}_c\right]
++\dot{\beta}_{oc}I_{oc}\dot{\beta}_{oc}+\dot{\varphi}I_\varphi\dot{\varphi}+\dot{\beta}_cI_c\dot{\beta}_c
+\]
+com definições apropriadas para as matrizes $M(\beta_{oc})$,
+$V(\beta_{oc})$, $W$, $I_{oc}$, $I_\varphi$ e $I_c$, que são
+dependentes da distribuição de massa e dos momentos de inércia dos
+vários corpos rígidos (corpo e rodas) que constituem o robô. As
+equações de estado para $\eta$ e $\zeta$ são então obtidas
+substituindo a expressão da energia cinética $T$ nas equações
+dinâmicas \req{lagr5} e \req{lagr6} e eliminando as velocidade
+$\dot{\xi},\dot{\beta}_{oc},\dot{\varphi},\dot{\beta}_c$ e as
+acelerações
+$\ddot{\xi},\ddot{\beta}_{oc},\ddot{\varphi},\ddot{\beta}_c$ com o
+uso das equações cinemáticas \req{xidot3}, \req{betadot1},
+\req{betadot2}, \req{phidot1} e suas derivadas.
+
+O {\em modelo dinâmico de configuração} em espaço de estados de
+robôs móveis tem então a seguinte forma geral:
+
+\begin{align}
+\dot{\xi} &= R^O_C\Sigma(\beta_c)\eta \label{cdm1} \\
+\dot{\beta}_c &= \zeta \label{cdm2} \\
+\dot{\beta}_{oc} &= D(\beta_{oc})\Sigma(\beta_c)\eta \label{cdm3} \\
+H_1(\beta_c,\beta_{oc})\dot{\eta}+\Sigma^T(\beta_c)V(\beta_{oc})\dot{\zeta}+f_1(\beta_c,\beta_{oc},\eta,\zeta)
+&=\Sigma^T(\beta_c)\left[D^T(\beta_{oc})\tau_{oc}+E^T(\beta_c,\beta_{oc})\tau_\varphi\right] \label{cdm4} \\
+V^T(\beta_{oc})\Sigma(\beta_c)\dot{\eta}+I_c\dot{\zeta}+f_2(\beta_c,\beta_{oc},\eta,\zeta) &= \tau_c \label{cdm5} \\
+\dot{\varphi}&=E(\beta_{oc},\beta_c)\Sigma(\beta_c)\eta,\label{cdm6}
+\end{align}
+com
+\begin{multline*}
+H_1(\beta_c,\beta_{oc}) \triangleq \Sigma^T(\beta_c) [
+M(\beta_{oc})+D^T(\beta_{oc})V^T(\beta_{oc})+V(\beta_{oc})D(\beta_{oc})+
+\\ +D^T(\beta_{oc})I_{oc}D(\beta_{oc})+ E^T(\beta_c,\beta_{oc})I_\varphi E(\beta_c,\beta_{oc}) ] \Sigma(\beta_c)
+\end{multline*}
+
+%---------------------------------------------------------------
+\subsubsection{Configuração da motorização}
+Será explicitado agora as configurações de motores que levam à
+total manobrabilidade de robôs móveis, quando este número é
+limitado. No modelo dinâmico de configuração apresentado em
+\req{cdm1}--\req{cdm6}, os vetores $\tau_\varphi$, $\tau_{oc}$ e
+$\tau_c$ representam os torques que podem ser potencialmente
+aplicados às rodas dos robôs. Entretanto, na prática apenas o
+número mínimo de motores será usado, o que significa que algumas
+das componentes de $\tau_\varphi$, $\tau_{oc}$ e $\tau_c$ serão
+nulas.
+
+Todas as rodas orientáveis centradas precisam de um motor para a
+sua orientação, do contrário, estas desempenhariam apenas a função
+de rodas fixas. Conseqüentemente, o vetor $\tau_c$ não pode
+possuir componentes identicamente nulos. Ainda, para garantir uma
+total mobilidade, $N_m$ motores adicionais (com $N_m>\delta_m$)
+para a rotação e/ou orientação de algumas das rodas seriam
+necessários. O vetor de torques desenvolvidos por estes motores é
+denotado como $\tau_m$ e tem-se:
+\begin{equation}\label{taum}
+\left[\begin{array}{c} \tau_{oc} \\ \tau_\varphi \\
+\end{array}\right]=P\tau_m,
+\end{equation}
+onde $P$ é uma matriz de dimensão ($(N_{oc}+N)\times N_m$), a qual
+seleciona as componentes de $\tau_{oc}$ e $\tau_\varphi$
+efetivamente utilizadas  como entradas de controle.
+
+É apresentada agora exemplos para a mínima motorização admissível
+para as várias classes de robôs móveis:
+\begin{itemize}
+    \item {\bf Classe (3,0)}. Por exemplo, o robô omnidirecional com
+    três rodas universais, apresentado na Figura \ref{omni}. Neste
+    caso, a matriz $B$ em \req{pkm} é constante a reduzida a:
+    \[
+    B=\Sigma^TE^T=-J_3^{-1}J_1=-\frac{1}{r}\left[\begin{array}{ccc}-\frac{\sqrt{3}}{2}&\frac{1}{2}&b
+    \\ 0&-1&b \\ \frac{\sqrt{3}}{2}&\frac{1}{2}&b \end{array}\right], \]
+    que é não singular. Conclui-se que a mínima motorização
+    admissível é equipar cada roda com um motor.
+    \item {\bf Classe (2,0)}. Por exemplo, um robô com duas rodas
+    fixas e uma roda orientável não centrada. A matriz
+    $B(\beta_{oc})$ é da forma:
+    \[ B(\beta_{oc3}) = \left[\begin{array}{cccc} \frac{1}{d}\cos\beta_{oc3} & -\frac{1}{r} & \frac{1}{r} & -\frac{1}{r}\sin\beta_{oc3} \\
+    -\frac{1}{d}(d+b\sin\beta_{oc3}) & \frac{b}{r} & -\frac{b}{r} &
+    -\frac{b}{r}\cos\beta_{oc3}\end{array}\right] \]
+
+    Várias configurações são possíveis. Por exemplo,
+    uma solução bastante comum são dois motores para a rotação das
+    rodas fixas. Neste caso a matriz $P$ em \req{taum} seria:
+    \[ P= \left[\begin{array}{cc} 0&0 \\ 1&0 \\ 0&1 \\ 0&0 \end{array}\right]\]
+    \item {\bf Classe (2,1)}. Por exemplo, um robô com uma roda
+    orientável centrada e duas rodas orientáveis não centradas.
+    Neste caso, é necessário um motor para a orientação da roda
+    centrada. A matriz $B(\beta_c,\beta_{oc})$ é da forma:
+    \[ B(\beta_c,\beta_{oc}) = \Sigma^T(\beta_c)\left[D^T(\beta_{oc}) ~~ E^T(\beta_c,\beta_{oc})\right], \]
+    com
+    \[ \Sigma^T(\beta_c) = \left[\begin{array}{ccc} 0&b\sin\beta_{c3}&\cos\beta_{c3}\\
+    b & 0 & -1 \end{array}\right], D^T(\beta_{oc})=\left[\begin{array}{cc} \cos\beta_{oc1} & -\cos\beta_{oc3} \\
+    \sin\beta_{oc1} & \sin\beta_{oc2} \\ d+b\sin\beta_{oc1} & d+b\sin\beta_{oc2}\end{array}\right] \]
+    e \[ E^T(\beta_c,\beta_{oc})=-\frac{1}{r}\left[\begin{array}{ccc} \cos\beta_{c3} & -\sin\beta_{oc1} & b\sin\beta_{oc2}\\
+    \sin\beta_{c3} & \cos\beta_{oc1} & -\cos\beta_{oc2} \\ b\cos\beta_{c3} & b\cos\beta_{oc1} & b\cos\beta_{oc2}
+    \end{array}\right] \]
+
+    As colunas 1 e 3 de $B(\beta_c,\beta_{oc})$ são independentes
+    se $d>b\sqrt{2}$. O mesmo vale para as colunas 2 e 3. então
+    duas motorizações admissíveis são obtidas usando um segundo
+    motor para a rotação da roda centrada e um terceiro motor para
+    a orientação de uma das rodas não centradas. A matriz $P$ seria então:
+    \[ P=\left[\begin{array}{cc}
+    1&0\\0&0\\0&1\\0&0\\0&0\\\end{array}\right] \]
+    ou \[ P=\left[\begin{array}{cc}
+    0&0\\1&0\\0&1\\0&0\\0&0\\\end{array}\right], \]
+    dependendo do caso.
+
+    \item {\bf Classe (1,1)}. Por exemplo, um robô com duas rodas
+    fixas e uma roda orientável centrada. Neste caso, é necessário
+    um motor para a orientação da roda centrada. A matriz
+    $B(\beta_c)$ reduz-se a
+    \[ B(\beta_c)=\left[\sin\beta_{c3}+\cos\beta_{c3}~~-\sin\beta_{c3}+\cos\beta_{c3}~~1\right] \]
+
+    Como $\delta_m=1$, um segundo motor é necessário para a
+    rotação de uma das rodas fixas. assim, a matriz $P$ é
+    $P=\left[0~~0~~1\right]^T$.
+
+    \item {\bf Classe (1,2)}. Por exemplo, um robô com duas rodas
+    orientáveis centradas e uma roda orientável não centrada. Dois
+    motores são necessários para a orientação das rodas centradas.
+    A matriz $B(\beta_c,\beta_{oc})$ é da forma
+    \[ B(\beta_c,\beta_{oc}) = \Sigma^T(\beta_c)\left[D^T(\beta_{oc}) ~~ E^T(\beta_c,\beta_{oc})\right], \]
+    com
+    \[ \Sigma(\beta_c)=\left[\begin{array}{c} -2b\sin\beta_{c1}\sin\beta_{c2}\\
+    b\sin(\beta_{c1}+\beta_{c2})\\2\sin\beta_{c2}\cos\beta_{c1}-\sin(\beta_{c1}+\beta_{c2})\\
+    \end{array}\right], D^T(\beta_{oc})=\left[\begin{array}{c}
+    -d^{-1}\sin\beta_{oc3}\\d^{-1}\cos\beta_{oc3}\\-1-bd^{-1}\sin\beta_{oc3}
+    \end{array}\right] \]
+    e \[ E^T(\beta_c,\beta_{oc})=-\frac{1}{r}\left[\begin{array}{ccc}
+    -\sin\beta_{c1} & \sin\beta_{c2} & \cos\beta_{oc3}\\
+    \cos\beta_{c1} & -\cos\beta_{c2} & \sin\beta_{oc3} \\
+    b\cos\beta_{c1} & b\cos\beta_{c2} & b\cos\beta_{oc3} \\
+    \end{array}\right] \]
+
+    Como $\delta_m=1$, é suficiente que $B(\beta_c,\beta_{oc})$
+    tenha apenas uma coluna diferente de zero para todas as
+    possíveis configurações. Mas como todas as colunas são não
+    nulas, são necessários ainda dois motores adicionais para
+    as rotações das rodas centradas. A matriz $P$ será
+    \[ P=\left[\begin{array}{cc}0&0\\1&0\\0&1\\0&0\\ \end{array}\right] \]
+\end{itemize}
+
+Finalmente, chega-se à seguinte tabela, sumarizando os resultados
+acima:
+\begin{table}
+\caption{\it Configuração da motorização para as diversas classes de robôs móveis consideradas.}
+\begin{center}\begin{tabular}{|c|c|}
+\hline
+{\em Classe} & {\em Número de motores} \\
+($\delta_m,\delta_s$) & $N_m+N_c$ \\
+\hline
+(3,0) & 3 ou 4 \\ (2,0) & 2 \\ (2,1) & 3 \\ (1,1) & 2 \\ (1,2) & 4 \\
+\hline
+\end{tabular}\end{center}
+\end{table}
+
+
+
+%---------------------------------------------------------------
+\section{Modelo dinâmico de postura}
+
+O modelo dinâmico de configuração visto anteriormente pelas
+equações \req{cdm1}--\req{cdm6} pode ser reescrito de uma forma
+mais compacta:
+\begin{align}
+\dot{q} &= S(q)u \label{ccdm1} \\
+H(\beta)\dot{u} + f(\beta,u) &= F(\beta)\tau_0 \label{ccdm2}
+\end{align}
+com as seguintes definições:
+\begin{equation*}
+\beta\triangleq
+\left[\begin{array}{c}\beta_c\\\beta_{oc}\end{array}\right]^T,
+\qquad q\triangleq
+\left[\begin{array}{c}\xi\\\beta\\\varphi\end{array}\right]^T,
+\qquad u\triangleq
+\left[\begin{array}{c}\eta\\\zeta\end{array}\right]^T, \qquad
+H(\beta)\triangleq \left[\begin{array}{cc}
+H_1(\beta_c,\beta_{oc}) & \Sigma^T(\beta_c)V(\beta_{oc}) \\
+V^T(\beta_{oc})\Sigma(\beta_c) & I_c \end{array}\right],
+\end{equation*}
+\begin{equation*}
+f(\beta,u)\triangleq \left[\begin{array}{c} f_1(\beta_c,\beta_{oc},\eta,\zeta) \\
+f_2(\beta_c,\beta_{oc},\eta,\zeta) \end{array}\right], \qquad
+F(\beta)\triangleq \left[\begin{array}{cc} B(\beta_c,\beta_{oc})P & 0 \\
+0 & I \end{array}\right], \qquad
+\tau_0\triangleq\left[\begin{array}{c}\tau_m \\ \tau_c \end{array}
+\right]
+\end{equation*}
+
+Assume-se que a matriz $B(\beta_c,\beta_{oc})P$ é de posto
+completo. Portanto, fica claro que $F(\beta)$ também o é. Esta
+propriedade é importante para a análise do comportamento de robôs
+móveis e também para a síntese de lei de realimentação de
+controle. Através de uma lei de controle estática e suave, é
+possível transformar o modelo em uma forma mais simples, como
+segue.
+\begin{propriedade} ~\\
+O modelo dinâmico de configuração do sistema
+\req{ccdm1}--\req{ccdm2} pode ser reescrito, através de uma
+realimentação estática, suave e invariante no tempo, como:
+\begin{align*}
+\dot{q} &= S(q)u \\
+\dot{u} &= v,
+\end{align*}
+onde $v$ representa um conjunto de $\delta_m$ entradas auxiliares
+de controle.
+
+De fato, segue-se da Propriedade \ref{pirred} que a seguinte
+realimentação é bem definida em todo o espaço de estados:
+\begin{equation}\label{fb1}
+\tau_0=F^\star(\beta)\left[H(\beta)v+f(\beta,u)\right],
+\end{equation}
+onde $F^\star$ denota a inversa à esquerda de $F$.\fimpropr
+\end{propriedade}
+
+No contexto de planejamento de trajetória, fica claro que o
+usuário estará essencialmente interessado em controlar a postura
+do robô (coordenadas $\xi(t)$) através do controle $v$. Neste
+caso, o controle das coordenadas internas $\beta_{oc}$ e $\varphi$
+pode ser ignorado, restringindo a atenção para o seguinte {\em
+modelo dinâmico de postura}:
+\begin{align*}
+\dot{z} &= B(z)u \\
+\dot{u} &= v,
+\end{align*}
+onde $z\triangleq\left[\xi^T~~\beta^T_c\right]^T$ e
+$u\triangleq\left[\eta^T~~\zeta^T \right]^T$.
+
+O modelo dinâmico de postura descreve completamente a dinâmica do
+sistema entre a entrada de controle $v$ e a postura $\xi$.
+Aparentemente, as coordenadas $\beta_{oc}$ e $\varphi$
+desapareceram, mas na verdade elas estão {\em escondidas} na
+realimentação \req{fb1}.
+
+Tem-se assim o seguinte conjunto de propriedades para o modelo
+dinâmico de postura:
+\begin{propriedade} ~
+\begin{enumerate}
+    \item[a)] O modelo dinâmico de postura é genérico e
+    irredutível;
+    \item[b)] O modelo dinâmico de postura é {\em Small Time Locally
+    Controllable}\footnote{vide Apêndice \ref{appa}.};
+    \item[c)] Para robôs com mobilidade restrita, o modelo dinâmico de
+    postura não pode ser estabilizado por uma lei de controle
+    estática, suave e invariante no tempo. Porém, pode ser
+    estabilizável por uma lei de controle estática, suave e {\em
+    variante no tempo}, ou {\em descontínua} e invariante no tempo;
+    \item[d)] A dimensão do maior subsistema do modelo dinâmico de
+    postura linearizável por uma realimentação estática é
+    $2(\delta_m+\delta_s)$. Robôs omnidirecionais são completamente
+    linearizáveis por realimentação de estados;
+    \item[e)] O modelo dinâmico de postura é um sistema {\em flat}
+    diferenciável.
+\end{enumerate}\fimpropr
+\end{propriedade}
+
+
+
+
+%---------------------------------------------------------------
+\chapter{Controle de Robôs Móveis}
+\label{cap4} \thispagestyle{empty}
+
+
+%---------------------------------------------------------------
+\section{Introdução}
+
+Uma vez que sistemas automatizados estão cada vez mais sendo
+usados na indústria, técnicas de controle cada vez mais avançadas
+são necessárias para atender a todos os requisitos existentes. Com
+isso, métodos tradicionais, como controle PID, em muitos casos são
+incapazes de atender a estas necessidades. Desta forma, para que
+se possa obter um ótimo desempenho dos sistemas automatizados, é
+necessária a utilização de estratégias de controle mais
+elaboradas, tais como: {\em controle robusto}, {\em controle
+adaptativo}, {\em controle inteligente}, entre outros
+\cite{siciliano1,chaves1}.
+
+O controle de sistemas mecânicos não holonômicos, como os robôs
+móveis, tem sido objeto de um grande esforço da comunidade
+científica nos últimos anos. A razão para isto se dá basicamente
+pelo seguinte \cite{aguiar1}:
+\begin{itemize}
+\item Existe um grande número de robôs, nas mais variadas
+aplicações, que possuem restrições não holonômicas; \item Há um
+considerável desafio na síntese de leis de controle de sistemas
+não lineares que não podem ser linearizados de maneira
+significativa; \item Conforme Brockett \cite{brockett1}, um
+sistema com restrições não holonômicas não pode ser estabilizado
+em um ponto de equilíbrio, por uma lei de controle suave e
+invariante no tempo.
+\end{itemize}
+
+Além disso, sistemas mecânicos não holonômicos como os robôs móveis
+dotados de rodas da Classe (2,0), por exemplo, possuem dois graus de liberdade para o controle
+(velocidades linear e angular -- quando o modelo a ser controlado
+é cinemático) e três graus de liberdade para o seu posicionamento
+(posição $x$ e $y$ e orientação $\theta$). Portanto, são sistemas
+{\em sub atuados} \cite{kanayama1}. Conforme já visto, robôs da Classe (3,0) possuem restrições holonômicas, as quais podem ser eliminadas do modelo do sistema.
+
+A fim de superar as limitações impostas pelo Teorema de Brockett,
+várias abordagens diferentes foram propostas. Alguns métodos de
+controle abandonam a idéia da estabilização em um ponto e procuram
+obter a convergência a uma trajetória ({\em variedade de
+equilíbrios}). Neste caso, o problema de movimentação entre dois
+pontos é resolvido em duas etapas: primeiro uma trajetória (que
+obedeça as restrições não holonômicas) é calculada {\em off-line}
+e em seguida uma lei de controle é projetada a fim de fazer com
+que o robô siga a trajetória calculada anteriormente
+\cite{lages1}.
+
+\subsubsection{Análise da estabilidade por funções de Liapunov}
+Em vários trabalhos uma análise baseada na teoria da estabilidade
+de Liapunov é utilizada para demostrar a convergência (assintótica
+ou exponencial, local ou global) de uma lei de controle. Exemplos
+são encontrados em \cite{do1,oya1,yang1,kanayama1,dong1}, entre
+outros. A título de ilustração, será mostrada aqui a solução
+aplicada por Fukao et al. em \cite{fukao1}. Define-se um sistema
+de erro que dá a diferença entre a configuração do robô e a
+configuração de referência como:
+\begin{equation*}
+\left[\begin{array}{c}e_1\\e_2\\e_3\end{array}\right] =
+\left[\begin{array}{ccc}\cos\theta&\sin\theta&0\\-\sin\theta&\cos\theta&0\\0&0&1
+\end{array}\right]\left[\begin{array}{c}x_{ref}-x\\y_{ref}-y\\\theta_{ref}-\theta\end{array}\right]
+\end{equation*}
+
+As entradas que levam o vetor $[e_1~~e_2~~e_3]^T$ para zero são
+dadas por:
+\begin{align*}
+v &= v_{ref}\cos e_3+K_1e_1 \\
+w &= w_{ref}+v_{ref}K_2e_2+K_3\sin e_3,
+\end{align*}
+onde $K_1$, $K_2$ e $K_3$ são constantes positivas. A equação
+dinâmica do erro pode ser escrita como:
+\begin{equation*}
+\left[\begin{array}{c}\dot{e}_1\\\dot{e}_2\\\dot{e}_3\end{array}\right]
+= v\left[\begin{array}{c}-1\\0\\0\end{array}\right]+
+w\left[\begin{array}{c}e_2\\-e_1\\-1\end{array}\right] +
+\left[\begin{array}{c}v_{ref}\cos e_3\\v_{ref}\sin
+e_3\\w_{ref}\end{array}\right]
+\end{equation*}
+
+A seguinte função de Liapunov, positiva definida e radialmente
+ilimitada, pode ser usada:
+\[ V = \frac{1}{2}\left(e_1^2+e_2^2\right)+\frac{1-\cos e_3}{K_2} \]
+
+A sua derivada é:
+\[ \dot{V} = e_1\dot{e}_1+e_2\dot{e}_2+\dot{e}_3\frac{\sin e_3}{K_2}
+= -K_1e_1^2-\frac{K_3\sin^2e_3}{K_2} \leq 0 \]
+
+Como $\dot{V}\leq0$, o sistema é assintoticamente estável no
+sentido de Liapunov \cite{khalil1}.
+
+\subsubsection{Transformações canônicas}
+Transformar o sistema em forma encadeada ou de potência têm se
+mostrado uma técnica efetiva para a síntese de leis de controle
+para sistemas mecânicos não holonômicos. Diversos trabalhos
+utilizam uma transformação do modelo cinemático para a forma
+encadeada, como \cite{oya1,wu1,canudas2}. De um modo geral,
+sistemas mecânicos não holonômicos podem ser transformados para as
+formas encadeada ou de potência. Considerando sistemas de ordem
+$n$ com duas entradas, estes podem ser descritos pela seguinte
+forma encadeada \cite{teel1}:
+\begin{align*}
+\dot{x}_1 &= u_1 \\
+\dot{x}_2 &= u_2 \\
+\dot{x}_3 &= x_2u_1 \\
+\dot{x}_4 &= x_3u_1 \\
+\vdots \\
+\dot{x}_n &= x_{n-1}u_1
+\end{align*}
+ou na forma de potência:
+\begin{align*}
+\dot{x}_1 &= u_1 \\
+\dot{x}_2 &= u_2 \\
+\dot{x}_3 &= x_1u_2 \\
+\dot{x}_4 &= \frac{1}{2}x_1^2u_2 \\
+\vdots \\
+\dot{x}_n &= \frac{1}{(n-2)!}x_1^{n-2}u_2
+\end{align*}
+
+Esta forma especial é vantajosa para explicitamente obter-se leis
+de controle estabilizantes. O espaço é dividido em um espaço
+linear ($y, \dot{y})$ e uma seção não linear $z$ cuja dinâmica é
+inteiramente controlada pelos movimentos no espaço de $y$.
+
+Por exemplo, considerando um robô cuja cinemática é descrita por:
+\begin{align*}
+\dot{x} &= \upsilon\cos\theta \\
+\dot{y} &= \upsilon\sin\theta \\
+\dot{\theta} &= \omega
+\end{align*}
+
+Utilizando a seguinte mudança de coordenadas
+\begin{align*}
+x_1 &= \theta \\
+x_2 &= x\cos\theta+y\sin\theta \\
+x_3 &= x\sin\theta-y\cos\theta \\
+u_1 &= \omega \\
+u_2 &= \upsilon-x_3\omega
+\end{align*}
+o modelo cinemático pode ser trasformado para a forma
+\begin{align*}
+\dot{x}_1 &= u_1 \\
+\dot{x}_2 &= u_2 \\
+\dot{x}_3 &= x_2u_1,
+\end{align*}
+
+Outra transformação de coordenadas que leva ao mesmo sistema na
+forma encadeada é a seguinte:
+\begin{align*}
+x_1 &= x \\
+x_2 &= \tan\theta \\
+x_3 &= y \\
+u_1 &= v\cos\theta \\
+u_2 &= \frac{\omega}{\cos^2\theta}
+\end{align*}
+
+
+
+%---------------------------------------------------------------
+\section{Classificações}
+
+
+%---------------------------------------------------------------
+\subsection{Classificação quanto ao modelo utilizado}
+Para todas as técnicas, o modelo a ser controlado pode ser tanto
+{\em cinemático} (quando as entradas de controle são as
+velocidades nas rodas) quanto {\em dinâmico} (quando as entradas
+de controle são as torques e forças aplicadas nas rodas).
+Restrições cinemáticas geralmente aparecem quando há pontos de
+contato entre a máquina e o ambiente, como rodas em contato com o
+solo. Portanto, há uma forte relação entre as restrições não holonômicas e as forças desenvolvidas pelo robô em seu movimento, e o controle das forças do modelo a nível dinâmico é
+pelo menos tão importante quanto o controle cinemático de postura
+\cite{oya1}. Também, com o modelo dinâmico, restrições quanto à
+aceleração e potência máxima do motor podem ser consideradas,
+levando assim a velocidades e acelerações compatíveis com
+aplicações reais \cite{asensio1}. Controle baseado no modelo
+cinemático é visto em, por exemplo, \cite{indivieri1}. O controle
+baseado no modelo dinâmico é visto em \cite{su1}.
+
+%---------------------------------------------------------------
+\subsection{Classificação quanto à metodologia de controle}
+A seguir são mostradas, sucintamente, os diversos métodos de
+controle utilizados.
+
+{\bf Controle variante no tempo}. Trabalhos que lidam com este
+tipo de controle são, por exemplo,
+\cite{do1,tarin1,samson1,dixon1}. Leis de controle variantes no
+tempo têm a desvantagem de gerar trajetórias muito oscilatórias,
+com taxas de convergência apenas assintóticas, no sentido de
+Liapunov. Contudo, S\o rdalen em \cite{sordalen1} desenvolveu leis
+de controle variantes no tempo garantindo convergência exponencial
+global (em um sentido diferente do usual, exposto por Khalil
+\cite{khalil1}) do sistema a um ponto de equilíbrio, e também para
+o sistema seguir trajetórias composta de arcos e linhas.
+
+{\bf Controle descontínuo}. O controle descontínuo pode ser feito
+através de leis parcialmente suaves ou por modo deslizante.
+Trabalhos utilizando estas duas técnicas são encontrados, por
+exemplo, em \cite{su1,yang1,canudas1}. A vantagem do controle
+descontínuo é que este pode superar desvantagens comumente
+associadas ao controle variante no tempo, como taxa lenta de
+convergência, complexidade na síntese da lei de controle e
+trajetórias altamente oscilatórias \cite{aguiar1}. A desvantagem
+desta estratégia é que , em implementações reais, os chaveamentos
+causados pela lei de controle descontínua podem gerar vibrações
+mecânicas, o que pode não ser aceitável, dependendo do tipo de
+aplicação e da trajetória a ser seguida pelo robô. A maioria dos
+trabalhos utiliza modelos em sistemas de coordenadas cartesianas.
+Contudo, Indivieri \cite{indivieri1} utilizou uma mudança de
+coordenadas descontínua, sendo possível obter uma lei de controle
+suave e invariante no tempo para a cinemática de um robô móvel.
+Dado o seguinte modelo cinemático em coordenadas cartesianas
+$\dot{x} = v\cos\theta$, $\dot{y} = v\sin\theta$ e $\dot{\theta} =
+\omega$, faz-se a transformação para coordenadas polares com:
+\[e=\sqrt{x^2+y^2} \qquad \phi=atan2(y_c,x_c) \qquad \alpha=\phi-\theta \]
+onde $atan2(y_c,x_c) \in (-\pi,\pi]$. Então o sistema diferencial
+em coordenadas polares é:
+\begin{align*}
+\dot e &= -u\cos\alpha \\
+\dot y &= -\omega+u\frac{\sin\alpha}{e} \\
+\dot\phi &= u\frac{\sin\alpha}{e} \\
+\end{align*}
+e claramente, o estado não é definido para $e=0$. Assim, é
+possível transpor a restrição de Brockett e um controle suave e
+invariante no tempo pode ser obtido para estabilizar o sistema
+globalmente. Vale ressaltar que, embora o sistema acima seja descontínuo em malha aberta, pode se tornar contínuo em malha fechada.
+
+O controle híbrido diferencia-se por combinar leis de controle de
+tempo contínuo e não contínuo. Na maioria das vezes, ocorre
+um chaveamento ente uma lei de controle não suave e outra variante
+no tempo. Pomet et al. \cite{pomet1} utilizou uma estratégia
+híbrida para estabilizar um robô móvel com acionamento diferencial
+em um ponto. A técnica baseia-se em utilizar um controle
+descontínuo enquanto o robô estiver longe da origem. Quando o robô
+aproximar-se suficientemente do ponto de equilíbrio, o controle
+utilizado é uma lei variante no tempo. Com isso, elimina-se o
+problema de trajetórias altamente oscilatórias proveniente do
+controle variante no tempo \cite{pomet1}.
+
+{\bf Controle adaptativo}. Um outro ponto pouco estudado, mas que
+hoje vem recebendo bastante atenção é o controle de sistemas não
+holonômicos com incertezas \cite{yang1}. Embora o controle
+adaptativo seja usado já a algum tempo para manipuladores
+robóticos, a sua utilização em robôs móveis não é muito difundida
+\cite{lages1}. Trabalhos deste tipo compreendem métodos como redes
+neurais \cite{fierro1}, controle inteligente e lógica nebulosa
+({\em fuzzy}). No entanto, estas técnicas mostram-se mais úteis
+para os níveis hierárquicos mais altos do controle, como controle de missão e
+negociação de ambiente. Para os níveis mais baixos de controle,
+como estabilização em uma trajetória ou em um ponto, métodos de
+controle mais tradicionais devem ser utilizados, pois nestes
+níveis o controle lida diretamente com forças e torques que são
+aplicados aos atuadores. Portanto uma falha poderia gerar
+potências mecânicas não compatíveis em aplicações reais,
+comprometendo assim a integridade física do robô e do ambiente. A
+falta de trabalhos nesta área deve-se à utilização, no controle,
+de modelos cinemáticos apenas. Como para este tipo de modelo os
+parâmetros estão relacionados à forma física do robô, geralmente
+são bem conhecidos e são constantes durante a vida do robô, não
+são necessárias estratégias adaptativas. Tendo em vista que,
+fisicamente, as entradas de controle reais são os torques e forças
+aplicadas às rodas, o controle considerando o modelo dinâmico
+torna-se essencial. Parâmetros relacionados com o modelo dinâmico
+são, por exemplo, massas e inércias. Estes, ao contrário dos
+parâmetros físicos, podem sofrer variações, por exemplo, devidas a
+alterações na distribuição da massa (consumo de combustível). Como
+estes valores são difìceis de se obter por processos de
+calibração, torna-se interessante a utilização de métodos de
+controle adaptativo, visto que a estrutura do modelo dinâmico de
+um robô móvel é bem conhecida \cite{lages1}. Trabalhos mais
+recentes neste sentido encontram-se em \cite{lee1,fukao1,oya1}.
+
+Jiang et al. \cite{jiang1} propôs um controle adaptativo variante
+no tempo usando a técnica de {\em backstepping} para uma classe
+especial de sistema não holonômico em forma encadeada. Oya et al.
+\cite{oya1} trata do assunto do controle dinâmico de um sistema
+não holonômico considerando incertezas de modelagem, onde é obtida
+a estabilização assintótica global com base em análise de uma
+função de Liapunov. Fierro et al. \cite{fierro1} utilizou redes
+neurais para desenvolver uma estrutura integrando controles
+cinemático e dinâmico. Para isso, foi utilizada a técnica do
+torque calculado e {\em backstepping}. A rede neural utilizada é
+capaz de compensar perturbações e erros de modelagem. Três
+objetivos de controle são atendidas: estabilização em um ponto,
+rastreamento de trajetória e seguimento de caminho.
+
+{\bf Controle linearizante}. Geralmente neste caso considera-se
+apenas variáveis que representam a posição e a orientação do robô.
+Sendo assim, o controle é feito em nível cinemático. O interesse
+por uma estratégia linearizante deve-se ao fato de que, se a
+linearização do sistema é possível, leis de controle podem ser
+obtidas através de técnicas disponíveis para sistemas lineares.
+Considerando que os parâmetros do modelo e os estados são bem
+conhecidos, é possível obter-se uma descrição linear exata do
+sistema não linear, ao contrário do obtido por expansão em séries
+de Taylor \cite{lages1}. Controle por realimentação linearizante
+podem ser encontrados em \cite{lages1,chaves1}, entre outros. A
+linearização entrada-saída é mostrada com detalhes na Seção
+\ref{lees}, onde o robô considerado é da Classe (2,0), com
+acionamento diferencial.
+
+%---------------------------------------------------------------
+\subsection{Classificação quanto à malha de controle}
+Quanto ao tipo de malha de controle, as estratégias podem ser
+classificadas em {\em malha aberta} e {\em malha fechada}. O
+controle em malha aberta é utilizado quando o objetivo é apenas
+guiar o robô de um ponto a outro, sem se preocupar com o caminho
+percorrido entre estes dois pontos. Para isto as velocidades e
+torques são previamente calculados, com base nas configurações
+inicial e final do robô. Este caminho pode ser projetado conforme
+vários critérios, como prevenção a colisões, caminho mais curto e
+mínimo esforço de controle, por exemplo. Com este método, a
+compensação do controle por perturbações e erros de modelagem não
+é possível. Métodos de controle em malha fechada, entretanto,
+podem ser utilizados a fim de solucionar este problema e outros
+encontrados em implementações reais \cite{sordalen1}.
+
+%---------------------------------------------------------------
+\subsection{Classificação quanto ao objetivo do controle em
+malha fechada}
+Quanto ao objetivo, pode-se clasificar as
+metodologias de controle em malha fechada para robôs móveis não
+holonômicos basicamente em dois tipos:
+\begin{itemize}
+\item estabilização em um ponto \item estabilização em uma
+trajetória ou caminho
+\end{itemize}
+
+Para um sistema linear e invariante no tempo, se os autovalores
+instáveis são controláveis, um ponto de equilíbrio pode ser
+assintoticamente estabilizado por uma realimentação de estados
+estática, suave e invariante no tempo. Entretanto, para sistemas
+não holonômicos, isto não é mais possível, dada a restrição
+imposta pelo Teorema de Brockett \cite{brockett1}.
+Conseqüentemente, ferramentas lineares antes utilizadas não podem
+mais ser consideradas, nem localmente \cite{kolmanovsky1}.
+
+\begin{figure}[!hhh]\begin{center}
+    \includegraphics[width=100mm]{Figuras/tt_pf.eps}
+    \caption{\it Movimentação de um robô em um corredor: comparação entre estratégias de rastreamento de trajetória (linha traço-ponto) e seguimento de caminho (linha tracejada).}
+    \label{tt_pf}
+\end{center}\end{figure}
+
+O problema de estabilização em uma trajetória subdivide-se em dois
+casos distintos : {\em rastreamento de trajetória} ({\em path
+following}) e {\em seguimento de caminho} ({\em trajectory
+tracking}). Para o problema de seguimento de caminho, deseja-se
+que o robô convirga para uma determinada trajetória de referência
+sem nenhuma especificação temporal. Para o problema de
+rastreamento de trajetória, o tempo é considerado um dos
+parâmetros de controle, agora sendo importante que o robô esteja
+em determinada configuração em um determinado instante de tempo.
+Cada estratégia tem, obviamente, suas vantagens e desvantagens.
+Quando o robô precisa convergir o mais rápido possível para a
+trajetória, é mais interessante utilizar rastreamento de
+trajetória, onde a trajetória é parametrizada no tempo.
+Entretanto, isto pode causar oscilações no caminho realizado pelo
+robô, fazendo com que o mesmo se distancie demasiadamente da
+trajetória antes de convergir a ela. Se o robô está se
+movimentando, por exemplo, em um corredor, a transiçao do robô
+para a trajetória de referência deve acontecer em um espaço
+fisicamente limitado. Neste caso, seguimento de caminho é
+aconselhado, pois gera uma transição menos oscilatória para a
+referência, porém mais lenta. Neste tipo de controle, geralmente
+assume-se que a velocidade linear do veículo é constante, e o
+controle é feito sobre a orientação do robô para guiar o mesmo
+para a trajetória de referência \cite{pascoal1}. Além disso, o
+esforço de controle necessário para este caso é menor se comparado
+com rastreamento de trajetória, que pode levar à saturação dos
+atuadores. Trabalhos envolvendo seguimento de caminho são
+encontrados em \cite{sarkar1,samson2}, enquanto que o problema de
+rastreamento de trajetória é encontrado em
+\cite{oya1,samson1,deng1}, entre outros. Uma comparação entre os
+dois métodos é feita no desenho da Figura \ref{tt_pf}.
+Inicialmente o robô encontra-se na configuração $\xi(0)$. Nota-se
+que o rastreamento de trajetória (linha traço-ponto) gera uma
+movimentação oscilatória, causando a colisão do robô com a parede.
+No caso do seguimento de caminho (linha tracejada), apesar de a
+convergência ser mais lenta, o robô converge em direção à
+trajetória de referência $s$, suavemente e sem colisão.
+
+
+
+
+%---------------------------------------------------------------
+\chapter{Exemplo: Robô Móvel com Acionamento Diferencial}
+\label{cap5} \thispagestyle{empty}
+
+
+%---------------------------------------------------------------
+\section{Introdução}
+Robôs móveis com acionamento diferencial aparecem em grande parte
+da literatura
+\cite{indivieri1,lee1,canudas1,samson1,tarin2,fukao1}. A principal
+característica deste tipo de robô é que o mesmo possui duas rodas
+fixas centradas (rodas {\em ativas}) que compartilham o mesmo eixo
+de rotação, acionadas por dois motores independentes. Uma ou mais
+rodas orientáveis não centrada podem ser usadas a fim de equilibrar o robô, por isso chamadas de rodas {\em passivas}. Para
+isto, estas rodas precisam estar localizadas fora do eixo comum às
+duas rodas ativas. São portanto pertencentes à Classe (2,0), como será visto e provado na dedução feita nas próximas seções. Veja
+Figura \ref{wmrdiff}.
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=140mm]{Figuras/wmrdiff.eps}
+    \caption{\it À esquerda, o modelo geométrico de um robô móvel com acionamento diferencial, e a representação de suas velocidades e forças. À direita, a representação dos ângulos e dstâncias entre o centro do robô e o centro das rodas convencionais fixas.}
+    \label{wmrdiff}
+\end{center}\end{figure}
+
+
+
+%---------------------------------------------------------------
+\section{Modelos cinemático e dinâmico}
+
+Para maior clareza, são repetidas aqui as seguintes equações:
+\begin{align}
+N &= N_f + N_c + N_{oc} + N_{sw}\label{nrodas2}\\
+J_1(\beta_c,\beta_{oc})R^C_O\dot{\xi} +
+J_2\dot{\varphi} &= 0\label{genrest12} \\
+C_1(\beta_c,\beta_{oc})R^C_O\dot{\xi} + C_2\dot{\beta}_{oc} &=
+0\label{genrest22},
+\end{align}
+encontradas na Seção \ref{restmob} como as equações \req{nrodas},
+\req{genrest1} e \req{genrest2}, respectivamente.
+
+Para o caso em questão, tem-se duas rodas fixas ($N_f=2$) e uma
+roda orientável não centrada ($N_{oc}=1$). Portanto,
+$N=N_f+N_{oc}=3$. As coordenadas de configuração são formadas
+pelas coordenadas de postura ($x,y,\theta$), pela coordenada
+angular de orientação da roda não centrada ($\beta_{oc}$) e pelas
+coordenadas de rotação de todas as rodas
+($\varphi_f=[\varphi_R~~\varphi_L]^T,\varphi_{oc}$). Então, o
+vetor de coordenadas de configuração total será:
+\[ q = \left[
+x~~y~~\theta~~\beta_{oc}~~\varphi_{R}~~\varphi_{L}~~\varphi_{oc}\right]^T,
+\]
+de acordo com a equação $N_f+N_{oc}+3=7$. Os subscritos $R$ e $L$
+significam as rodas direita e esquerda, respectivamente.
+Considerando que a roda não centrada é passiva, ou seja, não
+possui nenhum atuador, pode-se desconsiderar os estados referentes
+a esta roda. Teremos então o seguinte vetor de estados para a
+configuração do robô:
+\[
+q = \left[ x~~y~~\theta~~\varphi_{R}~~\varphi_{L}\right]^T,
+\]
+
+\subsection{Definição das restrições não holonômicas}
+No caso do robô apresentado na Figura \ref{wmrdiff}, o sistema de coordenadas de cada roda ativa, $\{W,X_w,Y_w\}$, tem a mesma orientação do sistema de coordenadas do centro do robô, $\{C,X_c,Y_c\}$. Logo, das Figuras \ref{rcf} e \ref{wmrdiff}, tem-se que $\alpha+\beta=90^o$, $l\cos\beta=b$ e $l\sin\beta=d$. Vale lembrar que as equações a seguir são deduzidas com base nas restrições causadas pelas rodas ativas apenas, visto que as restrições com respeito à roda passiva são sempre satisfeitas.
+
+A equação \req{restrcf1} (restrição ao longo do plano da roda) é reescrita, no caso da roda fixa esquerda, como $\left[-1~~0~~b\right]R^C_O\dot\xi+r\dot\varphi_L=0$, o que resulta em
+\[
+\left[ -\cos\theta~~-\sin\theta~~b\right]\left[\begin{array}{c}\dot x \\ \dot y \\ \dot\theta \end{array}\right] + r\dot\varphi_L=0,
+\]
+que é igual a
+\begin{equation}\label{rnh1}
+-\dot x\cos\theta-\dot y\sin\theta+b\dot\theta+\dot\varphi_L=0
+\end{equation}
+
+Analogamente, para a roda fixa direita,
+\begin{equation}\label{rnh2}
+-\dot x\cos\theta-\dot y\sin\theta-b\dot\theta+\dot\varphi_L=0
+\end{equation}
+
+Reescrevendo a equação \req{restrcf2} (restrição ortogonal ao plano da roda), tem-se que $\left[0~~1~~d\right]R^C_O\dot\xi=0$. Então
+\[
+\left[-\sin\theta~~\cos\theta~~d\right]\left[\begin{array}{c}\dot x \\ \dot y \\ \dot\theta \end{array}\right]=0,
+\]
+logo
+\begin{equation}\label{rnh3}
+-\dot x\sin\theta+\dot y\cos\theta+b\dot\theta=0
+\end{equation}
+
+\subsection{Definição da classe do robô}
+Seguindo as expressões \req{genrest12} e \req{genrest22}, e
+segundo as equações para as restrições \req{rnh1}, \req{rnh2} e
+\req{rnh3}, define-se as seguintes matrizes:
+\begin{align}
+J_1(\beta_c,\beta_{oc}) &= \left[\begin{array}{c} J_{1f} \\
+J_{1oc}(\beta_{oc}) \end{array}\right] = \left[\begin{array}{ccc}
+-1&0&-b \\ -1&0&b \\ 0&0&0 \end{array}\right]\label{jota1} \\
+J_2 &= \left[\begin{array}{ccc} r&0&0 \\ 0&r&0 \\ 0&0&0
+\end{array}\right]\label{jota2} \\
+C_1(\beta_c,\beta_{oc}) &= \left[\begin{array}{c} C_{1f} \\
+C_{1oc}(\beta_{oc}) \end{array}\right] = \left[\begin{array}{ccc}
+0&1&d \\ 0&0&0 \\ 0&0&0 \end{array}\right]\label{ce1} \\
+C_2 &= \left[\begin{array}{c} 0\\0\\0 \end{array}\right]\label{ce2}
+\end{align}
+
+Agora, considerando as primeiras ($N_f+N_c$) restrições de
+\req{genrest22}, referentes às rodas fixas e orientáveis
+centradas, tem-se que:
+\begin{align*}
+C_{1f}R_O^C\dot\xi &= 0 \\
+C_{1c}(\beta_c,\beta_{oc})R_O^C\dot\xi &= 0,
+\end{align*}
+o que significa que o vetor $R_O^C\dot\xi$ pertence ao núcleo da
+seguinte matriz:
+\begin{equation*}
+C_1^*(\beta_c) = \left[\begin{array}{c}C_{1f}\\C_{1c}(\beta_c)
+\end{array}\right],
+\end{equation*}
+que neste caso será\footnote{lembrando que não existem rodas
+orientáveis centradas ($N_c=0$). Portanto, $C_{1c}(\beta_c)=0$.}:
+\begin{equation}\label{cestrela}
+C_1^* = \left[\begin{array}{c}C_{1f}\\0\end{array}\right] =
+\left[\begin{array}{ccc}0&1&d \\ 0&0&0 \\ 0&0&0
+\end{array}\right]
+\end{equation}
+
+Obviamente, se o posto da matriz $C_1^*(\beta_c)$ fosse completo,
+seria impossível qualquer movimentação do robô. Neste caso, temos
+que $\rho\{C_1^*\}=1$, que é o aceitável na prática para o robô
+ter uma mobilidade suficiente para desempenhar movimentos de
+translação e rotação \cite{campion4}. Da Definição \ref{deltam},
+temos que o grau de mobilidade deste robô é $\delta_m = {\cal
+N}\{C_1^*\}=2$.
+
+Como não existem rodas orientáveis centradas, a matriz
+$C_{1c}(\beta_c)$ será nula, assim como o seu posto. Da Definição
+\ref{deltas}, tem-se que o grau de dirigibilidade é $\delta_s =
+\rho\{C_1^*\}=0$.
+
+Com isto, chega-se à conclusão de que este robô pertence à {\em
+Classe (2,0)}.
+
+Da Definição \ref{deltaM}, tem-se que o grau de manobrabilidade
+deste robô é $\delta_M=\delta_m+\delta_s=2$. Com isso, o centro
+instantâneo de rotação ({\em CIR}) se restringe a pertencer ao longo
+do eixo de rotação das rodas fixas, e a distância deste ponto a P (centro do eixo de rotação) será determinada pela diferença de velocidade entre as rodas fixas direita e esquerda. Este é um resultado fisicamente intuitivo, já que as rodas fixas produzem torque para a movimentação do robô e não possuem orientação variável.
+
+
+%---------------------------------------------------------------
+\subsection{Modelo cinemático de postura}
+Para o caso de um robô  da Classe (2,0), o vetor de estados é
+formado pelas coordenadas de postura:
+\[ \xi = \left[x~~y~~\theta\right]^T \]
+
+Como $R_O^C\dot\xi$ pertence ao núcleo da matriz $C_1^*$, pode-se
+escrever:
+\[ \dot\xi = R_C^O\Sigma\eta, \]
+onde $\Sigma$ tem dimensão $3\times\delta_m$ e $\eta$ tem dimensão
+$1\times\delta_m$. Neste caso, fazendo $d=0$ na matriz $C^*_1$ (equação \ref{cestrela}), tem-se que:
+\[ \Sigma = \left[\begin{array}{cc}1&0 \\ 0&0 \\ 0&1
+\end{array}\right], \]
+e o modelo cinemático de postura $\dot z = B(z)u$ reduz-se a:
+\begin{equation*}
+\left[\begin{array}{c}\dot{x} \\ \dot{y} \\ \dot{\theta}
+\end{array}\right] = \left[\begin{array}{cc}\cos\theta&0 \\
+\sin\theta&0 \\ 0&1 \end{array}\right]\left[\begin{array}{c}v \\
+w \end{array}\right],
+\end{equation*}
+onde $z=\xi$ e $u=[v~~w]^T$. $v$ é a velocidade tangencial na
+direção do eixo $X_c$ e $w$ é a velocidade rotacional. Ambas estão
+relacionadas com as velocidades das rodas direita e esquerda
+($v_R$ e $v_L$, respectivamente) pelas expressões:
+\begin{equation*}
+v=\frac{v_R+v_L}{2} \qquad w=\frac{v_L-v_R}{2b}
+\end{equation*}
+
+%---------------------------------------------------------------
+\subsection{Modelo cinemático de configuração}
+Neste modelo, aparecem as variáveis relativas às rotações
+$\varphi$ das rodas, que não são consideradas no modelo cinemático
+de postura.
+
+Seja o seguinte vetor de estados:
+\[
+q = \left[\xi~~\varphi_f\right]^T =
+\left[x~~y~~\theta~~\varphi_R~~\varphi_L\right]^T,
+\]
+onde $\varphi_R$ e $\varphi_L$ correspondem às rotações das rodas
+direita e esquerda, respectivamente. O modelo cinemático de
+configuração pode ser escrito, de forma compacta, como:
+\[ \dot q = S(q)u, \]
+onde
+\begin{equation}
+S(q) \triangleq\ \left[\begin{array}{cc} R_C^O\Sigma(\beta_c)&0 \\ 0&I \\
+D(\beta_{oc})\Sigma(\beta_c)&0 \\
+E(\beta_c,\beta_{oc})\Sigma(\beta_c)&0 \end{array}\right], \qquad
+u\triangleq \left[\begin{array}{c}\eta \\ \zeta
+\end{array}\right]
+\end{equation}
+com
+\begin{align}
+D(\beta_{oc}) &\triangleq -C_{2oc}^{-1}C_{1oc}(\beta_{oc}) \\
+E(\beta_c,\beta_{oc}) &\triangleq -J_2^{-1}J_1(\beta_c,\beta_{oc})
+\end{align}
+
+A roda orientável não centrada não é considerada nas equações, pois as restrições com respeito a esta roda são sempre satisfeitas. Então, $D(\beta_{oc})$ será nulo, pois $C_{2oc}=0$. Ainda,
+desconsiderando a linha nula de $J_1$ (equação
+\req{jota1}) a coluna nula de $J_2$ (equação \req{jota2}), tem-se que
+\[
+J_1 = J_{1f} = \left[\begin{array}{ccc} -1&0&-b \\ -1&0&b
+\end{array}\right],
+\qquad J_2 = \left[\begin{array}{cc} r&0 \\ 0&r
+\end{array}\right],
+\]
+
+Assim,
+\[ E(\beta_c,\beta_{oc})=E=-J_2^{-1}J_1 = \left[\begin{array}{ccc}
+\frac{1}{r}&0&\frac{b}{r} \\ \frac{1}{r}&0&-\frac{b}{r}
+\end{array}\right] \]
+e o produto $E\Sigma$ resulta em:
+\[ E\Sigma = \left[\begin{array}{cc} \frac{1}{r}&\frac{b}{r} \\ \frac{1}{r}&-\frac{b}{r} \end{array}\right] \]
+
+Assim, a matriz $S(q)$ e o vetor $u$ reduzem-se a:
+\[ S(q) = \left[\begin{array}{c} R^O_C\Sigma \\ E\Sigma \end{array}\right] = \left[\begin{array}{cc} \cos\theta&0 \\ \sin\theta&0 \\
+0&1 \\ \frac{1}{r}&\frac{b}{r} \\ \frac{1}{r}&-\frac{b}{r}
+\end{array}\right], \qquad u = \eta
+\]
+
+%---------------------------------------------------------------
+\subsection{Modelo dinâmico de configuração}
+O modelo dinâmico é escrito na forma de Euler-Lagrange como:
+\begin{equation}\label{eulag4}
+M(\xi)\ddot\xi+V(\xi,\dot\xi)=E(\xi)\tau-A^T(\xi)\lambda
+\end{equation}
+
+O vetor de estados é $\xi=[x~~y~~\theta~~\varphi_R~~\varphi_L]^T$,
+onde ($x,y$) dá a posição com relação sistema inercial
+$\{O,X_o,Y_o\}$, $\theta$ dá a orientação com relação a
+$\{O,X_o,Y_o\}$ e $\varphi_R$ e $\varphi_L$ dão a posição angular
+das rodas centradas direita e esquerda, respectivamente. As
+entradas de controle são os torques aplicados nas rodas direita e
+esquerda, $\tau=[\tau_R~~\tau_L]^T$. Os multiplicadores de
+Lagrange $\lambda$ são as forças de contato do robô com o solo,
+que podem ser escritas como $\lambda=[F_N~~F_R~~F_L]$, força
+normal, na direção de $X_c$ e na direção de $Y_c$,
+respectivamente. As equações de Lagrange são:
+\begin{align*}
+m\ddot{x}+md\left(\ddot{\theta}\sin\theta+\dot{\theta}^2\cos\theta\right)
+- F_N\sin\theta-\left(F_R+F_L\right)\cos\theta &= 0 \\
+m\ddot{y}+md\left(-\ddot{\theta}\cos\theta+\dot{\theta}^2\sin\theta\right)
++ F_N\cos\theta-\left(F_R+F_L\right)\sin\theta &= 0 \\
+m_cd\left(\ddot{x}\sin\theta-\ddot{y}\cos\theta\right)+I\ddot{\theta}+F_Nd+b\left(F_L-F_R\right)
+&= 0 \\
+I_w\ddot{\varphi}_R+F_Rr &= \tau_R \\
+I_w\ddot{\varphi}_L+F_Lr &= \tau_R \\
+\end{align*}
+com $m=m_c+2m_w$ e $I=I_c+2m_w(d^2+b^2)+2I_m$. $m_c$ é a massa da
+plataforma do robô sem considerar os motores e as rodas, $m_w$ é a
+massa de cada conjunto motor--roda, $I_c$ é o momento de inércia
+da plataforma sem considerar os motores e as rodas, $I_w$ é o
+momento de inércia de cada conjunto motor--roda no eixo horizintal
+de rotação da roda e $i_m$ é o momento de inércia de cada conjunto
+motor--roda com relação ao diâmetro da roda.
+
+Pode-se escrever as equações de Lagrange na forma matricial da
+equação \req{eulag4}, com:
+\begin{equation*}
+M(\xi) = \left[\begin{array}{ccccc} m&0&m_cd\sin\theta&0&0 \\
+0&m&-m_cd\cos\theta&0&0 \\ m_cd\sin\theta&m_cd\cos\theta&I&0&0 \\
+0&0&0&I_w&0 \\ 0&0&0&0&I_w \end{array}\right]
+\end{equation*}
+\begin{equation*}
+V(\xi,\dot{\xi})=\left[\begin{array}{c} m_cd\dot{\theta}^2\cos\theta \\
+m_cd\dot{\theta}^2\sin\theta
+\\0\\0\\0 \end{array}\right] \qquad E(\xi) =
+\left[\begin{array}{cc} 0&0 \\ 0&0 \\ 0&0 \\ 1&0 \\ 0&1
+\end{array}\right]
+\end{equation*}
+
+Reescrevendo \req{rnh1}, \req{rnh2} e \req{rnh3} na forma
+matricial, tem-se a equação $A(\xi)\dot\xi=0$, ou
+\begin{equation*}
+\left[\begin{array}{ccccc}-\sin\theta&\cos\theta&d&0&0 \\
+-\cos\theta&-\sin\theta&-b&r&0 \\ -\cos\theta&-\sin\theta&b&0&r
+\end{array}\right] \left[\begin{array}{c}\dot x \\ \dot y \\
+\dot\theta \\ \dot\varphi_R \\ \dot\varphi_L
+\end{array}\right]=0
+\end{equation*}
+
+
+
+%---------------------------------------------------------------
+\section{Linearização entrada-saída por realimentação estática de estados}
+\label{lees}
+
+Seja o sistema não linear multivariável com igual número de entradas e saídas ($n=p$) descrito na forma de espaço de estados como
+\begin{align*}
+\dot q &= f(q) + g_1(q)u_1 + g_2(q)u_2 + \cdots + g_p(q)u_p \\
+z_1(q) &= h_1(q) \\
+\vdots \\
+z_p(q) &= h_p(q),
+\end{align*}
+onde $q\in\real^n$, $u\in\real^p$, $z\in\real^p$, $f(q)$ e $g_1(q),\ldots,g_p(q)$ são campos vetoriais suaves e $h_1(q),\ldots,h_p(q)$ são funções suaves.
+
+Diferenciando-se a saída $z_j$ com relação ao tempo, obtém-se:
+\begin{equation}\label{zdot}
+\dot z_j = L_fh_j+\sum_{i=1}^p\left(L_{g_i}h_j\right)u_i
+\end{equation}
+
+Analisando-se a expressão acima, nota-se que se os termos $L_{g_i}h_j$ forem nulos, o efeito das entradas não aparecerão em \req{zdot}. O método de linearização entrada-saída consiste em derivar a equação de saída até que a entrada apareça na expressão derivada. Define-se então $\gamma_j$ como sendo o menor valor inteiro tal que pelo menos uma das entradas apareça na saída $z^{(\gamma_j)}_j$, isto é\footnote{$L_fh_j$ e $L_gh_j$ representam, respectivamente, a derivada de Lie de $h_j(q)$ com relação a $f(q)$ e a $g(q)$, respectivamente.},
+\begin{equation}\label{zgama}
+z^{(\gamma_j)}_j = L^{\gamma_j}_f+\sum_{i=1}^pL_{g_i}\left(L^{\gamma_j-1}_fh_j\right)u_i,
+\end{equation}
+onde pelo menos um dos termos $L_{g_i}(L^{\gamma_j-1}_fh_j)\neq 0$, para todo $q$ pertencente à região onde a linearização é válida. Desta maneira, pode-se definir uma matriz $E(q)$, de dimensão $p\times p$, como
+\begin{equation*}
+E(q) = \left[\begin{array}{ccc} L_{g_1}(L^{\gamma_1-1}_fh_1) & \cdots & L_{g_p}(L^{\gamma_1-1}_fh_1) \\
+								\vdots                       & \ddots & \vdots                       \\
+								L_{g_1}(L^{\gamma_p-1}_fh_p) & \cdots & L_{g_p}(L^{\gamma_p-1}_fh_p)
+       \end{array}\right]
+\end{equation*}
+e então reescrever \req{zgama} da seguinte forma:
+\begin{equation*}
+\begin{bmatrix} z^{\gamma_1}_1 \\ \vdots \\ z^{\gamma_p}_p \end{bmatrix} = \begin{bmatrix} L^{\gamma_1}_fh_1 \\ \vdots \\ L^{\gamma_p}_fh_p \end{bmatrix} + E(q) \begin{bmatrix} u_1 \\ \vdots \\ u_p \end{bmatrix}
+\end{equation*}
+
+Se a matriz $E(q)$ for não singular para todo $x$ pertencente à região de interesse, então a lei de controle por realimentação de estados
+\begin{equation*}
+u=-E^{-1}(q)\begin{bmatrix} L^{\gamma_1}_fh_1 \\ \vdots \\ L^{\gamma_p}_fh_p \end{bmatrix} + E^{-1}(q)v
+\end{equation*}
+resulta, em malha fechada, no sistema linear
+\begin{equation*}
+\begin{bmatrix} z^{\gamma_1}_1 \\ \vdots \\ z^{\gamma_p}_p \end{bmatrix} = \begin{bmatrix} v_1 \\ \vdots \\ v_p \end{bmatrix},
+\end{equation*}
+onde $v=[v_1~~\cdots~~v_p]^T$ pode ser qualquer lei de controle linear. 
+
+
+\subsection{Linearização do modelo cinemático de postura}\label{kinlin}
+Pode-se desenvolver também uma realimentação linearizante para o modelo cinemático de postura do robô. Para isto, reescreve-se o sistema não linear multivariável na forma afim:
+\begin{equation}\label{sist1}
+\dot q = f(q) + G(q)u \\
+\end{equation}
+
+Da Propriedade \ref{plin}, tem-se que a dimensão do maior subsistema que pode ser linearizável por realimentação estática de estados é $\delta_m+\delta_s$. Neste caso, $\delta_m+\delta_s=2$. Assim sendo, escolhe-se os estados que representam a posição do robô, $(x,y)$, com relação ao sistema global. Em muitos casos, isto é perfeitamente aceitável, dependendo do objetivo do controle e da geometria do robô.
+
+Elege-se ainda um ponto, {\em a priori} arbitrário, do corpo do robô como ponto de referência. Então, agora a posição do robô é tomada como sendo a posição deste ponto, e não mais o centro $C$. A este ponto de referência, associa-se um novo sistema de coordenadas, $\{R,X_r,Y_r\}$, como mostrado na Figura \ref{robo2}. A representação deste ponto com relação ao sistema global $\{O,X_o,Y_o\}$ é dada por:
+\[
+q_r = R^o_Cq^c_r+q_c = \left[\begin{array}{c} x_c+x^c_r\cos\theta-y^c_r\sin\theta \\ y_c+x^c_r\sin\theta+y^c_r\cos\theta \\ \theta \end{array}\right]
+\]
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=80mm]{Figuras/robo2.eps}
+    \caption{\it Sistemas de coordenadas do robô móvel com o ponto de referência $R$.}
+    \label{robo2}
+\end{center}\end{figure}
+
+Reescrevendo \req{sist1} e considerando a saída com relação a $R$, tem-se:
+\begin{align*}
+\dot q &= f(q) + g_1(q)u_1 + g_2(q)u_2 \\
+z_1(q) &= h_1(q) \\
+z_2(q) &= h_2(q),
+\end{align*}
+com
+\begin{align*}
+f(q) &= 0 \\
+g_1(q) &= \left[ \cos\theta~~\sin\theta~~0 \right]^T \\
+g_2(q) &= \left[ 0~~0~~1 \right]^T \\
+h_1(q) &= x_c+x_r^c\cos\theta-y_r^c\sin\theta \\
+h_2(q) &= y_c+x_r^c\sin\theta+y_r^c\cos\theta
+\end{align*}
+
+A primeira derivada de $z(q)$ com relação a $h_1(q)$ resulta em:
+\[
+\dot z_1(q) = L_fh_1+L_{g_1}h_1u_1+L_{g_2}h_1u_2
+\]
+com
+\begin{multline*}
+L_fh_1 = \frac{\partial h_1}{\partial q}f(q) = 0 \qquad L_{g_1}h_1 = \frac{\partial h_1}{\partial q}g_1(q) = \cos\theta \qquad L_{g_2}h_1 = \frac{\partial h_1}{\partial q}g_2(q) = -\left(x_r^c\sin\theta+y_r^c\cos\theta\right)
+\end{multline*}
+
+A primeira derivada de $z(q)$ com relação a $h_2(q)$ resulta em:
+\[
+\dot z_2(q) = L_fh_2+L_{g_1}h_2u_1+L_{g_2}h_2u_2
+\]
+com
+\begin{multline*}
+Lfh_2 = \frac{\partial h_2}{\partial q}f(q) = 0 \qquad Lg_1h_1 = \frac{\partial h_2}{\partial q}g_1(q) = \sin\theta \\ 
+Lg_2h_2 = \frac{\partial h_2}{\partial q}g_2(q) = x_r^c\cos\theta-y_r^c\sin\theta
+\end{multline*}
+
+Como as entradas já aparecem em $\dot z_1(q)$ e $\dot z_2(q)$, a saída não pode mais ser derivada. Define-se então uma matriz $\beta(q)$ de dimensão $p\times p$, como:
+\begin{equation*}
+\beta(q) = \left[\begin{array}{cc} L_{g_1}h_1 & L_{g_2}h_1 \\ L_{g_1}h_2 & L_{g_2}h_2 \end{array}\right] = \left[\begin{array}{cc} \cos\theta & -\left(x_r^c\sin\theta+y_r^c\cos\theta\right) \\ \sin\theta & x_r^c\cos\theta-y_r^c\sin\theta \end{array}\right]
+\end{equation*}
+e escreve-se o seguinte sistema:
+\begin{equation}\label{sist2}
+\left[\begin{array}{c} \dot z_1 \\ \dot z_2 \end{array}\right] = \beta(q)\left[\begin{array}{c}u_1 \\ u_2 \end{array}\right]
+\end{equation}
+
+Logo, a realimentação que lineariza o sistema \req{sist2} é a seguinte:
+\[
+u = \beta(q)^{-1}v,
+\]
+onde $v$ é uma lei de controle linear do tipo $v = Le$, com
+\[
+L = \left[\begin{array}{cc} l_x & 0 \\ 0 & l_y \end{array}\right] \qquad e=\left[\begin{array}{c}e_x \\ e_y \end{array}\right]=\left[\begin{array}{c}x_{ref}-x_c \\ y_{ref}-y_c \end{array}\right]
+\]
+
+É interessante verificar a existência da inversa de $\beta(q)$, que para existir, precisa ter determinante diferente de zero. Não é difícil de ver que, para isto acontecer, o valor de $x^c_r$ precisa ser diferente de zero, ou seja, o ponto de referência $R$ não pode estar sobre o eixo comum às rodas fixas (sobre a reta $\overline{WP}$, na Figura \ref{robo1}). Isto ocorre devido ao fato de que pontos sobre este eixo podem mover-se instantaneamente em apenas uma direção, enquanto que os demais pontos podem mover-se em duas direções \cite{lages1}.
+
+Tem-se então o seguinte sistema em diagrama de blocos:
+\begin{figure}[ht]\begin{center}
+    \includegraphics[width=140mm]{Figuras/bloco_sem_k.eps}
+    \caption{\it Diagrama de blocos do sistema com a realimentação linearizante estática.}
+    \label{bloco_sem_k}
+\end{center}\end{figure}
+
+Observou-se então, em resultados de simulação, que para diversos valores de $l_x$ e $l_y$ e para diversas trajetórias a lei de controle e a linearização funcionaram perfeitamente, fazendo com que o robô convergisse assintoticamente para a trajetória de referência. Nas figuras abaixo, o comportamento do robô para $l_x=l_y=3$ para uma trajetória em forma de oito e para uma trajetória na forma de um quadrado. Os algoritmos foram implementados em linguagem de programação C++ e executados em computadores com sistema operacional Linux.
+\begin{figure}[ht]\begin{center}
+    \includegraphics[width=100mm]{Figuras/oito_sem_k.eps}
+    \caption{\it Comportamento do robô para uma trajetória de referência em forma de oito.}
+    \label{oito_sem_k}
+\end{center}\end{figure}
+\begin{figure}[ht]\begin{center}
+    \includegraphics[width=150mm]{Figuras/oito_subplots.eps}
+    \caption{\it Comportamento do robô para uma trajetória de referência em forma de oito.}
+    \label{oito_subplots}
+\end{center}\end{figure}
+
+\begin{figure}[ht]\begin{center}
+    \includegraphics[width=100mm]{Figuras/quadrado_sem_k.eps}
+    \caption{\it Comportamento do robô para uma trajetória de referência em forma de quadrado.}
+    \label{quadrado_sem_k}
+\end{center}\end{figure}
+\begin{figure}[ht]\begin{center}
+    \includegraphics[width=150mm]{Figuras/quadrado_subplots.eps}
+    \caption{\it Comportamento do robô para uma trajetória de referência em forma de quadrado.}
+    \label{quadrado_subplots}
+\end{center}\end{figure}
+
+
+
+
+%---------------------------------------------------------------
+\section{Linearização dinâmica entrada-saída}\label{dinlin}
+Seja o vetor de estados igual a
+$\xi=[x~~y~~\theta~~\varphi_R~~\varphi_L~~\dot\varphi_R~~\dot\varphi_R]^T$.
+Deseja-se encontrar uma realimentação estática de estados
+\[
+u = f_2^{-1}\left(v-f_1\right)
+\]
+para o sistema
+\begin{equation}
+\dot\xi = \left[\begin{array}{c} S\eta \\ f_1 \end{array}\right] +
+\left[\begin{array}{c} 0 \\ f_2 \end{array}\right]u
+\end{equation}
+com
+\begin{align}
+f_1 &= -\left[\left(S^TMS\right)^{-1}\left(S^TM\dot
+S\eta+S^TV\right)\right] \\
+f_2 &=\left(S^TMS\right)^{-1}S^TE
+\end{align}
+
+É necessário achar uma matriz $S(\xi)$ tal que $A(\xi)S(\xi)=0$.
+Escrevendo esta expressão como
+\begin{equation*}
+\left[\begin{array}{ccccc}-\sin\theta&\cos\theta&d&0&0 \\
+-\cos\theta&-\sin\theta&-b&r&0 \\ -\cos\theta&-\sin\theta&b&0&r
+\end{array}\right] \left[\begin{array}{c} s_1 \\ s_2 \\
+s_3 \\ s_4 \\ s_5
+\end{array}\right]=0
+\end{equation*}
+
+Fazendo
+\[ s_3=\frac{\left(s_4-s_5\right)}r{2b} \]
+e definindo $c\triangleq \frac{r}{2b}$ e fazendo $s_4=1$, $s_5=0$,
+tem-se $s_3=c$. Então:
+\begin{align*}
+s_1 &= c\left(d\sin\theta+b\cos\theta\right) \\
+s_2 &= c\left(b\sin\theta-d\cos\theta\right)
+\end{align*}
+
+Similarmente, faz-se $s_4=0$, $s_5=1$, e tem-se $s_3=-c$. Então:
+\begin{align*}
+s_1 &= c\left(b\cos\theta-d\sin\theta\right) \\
+s_2 &= c\left(b\sin\theta+d\cos\theta\right)
+\end{align*}
+
+Com isto tem-se a matriz $S(\xi)$ como
+\begin{equation*}
+S(\xi) = \left[\begin{array}{cc}
+c\left(d\sin\theta+b\cos\theta\right)&c\left(b\cos\theta-d\sin\theta\right)\\
+c\left(b\sin\theta-d\cos\theta\right)&c\left(b\sin\theta+d\cos\theta\right)\\
+c&-c \\ 1&0 \\ 0&1 \end{array}\right]
+\end{equation*}
+
+Esta matriz satisfaz $A(\xi)S(\xi)=0$. Assim, existe um vetor de
+entradas de controle $u$ tal que $\dot{\xi}=S(\xi)u$.
+
+Nota-se que neste caso, $S^T(\xi)E(\xi)=I$. Então, tem-se que $u =
+S^TMS\left(v-f_1\right)$ e o modelo em malha fechada é o seguinte:
+\begin{equation*}
+\dot{\xi} = \left[\begin{array}{c}S(\xi)\eta \\ 0
+\end{array}\right]+\left[\begin{array}{c}0 \\ I
+\end{array}\right]v,
+\end{equation*}
+com
+\[
+S(\xi)\eta = \left[\begin{array}{c}
+c\left[\varphi_R(d\sin\theta+b\cos\theta)+\varphi_L(b\cos\theta-d\sin\theta)\right]
+\\
+c\left[\varphi_R(b\sin\theta-d\cos\theta)+\varphi_L(b\sin\theta+d\cos\theta)\right]
+\\ c\left(\varphi_R-\varphi_L\right) \\ \varphi_R \\
+\varphi_L \end{array}\right]
+\]
+
+Deseja-se achar uma realimentação linearizante entrada-saída para
+os seguintes estados:
+\[ z = \left[\begin{array}{c}x\\y\end{array}\right] \]
+
+Para achar uma lei de controle, utiliza-se a teoria de sistemas
+não lineares para realimentação entrada-saída (encontrada em
+\cite{khalil1}). Derivando a saída uma vez,
+\[
+\dot z = \left[\begin{array}{c}\dot x\\\dot y\end{array}\right] =
+\left[\begin{array}{ccccc}1&0&0&0&0 \\ 0&1&0&0&0
+\end{array}\right] S(\xi)\eta
+\]
+
+Vê-se que a primeira derivada da saída é independente da entrada.
+Então, deriva-se mais uma vez. Assim, tem-se:
+\begin{multline*}
+\ddot z = \left[\begin{array}{c}
+\dot\varphi_Rc^2(\dot\varphi_R-\dot\varphi_L)(d\cos\theta-b\sin\theta)
+-\dot\varphi_Lc^2(\dot\varphi_R-\dot\varphi_L)(b\sin\theta+d\cos\theta)
+\\ \dot\varphi_Rc^2(\dot\varphi_R-\dot\varphi_L)(b\cos\theta+d\sin\theta)
+-\dot\varphi_Lc^2(\dot\varphi_R-\dot\varphi_L)(b\cos\theta-d\sin\theta)\end{array}\right]
++ \\ + \left[\begin{array}{cc}
+c(d\sin\theta+b\cos\theta)&c(b\cos\theta-d\sin\theta) \\
+c(b\sin\theta-d\cos\theta)&c(b\sin\theta+d\cos\theta)
+\end{array}\right]u
+\end{multline*}
+
+A entrada $u$ aparece na segunda derivada. A equação acima pode
+ser reescrita como
+\[
+\ddot z = f_1(\xi)+f_2(\xi)u
+\]
+
+Então, a realimentação que lineariza o sistema para $\ddot
+z=[x~~y]^T$ será da forma:
+\[ u=f_2^{-1}(\xi)\left(v-f_1(\xi)\right) \]
+
+Para a inversa de $f_2(\xi)$ existir, tem-se que
+$\det(f_2(\xi))\neq0$. Então:
+\[ \det(f_2(\xi)) = \frac{r}{2b}d, \]
+de onde conclui-se que, para $f_2^{-1}(\xi)$ existir, $d$
+precisa ser diferente de zero, ou seja, o centro de gravidade (ou
+qualquer ponto de referência no corpo do robô) não pode estar
+sobre o eixo que liga as duas rodas ativas, ao longo da reta
+$\overline{WP}$. Intuitivamente, é um resultado óbvio, pois sobre
+este eixo o robô não possui movimento na direção de $Y_c$, por
+causa da restrição não holonômica. Pontos sobre este eixo podem mover-se, instantaneamente, em apenas uma dimensão (apenas em $X_c$), enquanto que pontos em posições diferentes no corpo do robô podem mover-se em duas dimensões. 
+
+
+%---------------------------------------------------------------
+\section{Controle em coordenadas polares}
+Apresenta-se nesta seção um exemplo de controle para robôs móveis
+com acionamento diferencial onde o seu modelo cinemático é
+transformado para um modelo descontínuo através da mudança para
+coordenadas polares.
+
+Considera-se o seguinte modelo cinemático de um robô móvel com
+acionamento diferencial:
+\begin{equation}\label{kin1}
+\dot{\xi} = \left[\begin{array}{cc} \cos\theta & 0 \\ \sin\theta &
+0 \\ 0 & 1 \end{array}\right]\left[\begin{array}{c}v \\ \omega
+\end{array}\right]^T.
+\end{equation}
+
+As coordenadas de configuração são dadas por $\xi =
+\left[x~~y~~\theta\right]^T$ e as entradas de controle são dadas
+por $\left[v~~\omega\right]^T$. onde $v$ é a velocidade
+translacional e $\omega$ é a velocidade rotacional.
+
+\begin{figure}[tb]\begin{center}
+    \includegraphics[width=60mm]{Figuras/polar.eps}
+    \caption{\it Modelo geométrico de um robô móvel com acionamento diferencial em coordenadas polares.}
+    \label{polar}
+\end{center}\end{figure}
+
+Da Figura \ref{polar}, tem-se que
+\[
+e=\sqrt{x^2+y^2} \qquad \phi=atan2(y,x) \qquad x=e\cos\phi \qquad
+y=e\sin\phi,
+\]
+onde $atan2(y,x) \in (-\pi,\pi]$. Diferenciando-se as expressões
+de $e$ e $\phi$, tem-se que
+\begin{align*}
+\dot e &= \dot x\cos\phi + \dot y \sin\phi \\
+\dot\phi &= \frac{1}{e}\left(\dot x\sin\phi+\dot y\cos\phi\right)
+\end{align*}
+
+Considerando $\alpha=\theta-\phi$, tem-se o seguinte sistema em
+coordenadas polares representando o modelo cinemático do robô:
+\begin{equation}
+\left[\begin{array}{c} \dot e \\ \dot\phi \\ \dot\alpha
+\end{array}\right] = \left[\begin{array}{cc} \cos\alpha&0 \\
+\frac{\sin\alpha}{e}&0 \\ -\frac{\sin\alpha}{e}&1
+\end{array}\right]\left[\begin{array}{c} \eta_1 \\ \eta_2
+\end{array}\right]
+\end{equation}
+
+Claramente, o modelo não está definido para $e=0$, e o sistema
+torna-se descontínuo. Agora, o Teorema de Brockett não vale mais,
+e uma lei de controle suave e invariante no tempo pode ser obtida
+para estabilizar o sistema, Nota-se que, se esta lei de controle
+for levada para a base do sistema \req{kin1}, esta será
+descontínua.
+
+O objetivo do controle é que os valores de $e$, $\theta$ e
+$\alpha$ convirgam para zero. Para analisar a estabilidade do
+controle, considera-se a seguinte função de Liapunov:
+\[
+V=\frac{1}{2}\lambda e^2+\frac{1}{2}\left(\alpha^2+h\phi^2\right),
+\]
+onde $\lambda$ e $h$ são constantes positivas.
+
+Derivando-se a função acima, temos
+\begin{equation}\label{liap1}
+\dot V = \dot V_1+\dot V_2,
+\end{equation}
+com
+\begin{align*}
+\dot V_1 &= \lambda e\cos\alpha\eta_1 \\
+\dot V_2 &=
+\alpha\left[\eta_2-\frac{\sin\alpha}{e\alpha}(\alpha+h\phi\eta_1)\right]
+\end{align*}
+
+Das equações acima, temos as expressões para lei de controle:
+\begin{align}
+\eta_1 &= \gamma_1e\cos\alpha \label{eta1} \\
+\eta_2 &=
+-\gamma_2\alpha-\gamma_1\cos\alpha\frac{\sin\alpha}{\alpha}\left(\alpha-h\phi\right)
+\label{eta2}
+\end{align}
+com $\gamma_1$, $\gamma_2$ e $h$ sendo constantes positivas.
+Substituindo estas expressões em \req{liap1}, tem-se que
+\[
+\dot V = -\gamma_1\lambda e^2\cos^2\alpha-\gamma_2\alpha^2,
+\]
+que será sempre negativa semi-definida. Como $V$ é definida
+positiva e radialmente ilimitada, o sistema é estável em malha fechada. $\dot V$ é não crescente e
+uniformemente contínua (pois $\ddot V$ é limitada -- Lema de
+Barbalat), então $e$ e $\alpha$ convergirão para zero.
+
+Usando \req{eta1} e \req{eta2}, o sistema em malha fechada é
+escrito como:
+\begin{align*}
+\dot e &= -\gamma_1e\cos^2\alpha \\
+\dot\phi &= -\gamma_1\sin\alpha\cos\alpha \\
+\dot\alpha &=
+-\gamma_2\alpha+\gamma_1h\phi\cos\alpha\frac{\sin\alpha}{\alpha}
+\end{align*}
+
+Analisando o sistema em malha fechada acima, e considerando que
+$e\rightarrow0$ e $\alpha\rightarrow0$, pode-se concluir também
+que $\dot e\rightarrow0$ e $\dot\phi\rightarrow0$. Deste modo,
+tem-se que $\dot\alpha$ converge para algum valor constante dado
+por $\gamma_1h\phi^*$. Novamente pelo Lema de Barbalat, tem-se que
+$\dot\alpha\rightarrow0$. Logo, $\phi^*\rightarrow0$.
+
+
+%---------------------------------------------------------------
+\section{Controle cinemático variante no tempo}
+
+O problema de rastreamento de trajetória é usualmente formulado a
+partir da introdução de um {\em modelo de referência} descrito
+pela configuração
+$\xi_{ref}=\left[x_{ref}~~y_{ref}~~\theta_{ref}\right]^T$ e pelas
+velocidades $v_{ref}$ e $\omega_{ref}$, que são limitadas, com
+derivadas limitadas, e dada a limitação de Brockett
+\cite{brockett1}, são diferentes de zero para $t\rightarrow0$,
+onde $t$ é o tempo.
+
+O objetivo do controle é então fazer com que as diferenças
+$x-x_{ref}$, $y-y_{ref}$ e $\theta-\theta_{ref}$ convirgam para
+zero. O erro pode ser expressado, em uma forma matricial, como
+\cite{fukao1,ribeiro1}:
+\begin{equation}\label{error1}
+e=\left[\begin{array}{c} e_1 \\ e_2 \\ e_3
+\end{array}\right]=\left[\begin{array}{ccc} \cos\theta &
+\sin\theta & 0 \\ -\sin\theta & \cos\theta & 0 \\ 0 & 0 & 1
+\end{array}\right] \left[\begin{array}{c} x-x_{ref} \\ y-y_{ref} \\ \theta-\theta_{ref} \end{array}\right].
+\end{equation}
+
+Diferenciando \req{error1} e introduzindo a seguinte mudança de
+entradas:
+\begin{align*}
+u_1 &= v_{ref}\cos e_3 - v \\
+u_2 &= \omega_{ref}-\omega,
+\end{align*}
+temos o seguinte sistema dinâmico não linear:
+\begin{equation}\label{differror1}
+\dot{e} = \left[\begin{array}{ccc} o & \omega & 0 \\ -\omega & 0 &
+0 \\ 0 & 0 & 1 \end{array}\right] e + \left[\begin{array}{c} 0 \\
+\sin e_3 \\ 0 \end{array}\right]v_{ref} + \left[\begin{array}{cc}
+1&0\\0&0\\0&1 \end{array}\right] \left[\begin{array}{c} u_1 \\ u_2
+\end{array}\right],
+\end{equation}
+onde $u_1$ e $u_2$ são as variáveis de controle.
+
+Duas soluções são agora desenvolvidas: a primeira é a que usa uma
+lei de controle linear, onde considera-se o sistema linearizado em
+torno do equilíbrio ($e=0, u=0$). A segunda utiliza o modelo não
+linear para a obtenção de uma lei de controle não linear.
+
+%---------------------------------------------------------------
+\subsection{Lei de controle linear}
+Linearizando o sistema \req{differror1} em torno do equilíbrio
+($e=0, u=0$), temos o seguinte sistema linear e variante no tempo:
+\begin{equation}\label{differror2}
+\dot{e} = \left[\begin{array}{ccc} o & \omega_{ref}(t) & 0 \\
+-\omega_{ref}(t) & 0 & 0 \\ 0 & 0 & 1 \end{array}\right]e +
+\left[\begin{array}{cc} 1&0\\0&0\\0&1 \end{array}\right]
+\left[\begin{array}{c} u_1 \\ u_2
+\end{array}\right].
+\end{equation}
+
+Assumindo $v_{ref}(t)=v_{ref}$ e $\omega_{ref}(t)=\omega_{ref}$,
+temos a seguinte matriz de controlabilidade para o sistema
+\ref{differror2}:
+\[ {\cal C} = \left[\begin{array}{cccccc}
+            1 & 0 & 0 & 0 & -\omega_{ref}^2 & v_{ref}\omega_{ref} \\
+            0 & 0 & -\omega_{ref} & v_{ref} & 0 & 0 \\
+            0 & 1 & 0 & 0 & 0 & 0 \end{array}\right].
+\]
+
+O sistema é controlável se o posto da matriz ${\cal C}$ é
+completo. Claramente, nota-se que, se o sistema de referência
+estiver parado, ou seja, $v_{ref}=\omega_{ref}=0$, a matriz ${\cal
+C}$ não terá posto completo. Conclui-se então que o sistema
+\req{kin1} não pode ser estabilizado em um ponto de equilíbrio. O
+sistema apenas estabiliza quando o sistema de referência mantém-se
+em movimento.
+
+Para evitar o problema da falta de controlabilidade, escolhe-se
+uma lei de controle tal que os pólos do sistema em malha fechada
+dependam dos valores das velocidades de referência $v_{ref}$ e
+$\omega_{ref}$. Assim, os pólos em malha fechada são dados por:
+
+\[ \left(s+2\xi a\right)\left(s^2+2\xi as+a^2\right)=0,\]
+onde
+\begin{equation}\label{sqrta}
+a=\sqrt{\omega_{ref}^2 + bv_{ref}^2}.
+\end{equation}
+
+
+Tem-se assim a seguinte lei de controle:
+\begin{align*}
+u_1 &= -k_1e_1 \\
+u_2 &= k_2\sign(v_{ref})e_2-k_3e_3,
+\end{align*}
+onde
+\begin{align*}
+k_1 &= 2\xi a \\
+k_2 &= b\left|v_{ref}\right| \\
+k_3 &= 2\xi a
+\end{align*}
+e a função $\sign(x)$ é definida como:
+\begin{equation*}
+\sign(x)=\left\{\begin{array}{cc}-1,&x<0\\+1,&x>0\end{array}\right.
+\end{equation*}
+
+%---------------------------------------------------------------
+\subsection{Lei de controle não linear}
+Considerando o sistema \req{differror1}, temos a seguinte lei de
+controle não linear:
+\begin{align*}
+u_1 &= -k_1\left(v_{ref},\omega_{ref}\right)e_1 \\
+u_2 &= -k_4v_{ref}\frac{\sin
+e_3}{e_3}e_2-k_3\left(v_{ref},\omega_{ref}\right)e_3,
+\end{align*}
+onde $k_4$ é uma constante positiva e $k_1$ e $k_3$ são funções
+contínuas e estritamente positivas. Considerando:
+\begin{align*}
+k_1\left(v_{ref},\omega_{ref}\right) =
+k_3\left(v_{ref},\omega_{ref}\right) &= 2\xi a \\
+k_4 &= b,
+\end{align*}
+onde $a$ é dado pela equação \req{sqrta}.
+
+Este controle tem a proriedade de estabilizar assintoticamente e
+globalmente a origem $e=0$. A prova para isto pode ser feita
+baseada em funções de Liapunov \cite{ribeiro1}.
+
+
+
+
+
+%---------------------------------------------------------------
+\chapter{Conclusões}
+\label{cap6} \thispagestyle{empty}
+
+Foram temas tratados neste trabalho:
+\begin{itemize}
+\item {\em Modelagem de robôs móveis não holonômicos dotados de rodas}. \\
+Baseado no trabalho desenvolvido por Campion et al. em
+\cite{campion4}, onde o assunto é tratado de forma sistemática.
+Foi visto que, considerando o interesse em implementações reais e
+factíveis, os robôs móveis podem ser classificados em cinco
+classes distintas, conforme o seu grau de mobilidade, $\delta_m$,
+e o seu grau de dirigibilidade, $\delta_s$, que definem a
+capacidade que um robô possui de se movimentar em um plano de configuração. São desenvolvidos
+então os modelos cinemáticos de postura e de configuração e os
+modelos dinâmicos de postura e de configuração. No modelo
+cinemático aparecem explicitamente as restrições ao movimento do
+robô, já que estas se dão com respeito à velocidade do mesmo. As
+entradas deste modelo são as velocidades das rodas. No modelo
+dinâmico, as entradas são os torques aplicados nos atuadores das
+rodas, o que é mais realista. Com este modelo, é possível
+considerar restrições quanto à potência máxima dos atuadores,
+evitando a saturação dos mesmos. Também é possível, com o modelo
+dinâmico, desenvolver estratégias adaptativas de controle, quando
+os parâmetros são variáveis ou desconhecidos, o que geralmente não
+acontece a nível cinemático, pois os parâmetros para este modelo
+são relacionados à construção do robô, e são fáceis de calcular e calibrar.
+
+\item {\em Controle de robôs móveis}. \\
+A síntese de leis de controle para sistemas mecânicos não
+holonômicos esbarra na imposição dada pelo Teorema de Brockett
+\cite{brockett1}, em que um sistema deste tipo não pode ser
+estabilizado em um ponto de equilíbrio por uma lei de controle
+estática suave e invariante no tempo. Com isto, técnicas usuais de
+controle não linear não podem ser mais utilizadas. Para transpor
+esta restrição, diversos métodos são propostos, como controle
+variante no tempo, controle descontínuo (não suave), controle
+adaptativo, controle inteligente (redes neurais, lógica difusa).
+
+Com base na literatura existente, foi possível as seguintes
+classificações no que diz respeito ao controle de robôs móveis:
+quanto ao tipo de modelo (cinemático ou dinâmico), quanto à
+metodologia de controle (variante no tempo, descontínuo,
+adaptativo, inteligente, linearizante), quanto ao tipo de malha de
+controle (malha aberta ou fechada) e quanto ao objetivo
+(estabilização em um ponto, rastreamento de trajetória ou
+seguimento de caminho).
+
+\end{itemize}
+
+No Capítulo \ref{cap5}, utilizou-se um modelo de robô móvel com
+acionamento diferencial, freqüentemente encontrado na literatura.
+Referenciando o Capítulo \ref{cap3}, foi analisada a classe do
+robô, onde chegou-se à conclusão de que o mesmo pertence à Classe
+(2,0). Foram desenvolvidos, então, os modelos cinemático de
+postura e configuração, e o modelo dinâmico de configuração. Algumas
+técnicas de controle em malha fechada, como controle linearizante,
+e controle variante no tempo, foram então mostradas. Provavelmente
+este será o tipo de robô utilizado no trabalho de dissertação,
+caso este inclua algum tipo de implementação prática. A título ilustrativo, foi mostrado um controle por realimentação estática de estados, para o modelo cinemático, onde considerou-se o controle apenas nos estados de posição do robô, desconsiderando a orientação do mesmo. Esta é uma situação bem aceitável, visto que para alguns objetivos de controle, e dependendo da geometria do robô, este último estado não interfere na convergência do robô para a trajetória.
+
+O autor considera o presente trabalho incompleto, mas suficiente
+para o propósito do mesmo, dado o desconhecimento por parte do
+autor em geometria diferencial e controle não linear, que são as
+bases do assunto. Foi possível o desenvolvimento teórico tanto em
+modelagem quanto em controle de robôs móveis, e tentou-se obter
+uma visão geral das diversas metodologias de controle utilizadas,
+visto que o assunto ainda não está estruturado de forma organizada
+na literatura.
+
+A pretensão para o trabalho de dissertação de mestrado é de
+aprofundar conceitos em controle de sistemas não lineares e
+geometria diferencial, sendo assim possível propor alguma técnica
+de controle para um robô móvel dotado de rodas.
+
+
+
+%---------------------------------------------------------------
+\appendix
+\chapter{Definições Matemáticas}
+\label{appa} \thispagestyle{empty}
+
+
+%---------------------------------------------------------------
+\section{Geometria diferencial}
+
+\subsubsection{Campo vetorial}
+Um mapeamento $f:D\rightarrow\real^n$, onde $D\subset\real^n$ é um domínio\footnote{$D$ é um subconjunto de $\real^n$.}, é dito ser um {\em campo vetorial} em $D$.
+
+Ainda, seja $T_xD$ o espaço tangente a $D$ em um ponto $x\in D$. Um campo vetorial em $D$ é um mapeamento suave que relaciona um vetor tangente $f(x)$ a cada ponto $x\in D$.
+
+Em coordenadas locais, um campo vetorial é representado por um vetor-linha de ordem $n$, $f(x)=[f_1(x)~~f_2(x)~~\cdots~~f_n(x)]^T$.
+
+\subsubsection{Campo covetorial}
+O espaço transposto de um capo vetorial é chamado de {\em campo covetorial}, formado por um vetor-coluna de ordem $n$, $f(x)=[f_1(x)~~f_2(x)~~\cdots~~f_n(x)]$.
+
+\subsubsection{Produto interno}
+Se $f$ e $g$ são, respectivamente, um campo vetorial e um campo covetorial em $D$, $D\subset\real^n$, então o {\em produto interno} $<g,f>$ é definido como:
+\[
+<g,f>=g(x)f(x)=\sum_{i=1}^ng_i(x)f_i(x)
+\]
+
+\subsubsection{Diferencial}
+Seja $h:D\rightarrow\real$. A {\em diferencial} de $h$ é um campo covetorial definido por
+\[
+dh=\frac{\partial h}{\partial x}=\left[\frac{\partial h}{\partial x_1}~~\cdots~~\frac{\partial h}{\partial x_n}\right]
+\]
+
+\subsubsection{Derivada de Lie}
+Seja $h:D\rightarrow\real$ e $f:D\rightarrow\real^n$. A {\em derivada de Lie} de $h$ com relação a $f$, ou ao longo de $f$, é definida como
+\[
+L_fh(x)=\frac{\partial h}{\partial x}f(x)
+\]
+Assim, usa-se as seguintes notações:
+\begin{align*}
+L^0_fh(x) &= h(x) \\
+L^2_fh(x) &= L_fL_fh(x) = \frac{\partial \left(L_fh\right)}{\partial x}f(x) \\
+L^k_fh(x) &= L_fL^{k-1}_fh(x) = \frac{\partial \left(L^{k-1}_fh\right)}{\partial x}f(x) \\
+L_gL_fh(x) &= \frac{\partial \left(L_fh\right)}{\partial x}g(x)
+\end{align*}
+
+\subsubsection{Colchetes de Lie}
+Seja $f$ e $g$ dois campos vetoriais em $D\subset\real^n$. O {\em colchete de Lie}\footnote{Do inglês, {\em Lie bracket}.} de $f$ e $g$, denotado por $[f,g]$, é um terceiro campo vetorial definido como
+\[
+[f,g](x)=\frac{\partial g}{\partial x}f(x) - \frac{\partial f}{\partial x}g(x)
+\]
+onde $\frac{\partial f}{\partial x}$ e $\frac{\partial g}{\partial x}$ são matrizes jacobianas. A seguinte notação é utilizada:
+\begin{align*}
+ad^0_fg(x) &= g(x) \\
+ad_fg(x) &= [f,g](x) \\
+ad^k_fg(x) &= [f,ad^{k-1}_fg](x)
+\end{align*}
+
+Os colchetes de Lie apresentam ainda as seguintes propriedades:
+\begin{itemize}
+\item Bilinearidade: sejam $f_1$, $f_2$, $g_1$ e $g_2$ campos vetoriais e $\alpha$, $\beta$ números reais. Então,
+\begin{align*}
+\left[ \alpha f_1+\beta f_2,g_1\right] &= \alpha\left[f_1,g_1\right]+\beta\left[f_2,g_1\right] \\
+\left[f_1, \alpha g_1+\beta f_2\right] &= \alpha\left[f_1,g_1\right]+\beta\left[f_1,g_2\right]
+\end{align*}
+\item Comutatividade:
+\[
+\left[f,g\right] = -\left[g,f\right]
+\]
+\item Identidade de Jacobi: se $f$ e $g$ são campos vetoriais e $h$ é uma função real, então
+\[
+L_{[f,g]}h(x)=L_fL_gh(x)-L_gL_fh(x)
+\]
+\end{itemize}
+
+\subsubsection{Difeomorfismo}
+Um mapeamento $T:D\rightarrow\real^n$ é um {\em difeomorfismo} em $D$ se $T$ é inversível em $D$, ou seja, existe um função $T^{-1}(x)$ tal que $T^{-1}(T(x))=x$ para todo $x\in D$, e ambas as funções $T(x)$ e $T^{-1}(x)$ são diferenciáveis. Se a matriz jacobiana $\frac{\partial J}{\partial x}$ é não singular em um ponto $x_0\in D$, então existe uma vizinhança $N$ de $x_0$ tal que $T$, restrita a $N$, é um difeomorfismo em $N$. $T$ é dito ser um {\em difeomorfismo global} se $T$ é um difeomorfismo em $\real^n$ e $T(\real^n)=\real^n$, ou
+\begin{enumerate}
+\item $\frac{\partial T}{\partial x}$ é não singular para todo $x\in\real^n$;
+\item $T$ é {\em própria}, ou seja, $\lim_{\parallel x\parallel\rightarrow\infty}\parallel T(x)\parallel=\infty$.
+\end{enumerate} 
+O conceito de difeomorfismo pode ser visto como uma generalização do conceito de transformação de coordenadas. Pode ser utilizado para transformar um sistema não linear em outro sistema não lienar, cuja dinâmica passa a ser descrita por um novo conjunto de estados.
+
+\subsubsection{Distribuição}
+Seja $f_1,f_2,\ldots,f_k$ campos vetoriais em $D\subset\real^n$. Para qualquer ponto fixo $x\in D$, os campos vetoriais $f_1(x),f_2(x),\ldots,f_k(x)$ são vetores pertencentes a $\real^n$ e
+\[
+\Delta(x) = span\left\{ f_1(x),f_2(x),\ldots,f_k(x) \right\}
+\]
+é um subespaço de $\real^n$. Para cada ponto $x\in\real^n$, atribui-se um subespaço $\Delta(x)$, definido como
+\[
+\Delta = span\left\{ f_1,f_2,\ldots,f_k \right\}
+\]
+A este subespaço chama-se {\em distribuição}. Em outras palavras, $\Delta$ é o conjunto de todos os espaços vetoriais $\Delta(x)$ para $x\in D$.
+
+A dimensão de $\Delta(x)$ é dada por
+\[
+\dim\left(\Delta(x)\right)=\rho\left[f_1(x)~~f_2(x)~~\cdots~~f_k(x)\right],
+\]
+e esta dimensão pode variar com $x$, mas se $\Delta'=span\{f_1,\ldots,f_r\}$ e $f_1,\ldots,f_r$ são linearmente independentes para todo $x\in D$, então $\dim(\Delta'(x))=r$ para todo $x\in D$. Neste caso, diz-se que $\Delta'$ é uma {\em distribuição não singular} em $D$, gerada por $f_1,\ldots,f_r$.
+
+\subsubsection{Codistribuição}
+{\em Codistribuições} são duais às distribuições. São definidas utilizando campos covetoriais e possuem as mesmas propriedades. Uma codistribuição de interesse particular é a {\em aniquiladora} da distribuição $\Delta$, escrita como $\Delta^\perp$ e definida como
+\[
+\Delta^\perp(x) = \left\{ \omega\in\left(\real^n\right)^* | <\omega,\upsilon>=0,\forall~\upsilon\in\Delta(x)\right\},
+\]
+onde $(\real^n)^*$ é um espaço de vetores-coluna de dimensão $n$.
+
+\subsubsection{Distribuição involutiva}
+Uma distribuição $\Delta$ é {\em involutiva} se é fechada no colchete de Lie:
+\[
+g_1\in\Delta {\text ~~e~~} g_2\in\Delta\Rightarrow\left[g_1,g_2\right]\in\Delta
+\]
+
+Se $\Delta$ é uma distribuição não singular em $D$, gerada pelos campos vetoriais linearmente independentes $f_1,\ldots,f_r$, então $\Delta$ é involutiva se e somente se
+\[
+\left[f_i,f_j\right]\in\Delta,\quad\forall~1\leq i,j\leq r,
+\]
+ou
+\[
+\left[f_i,f_j\right](x) = \sum_{k=1}^r\alpha_{ijk}(x)f_k(x), \quad \forall~i,j,
+\]
+onde $\alpha_{ijk}:\real^n\rightarrow\real$ são funções escalares.
+
+Involutividade significa que, se formado o colchete de Lie de qualquer par de campos vetoriais $f_i,f_j$ do conjunto $f_1,\ldots,f_r$, então o campo vetorial resultante pode ser expresso como combinação linear dos campos vetoriais originais. Note que:
+\begin{itemize}
+\item Campos vetoriais constantes são sempre involutivos. De fato, o colchete de Lie de dois campos vetoriais constantes, $[f_{c1},f_{c2}]$, é simplesmente o vetor zero, que pode ser trivialmente expresso como combinação linear de $f_{c1}$ e $f_{c2}$;
+\item Um conjunto composto de apenas um campo vetorial é involutivo. De fato,
+\[ 
+\left[f,f\right]=\frac{\partial f}{\partial x}f-\frac{\partial f}{\partial x}f=0
+\]
+\item Para uma distribuição ser involutiva, a seguinte condição deve ser atendida:
+\[
+\rho\left[f_1(x)~~\cdots~~f_r(x)\right]=\rho\left[f_1(x)~~\cdots~~f_r(x)~~[f_i,f_j](x)\right],
+\]
+para todos $i$, $j$ e $x$.
+\end{itemize}
+
+\subsubsection{Integrabilidade completa}
+Seja $\Delta$ uma distribuição não singular pertencente a $D$, gerada por $f_1,\ldots,f_r$. Então, $\Delta$ é {\em completamente integrável} se para cada $x_0\in D$, existe uma vizinhança $N$ de $x_0$ e $n-r$ funções reais e suaves $h_1,\ldots,h_{n-r}$ que satisfazem a seguinte equação diferencial parcial:
+\[
+\frac{\partial h_j}{\partial x}f_i(x)=0,\quad\forall~1\leq i\leq r~~{\text e}~~1\leq j\leq n-r
+\]
+e os campos covetoriais $dh_j(x)$ são linearmente independentes para todo $x\in D$. Isto equivale a
+\[
+\Delta\perp=span\left\{dh_1,\ldots,dh_{n-r}\right\}
+\]
+
+
+%---------------------------------------------------------------
+\section{Teoremas}
+
+\subsection*{Brockett}
+
+FALTA COISA AQUI !!!!!!!!!
+
+O Teorema de Brockett fornece condições necessárias e suficientes para a estabilizabilidade de sistemas não holonômicos \cite{astolfi1}.
+
+\begin{teorema}
+Seja o seguinte sistema, $\dot x=f(x)u$, com $f(x_0)u_0=0$, sendo $f(\cdot)$ uma função continuamente diferenciável em uma vizinhança de $x_0$ e $f(x)$ sendo uma distribuição de posto constante em uma vizinhança de $x_0$.
+
+Então existe uma lei de controle continuamente diferenciável que faz com que $(q_0,u_0)$ seja assintoticamente estável se e somente se $\dim(x)=\dim(u)$.\fimteo
+\end{teorema}
+
+\subsection*{Frobenius}
+O Teorema de Frobenius é uma importante ferramenta quando se utiliza realimentação linearizante de sistemas não lineares. Ele dá condições necessárias e suficientes para a solução de uma classe especial de equações parciais diferenciais, e vem diretamente das definições de distribuição involutiva e distribuição completamente integrável.
+\begin{teorema}
+Uma distribuição $\Delta$ formada por um conjunto de campos vetoriais linearmente independentes $f_1,\ldots,f_r$ é integrável se e somente se $\Delta$ é involutiva. \fimteo
+\end{teorema}
+
+\subsection*{Barbalat}
+\begin{teorema}
+Seja uma função diferenciável $x(t)$ e limitada ($t\rightarrow\infty: x<\infty$). Se $\dot x(t)$ é {\em uniformemente contínua} (ou seja, a sua derivada é limitada), então $\dot x(t)\rightarrow 0$ para $t\rightarrow\infty$.\fimteo
+\end{teorema}
+
+{\bf Uso do Lema de Barbalat na análise de estabilidade}: ~\\
+Para aplicar o resultado do Lema de Barbalat na análise de sistemas dinâmicos, usualmente são utilizados os seguintes corolários \cite{slotine1}: \\
+{\bf Corolário}: Se a função diferenciável $x(t)$ é limitada, e se $\ddot x(t)$ existe e é limitada, então $\dot x(t)\rightarrow 0$ para $t\rightarrow\infty$. \\
+{\bf Corolário}: Se existe uma função escalar $V(x,t)$ que satisfaz as seguintes condições: 
+\begin{enumerate}
+\item $V(x,t)$ é limitada inferiormente;
+\item $\dot V(x,t)$ é negativa semi-definida;
+\item $\dot V(x,t)$ é unifirmemente contínua no tempo,
+\end{enumerate}
+então $\dot V(x,t)\rightarrow 0$ para $t\rightarrow\infty$.
+
+
+
+%---------------------------------------------------------------
+\section{Estabilizabilidade e controlabilidade}
+Esta seção é baseada no Capítulo 1 de \cite{bacciotti1}. Considera-se agora o sistema
+\begin{equation}\label{S}
+\dot x=f(x,u), \quad x\in\Omega
+\end{equation}
+onde $x$ é o estado do sistema, $\Omega$ é uma região aberta e conexa tal que $\Omega\in\real^n$ e $u\in\real^m$ é a entrada do sistema \req{S}. 
+
+O problema da {\bf estabilizabilidade} pode ser dada da seguinte maneira: seja $x_0\in\Omega$. Quer-se achar condições para a existência de uma lei de controle $u=u(x)$ definida em uma vizinhança de $x_0$ tal que o sistema em malha fechada
+\[ \dot x = f\left(x,u(x)\right)=F(x) \]
+possui um {\em ponto de equilíbrio estável} em $x=x_0$. Se $u(x)$ existe, o sistema \req{S} é estaticamente estabilizável em $x_0$, e $u(x)$ é chamada de {\em lei de realimentação estática estabilizante}, ou simplesmente, um {\em estabilizador}.
+
+De uma forma mais geral, diz-se que \req{S} é {\em dinamicamente estabilizável} em $x_0$ se existe um inteiro $\nu$, um ponto $\xi\in\real^\nu$ e uma função $g:\Omega\times\real^\nu\rightarrow\real^\nu$ tal que o novo sistema de controle
+\begin{align}
+\dot x &= f(x,u)\label{est1} \\
+\dot\xi&= g(x,\xi)\label{est2}
+\end{align}
+é estabilizável em $(x_0,\xi_0)$ por uma realimentação da forma $u=u(x,\xi)$. O sistema \req{est2} é usualmente chamado de {\em compensador} para \req{S}. O par formado por \req{est1}--\req{est2} é chamado de {\em estabilizador dinâmico}.
+
+Pode-se reescrever o sistema \req{S} na forma {\em afim},
+\[
+\dot x = f_0(x)+\sum_{i=1}^mu_if_i(x),
+\]
+onde $u=(u_1,\ldots,u_m)$ e $f_0,\ldots,f_m$ são campos vetoriais pertencentes ao $\real^n$. ($f_0$ descreve o comportamento do sistema quando nenhum controle é aplicado, chamado {\em termo de deriva}\footnote{Do inglês, {\em drift term}.}). Ainda, sobre $u(x)$, diz-se que $f(0,u(0))=f(0,0)=0$.
+
+\begin{definicao}\label{defest} ~\\
+É dito que o sistema \req{S} é {\em localmente continuamente estabilizável} ou ele admite um {\em estabilizador contínuo local} se existe uma realimentação de controle $u=u(x)$, contínua em uma vizinhança $\Omega_0$ da origem, onde $\Omega_0\in\Omega$, fazendo com que o sistema em malha fechada tenha: $(a)$: uma única solução para cada condição inicial $\bar x\in\Omega_0$, $\bar x\neq0$, e $(b)$: um equilíbrio localmente assintoticamente estável na origem $x=0$.\fimdef
+\end{definicao}
+
+Tem-se ainda as seguintes definições para estabilizabilidade:
+\begin{definicao} ~\\
+É dito que o sistema \req{S} é {\em localmente ${\bf C}^r$-estabilizável} se existe $u=u(x)$ da classe ${\bf C}^s$ ($s\geq r$) em uma vizinhança $\Omega_0$ da origem, onde $\Omega_0\in\Omega$. 
+
+Quando um sistema é ${\bf C}^r$-estabilizável para algum $r\geq 1$, mas não há necessidade de saber exatamente o valor de $r$, é dito que o sistema é {\em suavemente estabilizável}. Em outras palavras, o termo "suave"~ pode ser usado como um sinônimo de "pelo menos ${\bf C}¹$".\fimdef
+\end{definicao}
+\begin{definicao} ~\\
+É dito que o sistema \req{S} é {\em localmente linearmente estabilizável} se da origem puder ser feito um equilíbrio assintoticamente estável por meio de uma realimentação estática do tipo $u=Kx$, onde $K\in\real^{n\times m}$. O resultado é local pois $u\in\Omega_0$, que é um subsistema de $\Omega$.\fimdef
+\end{definicao}
+
+Todos os resultados acima podem ser extendidos para o caso global caso $\Omega_0=\Omega$. Definições adicionais podem ainda ser usadas, como {\em estabilidade fraca} (quando o ítem $(a)$ da Definição \ref{defest} não é satisfeito), ou {\em quase estabilidade} (quando $(b)$ da Definição \ref{defest} não é satisfeito, ou seja, não há regularidade para $x=0$ na função de controle).
+
+O seguinte resultado relaciona a estabilizabilidade de sistemas lineares e sistemas não lineares, como segue.
+\begin{definicao} ~\\
+Considerando o sistema \req{S} e assumindo que $f(0,u(0))=f(0,0)=0$. Associa-se a \req{S} o sistema linear
+\begin{equation}\label{Slin}
+\dot x=Ax+Bu,
+\end{equation}
+onde
+\[
+A=\left.\frac{\partial f}{\partial x}\right|_{(0,0)} \qquad B=\left.\frac{\partial f}{\partial u}\right|_{(0,0)}
+\]
+
+Se \req{Slin} é estabilizável, então qualquer realimentação linear $u=Kx$ que estabiliza \req{Slin} também estabilizará localmente o sistema não linear \req{S}. Obviamente, o resultado é apenas local, pois \req{Slin} trata-se de uma aproximação linear em série de Taylor, desprezando-se os termos de ordem superior.
+
+As afirmações acima permitem dizer que o sistema \req{S} é linearmente estabilizável, e ainda, {\em exponencialmente estabilizável} (i. e., as trajetórias convergem para o equilíbrio com taxas exponenciais). este resultado pode ser invertido, dizendo que a condição de estabilizabilidade do sistema linearizado \req{Slin} é necessária para que o sistema não linear seja exponencialmente estável.\fimdef
+\end{definicao}
+
+
+A noção de {\bf controlabilidade} pode ser extendida sob vários aspectos, de sistemas lineares para sistemas não lineares \cite{bacciotti1}. Contudo, geralmente esta extensão recai no conceito de {\em alcançabilidade} a um determinado ponto.
+
+Como no caso linear, diz-se que um ponto $x_0$ pode {\em alcançar} um ponto $x_1$ em um tempo finito $T$ se existe um controle em malha aberta $u(t):[0,T]\rightarrow \real^m$ que faça com que o sistema com condição inicial $x_0$ seja igual a $x_1$ para o tempo $t=T$. O conjunto de pontos que podem ser alcançados a partir de $x_0$ em um dado tempo $T$ é chamado {\em conjunto alcançável} e é denotado por $R(T,x_0)$. Assim, tem-se que $R(0,x_0)=\{x_0\}$.
+\begin{definicao}\label{defa1} ~\\
+Seja $\Delta$ um subconjunto de $\Omega$ e seja $x_0\in\Delta$. É dito que o sistema \req{S} é {\em $\Delta$--controlável} a partir de $x_0$ se $\Delta=R(x_0)$. Ainda, é dito que o sistema \req{S} é {\em completamente controlável} a partir de $x_0$ se o sistema é $\Omega$-controlável a partir de $x_0$.\fimdef
+\end{definicao}
+
+Em particular, controlabilidade completa tem o mesmo significado que controlabilidade para o caso linear: na região $\Omega$ onde o sistema \req{S} é definido, todo o ponto $x_1$ pode ser alcançado de qualquer outro ponto inicial, $x_0$, em qualquer tempo $T$. O conceito exposto na Definição \ref{defa1} refere-se à controlabilidade global. Isto induz à próxima definição.
+\begin{definicao}\label{defa2} ~\\
+Seja $x_0\in\Omega$. Diz-se que o sistema \ref{S} é {\em localmente controlável} (ou {\bf Small Time Locally Controllable}) em $x_0$ quando $x_0$ pertence ao interior de $R(t,x_0)$, para $t>0$.\fimdef
+\end{definicao}
+
+FALTA ALGUMA COISA SOBRE STLC!!!!!!!!
+
+
+
+%---------------------------------------------------------------
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{surveybib}
+
+
+
+\end{document}

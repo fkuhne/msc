@@ -1,0 +1,459 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0057)http://www-ccs.ucsd.edu/matlab/toolbox/optim/fminunc.html -->
+<HTML><HEAD><TITLE>fminunc (Optimization Toolbox)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!-- $Revision: 1.1 $  $Date: 1998/10/02 20:31:49 $ --><!-- $Log: fminunc.html,v $
+<!-- Revision 1.1  1998/10/02  20:31:49  thornton
+<!-- Initial revision
+<!-- --><!-- DOCNAME: Optimization Toolbox --><!-- HEADSTUFF -->
+<SCRIPT language=Javascript>
+function slipInNewDest(cname){ 
+  if ((navigator.appName == 'Microsoft Internet Explorer') && (navigator.appVersion.substring(0,1) == '2' )) {window.location = cname.toLowerCase()+".html";}
+  else {window.document.f2.action=cname.toLowerCase()+".html";}
+}
+</SCRIPT>
+
+<META content="MSHTML 6.00.2900.2627" name=GENERATOR></HEAD>
+<BODY bgColor=#ffffff><A name=189290><!-- NAVBARTOP -->
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=baseline bgColor=#9bd0e0>&nbsp;<FONT size=+2>Optimization 
+      Toolbox</FONT></TD>
+    <TD vAlign=baseline align=right bgColor=#9bd0e0>
+      <FORM name=f2 onsubmit=slipInNewDest(f2.cmdname.value)>&nbsp;&nbsp;<B>Go 
+      to function:</B> <INPUT size=12 name=cmdname></FORM></TD>
+    <TD vAlign=baseline align=right bgColor=#9bd0e0>&nbsp;&nbsp;&nbsp;&nbsp;<A 
+      href="http://www-ccs.ucsd.edu/matlab/search1.html" 
+      target=_top>Search</A>&nbsp;&nbsp;&nbsp;&nbsp;<A 
+      href="http://www-ccs.ucsd.edu/matlab/helpdesk.html" target=_top>Help 
+      Desk</A>&nbsp;</TD></TR></TBODY></TABLE>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD><FONT size=+4>fminunc</FONT> </A></TD>
+    <TD vAlign=baseline align=right>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/fminunc.html#exmpl_sec"><FONT 
+      size=+1>Examples</FONT></A>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/fminunc.html#seeal_sec"><FONT 
+      size=+1>See Also</FONT></A></TD></TR></TBODY></TABLE><!-- FNAME:fminunc --><A 
+name=189290></A>
+<P></P><!-- H2 --><A name=189291></A>
+<P><A name=189296></A>Find the minimum of an unconstrained multivariable 
+function</P>
+<UL><A name=426272></A><IMG 
+  src="fminunc (Optimization Toolbox)_files/optref31.gif" align=absMiddle> </UL><A 
+name=189297></A>where <EM>x</EM> is a vector and <EM>f(x)</EM> is a function 
+that returns a scalar.
+<P></P><!-- H2 --><A name=189298></A>
+<P><FONT size=+2>Syntax</FONT></P>
+<UL><PRE><A name=189299></A>x = fminunc(fun,x0)
+<A name=189300></A>x = fminunc(fun,x0,options)
+<A name=189301></A>x = fminunc(fun,x0,options,P1,P2,...)
+<A name=189302></A>[x,fval] = fminunc(...)
+<A name=189303></A>[x,fval,exitflag] = fminunc(...)
+<A name=189304></A>[x,fval,exitflag,output] = fminunc(...)
+<A name=189305></A>[x,fval,exitflag,output,grad] = fminunc(...)
+<A name=189306></A>[x,fval,exitflag,output,grad,hessian] = fminunc(...)
+</PRE></UL><!-- H2 --><A name=189307></A>
+<P><FONT size=+2>Description</FONT></P><A name=189308></A><CODE>fminunc</CODE> 
+finds the minimum of a scalar function of several variables, starting at an 
+initial estimate. This is generally referred to as <EM>unconstrained nonlinear 
+optimization</EM>.
+<P></P><A name=358490></A><CODE><CODE>x = fminunc(fun,x0) </CODE></CODE><A 
+name=358491></A>starts at the point <CODE>x0</CODE> and finds a local minimum 
+<CODE>x</CODE> of the function described in <CODE>fun</CODE>. <CODE>x0</CODE> 
+can be a scalar, vector, or matrix.
+<P></P><A name=288302></A><CODE><CODE>x = fminunc(fun,x0,options) 
+</CODE></CODE><A name=290216></A>minimizes with the optimization parameters 
+specified in the structure <CODE>options</CODE>.
+<P></P><A name=288307></A><CODE><CODE>x = fminunc(fun,x0,options,P1,P2,...) 
+</CODE></CODE><A name=290215></A>passes the problem-dependent parameters 
+<CODE>P1</CODE>, <CODE>P2</CODE>, etc., directly to the function 
+<CODE>fun</CODE>. Pass an empty matrix for <CODE>options</CODE> to use the 
+default values for <CODE>options</CODE>.
+<P></P><A name=189319></A><CODE>[x,fval] = fminunc(...) </CODE><A 
+name=189320></A>returns in <CODE>fval</CODE> the value of the objective function 
+<CODE>fun</CODE> at the solution <CODE>x</CODE>.
+<P></P><A name=189321></A><CODE>[x,fval,exitflag] = fminunc(...) </CODE><A 
+name=189322></A>returns a value <CODE>exitflag</CODE> that describes the exit 
+condition.
+<P></P><A name=288312></A><CODE>[x,fval,exitflag,output] = fminunc(...) 
+</CODE><A name=290214></A>returns a structure <CODE>output</CODE> that contains 
+information about the optimization.
+<P></P><A name=189331></A><CODE>[x,fval,exitflag,output,grad] = fminunc(...) 
+</CODE><A name=189332></A>returns in <CODE>grad</CODE> the value of the gradient 
+of <CODE>fun</CODE> at the solution <CODE>x</CODE>.
+<P></P><A name=189333></A><CODE>[x,fval,exitflag,output,grad,hessian] = 
+fminunc(...) </CODE><A name=189334></A>returns in <CODE>hessian</CODE> the value 
+of the Hessian of the objective function <CODE>fun</CODE> at the solution 
+<CODE>x</CODE>.
+<P></P><!-- H2 --><A name=197893></A>
+<P><FONT size=+2>Arguments</FONT></P><A name=280479></A>The arguments passed 
+into the function are described in <A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/optref.html#2681">Table&nbsp;1-1</A>. 
+The arguments returned by the function are described in <A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/optref.html#2806">Table&nbsp;1-2</A>. 
+Details relevant to <CODE>fminunc</CODE> are included below for 
+<CODE>fun</CODE>, <CODE>options</CODE>, <CODE>exitflag</CODE>, and 
+<CODE>output</CODE>.<BR><BR>
+<TABLE cellPadding=5 border=3>
+  <CAPTION></CAPTION>
+  <TBODY>
+  <TR vAlign=top>
+    <TD><A name=280488></A><CODE>fun</CODE><BR></TD>
+    <TD><A name=281582></A>The function to be minimized. <CODE>fun</CODE> 
+      takes a vector <CODE>x</CODE> and returns a scalar value <CODE>f</CODE> of 
+      the objective function evaluated at <CODE>x</CODE>. You can specify 
+      <CODE>fun</CODE> to be an inline object. For example,
+      <P></P>
+      <UL><PRE><A name=281583></A>x = fminunc(inline('sin(x''*x)'),x0)
+</PRE></UL><A name=281584></A>Alternatively, <CODE>fun</CODE> can be a 
+      string containing the name of a function (an M-file, a built-in function, 
+      or a MEX-file). If <CODE>fun='myfun'</CODE> then the M-file function 
+      <CODE>myfun.m</CODE> would have the form
+      <P></P>
+      <UL><PRE><A name=281585></A>function f = myfun(x)
+<A name=281586></A>f = ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% Compute function value at x
+</PRE></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=280492></A><CODE></CODE><BR></TD>
+    <TD><A name=281879></A>If the gradient of <CODE>fun</CODE> can also be 
+      computed <EM>and</EM> <CODE>options.GradObj</CODE> is <CODE>'on'</CODE>, 
+      as set by
+      <P></P>
+      <UL><PRE><A name=281880></A>options = optimset('GradObj','on')
+</PRE></UL><A name=281881></A>then the function <CODE>fun</CODE> must 
+      return, in the second output argument, the gradient value <CODE>g</CODE>, 
+      a vector, at <CODE>x</CODE>. Note that by checking the value of 
+      <CODE>nargout</CODE> the function can avoid computing <CODE>g</CODE> when 
+      <CODE>fun</CODE> is called with only one output argument (in the case 
+      where the optimization algorithm only needs the value of <CODE>f</CODE> 
+      but not <CODE>g</CODE>):
+      <P></P>
+      <UL><PRE><A name=285903></A>function [f,g] = myfun(x)
+<A name=285904></A>f = ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% compute the function value at x
+<A name=285905></A>if nargout &gt; 1&nbsp;&nbsp;&nbsp;% fun called with 2 output arguments
+<A name=285906></A>&nbsp;&nbsp;&nbsp;g = ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% compute the gradient evaluated at x
+<A name=286148></A>end
+</PRE></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=280496></A><BR></TD>
+    <TD><A name=286967></A>The gradient is the partial derivatives <IMG 
+      src="fminunc (Optimization Toolbox)_files/optref29.gif" align=absMiddle> 
+      of <CODE>f</CODE> at the point <CODE>x</CODE>. That is, the 
+      <CODE>i</CODE>th component of <CODE>g</CODE> is the partial derivative of 
+      <CODE>f</CODE> with respect to the <CODE>i</CODE>th component of 
+      <CODE>x</CODE>.
+      <P></P><A name=282942></A>If the Hessian matrix can also be computed 
+      <EM>and</EM> <CODE>options.Hessian</CODE> is <CODE>'on'</CODE>, i.e., 
+      <CODE>options&nbsp;=&nbsp;optimset('Hessian','on')</CODE>, then the 
+      function <CODE>fun</CODE> must return the Hessian value <CODE>H</CODE>, a 
+      symmetric matrix, at <CODE>x</CODE> in a third output argument. Note that 
+      by checking the value of <CODE>nargout</CODE> we can avoid computing 
+      <CODE>H</CODE> when <CODE>fun</CODE> is called with only one or two output 
+      arguments (in the case where the optimization algorithm only needs the 
+      values of <CODE>f</CODE> and <CODE>g</CODE> but not <CODE>H</CODE>):
+      <P></P>
+      <UL><PRE><A name=282943></A>function [f,g,H] = myfun(x)
+<A name=282944></A>f = ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;% Compute the objective function value at x
+<A name=282945></A>if nargout &gt; 1&nbsp;&nbsp;&nbsp;% fun called with two output arguments
+<A name=282946></A>&nbsp;&nbsp;&nbsp;g = ...&nbsp;&nbsp;&nbsp;&nbsp;% gradient of the function evaluated at x
+<A name=282947></A>&nbsp;&nbsp;&nbsp;if nargout &gt; 2
+<A name=282948></A>&nbsp;&nbsp;&nbsp;H = ...&nbsp;&nbsp;&nbsp;&nbsp;% Hessian evaluated at x
+<A name=282949></A>end
+</PRE></UL><A name=358522></A>The Hessian matrix is the second partial 
+      derivatives matrix of <CODE>f</CODE> at the point <CODE>x</CODE>. That is, 
+      the (<CODE>i</CODE>th,<CODE>j</CODE>th) component of <CODE>H</CODE> is the 
+      second partial derivative of <CODE>f</CODE> with respect to 
+      <CODE>x</CODE><SUB>i</SUB> and <CODE>x</CODE><SUB>j</SUB>, <IMG 
+      src="fminunc (Optimization Toolbox)_files/optref46.gif" align=absMiddle>. 
+      The Hessian is by definition a symmetric matrix.
+      <P></P></TD>
+  <TR vAlign=top>
+    <TD><A name=280500></A><CODE>options</CODE><BR></TD>
+    <TD><A name=283979></A>Optimization parameter options. You can set or 
+      change the values of these parameters using the <CODE>optimset</CODE> 
+      function. Some parameters apply to all algorithms, some are only relevant 
+      when using the large-scale algorithm, and others are only relevant when 
+      using the medium-scale algorithm. 
+      <P></P><A name=283980></A>We start by describing the 
+      <CODE>LargeScale</CODE> option since it states a <EM>preference</EM> for 
+      which algorithm to use. It is only a preference since certain conditions 
+      must be met to use the large-scale algorithm. For <CODE>fminunc</CODE>, 
+      the <EM>gradient must be provided (</EM>see the description of 
+      <CODE>fun</CODE> above to see how) or else the medium-scale algorithm will 
+      be used.
+      <P></P>
+      <UL><A name=331326>
+        <LI><CODE>LargeScale</CODE> - Use large-scale algorithm if possible when 
+        set to <CODE>'on'</CODE>. Use medium-scale algorithm when set to 
+        <CODE>'off'</CODE>. </A></LI></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=280504></A><BR></TD>
+    <TD><A name=288287></A>Parameters used by both the large-scale and 
+      medium-scale algorithms:
+      <P></P>
+      <UL><A name=288288>
+        <LI><CODE>Diagnostics</CODE> - Print diagnostic information about the 
+        function to be minimized. </A><A name=288289>
+        <LI><CODE>Display</CODE> - Level of display. <CODE>'off'</CODE> displays 
+        no output; <CODE>'iter'</CODE> displays output at each iteration; 
+        <CODE>'final'</CODE> displays just the final output. </A><A name=288290>
+        <LI><CODE>GradObj</CODE> - Gradient for the objective function defined 
+        by user. See the description of <CODE>fun</CODE> under the 
+        <EM>Arguments</EM> section above to see how to define the gradient in 
+        <CODE>fun</CODE>. The gradient <EM>must</EM> be provided to use the 
+        large-scale method. It is optional for the medium-scale method. </A><A 
+        name=288292>
+        <LI><CODE>MaxFunEvals</CODE> - Maximum number of function evaluations 
+        allowed. </A><A name=288293>
+        <LI><CODE>MaxIter</CODE> - Maximum number of iterations allowed. </A><A 
+        name=288294>
+        <LI><CODE>TolFun</CODE> - Termination tolerance on the function value. 
+        </A><A name=288295>
+        <LI><CODE>TolX</CODE> - Termination tolerance on <CODE>x</CODE>. 
+        </A></LI></UL><A name=288296></A>Parameters used by the large-scale 
+      algorithm only:
+      <P></P>
+      <UL><A name=292340>
+        <LI><CODE>Hessian</CODE> - Hessian for the objective function defined by 
+        user. See the description of <CODE>fun</CODE> under the 
+        <EM>Arguments</EM> section above to see how to define the Hessian in 
+        <CODE>fun</CODE>. </A><A name=292341>
+        <LI><CODE>HessPattern</CODE> - Sparsity pattern of the Hessian for 
+        finite-differencing. If it is not convenient to compute the sparse 
+        Hessian matrix <CODE>H</CODE> in <CODE>fun</CODE>, the large-scale 
+        method in <CODE>fminunc</CODE> can approximate <CODE>H</CODE> via sparse 
+        finite-differences (of the gradient) provided the <EM>sparsity 
+        structure</EM> of <CODE>H</CODE> -- i.e., locations of the nonzeros -- 
+        is supplied as the value for <CODE>HessPattern</CODE>. In the worst 
+        case, if the structure is unknown, you can set <CODE>HessPattern</CODE> 
+        to be a dense matrix and a full finite-difference approximation will be 
+        computed at each iteration (this is the default). This can be very 
+        expensive for large problems so it is usually worth the effort to 
+        determine the sparsity structure. </A></LI></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=280508></A><BR></TD>
+    <TD>
+      <UL><A name=288045>
+        <LI><CODE>MaxPCGIter</CODE> - Maximum number of PCG (preconditioned 
+        conjugate gradient) iterations (see the <EM>Algorithm</EM> section 
+        below). </A><A name=288046>
+        <LI><CODE>PrecondBandWidth</CODE> - Upper bandwidth of preconditioner 
+        for PCG. By default, diagonal preconditioning is used (upper bandwidth 
+        of 0). For some problems, increasing the bandwidth reduces the number of 
+        PCG iterations. </A><A name=288047>
+        <LI><CODE>TolPCG</CODE> - Termination tolerance on the PCG iteration. 
+        </A><A name=288048>
+        <LI><CODE>TypicalX</CODE> - Typical <CODE>x</CODE> values. 
+      </A></LI></UL><A name=288049></A>Parameters used by the medium-scale 
+      algorithm only:
+      <P></P>
+      <UL><A name=288050>
+        <LI><CODE>DerivativeCheck</CODE> - Compare user-supplied derivatives 
+        (gradient) to finite-differencing derivatives. </A><A name=288051>
+        <LI><CODE>DiffMaxChange</CODE> - Maximum change in variables for 
+        finite-difference gradients. </A><A name=288052>
+        <LI><CODE>DiffMinChange</CODE> - Minimum change in variables for 
+        finite-difference gradients. </A><A name=288053>
+        <LI><CODE>LineSearchType</CODE> - Line search algorithm choice. 
+      </A></LI></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=292359></A><CODE>exitflag</CODE><BR></TD>
+    <TD><A name=292361></A>Describes the exit condition:
+      <P></P>
+      <UL><A name=292362>
+        <LI><CODE>&gt; 0</CODE> indicates that the function converged to a 
+        solution <CODE>x</CODE>. </A><A name=292363>
+        <LI><CODE>0</CODE> indicates that the maximum number of function 
+        evaluations or iterations was reached. </A><A name=292364>
+        <LI><CODE>&lt; 0</CODE> indicates that the function did not converge to 
+        a solution. </A></LI></UL></TD>
+  <TR vAlign=top>
+    <TD><A name=292369></A><CODE>output</CODE><BR></TD>
+    <TD><A name=292371></A>A structure whose fields contain information about 
+      the optimization:
+      <P></P>
+      <UL><A name=292372>
+        <LI><CODE>output.iterations</CODE> - The number of iterations taken. 
+        </A><A name=292373>
+        <LI><CODE>output.funcCount</CODE> - The number of function evaluations. 
+        </A><A name=292374>
+        <LI><CODE>output.algorithm</CODE> - The algorithm used. </A><A 
+        name=292375>
+        <LI><CODE>output.cgiterations</CODE> - The number of PCG iterations 
+        (large-scale algorithm only). </A><A name=292376>
+        <LI><CODE>output.stepsize</CODE> - The final step size taken 
+        (medium-scale algorithm only). </A><A name=292377>
+        <LI><CODE>output.firstorderopt</CODE> - A measure of first-order 
+        optimality: the norm of the gradient at the solution <CODE>x</CODE>. 
+        </A></LI></UL></TD></TR></TBODY></TABLE>
+<TABLE>
+  <TBODY>
+  <TR vAlign=top>
+    <TD></TR></TBODY></TABLE>
+<P></P><A name=exmpl_sec></A><!-- H2 --><A name=189335></A>
+<P><FONT size=+2>Examples</FONT></P><A name=189336></A>Minimize the function 
+<CODE>f(x) = 3*x</CODE><SUB>1</SUB><SUP>2</SUP><CODE> + 2*x1*x2 + 
+x</CODE><SUB>2</SUB><SUP>2</SUP>.
+<P></P><A name=189337></A>To use an M-file, i.e., <CODE>fun = 'myfun'</CODE>, 
+create a file <CODE>myfun.m</CODE>:
+<P></P>
+<UL><PRE><A name=189338></A>function f = myfun(x)
+<A name=189339></A>f = 3*x(1)^2 + 2*x(1)*x(2) + x(2)^2; &nbsp;&nbsp;&nbsp;% cost function
+</PRE></UL><A name=189340></A>Then call <CODE>fminunc</CODE> to find a minimum 
+of <CODE>'myfun'</CODE> near <CODE>[1,1]</CODE>:
+<P></P>
+<UL><PRE><A name=189341></A>x0 = [1,1];
+<A name=233042></A>[x,fval] = fminunc('myfun',x0)
+</PRE></UL><A name=331354></A>After a couple of iterations, the solution, 
+<CODE>x</CODE>, and the value of the function at <CODE>x</CODE>, 
+<CODE>fval</CODE>, are returned:
+<P></P>
+<UL><PRE><A name=331459></A>x =
+<A name=331460></A>  1.0e-008 *
+<A name=331461></A>&nbsp;&nbsp;&nbsp;-0.7914    0.2260
+<A name=331462></A>fval =
+<A name=189342></A>  1.5722e-016
+</PRE></UL><A name=331451></A>To minimize this function with the gradient 
+provided, modify the M-file <CODE>myfun.m</CODE> so the gradient is the second 
+output argument
+<P></P>
+<UL><PRE><A name=331559></A>function [f,g] = myfun(x)
+<A name=331560></A>f = 3*x(1)^2 + 2*x(1)*x(2) + x(2)^2; &nbsp;&nbsp;&nbsp;% cost function
+<A name=331561></A>if nargout &gt; 1
+<A name=331853></A>&nbsp;&nbsp;&nbsp;g(1) = 6*x(1)+2*x(2);
+<A name=331854></A>&nbsp;&nbsp;&nbsp;g(2) = 2*x(1)+2*x(2);
+<A name=331855></A>end
+</PRE></UL><A name=189346></A>and indicate the gradient value is available by 
+creating an optimization options structure with <CODE>options.GradObj</CODE> set 
+to <CODE>'on'</CODE> using <CODE>optimset</CODE>:
+<P></P>
+<UL><PRE><A name=189347></A>options = optimset('GradObj','on');
+<A name=245003></A>x0 = [1,1];
+<A name=189348></A>[x,fval] = fminunc('myfun',x0,options)
+</PRE></UL><A name=331602></A>After several iterations the solution 
+<CODE>x</CODE> and <CODE>fval</CODE>, the value of the function at 
+<CODE>x,</CODE> are returned:
+<P></P>
+<UL><PRE><A name=331610></A>x =
+<A name=331611></A>  1.0e-015 *
+<A name=331612></A>&nbsp;&nbsp;&nbsp;-0.6661         0
+<A name=331613></A>fval2 =
+<A name=331614></A>  1.3312e-030
+</PRE></UL><A name=189349></A>To minimize the function <CODE>f(x) = sin(x) + 
+3</CODE> using an inline object
+<P></P>
+<UL><PRE><A name=189350></A>f = inline('sin(x)+3');
+<A name=189351></A>x = fminunc(f,4)
+</PRE></UL><A name=331858></A>which returns a solution
+<P></P>
+<UL><PRE><A name=331861></A>x =
+<A name=331859></A>    4.7124
+</PRE></UL><!-- H2 --><A name=276796></A>
+<P><FONT size=+2>Notes</FONT></P><A name=276757></A><CODE>fminunc</CODE> is not 
+the preferred choice for solving problems that are sums-of-squares, that is, of 
+the form:<IMG src="fminunc (Optimization Toolbox)_files/optref37.gif" 
+align=absMiddle>. Instead use the <CODE>lsqnonlin</CODE> function, which has 
+been optimized for problems of this form.
+<P></P><A name=280132></A>To use the large-scale method, the gradient must be 
+provided in <CODE>fun</CODE> (and <CODE>options.GradObj</CODE> set to 
+<CODE>'on'</CODE>). A warning is given if no gradient is provided and 
+<CODE>options.LargeScale</CODE> is not <CODE>'off'</CODE>.
+<P></P><!-- H2 --><A name=276749></A>
+<P><FONT size=+2>Algorithms</FONT></P><!-- H4 --><A 
+name=280089></A><B>Large-scale optimization.</B> &nbsp;&nbsp; <A 
+name=435313></A>By default <CODE>fminunc</CODE> will choose the large-scale 
+algorithm if the user supplies the gradient in <CODE>fun</CODE> (and 
+<CODE>GradObj</CODE> is <CODE>'on'</CODE> in <CODE>options</CODE>). This 
+algorithm is a subspace trust region method and is based on the 
+interior-reflective Newton method described in [8],[9]. Each iteration involves 
+the approximate solution of a large linear system using the method of 
+preconditioned conjugate gradients (PCG). See the trust-region and 
+preconditioned conjugate gradient method descriptions in the <EM>Large-Scale 
+Algorithms</EM> chapter. 
+<P></P><!-- H4 --><A name=276919></A><B>Medium-scale optimization.</B> 
+&nbsp;&nbsp; <A name=435315></A><CODE>fminunc</CODE> with 
+<CODE>options.LargeScale</CODE> set to <CODE>'off'</CODE> uses the BFGS 
+Quasi-Newton method with a mixed quadratic and cubic line search procedure. This 
+quasi-Newton method uses the BFGS [1-4] formula for updating the approximation 
+of the Hessian matrix. The DFP [5,6,7] formula, which approximates the inverse 
+Hessian matrix, is selected by setting <CODE>options.</CODE> 
+<CODE>HessUpdate</CODE> to <CODE>'dfp'</CODE> (and 
+<CODE>options.LargeScale</CODE> to <CODE>'off'</CODE>). A steepest descent 
+method is selected by setting <CODE>options.HessUpdate</CODE> to 
+<CODE>'steepdesc'</CODE> (and <CODE>options.LargeScale</CODE> to 
+<CODE>'off'</CODE>), although this is not recommended. 
+<P></P><A name=189362></A>The default line search algorithm, i.e., when 
+<CODE>options.LineSearchType</CODE> is set to <CODE>'quadcubic'</CODE>, is a 
+safeguarded mixed quadratic and cubic polynomial interpolation and extrapolation 
+method. A safeguarded cubic polynomial method can be selected by setting 
+<CODE>options.LineSearchType</CODE> to <CODE>'cubicpoly'</CODE>. This second 
+method generally requires fewer function evaluations but more gradient 
+evaluations. Thus, if gradients are being supplied and can be calculated 
+inexpensively, the cubic polynomial line search method is preferable. A full 
+description of the algorithms is given in the <EM>Introduction to 
+Algorithms</EM> chapter.
+<P></P><!-- H2 --><A name=189363></A>
+<P><FONT size=+2>Limitations</FONT></P><A name=280040></A>The function to be 
+minimized must be continuous.<CODE>fminunc</CODE> may only give local solutions.
+<P></P><A name=279020></A><CODE>fminunc</CODE> only minimizes over the real 
+numbers, that is, <EM>x</EM> must only consist of real numbers and <EM>f(x)</EM> 
+must only return real numbers. When <EM>x</EM> has complex variables, they must 
+be split into real and imaginary parts.
+<P></P><!-- H4 --><A name=355562></A><B>Large-scale optimization.</B> 
+&nbsp;&nbsp; <A name=437478></A>To use the large-scale algorithm, the user must 
+supply the gradient in <CODE>fun</CODE> (and <CODE>GradObj</CODE> must be set 
+<CODE>'on'</CODE> in <CODE>options</CODE>). See Table&nbsp;1-4 for more 
+information on what problem formulations are covered and what information must 
+be provided.
+<P></P><A name=355572></A>Currently, if the analytical gradient is provided in 
+<CODE>fun</CODE>, the <CODE>options</CODE> parameter 
+<CODE>DerivativeCheck</CODE> cannot be used with the large-scale method to 
+compare the analytic gradient to the finite-difference gradient. Instead, use 
+the medium-scale method to check the derivative with <CODE>options</CODE> 
+parameter <CODE>MaxIter</CODE> set to 0 iterations. Then run the problem again 
+with the large-scale method.
+<P></P><A name=seeal_sec></A><!-- H2 --><A name=276748></A>
+<P><FONT size=+2>See Also</FONT></P><A name=189373></A><CODE><A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/fminsearch.html">fminsearch</A></CODE>, 
+<CODE><A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/optimset.html">optimset</A></CODE>, 
+<CODE><A 
+href="http://www-ccs.ucsd.edu/matlab/techdoc/ref/inline.html">inline</A></CODE>
+<P></P><!-- H2 --><A name=189374></A>
+<P><FONT size=+2>References</FONT></P><A name=189375></A>[1] Broyden, C.G., "The 
+Convergence of a Class of Double-Rank Minimization Algorithms," <EM>J. Inst. 
+Math. Applic</EM>., Vol. 6, pp. 76-90, 1970.
+<P></P><A name=189376></A>[2] Fletcher,<EM> </EM>R<EM>.,</EM>"A New Approach to 
+Variable Metric Algorithms," <EM>Computer Journal</EM>, Vol. 13, pp. 317-322, 
+1970.
+<P></P><A name=189377></A>[3] Goldfarb, D., "A Family of Variable Metric Updates 
+Derived by Variational Means," <EM>Mathematics of Computing</EM>, Vol. 24, pp. 
+23-26, 1970.
+<P></P><A name=189378></A>[4] Shanno, D.F., "Conditioning of Quasi-Newton 
+Methods for Function Minimization," <EM>Mathematics of Computing</EM>, Vol. 24, 
+pp. 647-656, 1970.
+<P></P><A name=189379></A>[5] Davidon, W.C., "Variable Metric Method for 
+Minimization," <EM>A.E.C. Research and Development Report</EM>, ANL-5990, 1959.
+<P></P><A name=189380></A>[6] Fletcher, R. and M.J.D. Powell, "A Rapidly 
+Convergent Descent Method for Minimization," <EM>Computer J.</EM>, Vol. 6, pp. 
+163-168, 1963.
+<P></P><A name=189381></A>[7] Fletcher, R., "Practical Methods of Optimization," 
+Vol. 1, <EM>Unconstrained Optimization</EM>, John Wiley and Sons, 1980.
+<P></P><A name=280035></A>[8] Coleman, T.F. and Y. Li, "On the Convergence of 
+Reflective Newton Methods for Large-Scale Nonlinear Minimization Subject to 
+Bounds," <EM>Mathematical Programming</EM>, Vol. 67, Number 2, pp. 189-224, 
+1994.
+<P></P><A name=280036></A>[9] Coleman, T.F. and Y. Li, "An Interior, Trust 
+Region Approach for Nonlinear Minimization Subject to Bounds," <EM>SIAM Journal 
+on Optimization</EM>, Vol. 6, pp. 418-445, 1996.
+<P></P>
+<HR>
+<BR>
+<CENTER>[ <A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/fminsearch.html">Previous</A> 
+| <A href="http://www-ccs.ucsd.edu/matlab/helpdesk.html" target=_top>Help 
+Desk</A> | <A 
+href="http://www-ccs.ucsd.edu/matlab/toolbox/optim/fseminf.html">Next</A> 
+]</CENTER><BR><!-- Copyright (c) 1998 by The MathWorks, Inc. --><!-- Last updated: 09/30/98 12:22:45 --></BODY></HTML>

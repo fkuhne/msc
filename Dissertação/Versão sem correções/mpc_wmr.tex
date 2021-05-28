@@ -1,0 +1,489 @@
+Para sistemas complexos, multivariáveis e com restrições, o MPC tornou-se um padrão muito bem aceito~\cite{bemporad02}, e é utilizado em muitos casos, onde as plantas a serem controladas são suficientemente lentas para permitirem a sua aplicação~\cite{mayne00}. Entretando, em sistemas com dinâmicas rápidas ou não lineares, que é o caso de sistemas eletromecânicos como os robôs móveis, a implementação de controladores preditivos permanece essencialmente limitada em sua aplicabilidade, devido ao grande esforço computacional necessário. Contudo, com o desenvolvimento de computadores de maior capacidade e algoritmos numéricos mais eficientes, o uso do MPC em tais aplicações está se tornando cada vez mais possível. Embora o MPC não seja um novo método de controle, trabalhos lidando com MPC de robôs móveis são recentes e relativamente esparsos. Alguns exemplos são brevemente vistos abaixo.
+
+Em \cite{ollero91} o GPC é aplicado ao problema de rastreamento de trajetória do robô CMU NavLab. Um modelo CARIMA\footnote{{\em Controlled Autoregressive and Moving Average}.} em coordenadas locais linearizadas do robô é utilizado para o cálculo da distância do robô a uma trajetória de referência. O controle é realizado apenas através da velocidade angular, considerando que a velocidade linear permanece constante. Como o modelo utilizado é linear, trajetórias de aproximação do veículo à referência tornam-se necessárias quando o erro de orientação é muito grande. A função de custo envolve o erro de posição e orientação em coordenadas locais e incrementos do controle e uma restrição na velocidade linear de 30~{\em km/h} é imposta.
+
+Em \cite{ortega96}, algoritmos genéticos são utilizados para a solução da otimização não linear, a fim de diminuir o esforço computacional e tornando possível assim a aplicação em tempo-real. O problema de rastreamento de trajetória é resolvido para um robô com modelo não linear e acionamento diferencial. A novidade neste trabalho é a inclusão, na função de custo, de um termo que penaliza a proximidade entre o robô e obstáculos fixos no ambiente. Assim, uma trajetória de referência é previamente calculada, levando em consideração apenas obstáculos conhecidos. O problema de rastreamento é então resolvido, agora então com obstáculos inesperados presentes no ambiente. O algoritmo foi aplicado ao robô LABMATE.
+
+Em \cite{yang98} um controle preditivo inteligente é desenvolvido. Um modelo cinemático é utilizado para a predição dos estados, onde as entradas de controle são as velocidades linear e angular. O tipo de robô utilizado é parecido com um carro, com duas rodas frontais orientáveis e duas rodas não-orientáveis traseiras motorizadas. Para corrigir erros existentes entre o modelo de predição e o robô real, uma rede neural é utilizada para ajustar este modelo de forma {\em on-line}. A função de custo envolve termos de erro entre a postura atual e a de referência e de esforço de controle. O problema de rastreamento de trajetória é resolvido e aplicado ao robô THMR-III.
+
+\cite{rico99} destaca algumas vantagens da utilização do MPC para o seguimento de caminho de robôs móveis, como por exemplo: a trajetória é previamente conhecida; o caminho percorrido é suave; há um aumento na autonomia do robô, já que o esforço de controle é minimizado. Este trabalho utiliza o GPC sem restrições para o seguimento de caminho de um modelo linearizado em coordenadas locais do robô, onde a velocidade linear é constante, a entrada de controle é a velocidade angular e as saídas são a orientação global e a posição $y$ em coordenadas locais. A existência de atrasos de transporte no modelo é considerada. Através de um preditor de Smith, obtém-se um aumento da robustez do sistema em malha fechada. Um novo algoritmo de controle preditivo ({\em Smith-Predictor Generalized Predictive Control, SPGPC}) é então proposto e aplicado ao robô LABMATE.
+
+\cite{essen01} desenvolve um algoritmo não linear de MPC em espaço de estados aplicado a um robô móvel com acionamento diferencial para a estabilização em uma postura fixa e seguimento de trajetória. Seu método é então comparado com leis de controle variantes no tempo e descontínuas, mostrando a eficiência do MPC. Algumas modificações na função de custo são propostas, a fim de aumentar a taxa de convergência sem restrições adicionais, entretanto detalhes do algoritmo não são fornecidos. Os resultados de simulação mostram que não é possível a aplicação do MPC não linear em robôs móveis, dado o alto custo computacional necessário. Os autores ressaltam que o tempo para a solução do problema de otimização é cerca de 500 vezes maior que o permitido a uma aplicação em tempo-real.
+
+A presente dissertação tem como objetivo abranger tanto o problema de rastreamento de trajetória quanto o de estabilização em uma postura fixa para um robô móvel dotado de rodas e com acionamento diferencial. Na próxima seção o primeiro problema é desenvolvido com um algoritmo de controle preditivo não linear.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Estabilização em um Ponto}\label{sec:point}
+
+É bem conhecido o resultado do Teorema de Brockett~\cite{brockett82} em que não existe uma realimentação de estados suave e invariante no tempo que estabilize um sistema não holonômico sem deriva em uma dada postura fixa. Este problema pode ser resolvido através do MPC, que gera uma lei de controle (implícita) variante no tempo, e pode ser então aplicado ao sistema em questão. As vantagens do MPC já foram vistas no capítulo anterior e em alguns dos trabalhos citados acima e serão vistas agora através de resultados de simulação. Os algoritmos foram desenvolvidos em Matlab onde a função {\tt quadprog} foi utilizada para a solução do problema de otimização não linear.
+
+O objetivo aqui é fazer com que o robô estabilize em um ponto fixo do espaço de configuração, ou seja,
+\begin{equation*}
+	{\bf x}(k) - {\bf x}_{ref} = 0,
+\end{equation*}
+para $k$ finito e ${\bf x}_{ref}\triangleq[x_{ref}~~y_{ref}~~\theta_{ref}]^T$. Sem perda de generalidade, comumente ${\bf x}_{ref}$ é considerado a origem. 
+
+O MPC é resolvido em tempo discreto. Assim, discretizando o modelo cinemático~\req{eqn:model} pelo método de Euler, com $\dot{\bf x}\approx\frac{{\bf x}(k+1)-{\bf x}(k)}{T}$, tem-se que:
+\begin{equation}\label{eqn:discrete_model}
+	\left\{
+		\begin{aligned}
+			x(k+1)	  &= x(k) + v(k)\cos\theta(k)T \\
+			y(k+1)	  &= y(k) + v(k)\sin\theta(k)T \\
+			\theta(k+1) &= \theta(k) + w(k)T
+		\end{aligned}
+	\right.,
+\end{equation}
+ou, em uma forma mais compacta,
+\begin{equation}\label{eqn:discrete_model_short}
+	{\bf x}(k+1) = f({\bf x}(k),{\bf u}(k)),
+\end{equation}
+com ${\bf x}(k)=[x(k)~~y(k)~~\theta(k)]^T$ e ${\bf u}(k)=[v(k)~~w(k)]^T$. Neste trabalho, considera-se que não existe diferença entre o sistema real e o modelo e que todos os estados estão sempre disponíveis para medida.
+
+Assim, uma lei de controle ótima $h(k) = {\bf u}^\star(k|k)$ é calculada a cada instante amostral $k$, através da solução do seguinte problema de otimização
+\begin{equation}\label{eqn:wmr_optim}
+	{\bf u}^\star = \arg\min_{{\bf u}}\left\{\Phi(k)\right\}
+\end{equation}
+sujeito à restrição referente à dinâmica do sistema~\req{eqn:discrete_model}\footnote{As restrições lineares referentes a $\bf x$ e $\bf u$ (expressões~\req{eqn:restx} e \req{eqn:restu}) serão consideradas nas Seções~\ref{sec:control_rest} e \ref{sec:control_state_rest}.}:
+\begin{equation*}
+	{\bf x}(k+j|k) = f({\bf x}(k+j-1|k),{\bf u}(k+j-1|k)),
+\end{equation*}
+e assumindo que $N_1=1$, $N_2=N$ e $N_u=N-1$ na equação~\req{eqn:cost}, tem-se que $j\in[1,N]$ e a seguinte função de custo é utilizada:
+\begin{equation}\label{eqn:point_cost}
+	\Phi(k) = \sum_{j=1}^{N}{\bf x}^T(k+j|k){\bf Q}{\bf x}(k+j|k) + {\bf u}^T(k+j-1|k){\bf R}{\bf u}(k+j-1|k)
+\end{equation}
+com os seguintes parâmetros:
+\begin{equation*}
+	N = 5, \qquad
+	{\bf Q} = \begin{bmatrix}	
+		1 & 0 & 0 \\
+		0 & 1 & 0 \\
+		0 & 0 & 0.5 \end{bmatrix}, \qquad
+	{\bf R} = \begin{bmatrix}
+		0.1 & 0 \\ 
+		0 & 0.1 \end{bmatrix}
+\end{equation*}		
+e ${\bf x}_0=[-0,2~~3~~0]^T$ como configuração inicial do robô. Os resultados são mostrados nas figuras a seguir.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_mpc/traj_01.eps}
+    \caption{Trajetória no plano $XY$. A condição inicial do robô é $[-0,2~~3~~0]^T$ e a final é $[0~~0,91~~0]^T$.}
+    \label{fig:pure_traj_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_mpc/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Note o grande erro em $y$.}
+    \label{fig:pure_state_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_mpc/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$.}
+    \label{fig:pure_control_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_mpc/cost_01.eps}
+    \caption{Função de custo $\Phi$.}
+    \label{fig:pure_cost_01}
+\end{center}\end{figure}
+
+Nota-se um grande erro em regime na variável de estado $y$ (Figuras~\ref{fig:pure_traj_01} e \ref{fig:pure_state_01}) (as outras variáveis convergem para a origem), causado pelo fato de o sistema~\req{eqn:discrete_model} ser sub-atuado, ou seja, possuir um maior número de estados do que de entradas de controle. De fato, ambos os estados $x$ e $y$ dependem da velocidade linear $v$. Assim, quando $x$ e $v$ são minimizados, a função de custo atinge um valor que assume-se ser o mínimo, pelo menos com relação a $x$ e $v$. Assim, para minimizar $y$, $v$ (e conseqüentemente $\Phi$) teria que aumentar de valor, o que não é possível dado ao comportamento monotônico da função de custo, ou seja, $\Phi(k)\leq\Phi(k-1)$ (Figura~\ref{fig:pure_cost_01}). 
+
+Na Figura~\ref{fig:pure_control_01} nota-se que os limite de velocidade, para o robô Twil, são ultrapassados\footnote{Conforme definido na Seção~\ref{sec:twil}, os valores máximos para $v$ e $w$ são de $0,4712~m/s$ e $3,7699~rad/s$, respectivamente.}. Para prevenir isto, restrições no controle serão consideradas na Seção~\ref{sec:control_rest}.
+
+O aumento do horizonte de predição parece fazer este erro diminuir assintoticamente (Figura~\ref{fig:horizon_effect}). Obviamente, deseja-se que o horizonte seja o menor possível, já que o seu tamanho é o principal responsável, neste caso, pelo crescimento do custo computacional.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pure_mpc/horizon_effect.eps}
+    \caption{Efeito do aumento do horizonte $N$ no erro em regime do estado $y$. Linha contínua: $N=5$; linha tracejada: $N=10$; linha traço-ponto: $N=20$; linha pontilhada: $N=50$.}
+    \label{fig:horizon_effect}
+\end{center}\end{figure}
+
+Sendo assim, torna-se necessária outra forma de fazer com que todos os estados convirjam para a origem, que não o aumento do horizonte de predição.
+
+Ao invés da adição de uma restrição terminal, como por exemplo ${\bf x}(k+N|k)=0$ (o que torna a otimização computacionalmente mais custosa), \cite{essen01} propõe uma modificação na função de custo a ser minimizada:
+\begin{equation*}
+	\Phi(k) = \sum_{j=1}^{N-1}{\bf x}^T(k+j|k){\bf Q}(j){\bf x}(k+j|k) + {\bf u}^T(k+j|k){\bf R}{\bf u}(k+j|k) + \Omega({\bf x}(k+N|k)),
+\end{equation*}
+onde a matriz de peso ${\bf Q}(j)$ agora cresce exponencialmente dentro do horizonte e $\Omega({\bf x}(k+N|k))$ é o chamado {\em custo terminal},
+\begin{equation*}
+	\Omega({\bf x}(k+N|k)) = {\bf x}^T(k+N|k){\bf P}{\bf x}(k+N|k)
+\end{equation*}
+e ${\bf P}$ é uma matriz tal que aumenta o peso dos estados no final do horizonte, fazendo com que ${\bf x}(k+N|k)$ se aproxime mais da origem. Aqui, escolhe-se
+\begin{equation*}
+	{\bf Q}(j) = 2^j{\bf Q}, \quad {\bf P} = 50{\bf Q},
+\end{equation*}
+onde $j\in[1,N-1]$ e
+\begin{equation*}
+	{\bf Q} = \begin{bmatrix}	
+		1 & 0 & 0 \\
+		0 & 1 & 0 \\
+		0 & 0 & 0.5 \end{bmatrix}, \quad
+	{\bf R} = \begin{bmatrix}
+		0.1 & 0 \\ 
+		0 & 0.1 \end{bmatrix}
+\end{equation*}
+
+Os resultados são mostrados abaixo.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_mpc/traj_01.eps}
+    \caption{Trajetória no plano $XY$. A condição inicial do robô é $[-0,2~~3~~0]^T$ e a final é $[0~~-0.003~~0]^T$.}
+    \label{fig:essen_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_mpc/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Nota-se que agora o erro em $y$ diminuiu bastante.}
+    \label{fig:essen_state_01}
+\end{center}\end{figure}
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_mpc/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$.}
+    \label{fig:essen_control_01}
+\end{center}\end{figure}
+
+Pelos gráficos acima, observa-se uma grande diminuição do erro no estado $y$. Apesar de o esforço de controle ter aumentado, a taxa de convergência também aumentou bastante. No primeiro caso, o robô leva cerca de 4 segundos para estabilizar em sua configuração final. Agora, isto acontece em pouco mais de um segundo.
+
+Na Figura~\ref{fig:essen_origin_01} é mostrado um detalhe da origem no plano $XY$. Nota-se que, apesar de o erro em $y$ diminuir, ele não é nulo. Nas Figuras~\ref{fig:essen_lots_of_trajs} e~\ref{fig:essen_lots_of_origins}, é mostrado o comportamento do robô para diversas configurações iniciais e orientação inicial $\theta_0=0~rad$.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_mpc/origin_01.eps}
+    \caption{Detalhe da origem no plano $XY$.}
+    \label{fig:essen_origin_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_mpc/lots_of_trajs.eps}
+    \caption{Comportamento do robô no plano $XY$ para várias posições de saída e $\theta_0=0~rad$.}
+    \label{fig:essen_lots_of_trajs}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/essen_mpc/lots_of_origins.eps}
+    \caption{Detalhe da origem no plano $XY$ para várias posições de saída e $\theta_0=0~rad$.}
+    \label{fig:essen_lots_of_origins}
+\end{center}\end{figure}
+
+\subsection{MPC em Coordenadas Polares}\label{sec:point_mpc_polar}
+Foi visto que, com as modificações apresentadas em \cite{essen01}, é possível diminuir consideravelmente o erro em regime que existe pelo fato de o sistema ser sub-atuado. Entretanto, um erro de cerca de 0,003~m em $y$ parece ser persistente, pelo menos nos casos apresentados. 
+
+E mais, ainda existe um acoplamento entre os estados $x$ e $y$, ambos dependendo da mesma entrada de controle. Para resolver isto, uma transformação de coordenadas do modelo cinemático do robô é utilizada. Em~\cite{lages98b}, a seguinte transformação descontínua em coordenadas polares é introduzida (Figura~\ref{fig:polar}):
+\begin{align*}
+	e      &= \sqrt{x^2+y^2} \\
+	\phi   &= \atan(y,x) \\
+	\alpha &= \theta - \phi
+\end{align*}
+e o modelo cinemático do robô em coordenadas polares é:
+\begin{equation}\label{eqn:polar_model}
+	\left\{
+		\begin{aligned}
+			\dot e     &= v\cos\alpha \\
+			\dot\phi   &= v\frac{\sin\alpha}{e} \\
+			\dot\alpha &= -v\frac{\sin\alpha}{e} + w
+		\end{aligned}
+	\right.
+\end{equation}
+onde o vetor de estados é ${\bf x}_p=[e~~\phi~~\alpha]^T$ e ${\bf u}=[v~~w]^T$ são as entradas de controle (velocidades linear e angular).
+
+\begin{figure}[htbp]\begin{center}
+    \includegraphics[width=.47\linewidth]{Figuras/polar.eps}
+    \caption{Robô em coordenadas polares.}
+    \label{fig:polar}
+\end{center}\end{figure}
+
+\cite{lages98b} propõe também a seguinte função de Lyapunov que estabiliza o sistema~\req{eqn:polar_model} na origem:
+\begin{equation}\label{eqn:polar_lyapunov}
+	V = \frac{1}{2}\left(\lambda e^2 + \alpha^2 + h\phi^2\right),
+\end{equation}
+onde $\lambda$ e $h$ são constantes positivas.	
+
+Esta função de Lyapunov pode então ser utilizada como função de custo~\cite{chen82}. Reescrevendo a expressão \req{eqn:polar_lyapunov} em uma forma quadrática,
+\begin{equation*}
+	V = {\bf x}_p^T{\bf Q}_p{\bf x}_p, \qquad {\bf Q}_p = \begin{bmatrix}
+		\frac{1}{2}\lambda & 0 & 0 \\
+		0 & \frac{1}{2} & 0 \\
+		0 & 0 & \frac{1}{2}h
+	\end{bmatrix}
+\end{equation*}
+e incluindo um termo de penalização do controle, tem-se a seguinte função de custo para o sistema em coordenadas polares:
+\begin{equation}\label{eqn:polar_cost}
+	\Phi_p(k) = \sum_{j=1}^{N}{\bf x}_p^T(k+j|k){\bf Q}_p{\bf x}_p(k+j|k) + {\bf u}^T(k+j-1|k){\bf R}{\bf u}(k+j-1|k)
+\end{equation}
+
+Assim, com os seguintes parâmetros:
+\begin{equation*}
+	N=5, \quad \lambda=2, \quad h=2, \quad {\bf R} = \begin{bmatrix}
+		0.1 & 0 \\ 
+		0 & 0.1 \end{bmatrix},
+\end{equation*}
+o MPC é resolvido para a estabilização do robô na origem, através da minimização da expresão~\req{eqn:polar_cost} sujeita à dinâmica do sistema~\req{eqn:discrete_model}, obtendo-se os seguintes resultados:
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/traj_01.eps}
+    \caption{Trajetória no plano $XY$. A condição inicial do robô é $[-0.2~~3~~0]^T$ e a final é $[0~~0~~0]^T$.}
+    \label{fig:polar_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$.}
+    \label{fig:polar_state_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$.}
+    \label{fig:polar_control_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/origin_01.eps}
+    \caption{Detalhe na origem do plano $XY$.}
+    \label{fig:polar_origin_01}
+\end{center}\end{figure}
+
+Então, observa-se que, com a transformação em coordenadas polares na função de custo, sem aumentar o horizonte de predição e sem adição de outros termos, todos os estados convergem assintoticamente para a origem, sem apresentar erro em regime.
+
+%Abaixo, o comportamento do robô para várias condições iniciais no plano $XY$ e com orientação inicial $\theta_0=0$.
+%\begin{figure}[t]\begin{center}
+%    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/lots_of_trajs_01.eps}
+%    \caption{Comportamento do robô no plano $XY$ para várias posições de saída e $\theta=0$.}
+%    \label{fig:polar_lots_of_trajs_01}
+%\end{center}\end{figure}
+
+%Para acelerar a taxa de convergência e ao mesmo tempo garantir uma trajetória suave, a matriz ${\bf Q}(j)=2^j{\bf Q}$, crescente exponencialmente dentro do horizonte pode ser utilizada. Assim, a função de custo torna-se:
+%\begin{equation*}
+%	\Phi_p(k) = \sum_{j=1}^{N}{\bf q}^T(k+j|k){\bf Q}(j){\bf q}(k+j|k) + {\bf u}^T(k+j-1|k){\bf R}{\bf u}(k+j-1|k)
+%\end{equation*}
+%e os seguintes resultados são obtidos:
+%\begin{figure}[htbp]\begin{center}
+%    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/traj_02.eps}
+%    \caption{Trajetória no plano $XY$. A condição inicial do robô é $[-0.2~~3~~0]^T$ e a final é $[0~~0~~0]^T$.}
+%    \label{fig:polar_traj_02}
+%\end{center}\end{figure}
+%\begin{figure}[htbp]\begin{center}
+%    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/state_02.eps}
+%    \caption{Estados $x$, $y$ e $\theta$.}
+%    \label{fig:polar_state_02}
+%\end{center}\end{figure}
+%\begin{figure}[htbp]\begin{center}
+%    \includegraphics[width=.6\linewidth]{Figuras/polar_mpc/control_02.eps}
+%    \caption{Entradas de controle $v$ e $w$.}
+%    \label{fig:polar_control_02}
+%\end{center}\end{figure}
+
+
+\subsection{MPC com Restrições no Controle}\label{sec:control_rest}
+Até aqui, nenhuma restrição foi considerada, além daquela referente ao modelo cinemático do robô. Nesta seção, serão inseridos limites nas amplitudes das entradas de controle, a serem respeitados durante a minimização da função de custo. Levando em conta as características do robô Twil, definidas na Seção~\ref{sec:twil}, pode-se formular as seguintes restrições nas amplitudes das velocidades linear e angular:
+\begin{align*}
+	-\overline v &\leq v \leq \overline v \\ 
+	-\overline w &\leq w \leq \overline w,
+\end{align*}
+onde $\overline v=0.4712~m/s$ e $\overline w=3,7699~rad/s$. Fazendo ${\bf u}=[v~~w]^T$, tem-se que $-\overline{\bf u}\leq{\bf u}\leq\overline{\bf u}$. Esta restrição pode ser reescrita na forma da desigualdade ${\bf Du}\leq{\bf d}$ (expressão~\req{eqn:restu}) com:
+\begin{equation}\label{eqn:mtx_restu}
+	\begin{bmatrix}
+		\bf I \\ -\bf I
+	\end{bmatrix}	{\bf u} \leq \begin{bmatrix}
+		\overline{\bf u} \\ \overline{\bf u}
+	\end{bmatrix},
+\end{equation}
+ou
+\begin{equation*}
+	\begin{bmatrix}
+		1 & 0 \\ 0 & 1 \\ -1 & 0 \\ 0 & -1
+	\end{bmatrix}	\begin{bmatrix} v \\ w 
+	\end{bmatrix} \leq \begin{bmatrix}
+		0,4712~m/s \\ 3,7699~rad/s \\ 0,4712~m/s \\ 3,7699~rad/s
+	\end{bmatrix}
+\end{equation*}
+
+Assim, tem-se o seguinte problema de otimização para o robô, utilizando a função de custo~\req{eqn:polar_cost} em coordenadas polares:
+\begin{equation*}
+	{\bf u}^\star = \arg\min_{{\bf u}}\left\{\Phi_p(k)\right\}
+\end{equation*}
+s. a.
+\begin{alignat*}{2}
+	{\bf x}(k+j|k)  &= f({\bf x}(k+j-1|k),{\bf u}(k+j-1|k)), &~~~ j&\in[1,N] \\
+%	{\bf Cq}(k+j|k) &\leq {\bf c}, &\quad j&\in[0,N] \\
+	{\bf Du}(k+j|k) &\leq {\bf d}, &~~~ j&\in[0,N-1]
+\end{alignat*}
+com $\bf D$ e $\bf d$ definidos pela expressão~\req{eqn:mtx_restu}. Obtém-se então os seguintes resultados:
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/traj_01.eps}
+    \caption{Trajetória no plano $XY$. A condição inicial do robô é $[-0.2~~3~~0]^T$ e a final é $[0~~0~~0]^T$.}
+    \label{fig:restu_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$.}
+    \label{fig:restu_state_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/restu_mpc/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$.}
+    \label{fig:restu_control_01}
+\end{center}\end{figure}
+
+O ponto mais importante a ser ressaltado aqui é o de que a minimização da função de custo (ou a otimização da lei de controle) respeitou as restrições impostas pela expressão~\req{eqn:mtx_restu} nas velocidades linear e angular, o que pode ser observado no grafico da Figura~\ref{fig:restu_control_01}.
+
+Obviamente que, por causa destas restrições, as velocidades desenvolvidas estão muito abaixo das apresentadas nos casos anteriores, e por isso o robô demora um tempo maior para chegar ao seu objetivo. Por exemplo, no caso sem restrições da Figura~\ref{fig:polar_state_01} observa-se que o robô chega à origem em cerca de 5 segundos, o que agora acontece em pelo menos o dobro desse tempo.
+
+
+\subsection{MPC Com Restrições no Controle e no Estado}\label{sec:control_state_rest}
+
+Nesta seção será mostrado um exemplo ilustrativo onde o objetivo é fazer com que o robô cruze um corredor sem tocar nas paredes. A existência de restrições nas entradas de controle e nas variáveis de estado é considerada. Assim, na Figura~\ref{fig:corridor_corridor} tem-se o espaço de configuração, no plano $XY$, no qual está inserido o robô.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/corridor.eps}
+    \caption{Espaço de configuração no plano $XY$: um corredor em "L".}
+    \label{fig:corridor_corridor}
+\end{center}\end{figure}
+
+Os polígonos cinzas indicam a existência de paredes, ou seja, pontos onde o robô é impedido de cruzar. Assim, de uma forma geral, a seguinte restrição na amplitude dos estados é formulada:
+\begin{equation*}
+	{\bf x}(k+j|k)\in\mathbb{X}, \quad j\in[0,N],
+\end{equation*}
+onde $\mathbb{X}$ é um conjunto convexo de possíveis estados e contém o ponto de equilíbrio em seu interior~\cite{mayne00}. Entretanto, nota-se na Figura~\ref{fig:corridor_corridor} que a região de configuração no plano $XY$ não é mais convexa, dada a existência das paredes do corredor.
+
+Isto pode ser solucionado se o problema for tratado de forma {\em multi-objetiva}, ou seja, separa-se o conjunto $\mathbb X$ em subregiões de forma que estas subregiões sejam convexas e contenham um ponto de equilíbrio em seu interior. Neste caso, definem-se $\mathbb{X}_1\subseteq\mathbb{X}$ e $\mathbb{X}_2\subseteq\mathbb{X}$ tal que:
+\begin{equation*}
+	\mathbb{X} = \mathbb{X}_1 \cup \mathbb{X}_2,
+\end{equation*}
+onde
+\begin{align}
+	\mathbb{X}_1 &= \{{\bf x}~|~x\leq 1; 3\leq y\leq 5\}  \label{eqn:subreg_1}\\
+	\mathbb{X}_2 &= \{{\bf x}~|~-1\leq x\leq 1; y\leq 5\} \label{eqn:subreg_2}
+\end{align}
+
+Os pontos de equilíbrio em $\mathbb{X}_1$ e $\mathbb{X}_2$ são, respectivamente,
+\begin{equation*}
+	{\bf x}_{ref,1}=\begin{bmatrix}0\\4\\0\end{bmatrix}, \quad{\text e}\quad
+	{\bf x}_{ref,2}=\begin{bmatrix}0\\0\\0\end{bmatrix}
+\end{equation*}
+
+Assim, enquanto o robô estiver se movimentando dentro da região pertencente a $\mathbb{X}_1$, o seu objetivo será estabilizar em ${\bf x}_{ref,1}$ respeitando as restrições de estado referentes à expressão~\req{eqn:subreg_1}. Atingido um ponto pertencente à região $\mathbb{X}_2$, o objetivo será então estabilizar na origem respeitando-se as restrições referentes à expressão~\req{eqn:subreg_1}. Neste caso, adotou-se $x=-1$ como fronteira entre as duas subregiões. Então, 
+\begin{align*}
+	{\bf x}\in \mathbb{X}_1, \quad {\text se }~~x<-1, \\
+	{\bf x}\in \mathbb{X}_2, \quad {\text se }~~x\geq-1,
+\end{align*}
+ou, reescrevendo na forma da desigualdade~\req{eqn:restx},
+\begin{align*}
+	{\bf Cx} &\leq {\bf c}_1, \quad{\text se }~~x<-1, \\
+	{\bf Cx} &\leq {\bf c}_2, \quad{\text se }~~x\geq-1
+\end{align*}
+com
+\begin{equation*}
+	{\bf C}=\begin{bmatrix} {\bf I}\\-{\bf I} \end{bmatrix}, \qquad
+	{\bf c}_1 = \begin{bmatrix}1\\5\\\infty\\\infty\\-3\\\infty\end{bmatrix}, \qquad
+	{\bf c}_2 = \begin{bmatrix}1\\5\\\infty\\1\\\infty\\\infty\end{bmatrix},
+\end{equation*}
+onde $\infty$ indica que a variável não possui restrições.	
+
+Assim, o MPC, para este caso, é resolvido da seguinte maneira, para cada instante amostral $k$:
+\begin{equation*}
+	{\bf u}^\star = \arg\min_{{\bf u}}\left\{\Phi_p(k)\right\}
+\end{equation*}
+s. a. 
+\begin{align*}
+	{\bf x}(k+j|k) &= f({\bf x}(k+j-1|k),{\bf u}(k+j-1|k)), \quad j\in[0,N] \notag \\
+	{\bf Cx}(k+j|k) &\leq {\bf c}_1, \quad j\in[0,N], \quad {\text se }~~x(k|k)<-1 \\
+	{\bf Cx}(k+j|k) &\leq {\bf c}_2, \quad j\in[0,N], \quad {\text se }~~x(k|k)\geq-1 \\
+	{\bf Du}(k+j|k) &\leq {\bf d}, \quad j\in[0,N-1]
+\end{align*}
+com a seguinte função de custo:
+\begin{equation*}
+	\Phi_p(k) = \sum_{j=1}^{N}\tilde{\bf x}_p^T(k+j|k){\bf Q}_p\tilde{\bf x}_p(k+j|k) + {\bf u}^T(k+j-1|k){\bf R}{\bf u}(k+j-1|k),
+\end{equation*}
+onde
+\begin{equation*}
+	\tilde{\bf x}_p=\begin{bmatrix}
+		\tilde e\\\tilde\phi\\\tilde\alpha
+	\end{bmatrix} = \begin{bmatrix}
+		\sqrt{(x-x_{ref,i})^2+(y-y_{ref,i})^2} \\
+		\atan(y-y_{ref,i},x-x_{ref,i}) \\
+		\theta-\theta_{ref,i}-\phi
+	\end{bmatrix}, \quad i=1,2
+\end{equation*}			
+
+Então, com
+\begin{equation*}
+	N=5, \quad \lambda=2, \quad h=2, \quad {\bf R} = \begin{bmatrix}
+		0.1 & 0 \\ 
+		0 & 0.1 \end{bmatrix},
+\end{equation*}
+obtém-se os seguintes resultados:
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/traj_01.eps}
+    \caption{Trajetória no plano $XY$. A condição inicial do robô é $[-4~~4~~\pi]^T$ e a final é $[0~~0~~0]^T$.}
+    \label{fig:corridor_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$.}
+    \label{fig:corridor_state_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$.}
+    \label{fig:corridor_control_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/cost_01.eps}
+    \caption{Função de custo $\Phi$.}
+    \label{fig:corridor_cost_01}
+\end{center}\end{figure}
+
+Nota-se então pelas Figuras~\ref{fig:corridor_traj_01} a \ref{fig:corridor_cost_01} que o resultado é bastante satisfatório. o movimento do robô é bastante suave e o choque com as paredes do corredor é evitado com sucesso. As restrições de amplitude das entradas de controle são respeitadas. Observa-se também que, como o objetivo do robô muda durante o percorrer da trajetória, a função de custo não é monotonicamente decrescente.
+
+Agora, da Figura~\ref{fig:corridor_traj_comp}, observa-se que, se não existissem as restrições nos estados $x$ e $y$, o robô iria de encontro à parede (linha tracejada do gráfico), provocando seu choque com a mesma.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/traj_comp.eps}
+    \caption{Trajetória no plano $XY$. Comparação do caso com e sem restrições nos estados (respectivamente linha contínua e tracejada).}
+    \label{fig:corridor_traj_comp}
+\end{center}\end{figure}
+
+E nos gráficos subseqüentes é mostrado um caso semelhante ao anterior, mas agora com o corredor invertido em relação ao eixo $Y$ e com condição inicial em ${\bf x}_0=[4~~4.3~~\pi]^T$.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/traj_02.eps}
+    \caption{Trajetória no plano $XY$. A condição inicial do robô é $[4~~4.3~~\pi]^T$ e a final é $[0~~0~~0]^T$.}
+    \label{fig:corridor_traj_02}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/state_02.eps}
+    \caption{Estados $x$, $y$ e $\theta$.}
+    \label{fig:corridor_state_02}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/control_02.eps}
+    \caption{Entradas de controle $v$ e $w$.}
+    \label{fig:corridor_control_02}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/corridor_mpc/cost_02.eps}
+    \caption{Função de custo $\Phi$.}
+    \label{fig:corridor_cost_02}
+\end{center}\end{figure}
+
+
+\subsection{Análises Comparativas}\label{sec:point_comp}
+
+Nesta seção várias análises comparativas serão mostradas. Primeiramente, será feita uma comparação entre a técnica utilizada em~\cite{essen01} e a proposta aqui, com a função de custo em coordenadas polares. 
+
+Agora, a comparação é feita entre a proposta de MPC apresentada aqui e a lei de controle em coordenadas polares vista na Seção~\ref{sec:lages}~\cite{lages98b}. Os parâmetros utilizados foram os mesmo da Seção~\ref{sec:point_mpc_polar} para o MPC e $\gamma_1=0,1$, $\gamma_2=0,2$, $\lambda=2$ e $h=2$ para o controle em coordenadas polares.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/traj_01.eps}
+    \caption{Trajetória no plano $XY$. A condição inicial do robô é $[-0.2~~3~~0]^T$ e a final é $[0~~0~~0]^T$. A linha contínua corresponde ao MPC e a linha tracejada corresponde à lei de controle de~\cite{lages98b}.}
+    \label{fig:comps_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$.}
+    \label{fig:comps_state_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/comps/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$.}
+    \label{fig:comps_control_01}
+\end{center}\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Rastreamento de Trajetória}\label{sec:tracking}
+
+\subsection{Não Linear}\label{sec:tracking_nlinear}
+%\subsubsection{Função de custo com custo terminal}
+%\subsubsection{Função de custo com Q-exponencial}
+
+\subsection{Coordenadas Polares}\label{sec:tracking_polar}
+
+\subsection{Linear}\label{sec:tracking_linear}
+Se o sistema é linear, as restrições são lineares e a função de custo é quadrática, o problema de otimização pode ser transformado em um problema de programação quadrática\footnote{Abordado com detalhes na Seção~\ref{sec:tracking_linear}.} ({\em Quadratic Programming, QP}), e para isso algoritmos robustos existem. Como o problema é convexo, é possível o cálculo do mínimo global~\cite{morari97,kuhne04b}. Agora, se o sistema é não linear ou existem restrições não lineares, o problema de otimização torna-se significativamente mais custoso computacionalmente e mais difícil de se resolver, pois agora tem-se um maior número de variáveis de decisão e o problema é não convexo, o que geralmente leva a soluções sub-ótimas~\cite{henson98}.
+
+\subsection{Comparação Entre o Método Linear e o Não Linear}\label{sec:comparison}

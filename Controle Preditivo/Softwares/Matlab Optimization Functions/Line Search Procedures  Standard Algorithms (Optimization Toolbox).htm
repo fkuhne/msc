@@ -1,0 +1,359 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0073)http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori8b.html -->
+<HTML><HEAD><TITLE>Line Search Procedures :: Standard Algorithms (Optimization Toolbox)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!-- $Revision$  $Date$ --><!-- DOCNAME: Optimization Toolbox --><!-- CHUNKNAME: Line Search Procedures --><!-- CHAPNAME: Standard Algorithms --><!-- HEADSTUFF --><LINK 
+href="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/docset.css" 
+type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2900.2627" name=GENERATOR></HEAD>
+<BODY class=support bgColor=#ffffff>
+<SCRIPT language=Javascript>
+if (parent.frames.length<2) document.write('<p><a href="../../helpdesk.html" target=_top><b>Documentation</b></a> <img src="../../arrowr.gif"> <a HREF="optim.html"><b>Optimization Toolbox</b></a></p>');
+</SCRIPT>
+<!-- NAVBARTOP -->
+<TABLE class=support cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=baseline bgColor=#e7ebf7><B>Optimization Toolbox</B></TD>
+    <TD vAlign=baseline align=right bgColor=#e7ebf7><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori7b.html"><IMG 
+      alt="Previous page" 
+      src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      border=0></A>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori9b.html"><IMG 
+      alt="Next Page" 
+      src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      border=0></A></TD></TR></TBODY></TABLE><A name=line_search_procedures></A><!-- H2 --><A name=175></A>
+<P><FONT class=Head3 size=+1><B>Line Search Procedures</B></FONT><BR class=hdr>
+<P><A name=176></A>After choosing the direction of the search, the optimization 
+function uses a line search procedure to determine how far to move in the search 
+direction. This section describes the line search procedures used by the 
+functions <CODE><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/lsqnonlin.html">lsqnonlin</A></CODE>, 
+<CODE><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/lsqcurvefit.html">lsqcurvefit</A></CODE>, 
+and <CODE><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/fsolve.html">fsolve</A></CODE>. 
+</P>
+<P><A name=58976></A>The functions use one of two line search strategies, 
+depending on whether gradient information is readily available or whether it 
+must be calculated using a finite difference method:</P>
+<UL>
+  <LI><A name=59012></A>When gradient information is available, the default is 
+  to use a <A 
+  href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori8b.html#177">cubic 
+  polynomial method</A>. 
+  <LI><A name=59019></A>When gradient information is not available, the default 
+  is to use a <A 
+  href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori8b.html#186">mixed 
+  cubic and quadratic polynomial method</A>. </LI></UL><A 
+name=cubic_polynomial_method></A><!-- H3 --><A name=177></A>
+<P><FONT class=midsup><B>Cubic Polynomial Method </B></FONT><BR class=hdr>
+<P><A name=178></A>In the proposed cubic polynomial method, a gradient and a 
+function evaluation are made at every iteration <EM>k</EM>. At each iteration an 
+update is performed when a new point is found, <IMG alt="x sub (k + 1)" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor274.gif" 
+align=bottom>, that satisfies the condition</P>
+<P><A name=2809></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG alt="f (x xub k = 1) < than f (x sub k)" 
+      src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor197.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-12)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=14986></A>At each iteration a step, <IMG alt="alpha sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor140.gif" 
+align=bottom>, is attempted to form a new iterate of the form</P>
+<P><A name=14991></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="x sub (k + 1) = x sub k + alpha sub k times d" 
+      src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor203.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-13)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=20810></A>If this step does not satisfy the condition (<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori8b.html#2809">Eq.&nbsp;3-12</A>), 
+then <IMG alt="alpha sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tuto110a.gif" 
+align=bottom> is reduced to form a new step, <IMG alt="alpha sub (k + 1)" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor157.gif" 
+align=bottom>. The usual method for this reduction is to use bisection, i.e., to 
+continually halve the step length until a reduction is achieved in 
+<EM>f(x)</EM>. However, this procedure is slow when compared to an approach that 
+involves using gradient and function evaluations together with cubic 
+interpolation/extrapolation methods to identify estimates of step length.</P>
+<P><A name=20817></A>When a point is found that satisfies the condition (<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori8b.html#2809">Eq.&nbsp;3-12</A>), 
+an update is performed if <IMG alt="q sub k transpose times s sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor163.gif" 
+align=bottom> is positive. If it is not, then further cubic interpolations are 
+performed until the univariate gradient term<B><I> </I></B><IMG 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor169.gif" 
+align=bottom><B><I> </I></B>is sufficiently small so that <IMG 
+alt="q sub k transpose times s sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor220.gif" 
+align=bottom> is positive. </P>
+<P><A name=128></A>It is usual practice to reset <IMG alt="alpha sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor153.gif" 
+align=bottom>to unity after every iteration. However, note that the quadratic 
+model (<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori4b.html#13505">Eq.&nbsp;3-3</A>) 
+is generally only a good one near to the solution point. Therefore, <IMG 
+alt="alpha sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor292.gif" 
+align=bottom> is modified at each major iteration to compensate for the case 
+when the approximation to the Hessian is monotonically increasing or decreasing. 
+To ensure that, as <IMG alt="x sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor219.gif" 
+align=bottom>approaches the solution point, the procedure reverts to a value of 
+<IMG alt="alpha sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor298.gif" 
+align=bottom> close to unity, the values of <IMG 
+alt="q sub k transpose times s sub k minus gradient of f(x sub k) transpose times d" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor280.gif" 
+align=bottom> and <IMG alt="alpha sub (k + 1)" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor304.gif" 
+align=bottom> are used to estimate the closeness to the solution point and thus 
+to control the variation in <IMG alt="alpha sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor310.gif" 
+align=bottom>. </P><!-- H4 -->
+<P><A name=37836></A><B>Cubic Polynomial Line Search Procedures.</B> 
+&nbsp;&nbsp;<A name=37931></A>After each update procedure, a step length <IMG 
+alt="alpha sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutori7c.gif" 
+align=bottom> is attempted, following which a number of scenarios are possible. 
+Consideration of all the possible cases is quite complicated and so they are 
+represented pictorially below. </P>
+<P><A name=38160></A>For each case: </P>
+<UL>
+  <LI><A name=38094></A>The left point on the graph represents the point <IMG 
+  alt="x sub k" 
+  src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor14c.gif" 
+  align=bottom>. 
+  <LI><A name=38099></A>The slope of the line bisecting each point represents 
+  the slope of the univariate gradient, <IMG 
+  alt="gradient of f(x sub k) transpose times d" 
+  src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor21c.gif" 
+  align=bottom>, which is always negative for the left point. 
+  <LI><A name=38104></A>The right point is the point <IMG alt="x sub (k + 1)" 
+  src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor35b.gif" 
+  align=bottom>after a step of <IMG alt="alpha sub k" 
+  src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor97a.gif" 
+  align=bottom> is taken in the direction <EM>d</EM>. </LI></UL><A 
+name=37701></A><STRONG>Case 1:</STRONG> f(x subk), gradient f(x sub k +1) 
+transpose times d &gt; 0 --&gt;<IMG alt="f(x sub k + 1) >" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor221.gif" 
+align=bottom longDesc=tutori8b_508longdesc_1_.html><BR>
+<P><A name=35785></A><IMG alt="" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor381.gif" 
+align=bottom></P><A name=52295></A><BR><A name=52896></A><STRONG>Case 
+2:</STRONG> <IMG 
+alt="f(x sub k + 1) less than or equal f(x sub k), gradient f(x sub k + 1) transpose  times d greater than or equal 0" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor239.gif" 
+align=bottom><BR>
+<P><A name=35760></A><IMG alt="" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor33b.gif" 
+align=bottom></P><A name=35765></A><BR><A name=40877></A><STRONG>Case 
+3:</STRONG> <IMG 
+alt="f(x sub k + 1) < than f(x sub k), gradient of f(x sub k + 1) transpose times d < 0" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor259.gif" 
+align=bottom><BR>
+<P><A name=35770></A><IMG alt="" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor102.gif" 
+align=bottom></P><A name=37710></A><BR><A name=52294></A><STRONG>Case 
+4:</STRONG> <IMG 
+alt="f(x sub k + 1) greater than or equal f(x sub k), gradient of f(x sub k + 1) transpose times d less than or equal 0" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor266.gif" 
+align=bottom> where <IMG 
+alt="p = 1 + q sub k transpose times s sub k - gradient of f(x sub k + 1) transpose times d + min {0, alpha sub (k +1)}" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor226.gif" 
+align=bottom><BR>
+<P><A name=35780></A><IMG alt="" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor41b.gif" 
+align=bottom></P>
+<P><A name=25833></A></P>
+<P><A name=21671></A>Cases 1 and 2 show the procedures performed when the value 
+<IMG alt="gradient of f(x sub k + 1) transpose times d" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor151.gif" 
+align=bottom> is positive. Cases&nbsp;3 and 4 show the procedures performed when 
+the value <IMG alt="gradient of f(x sub k + 1) transpose times d" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor265.gif" 
+align=bottom> is negative. The notation <IMG alt="min {a, b, c}" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor225.gif" 
+align=bottom> refers to the smallest value of the set <IMG alt="{a, b, c}" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor272.gif" 
+align=bottom>. </P>
+<P><A name=136></A>At each iteration a cubicly interpolated step length <IMG 
+alt="alpha sub c" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor316.gif" 
+align=bottom> is calculated and then used to adjust the step length parameter 
+<IMG alt="alpha sub (k + 1)" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor321.gif" 
+align=bottom>. Occasionally, for very nonlinear functions <IMG alt="alpha sub c" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor327.gif" 
+align=bottom> can be negative, in which case <IMG alt="alpha sub c" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor339.gif" 
+align=bottom>is given a value of <IMG alt="2 alpha sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor351.gif" 
+align=bottom>. </P>
+<P><A name=185></A>Certain robustness measures have also been included so that, 
+even in the case when false gradient information is supplied, you can achieve a 
+reduction in<EM> f(x)</EM> by taking a negative step. You do this by setting 
+<IMG alt="alpha sub (k + 1) = minus alpha sub k divided by 2" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor345.gif" 
+align=bottom>when <IMG alt="alpha sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor333.gif" 
+align=bottom> falls below a certain threshold value (e.g., 1e-8). This is 
+important when extremely high precision is required, if only finite difference 
+gradients are available.</P><A 
+name=mixed_cubic_and_quadratic_polynomial_method></A><!-- H3 --><A name=186></A>
+<P><FONT class=midsup><B>Mixed Cubic and Quadratic Polynomial 
+Method</B></FONT><BR class=hdr>
+<P><A name=187></A>The cubic interpolation/extrapolation method has proved 
+successful for a large number of optimization problems. However, when analytic 
+derivatives are not available, evaluating finite difference gradients is 
+computationally expensive. Therefore, another interpolation/extrapolation method 
+is implemented so that gradients are not needed at every iteration. The approach 
+in these circumstances, when gradients are not readily available, is to use a 
+quadratic interpolation method. The minimum is generally bracketed using some 
+form of bisection method. This method, however, has the disadvantage that all 
+the available information about the function is not used. For instance, a 
+gradient calculation is always performed at each major iteration for the Hessian 
+update. Therefore, given three points that bracket the minimum, it is possible 
+to use cubic interpolation, which is likely to be more accurate than using 
+quadratic interpolation. Further efficiencies are possible if, instead of using 
+bisection to bracket the minimum, extrapolation methods similar to those used in 
+the cubic polynomial method are used. </P>
+<P><A name=21879></A>Hence, the method that is used in <CODE><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/lsqnonlin.html">lsqnonlin</A></CODE>, 
+<CODE><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/lsqcurvefit.html">lsqcurvefit</A></CODE>, 
+and <CODE><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/fsolve.html">fsolve</A></CODE> 
+is to find three points that bracket the minimum and to use cubic interpolation 
+to estimate the minimum at each line search. The estimation of step length at 
+each minor iteration, <EM>j</EM>, is shown in the following graphs for a number 
+of point combinations. The left-most point in each graph represents the function 
+value <IMG alt="f (x sub 1)" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tuto117a.gif" 
+align=bottom> and univariate gradient <IMG alt="gradient of f (x sub k)" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor174.gif" 
+align=bottom> obtained at the last update. The remaining points represent the 
+points accumulated in the minor iterations of the line search procedure.</P>
+<P><A name=22042></A>The terms <IMG alt="alpha sub q" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor190.gif" 
+align=bottom> and <IMG alt="alpha sub c" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor196.gif" 
+align=bottom> refer to the minimum obtained from a respective quadratic and 
+cubic interpolation or extrapolation. For highly nonlinear functions, <IMG 
+alt="alpha sub c" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor202.gif" 
+align=bottom> and <IMG alt="alpha sub q" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor208.gif" 
+align=bottom><SUB> </SUB>can be negative, in which case they are set to a value 
+of <IMG alt="2 alpha sub k" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor214.gif" 
+align=bottom> so that they are always maintained to be positive. Cases 1 and 2 
+use quadratic interpolation with two points and one gradient to estimate a third 
+point that brackets the minimum. If this fails, cases 3 and 4 represent the 
+possibilities for changing the step length when at least three points are 
+available. </P>
+<P><A name=31632></A>When the minimum is finally bracketed, cubic interpolation 
+is achieved using one gradient and three function evaluations. If the 
+interpolated point is greater than any of the three used for the interpolation, 
+then it is replaced with the point with the smallest function value. Following 
+the line search procedure, the Hessian update procedure is performed as for the 
+cubic polynomial line search method.</P>
+<P><A name=39876></A>The following graphs illustrate the line search procedures 
+for cases 1 through&nbsp;4, with a gradient only for the first point. </P>
+<P><A name=38239></A><STRONG>Case 1:</STRONG> <IMG 
+alt="f(x sub j) greater than or equal f(x sub k)" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor356.gif" 
+align=bottom longDesc=tutori8b_508longdesc_2_.html></P>
+<P><A name=38246></A><IMG alt="" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor326.gif" 
+align=bottom></P>
+<P><A name=38253></A><STRONG>Case 2:</STRONG> <IMG 
+alt="f(x sub j) < than f(x sub k)" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor362.gif" 
+align=bottom></P>
+<P><A name=38260></A><IMG alt="" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor273.gif" 
+align=bottom></P>
+<P><A name=38267></A><STRONG>Case 3:</STRONG> <IMG 
+alt="f(x sub j + 1) < than f(x sub k)" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor85a.gif" 
+align=bottom></P>
+<P><A name=38274></A><IMG alt="" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor42b.gif" 
+align=bottom></P>
+<P><A name=38281></A><STRONG>Case 4:</STRONG> f(x sub k) --&gt;<IMG 
+alt="f(x sub j + 1) >" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor252.gif" 
+align=bottom></P>
+<P><A name=38835></A><IMG alt="" 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/tutor179.gif" 
+align=bottom></P>
+<P><A name=38977></A></P>
+<P><BR>
+<P>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#e7ebf7 border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD align=left width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori7b.html"><IMG 
+      alt="Previous page" 
+      src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      align=bottom border=0></A>&nbsp;</TD>
+    <TD align=left>&nbsp;Hessian Update</TD>
+    <TD>&nbsp;</TD>
+    <TD align=right>Least-Squares Optimization&nbsp;</TD>
+    <TD align=right width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori9b.html"><IMG 
+      alt="Next page" 
+      src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      align=bottom border=0></A></TD></TR></TBODY></TABLE><BR><!-- Copyright 2005 The MathWorks, Inc. --><!-- Last updated: Thu Jan 13 23:15:24 2005 --><!-- SiteCatalyst code version: G.7.
+Copyright 1997-2004 Omniture, Inc. More info available at
+http://www.omniture.com -->
+<SCRIPT language=JavaScript type=text/javascript><!--
+/* You may give each page an identifying name, server, and channel on
+the next lines. */
+var s_pageName=document.title
+var s_server=""
+var s_channel=""
+var s_pageType=""
+var s_prop1=""
+var s_prop2=""
+var s_prop3=""
+var s_prop4=""
+var s_prop5=""
+/* E-commerce Variables */
+var s_campaign=""
+var s_state=""
+var s_zip=""
+var s_events=""
+var s_products=""
+var s_purchaseID=""
+var s_eVar1=""
+var s_eVar2=""
+var s_eVar3=""
+var s_eVar4=""
+var s_eVar5=""
+//--></SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Line Search Procedures  Standard Algorithms (Optimization Toolbox)_files/s_code_remote.js" 
+type=text/javascript></SCRIPT>
+<!-- End SiteCatalyst code version: G.7. -->
+<TABLE style="BORDER-TOP: #ed8000 2px solid; BACKGROUND-COLOR: #ffffff" 
+cellSpacing=0 cellPadding=3 width="100%" align=center summary=layout border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>&nbsp;© 1994-2005 The MathWorks, Inc. &nbsp;&nbsp;&nbsp; 
+      -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/trademarks.html" 
+      target=_parent>Trademarks</A>&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/" 
+      target=_parent>Privacy Policy</A> </TD></TR></TBODY></TABLE></P></BODY></HTML>

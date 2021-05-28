@@ -1,0 +1,137 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0073)http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori2b.html -->
+<HTML><HEAD><TITLE>Optimization Overview :: Standard Algorithms (Optimization Toolbox)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!-- $Revision$  $Date$ --><!-- DOCNAME: Optimization Toolbox --><!-- CHUNKNAME: Optimization Overview --><!-- CHAPNAME: Standard Algorithms --><!-- HEADSTUFF --><LINK 
+href="Optimization Overview  Standard Algorithms (Optimization Toolbox)_files/docset.css" 
+type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2900.2627" name=GENERATOR></HEAD>
+<BODY class=support bgColor=#ffffff>
+<SCRIPT language=Javascript>
+if (parent.frames.length<2) document.write('<p><a href="../../helpdesk.html" target=_top><b>Documentation</b></a> <img src="../../arrowr.gif"> <a HREF="optim.html"><b>Optimization Toolbox</b></a></p>');
+</SCRIPT>
+<!-- NAVBARTOP -->
+<TABLE class=support cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=baseline bgColor=#e7ebf7><B>Optimization Toolbox</B></TD>
+    <TD vAlign=baseline align=right bgColor=#e7ebf7><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutoriaa.html"><IMG 
+      alt="Previous page" 
+      src="Optimization Overview  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      border=0></A>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori3b.html"><IMG 
+      alt="Next Page" 
+      src="Optimization Overview  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      border=0></A></TD></TR></TBODY></TABLE><A name=optimization_overview></A><!-- H1 --><A name=33771></A>
+<P><FONT class=Head2 size=+2><B>Optimization Overview</B></FONT><BR class=hdr>
+<P><A name=57302></A>Optimization techniques are used to find a set of design 
+parameters, <IMG alt="x = {x sub 1, x sub 2, ..., x sub n}" 
+src="Optimization Overview  Standard Algorithms (Optimization Toolbox)_files/tuto289a.gif" 
+align=bottom>, that can in some way be defined as optimal. In a simple case this 
+might be the minimization or maximization of some system characteristic that is 
+dependent on<EM> x</EM><B><I>.</I></B> In a more advanced formulation the 
+objective function, <EM>f(x)</EM>, to be minimized or maximized, might be 
+subject to constraints in the form of equality constraints<EM>, <BR><BR><IMG 
+alt="G sub i (x) = 0 ( i = 1, ..., m sub e)" 
+src="Optimization Overview  Standard Algorithms (Optimization Toolbox)_files/tuto111a.gif" 
+align=bottom></EM>; inequality constraints<EM>, <BR><BR><IMG 
+alt="G sub i (x) less than or = 0 ( i = m sub e +1, ..., m)" 
+src="Optimization Overview  Standard Algorithms (Optimization Toolbox)_files/tuto132a.gif" 
+align=bottom></EM>; and/or parameter bounds, <IMG alt="X sub l, x sub u" 
+src="Optimization Overview  Standard Algorithms (Optimization Toolbox)_files/tuto174a.gif" 
+align=bottom>.</P>
+<P><A name=15447></A>A General Problem (GP) description is stated as</P>
+<P><A name=15026></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG alt="minimize f(x)" 
+      src="Optimization Overview  Standard Algorithms (Optimization Toolbox)_files/tutor175.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-1)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=39966></A>subject to</P>
+<P>
+<UL class=continued><A name=39961></A>
+  <LI class=continued><IMG 
+  alt="set of three equations providing restrictions on the general problem" 
+  src="Optimization Overview  Standard Algorithms (Optimization Toolbox)_files/tutoriad.gif" 
+  align=bottom> </LI></UL>
+<P><A name=57045></A>where<B><I> </I></B><EM>x</EM><B><I> </I></B>is the vector 
+of length <EM>n</EM> design parameters, <EM>f(x)</EM> is the objective function, 
+which returns a scalar value, and the vector function <EM>G(x) </EM>returns a 
+vector of length <EM>m</EM> containing the values of the equality and inequality 
+constraints evaluated at <EM>x</EM> . </P>
+<P><A name=129></A>An efficient and accurate solution to this problem depends 
+not only on the size of the problem in terms of the number of constraints and 
+design variables but also on characteristics of the objective function and 
+constraints. When both the objective function and the constraints are linear 
+functions of the design variable, the problem is known as a Linear Programming 
+(LP) problem. Quadratic Programming (QP) concerns the minimization or 
+maximization of a quadratic objective function that is linearly constrained. For 
+both the LP and QP problems, reliable solution procedures are readily available. 
+More difficult to solve is the Nonlinear Programming (NP) problem in which the 
+objective function and constraints can be nonlinear functions of the design 
+variables. A solution of the NP problem generally requires an iterative 
+procedure to establish a direction of search at each major iteration. This is 
+usually achieved by the solution of an LP, a QP, or an unconstrained 
+subproblem.</P>
+<P><BR>
+<P>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#e7ebf7 border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD align=left width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutoriaa.html"><IMG 
+      alt="Previous page" 
+      src="Optimization Overview  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      align=bottom border=0></A>&nbsp;</TD>
+    <TD align=left>&nbsp;Standard Algorithms</TD>
+    <TD>&nbsp;</TD>
+    <TD align=right>Unconstrained Optimization&nbsp;</TD>
+    <TD align=right width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori3b.html"><IMG 
+      alt="Next page" 
+      src="Optimization Overview  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      align=bottom border=0></A></TD></TR></TBODY></TABLE><BR><!-- Copyright 2005 The MathWorks, Inc. --><!-- Last updated: Thu Jan 13 23:15:24 2005 --><!-- SiteCatalyst code version: G.7.
+Copyright 1997-2004 Omniture, Inc. More info available at
+http://www.omniture.com -->
+<SCRIPT language=JavaScript type=text/javascript><!--
+/* You may give each page an identifying name, server, and channel on
+the next lines. */
+var s_pageName=document.title
+var s_server=""
+var s_channel=""
+var s_pageType=""
+var s_prop1=""
+var s_prop2=""
+var s_prop3=""
+var s_prop4=""
+var s_prop5=""
+/* E-commerce Variables */
+var s_campaign=""
+var s_state=""
+var s_zip=""
+var s_events=""
+var s_products=""
+var s_purchaseID=""
+var s_eVar1=""
+var s_eVar2=""
+var s_eVar3=""
+var s_eVar4=""
+var s_eVar5=""
+//--></SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Optimization Overview  Standard Algorithms (Optimization Toolbox)_files/s_code_remote.js" 
+type=text/javascript></SCRIPT>
+<!-- End SiteCatalyst code version: G.7. -->
+<TABLE style="BORDER-TOP: #ed8000 2px solid; BACKGROUND-COLOR: #ffffff" 
+cellSpacing=0 cellPadding=3 width="100%" align=center summary=layout border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>&nbsp;© 1994-2005 The MathWorks, Inc. &nbsp;&nbsp;&nbsp; 
+      -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/trademarks.html" 
+      target=_parent>Trademarks</A>&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/" 
+      target=_parent>Privacy Policy</A> </TD></TR></TBODY></TABLE></P></BODY></HTML>

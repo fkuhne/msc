@@ -1,0 +1,41 @@
+all : simulador encoder gps bussola
+
+sim_objs = ServerSocket.o Socket.o normal.o func.o
+nodes_objs = ServerSocket.o ClientSocket.o Socket.o normal.o func.o
+
+simulador: $(sim_objs) simulador.cpp
+	g++ -o simulador $(sim_objs) simulador.cpp -Wno-deprecated
+
+encoder: $(nodes_objs)  encoder.cpp
+	g++ -o encoder $(nodes_objs) encoder.cpp -Wno-deprecated
+
+gps: $(nodes_objs) gps.cpp
+	g++ -o gps $(nodes_objs) gps.cpp -Wno-deprecated
+
+bussola: $(nodes_objs) bussola.cpp
+	g++ -o bussola $(nodes_objs) bussola.cpp -Wno-deprecated
+
+
+normal.o:normal.c
+	gcc -c -o normal.o normal.c
+
+func.o:func.cpp
+	g++ -c -o func.o func.cpp -Wno-deprecated
+
+	
+ServerSocket.o:ServerSocket.cpp
+	g++ -c -o ServerSocket.o ServerSocket.cpp
+
+ClientSocket.o:ClientSocket.cpp
+	g++ -c -o ClientSocket.o ClientSocket.cpp
+
+Socket.o:Socket.cpp
+	g++ -c -o Socket.o Socket.cpp
+
+clean:
+	rm -f *.o simulador encoder gps bussola ClientSocket ServerSocket Socket normal func
+	
+
+
+
+

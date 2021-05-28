@@ -1,0 +1,482 @@
+BUSCA DAS REVISTAS:
+http://www.ieee.org/portal/index.jsp?pageID=corp_level1&path=pubs/transactions&file=index.xml&xsl=generic.xsl
+http://ieeexplore.ieee.org/xpl/periodicals.jsp
+
+IEEE TRANSACTIONS ON AUTOMATIC CONTROL - http://control.bu.edu/ieee/
+====================================================================
+
+
+************
+**  2003  ** VOLUME 48
+************
+
+nada (até outubro)
+
+==================================
+
+
+************
+**  2002  ** VOLUME 47
+************
+
+Junho:
+-- Adaptive control of robots with an Improved transient performance - Arteaga, M.A.; Yu Tang 
+
+==================================
+
+
+************
+**  2001  ** VOLUME 46
+************
+
+Maio:
+-- Comments on “Adaptive variable structure set-point control of underactuated robots” - De Luca, A.; Oriolo, G.
+-- Comments on “Adaptive variable structure set-point control of underactuated robots” [and reply] - Zhang, T.; Dixon, W.E.; Zergeroglu, E.; Chun-Yi Su
+-- Comments on "adaptive variable structure set-point control of underactuated robots" - Dixon, W.E.; Zergeroglu, E.
+-- Author's reply - Chun-Yi Su
+
+Março:
+-- Adaptive tracking control of uncertain nonholonomic dynamic system - Wenjie Dong; Xu, W.L.
+
+==================================
+
+
+************
+**  2000  ** VOLUME 45
+************
+
+Outubro:
+-- Flatness and small-time controllability of multibody mobile robots: application to motion planning - Lamiraux, F.; Laumond, J.-P.
+
+Setembro:
+-- Rolling bodies with regular surface: controllability theory and applications - Marigo, A.; Bicchi, A.
+
+Agosto:
+-- Simple mechanical control systems with constraints - Lewis, A.D.
+
+Junho:
+-- Contractive model predictive control for constrained nonlinear systems - de Oliveira Kothare, S.L.; Morari, M.
+
+Abril:
+-- Decentralized robust control of mechanical systems - Tang, Y.; Tomizuka, M.; Guerrero, G.; Montemayor, G.
+
+==================================
+
+
+************
+**  1999  ** VOLUME 44
+************
+
+Novembro:
+-- Adaptive variable structure set-point control of underactuated robots - Chun-Yi Su; Stepanenko, Y.
+
+Setembro:
+-- Dynamics and control of a class of underactuated mechanical systems - Reyhanoglu, M.; van der Schaft, A.; Mcclamroch, N.H.; Kolmanovsky, I.
+
+Fevereiro:
+-- A recursive technique for tracking control of nonholonomic systems in chained form - Zhong-Ping Jiang; Nijmeijer, H.
+
+==================================
+
+
+************
+**  1998  ** VOLUME 43
+************
+
+nada!
+
+
+*********************************************************************************
+
+
+
+IEEE TRANSACTIONS ON ROBOTICS & AUTOMATION - www.ncsu.edu/IEEE-RAS/TRA/TRA.html
+===============================================================================
+
+
+************
+**  2003  ** VOLUME 19
+************
+
+Fevereiro:
+-- Robust adaptive motion/force tracking control of uncertain nonholonomic mechanical systems - Oya, M.; Chun-Yi Su; Katoh, R.
+
+==================================
+
+
+************
+**  2002  ** VOLUME 18
+************
+
+Agosto:
+-- Distributed computing in robotics and automation - Brugali, D.; Fayad, M.E.
+
+Junho:
+-- Dynamic model with slip for wheeled omnidirectional robots - Williams, R.L., II; Carter, B.E.; Gallina, P.; Rosati, G.
+
+Abril:
+-- Omni-directional robot and adaptive control method for off-road running - Chen, P.; Mitsutake, S.; Isoda, T.; Shi, T.
+
+Fevereiro:
+-- Optimal mobile robot pose estimation using geometrical maps - Borges, G.A.; Aldon, M.J.
+
+==================================
+
+
+************
+**  2001  ** VOLUME 17
+************
+
+Dezembro:
+-- The chaotic mobile robot - Nakamura, Y.; Sekiguchi, A.
+-- Modeling and control of formations of nonholonomic mobile robots - Desai, J.P.; Ostrowski, J.P.; Kumar, V.
+
+Fevereiro:
+-- Design and control of the nonholonomic manipulator - Nakamura, Y.; Woojin Chung; Sordalen, O.J.
+
+==================================
+
+
+************
+**  2000  ** VOLUME 16
+************
+
+Dezembro:
+-- Spherical rolling robot: a design and motion planning studies - Bhattacharya, S.; Agrawal, S.K.
+-- Tracking control of uncertain dynamic nonholonomic system and its application to wheeled mobile robots - Wenjie Dong; Wei Huo; Tso, S.K.; Xu, W.L.
+
+Outubro:
+-- Configuration manifolds and their applications to robot dynamic modeling and control - Gu, E.Y.L.
+-- Adaptive tracking control of a nonholonomic mobile robot - Fukao, T.; Nakagawa, H.; Adachi, N.
+
+Abril:
+-- Programming and control of robots by means of differential algebraic inequalities - Spiteri, R.J.; Pai, D.K.; Ascher, U.M.
+
+==================================
+
+
+************
+**  1999  ** VOLUME 15
+************
+
+Junho:
+-- Vision guided navigation for a nonholonomic mobile robot - Yi Ma; Kosecka, J.; Sastry, S.S.
+-- Sliding mode control for trajectory tracking of nonholonomic wheeled mobile robots - Jong-Min Yang; Jong-Hwan Kim
+
+Abril:
+-- High speed target pursuit and asymptotic stability in mobile robotics - Adams, M.D.
+
+==================================
+
+
+************
+**  1998  ** VOLUME 14
+************
+
+Agosto:
+-- Unified formulation of robotic systems with holonomic and nonholonomic constraints - Xiaoping Yun; Sarkar, N.
+
+*********************************************************************************
+
+
+
+IEEE CONTROL SYSTEMS MAGAZINE - www.htc.honeywell.com/projects/CSM
+==================================================================
+
+
+************
+**  2003  ** VOLUME 23
+************
+
+nada!
+
+==================================
+
+
+************
+**  2002  ** VOLUME 22
+************
+
+nada!
+
+==================================
+
+
+************
+**  2001  ** VOLUME 21
+************
+
+nada!
+
+==================================
+
+
+************
+**  2000  ** VOLUME 20
+************
+
+Dezembro:
+-- A six-wheeled omnidirectional autonomous mobile robot - Moore, K.L.; Flann, N.S.
+
+==================================
+
+
+************
+**  1999  ** VOLUME 19
+************
+
+Abril:
+-- Control of nonholonomic mobile robots - Jung-Min Yang; Jong-Hwan Kim
+
+==================================
+
+
+************
+**  1998  ** VOLUME 18
+************
+
+Junho:
+-- Theory of Robot Control [Bookshelf] - Toumodge, S.
+
+
+*********************************************************************************
+
+
+
+IEEE TRANSACTIONS ON SYSTEMS, MAN & CYBERNETICS, PART A
+===============================================================================
+
+
+************
+**  2003  ** VOLUME 33
+************
+
+nada!
+
+************
+**  2002  ** VOLUME 32
+************
+
+nada!
+
+************
+**  2001  ** VOLUME 31
+************
+
+nada!
+
+==================================
+
+
+************
+**  2000  ** VOLUME 30
+************
+
+nada!
+
+************
+**  1999  ** VOLUME 29
+************
+
+Novembro:
+-- A neural gain scheduling network controller for nonholonomic systems - Jin-Tsong Jeng; Tsu-Tian Lee
+
+Maio:
+-- Reduced order model and robust control architecture for mechanical systems with nonholonomic Pfaffian constraints - Chun-Yi Su; Stepanenko, Y.; Goldenberg, A.A.
+
+==================================
+
+
+************
+**  1998  ** VOLUME 28
+************
+
+nada!
+
+
+
+*********************************************************************************
+
+
+
+IEEE TRANSACTIONS ON SYSTEMS, MAN & CYBERNETICS, PART B
+===============================================================================
+
+
+************
+**  2003  ** VOLUME 33
+************
+
+nada!
+
+==================================
+
+
+************
+**  2002  ** VOLUME 32
+************
+
+Agosto:
+-- Adaptive control for mobile robot using wavelet networks - de Sousa, C., Jr.; Hemerly, E.M.; Galvao, R.K.H.
+
+==================================
+
+
+************
+**  2001  ** VOLUME 31
+************
+
+nada!
+
+==================================
+
+
+************
+**  2000  ** VOLUME 30
+************
+
+nada!
+
+==================================
+
+
+************
+**  1999  ** VOLUME 29
+************
+
+nada!
+
+==================================
+
+
+************
+**  1998  ** VOLUME 28
+************
+
+nada!
+
+
+
+*********************************************************************************
+
+
+
+IEEE TRANSACTIONS ON SYSTEMS, MAN & CYBERNETICS, PART C
+===============================================================================
+
+
+************
+**  2003  ** VOLUME 33
+************
+
+nada!
+
+==================================
+
+
+************
+**  2002  ** VOLUME 32
+************
+
+nada!
+
+==================================
+
+
+************
+**  2001  ** VOLUME 31
+************
+
+nada!
+
+==================================
+
+
+************
+**  2000  ** VOLUME 30
+************
+
+nada!
+
+==================================
+
+
+************
+**  1999  ** VOLUME 29
+************
+
+nada!
+
+==================================
+
+
+************
+**  1998  ** VOLUME 28
+************
+
+nada!
+
+
+
+*********************************************************************************
+
+
+
+IEEE ROBOTICS & AUTOMATION MAGAZINE
+===================================
+
+
+************
+**  2003  ** VOLUME 10
+************
+
+nada!
+
+==================================
+
+
+************
+**  2002  ** VOLUME 9
+************
+
+nada!
+
+==================================
+
+
+************
+**  2001  ** VOLUME 8
+************
+
+nada!
+
+==================================
+
+
+************
+**  2000  ** VOLUME 7
+************
+
+nada!
+
+==================================
+
+
+************
+**  1999  ** VOLUME 6
+************
+
+nada!
+
+==================================
+
+
+************
+**  1998  ** VOLUME 5
+************
+
+nada!
+
+==================================
+
+ACABOU...

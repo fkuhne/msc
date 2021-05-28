@@ -1,0 +1,118 @@
+\documentclass{article}
+
+\usepackage[portuges,brazil]{babel}
+\usepackage{isolatin1}
+
+\usepackage{a4wide}
+
+\usepackage{graphicx,psfrag}
+\usepackage{float}
+\usepackage{subfigure}
+\usepackage[rflt]{floatflt}
+
+
+\newcounter{qcounter}
+\newenvironment{question}{\stepcounter{qcounter}\paragraph{\arabic{qcounter}.}}{}
+\newenvironment{alternativas}{\renewcommand{\labelenumi}{(\alph{enumi})}\begin{enumerate}\addtolength{\itemsep}{-2.5mm}\setlength{\parsep}{0pt}}{\end{enumerate}}
+
+\newcommand{\matriz}[2]{\left[\begin{array}{#1} #2 \end{array}\right]}
+
+\markright{ENG04035 - Sistemas de Controle I - DELET/UFRGS}
+\pagestyle{myheadings}
+
+\begin{document}
+
+\begin{center}
+ENG04035 - Sistemas de Controle I - 2001/2 \\
+Lista de Exercícios - Profs. Romeu Reginatto e João Manoel Gomes da Silva \\
+Lugar das Raízes  \\
+\end{center}
+
+
+\begin{question}
+Considere os seguintes processos:
+{
+\Large
+$$
+\begin{array}{ll}
+G_1(s)=\frac{5}{(s+2)(s+10)} & G_4(s) = \frac{1}{s^2+2s+2} \\
+G_2(s)=\frac{1}{s(s+a)^2} & G_5(s)=\frac{(s+5)}{(s-2)(s+10)} \\
+G_3(s)=\frac{s-5}{(s+2)(s+10)} & G_6(s)=\frac{s+1}{(s+20)(s^2+25)} 
+\end{array}
+$$
+}
+
+Estude o controle proporcional ($C(s)=k$) e 
+o controle integral ($C(s)=k_i/s$) de cada um destes
+processos pelo método do lugar das raízes, utilizando as diretrizes 
+abaixo.
+\begin{alternativas}
+\item
+Para quais valores de $k$ ($k_i$) o sistema em malha fechada é 
+BIBO-estável?
+\item
+Qual o valor do ganho crítico?
+\item
+Para quais valores de $k$ ($k_i$) a função de transferência
+de malha fechada possui todos os seus pólos reais?
+\item
+Dentro das possíveis ajustes dos pólos do sistema realimentado através
+do ganho $k$ ($k_i$), identifique o ajuste que conduz 
+aproximadamente ao menor tempo de acomodação possível
+na resposta ao degrau. Qual o valor do ganho $k$ ($k_i$)
+que ajusta esta condição?
+\item
+Obtenba o valor do ganho $k$ ($k_i$), se existir,
+que conduz a $MG=10dB$ (margem de ganho). 
+\item
+Existe possibilidade de ajuste de pólos para o sistema 
+realimentado tais que o máxima sobre-elevação 
+(máximo {\em overshoot}) é inferior a $20\%$? 
+Determina a faixa de ganho aproximada que garante esta
+condição.
+\item 
+O aumento do ganho $k$ ($k_i$) aumenta ou diminiu as margens
+de estabilidade do sistema realimentado?
+\end{alternativas}
+\end{question}
+
+
+\begin{question}
+Considere o circuito elétrico da figura~\ref{fig:creal}. Determine
+o lugar dos pólos da função de transferência $T(s)=E_o(s)/E_i(s)$
+para a variação do resistor $R_1$ de $0$ a $+\infty$.
+
+\begin{figure}[H]
+\begin{center}
+\includegraphics[width=12cm]{evansfig.jpg}
+\end{center}
+\caption{Circuito elétrico com amplificadores operacionais {\bf ideais}.}
+\label{fig:creal}
+\end{figure}
+
+\end{question}
+
+
+
+\end{document}
+
+\begin{alternativas}
+\item[(a)] 
+\item[(b)] 
+\item[(c)] 
+\item[(d)] 
+\item[(e)] 
+\end{alternativas}
+
+
+
+
+
+
+
+
+
+
+
+
+

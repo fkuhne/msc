@@ -1,0 +1,367 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[dvips,ps2pdf]{hyperref}
+\usepackage{amsthm, amsfonts, amssymb, amsmath, graphicx}
+\pagestyle{plain}
+
+% Define área da folha
+\setlength{\vsize}{297mm} \setlength{\hsize}{210mm}
+\setlength{\textheight}{230mm} \setlength{\textwidth}{165mm}
+\voffset -1.5cm \hoffset -2.0cm
+
+\newcommand\real{\mathbb{R}}
+\newcommand{\req}[1]{(\ref{#1})}
+\renewcommand{\baselinestretch}{1.1} % Define espaçamento entre linhas
+\parskip 1.3mm % Define espaçamento de um novo parágrafo
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AQUI COMEÇA O DOCUMENTO %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{center}
+    {\LARGE\sc Estimação da configuração de um robô móvel utilizando filtro de Kalman} \\
+    \vspace{3mm} {\bf Sérgio Suess\footnote{\tt srsuess@terra.com.br}, Carlos Claro\footnote{\tt 					     caclaro@uol.com.br} e Felipe Kühne\footnote{\tt kuhne@eletro.ufrgs.br}} \\
+    \vspace{2mm} ELE00071 -- Tópicos Especiais em Automação e Controle II \\
+	Prof. Dr. Walter Fetter Lages\footnote{\tt fetter@eletro.ufrgs.br} \\
+    \vspace{3mm} Universidade Federal do Rio Grande do Sul \\
+                 Departamento de Engenharia Elétrica \\
+                 Programa de Pós-Graduação em Engenharia Elétrica \\
+    \vspace{2mm} fevereiro de 2004
+\end{center}
+
+\vspace{4mm}
+
+\begin{abstract}
+{\it Um dos principais problemas quando se trata da navegação de um robô móvel está em informar ao mesmo a sua localização com relação ao seu espaço de configuração. Para isto, são utilizados sensores para captar a movimentação do mesmo. No caso de robôs com rodas, comumente utilizam-se {\em encoders}, pois são baratos e de fácil implementação. Contudo, os {\em encoders} geram erros que crescem indefinidamente durante a movimentação do robô. Para minimizar estes erros, faz-se uso de sensores com informação redundante, como aparelhos de GPS, bússolas, acelerômetros ou giroscópios. Este trabalho trata da estimação da configuração de um robô móvel dotado de rodas com acionamento diferencial. Para isto, três tipos de sensores foram considerados: {\em encoder}, GPS e bússola eletrônica. Para cada sensor, foi desenvolvido um algoritmo, onde cada um faz a estimativa da configuração do robô utilizando fusão de dados através do filtro de Kalman extendido descentralizado. A fim de se observar a eficiência do método, resultados de simulação apresentam graficamente a evolução das variáveis de estado do robô, bem como das covariâncias, em cada nodo. Os algoritmos foram implementados em linguagem C++, e executados em computadores com sistema operacional Linux. }
+\end{abstract}
+
+\section{Introdução}
+
+No problema de navegação de um veículo autônomo, uma das informações mais importantes que deve ser obtida é a sua atual configuração, dada pela posição e orientação deste veículo com relação a um sistema de coordenadas global. Para isto, são utilizados sensores acoplados ao corpo do veículo. De uma forma geral, estes sensores podem ser classificados em
+sensores de medida {\em relativa} e {\em absoluta}. Sensores do tipo relativo utilizam apenas informações internas do sistema. É o caso de encoders, acelerômetrs e giroscópios. Sensores do tipo absoluto utilizam informações provenientes do meio externo, como aparelhos de GPS ({\em Global Positioning System}) e bússolas
+eletrônicas \cite{borenstein}.
+
+É chamada de {\em dead reckoning} (ou {\em deduced reckoning}) à técnica da obtenção de posição e/ou orientação de um veículo através do cálculo da localização atual, obtida pela informação de
+velocidade em um dado intervalo de tempo. No caso de robôs móveis dotados de rodas, são utilizados {\em encoders} acoplados aos eixos dos motores, os quais transmitem pulsos cuja freqüência varia conforme a velocidade das rodas. É possível então obter-se a medida da posição e da orientação atuais do veículo, dada a sua configuração anterior e conhecendo-se as características físicas do mesmo. A isso chama-se {\em odometria}.
+
+{\em Encoders} são bastante utilizados pois são baratos, de fácil implementação e permitem altas taxas de amostragem. Contudo, a idéia fundamental da odometria utilizando {\em encoders} é a integração da informação da movimentação em um dado período de tempo, o que inevitavelmente leva ao acúmulo ilimitado de erros, estes causados, por exemplo, pelo escorregamento das rodas, incertezas de modelagem, diferença no raio entre as rodas ou imprecisão dos dados. Entetanto, a odometria é largamente utilizada pois, além das vantagens já citadas, permite a fusão de dados utilizando sensores de posição absolutos, e os erros de integração podem ser eliminados utilizando-se marcas de referência ({\em landmarks}). Também, em alguns casos, como em ambientes fechados, não é possível obter informações externas de localização, o que não acontece com a informação obtida pelo {\em encoder}, que está sempre disponível. 
+
+Aparelhos de medida absoluta são vantajosos pois não possuem o problema da integração do erro, por isso são utilizados em conjunto com {\em encoders}. Contudo, também apresentam alguns problemas, dependendo da aplicação e do tipo de ambiente por onde o veículo se movimenta. O GPS pode ter o seu sinal alterado devido
+à condições atmosféricas adversas, ou pela perda do sinal em locais de difícil recepção do sinal de rádio, como em salas fechadas. A bússola eletrônica gera a informação de orientação baseada no campo magnético terrestre. Pode, portanto, ter seu sinal alterado, por exemplo, perto de linhas de transmissão de energia elétrica, ou perto de aparelhos emissores de ondas eletro-magnéticas. 
+
+No presente trabalho foi desenvolvido um algoritmo computacional em linguagem C++ para a estimação da posição e orientação de um robô móvel dotado de rodas com acionamento diferencial, utilizando o filtro de Kalman etendido para sistemas não lineares. Os sensores utilizados foram {\em encoders} (um em cada motor, medindo assim a posição e orientação), um GPS (medindo a posição) e uma bússola eletrônica (medindo a orientação). Para cada sensor, processos independentes foram implementados. A comunicação entre os programas foi feita através de {\em sockets}, onde para cada canal de comunicação foi criado um par servidor/cliente.
+
+A fim de se observar a eficiência da técnica, comparações foram feitas para o sistema apenas com os {\em encoders} e para o sistema com a informação de todos os sensores. Os resultados são apresentados na forma de gráficos da posição e da orientação e também da covariância do filtro de Kalman.
+
+Este documento está organizado como segue: no seguinte capítulo, é feita a descrição física do robô móvel e do modelo matemático utilizado. No Capítulo 3, é feito o equacionamento com base nas expressões clássicas o filtro de Kalman extendido descentralizado, para o caso apresentado neste trabalho. No Capítulo 4, são apresentados os algoritmos desenvolvidos. Os resultados de simulação obtidos são apresentados no Capítulo 5. No último capítulo, são apresentadas as conclusões do grupo.
+
+\section{Modelagem cinemática do robô móvel}
+
+Robôs móveis com acionamento diferencial são comumente utilizados na literatura. Apresenta-se neste capítulo o modelo cinemático deste robô, considerando os sensores utilizados. Uma descrição física do mesmo é vista na Figura \ref{robo1}. 
+
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=80mm]{Figuras/robo1.eps}
+    \caption{\it Modelo geométrico de um robô móvel com acionamento diferencial.}
+    \label{robo1}
+\end{center}\end{figure}
+
+O robô possui três rodas, sendo que as duas rodas pertencentes ao mesmo eixo horizontal de rotação (ao longo da reta $\overline{WP}$) são acionadas por motores e a roda não centrada é passiva e serve apenas para apoio do robô ao solo. A rotação do robô é obtida quando as duas rodas ativas desenvolvem velocidades diferentes. A distância entre as rodas ativas é de 30 cm e o diâmetro das rodas é de 15 cm. É acoplado a cada eixo das rodas ativas um {\em encoder} incremental de 512 ppr (pulsos por rotação). O robô ainda possui um sistema de GPS diferencial que garante uma precisão da ordem de 10cm e uma bússola com resolução de 1 grau. 
+
+Considerando a distância $d$ nula, o modelo cinemático para este tipo de robô pode ser escrito como: \begin{equation}\label{kin}
+\begin{split}
+\dot x_c &= u_1\cos\theta \\
+\dot y_c &= u_1\sin\theta \\
+\dot{\theta} &= u_2
+\end{split}\end{equation}
+
+A configuração do robô com relação ao sistema global $\{O,X_o,Y_o\}$ é dada por $q=\left[x_c~~y_c~~\theta\right]^T$. $u_1$ e $u_2$ são as velocidades tangencial e rotacional, respectivamente. Assim, tem-se que a ordem do sistema é $n=3$, e a ordem da entrada de controle é $p=2$.
+
+Utilizando o método de Euler, com um período de amostragem de $\Delta T$ segundos, \[ \dot q(t) \approx \frac{q(k+1)-q(k)}{\Delta T}, \] pode-se discretizar o sistema \req{kin}. Assim: 
+\begin{equation}\label{dkin}
+\begin{split}
+x_c(k+1) &= x_c(k)+u_1(k)\cos\theta(k)\Delta T \\
+y_c(k+1) &= y_c(k)+u_1(k)\sin\theta(k)\Delta T \\
+\theta(k+1) &= \theta(k)+u_2(k)\Delta T
+\end{split}\end{equation}
+
+Considerando a existência dos {\em encoders} nas rodas, do GPS e da bússola, define-se o vetor de saída como \begin{equation}\label{saida}
+z = \left[
+x_{enc}~~y_{enc}~~x_{gps}~~y_{gps}~~\theta_{enc}~~\theta_{bus}\right]^T,
+\end{equation}
+onde ($x_{enc}, y_{enc}$) é a posição dada pelos {\em encoders}, ($x_{gps}, y_{gps}$) é a posição dada pelo GPS, $\theta_{enc}$ é a orientação dada pelos {\em encoders} e $\theta_{bus}$ é a orientação dada pela bússola.
+
+\section{Algoritmo para o filtro de Kalman extendido descentralizado}
+
+O Filtro de Kalman é um método de estimação linear recursivo utilizado na estimação de dados e muito empregado para a estimaçào de configuração de robôs móveis. A condição de linearidade é necessária. Para a dinâmica de modelos não lineares ou potencialmente instáveis, esta condição é contornada através da linearização do sistema em torno da estimativa de estado. Tal operação é possível empregando a versão do método denominado de Filtro de Kalman extendido \cite{borenstein}.
+
+As características recursivas do filtro de Kalman permitem que o mesmo seja empregado num ambiente de poucos recursos de memória e de processamento, pois a cada interação do Filtro de Kalman, só é empregado o valor presente e o último valor da variável em questão, garantindo um processamento reduzido.
+
+O emprego de uma arquitetura decentralizada numa rede totalmente conectada, onde cada nodo tem acesso a um número definido de sensores, permite que a estimativa do estado computada em cada um dos nodos seja idêntica à estimativa que deveria ser computada por um sistema centralizado. Nesta configuração, a equação representativa da observação é particionadas, permitindo a separação da fusão de dados dos sensores. Portanto, a expressão de saída será dividida em tantas equações quantos forem os nodos considerados para a fusão dos dados de todos os sensores.
+
+As principais informações para a implementação do filtro de Kalman são os dados obtidos através das equações dinâmicas do sistema e as propriedades inerentes aos ruídos de processo e de medida. As informações obtidas através do filtro de Kalman proporcionam a estimação do estado do sistema e a sua inovação (diferença entre os dados em predição e em medida), este último como sendo um avaliação da performance do Filtro de Kalman. Assim, este é o método ideal para aplicação na fusão de dados e obtenção de estimativas no problema de deslocamento do sistema em questão neste trabalho.
+
+Baseado em \cite{lages1} e \cite{hemerly}, será apresentado agora o procedimento necessário para a implementação do fltro de Kalman extendido descentralizado para o modelo apresentado no sistema \req{dkin}.
+
+Considerando a equação de saída \req{saida}, pode-se escrever o sistema dinâmico não linear do robô como:
+\begin{equation*}
+\begin{split}
+q(k+1) &= f(q(k),u(k))+w(k) \\
+    z(k) &= h(q(k))+v(k),
+\end{split}\end{equation*}
+onde $u(k)=[u_1(k)~~u_2(k)]^T$ é a entrada de controle, $w(k)$ é o ruído do processo e $v(k)$ é o ruído de medida. A matriz $f(q(k),u(k))$ é escrita como
+\begin{equation}\label{mtxf}
+f(q(k),u(k)) = \left[\begin{array}{c} x_c(k)+u_1(k)\cos\theta(k)
+\Delta T \\ y_c(k)+u_1(k)\sin\theta(k)\Delta T \\
+\theta(k)+u_2(k)\Delta T
+\end{array}\right]
+\end{equation}
+
+O Jacobiano da matriz $f(q(k),u(k))$ é escrito como: 
+\begin{equation}\label{jacobf}
+F(k) = \frac{\partial f}{\partial q} = \left[\begin{array}{ccc}
+1 & 0 & -u_1(k)\sin\theta(k)\Delta T \\ 0 & 1 & u_1(k)\cos\theta(k)\Delta T \\
+0 & 0 & 1 \end{array}\right]
+\end{equation}
+
+A matriz $h(q(k))$ pode ser escrita como:
+\begin{equation}\label{mtxh}
+h(q(k)) = \left[
+x_{enc}(k)~~y_{enc}(k)~~x_{gps}(k)~~y_{gps}(k)~~\theta_{enc}(k)~~\theta_{bus}(k)\right]^T,
+\end{equation}
+e o seu jacobiano é dado por
+\begin{equation}\label{jacobh}
+H(k) = \frac{\partial h}{\partial q} = \left[\begin{array}{ccc}
+1 & 0 & 0 \\ 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \\ 0 & 0 & 1 \end{array}\right]
+\end{equation}
+
+É necessário agora definir as características estocásticas dos ruídos $w(k)$ e $v(k)$, bem como suas matrizes de covariância, que serão usadas posteriormente para o algoritmo do filtro de Kalman extendido. Considera-se que os ruídos são independentes uns dos outros e possuem uma distribuição normal com média zero.
+
+O encoder possui 512 ppr, o que significa que a distância mínima que este pode detectar (a sua precisão) em um intervalo de dois pulsos é de $2 \pi r/512$, onde $r$ é o raio das rodas, que é de $7,5cm$. Então, a precisão do {\em encoder} é de $0,00092m$. O GPS possui uma precisão de $0.1m$, e a bússola possui uma resolução de 1 grau, ou 0.0175 radianos. Estes valores estão essencialmente relacionados com a medida do sistema, ou seja, com o vetor de ruído $v(k)$, que pode ser então definido como $[v_{x_{enc}}~~v_{y_{enc}}~~v_{x_{gps}}~~v_{y_{gps}}~~v_{\theta_{enc}}~~v_{\theta_{bus}}]^T$, ou 
+\[
+v(k)=\left[N(0;\sigma_{x_{enc}})~~N(0;\sigma_{y_{enc}})~~N(0;\sigma_{x_{gps}})~~N(0;\sigma_{y_{gps}})~~N(0;\sigma_{\theta_{enc}})~~N(0;\sigma_{\theta_{bus}})\right]^T,
+\]
+onde $N(\mu;\sigma)$ é uma variável aleatória com uma distribuição normal de média $\mu$ e desvio padrão $\sigma$. 
+
+O vetor do ruído de processo pode ser escrito como $[w_x~~w_y~~w_\theta]^T$, ou
+\[
+w(k)=\left[N(0;\sigma_x)~~N(0;\sigma_y)~~N(0;\sigma_\theta)\right]^T
+\]
+
+Para o algoritmo do filtro de Kalman são necessárias as matrizes de covariância $Q(k)$ (associada ao erro do processo) e $R(k)$ (associada ao erro de medida). Estas matrizes são definidas como:
+\begin{align*}
+E\left\{w(k)w^T(i)\right\} &= Q(k)\delta(k-i) \\
+E\left\{v(k)v^T(i)\right\} &= R(k)\delta(k-i) \\
+E\left\{w(k)v^T(i)\right\} &= 0
+\end{align*}
+
+$E\{\cdot\}$ é a função valor esperado. $\delta$ representa a função Delta de Dirac. A última equação indica que os ruídos de processo e de medida são descorrelacionados. Considerando também que o ruído proveniente de um sensor não influencia nos outros sensores, as matrizes $Q(k)$ e $R(k)$ serão diagonais, com os elementos da diagonal principal dados pelas variâncias dos ruídos de cada sensor. Então: 
+\begin{align}
+Q(k) &= \left[\begin{array}{ccc} \sigma_x²&0&0\\0&\sigma_y²&0\\0&0&\sigma_\theta² \end{array}\right] \label{mtxq}\\
+R &= \left[\begin{array}{cccccc}
+	\sigma_{x_{enc}}² & 0 & 0 & 0 & 0 & 0 \\
+	0 & \sigma_{y_{enc}}² & 0 & 0 & 0 & 0 \\
+	0 & 0 & \sigma_{x_{gps}}² & 0 & 0 & 0 \\
+	0 & 0 & 0 & \sigma_{y_{gps}}² & 0 & 0 \\
+	0 & 0 & 0 & 0 & \sigma_{\theta_{enc}}² & 0 \\
+	0 & 0 & 0 & 0 & 0 & \sigma_{\theta_{bus}}²  \\
+\end{array} \right]\label{mtxr}
+\end{align}
+
+Além dos erros causados pelas precisões dos sensores, existem erros relacionados a imperfeições na modelagem, que também precisam ser considerados. Por exemplo, considera-se no modelo que as rodas possuem raios iguais e constantes, o que nem sempre é verdade. Também há erros causados, entre outros motivos, pela diferença de distância entre as rodas, pela não coincidência do vetor de velocidade tangencial com o eixo horizontal de deslocamento do robô ou pelo escorregamento das rodas. Estes erros adicionais serão considerados tanto nos ruídos de processo quanto nos ruídos de medida. Os valores foram então escolhidos como:
+\[
+v(k)=\left[N(0;0,5)~~N(0;0,5)~~N(0;0,011)~~N(0;0,011)~~N(0;0,6)~~N(0;0,0185)\right]^T
+\]
+e
+\[
+w(k)=\left[N(0;0,0015)~~N(0;0,0015)~~N(0;0,0018)\right]^T
+\]
+
+Como, no caso deste trabalho, os valores lidos dos {\em encoders} já são a posição e orientação, a integração de erro não está sendo implementada. Para tentar "imitar" esta característica, os valores dos desvios padrões relacionados ao {\em encoder} foram extrapolados. O motivo para isto se dá no fato de que o {\em encoder} é um sensor de medida relativa, como explicado anteriormente, e sofre de todas as caracerísticas inerentes a este tipo de sensor.
+
+Tem-se assim todas as expressões necessárias para o desenvolvimento de um algoritmo computacional baseado no filtro de Kalman. O caso para a estimação descentralizada totalmente conectada será estudado a seguir.
+
+\subsection{Estimação descentralizada}
+
+Para o caso onde é feita a estimação descentralizada totalmente conectada, apenas a expressão de observação precisa ser particionada para cada nodo. Neste caso, se todas as inicializações forem iguais, todos os nodos irão gerar estimativas idênticas dos estados. Entretanto, é necessário executar o algoritmo do fltro de Kalman em cada um dos nodos, a fim de se calcular todos os parâmetros necessários para, a partir da estimativa local, $\tilde q$, realizar a fusão e calcular a estimativa global, $\hat q$. Os parâmetros que precisam ser transferidos de um nodo para os outros são o erro de estimação, $e$ e a matriz de covariância do erro, $E$.
+
+De \cite{lages1}, as expressões para o filtro de Kalman extendido descentralizado são:
+\begin{align*}
+K(k) &= P(k|k-1) H^T(k) \left( H(k) P(k|k-1) H^T(k) +R (k) \right)^{-1} \\
+\tilde q(k|k) &= \hat q(k|k-1) + K(k) \left( z(k) -h (\hat q(k|k-1)) \right) \\
+\tilde P(k|k) &= \left( I - K(k) H(k) \right) P(k|k-1) \\
+e(k) &= \tilde P^{-1}(k|k) \tilde q(k|k) - P^{-1}(k|k-1) \hat q(k|k-1) \\
+E(k) &= \tilde P^{-1}(k|k)-P^{-1}(k|k-1) \\
+P(k|k) &= \bigl[P^{-1}(k|k-1)+\sum_{j=1}^NE_j(k)\bigr]^{-1} \\
+\hat q(k|k) &=P (k|k)\bigl[P^{-1}(k|k-1)\hat q(k|k-1)+\sum_{j=1}^Ne_j(k)\bigr]
+\end{align*}
+\begin{align*}
+\hat q(k+1|k) &= f\left(\hat q(k|k),u(k)\right) \\
+P(k+1|k) &= F(k)P(k|k)F^T(k)+Q(k)
+\end{align*}
+
+Nas equações acima, $K(k)$ é a matriz de ganho do filtro de Kalman, $\tilde P$ é a matriz de covariância local, $P$ é a matriz de covariância global, $I$ é uma matriz identidade, $h(q(k))$ é um vetor que relaciona os estados $q(k)$ com a saída $z(k)$ (expressão \req{mtxh}), $H(k)$ é a matriz jacobiana de $h(q(k))$ (expressão \req{jacobh}), $\tilde q(k)$ é o estado estimado local, $\hat q$ é o estado estimado global, $f(q(k),u(k))$ é a função de transição não linear (expressão \req{mtxf}), $F(k)$ é a matriz jacobiana de $f(q(k),u(k))$ (expressão \req{jacobf}), $Q(k)$ é a matriz de variâncias do ruído de processo (expressão \req{mtxq}) e $R(k)$ é a matriz de variâncias do ruído de medida (expressão \req{mtxr}).
+
+Como cada nodo tem a dimensão da saída diferente, é preciso definir as variáveis com dimensões também diferentes. As ordens das saídas são $m_{enc}=3$, $m_{gps}=2$ e $m_{bus}=1$ respectivamente para o {\em encoder}, GPS e bússola. Os vetores de saída para cada nodo tem as seguintes dimensões: $z_{enc} \in \real^{3\times 1}$ para o {\em encoder}, $z_{gps} \in \real^{2\times 1}$ para o GPS e para a bússola, $z_{bus} \in \real^{1\times 1}$. Os vetores de ruído de medida terão as mesmas dimensões. Assim, pode-se definir as seguintes expressões para cada nodo:
+\begin{equation*}
+z_{enc} = \left[\begin{array}{c} x_{enc} \\ y_{enc} \\ \theta_{enc} \end{array}\right] + \left[\begin{array}{c} v_{x_{enc}} \\ v_{y_{enc}} \\ v_{\theta_{enc}} \end{array}\right] \qquad z_{gps} = \left[\begin{array}{c} x_{gps} \\ y_{gps} \end{array}\right] + \left[\begin{array}{c} v_{x_{gps}} \\ v_{y_{gps}} \end{array}\right] \qquad z_{bus} = \left[\begin{array}{c} \theta_{bus}\end{array}\right] + \left[\begin{array}{c} v_{\theta_{bus}} \end{array}\right]
+\end{equation*}
+\begin{equation*}
+H_{enc}=\left[\begin{array}{ccc} 1&0&0 \\ 0&1&0 \\ 0&0&1 \end{array}\right] \qquad H_{gps} = \left[\begin{array}{ccc} 1&0&0 \\ 0&1&0 \end{array}\right] \qquad H_{bus} = \left[\begin{array}{ccc} 0&0&1 \end{array}\right]
+\end{equation*}
+\begin{equation*}
+R_{enc}=\left[\begin{array}{ccc} \sigma_{x_{enc}}² & 0 & 0 \\ 0 & \sigma_{y_{enc}}² & 0 \\ 0 & 0 & \sigma_{\theta_{enc}}² \end{array}\right] \qquad R_{gps} = \left[\begin{array}{cc} \sigma_{x_{gps}}² & 0 \\ 0 & \sigma_{y_{gps}}² \end{array}\right] \qquad R_{bus} = \left[\begin{array}{c} \sigma_{\theta_{bus}}² \end{array}\right]
+\end{equation*}
+
+As matrizes do ganho do filtro de Kalman, $K(k)$, têm as seguintes dimensões: $3\times 3$ para o encoder, $3\times 2$ para o GPS e $3\times 1$ para a bússola. As matrizes $Q(k)$, $F(k)$, $P(k)$, $I$,  $E_{enc}(k)$, $E_{gps}(k)$ e $E_{bus}(k)$ têm dimensão $3\times 3$ e os vetores de erro $e_{enc}(k)$, $e_{gps}(k)$ e $e_{bus}(k)$ têm dimensão $3\times 1$.
+
+Assim, tem-se todas as expressões necessárias para a implementação de um algoritmo computacional do fltro de Kalman para cada nodo dos sensores do robô.
+
+\section{Algoritmo computacional para a implementação do fltro de Kalman extendido descentralizado}
+
+Serão explicados agora todos os programas desenvolvidos para executar o filtro de Kalman extendido descentralizado, bem como a estrutura de comunicação utilizada.
+
+Os programas foram divididos em {\tt simulador.cpp}, {\tt encoder.cpp}, {\tt gps.cpp} e {\tt bussola.cpp}. As funções de cada um são as seguintes:
+\begin{itemize}
+\item {\tt simulador.cpp}:\begin{enumerate}\item calcular a entrada $u(k)=\left[u_1(k)~~u_2(k)\right]^T$ (velocidades tangencial e angular); \item calcular $q(k)=f(q(k),u(k))+w(k)$; \item enviar $q(k)$ e $u(k)$ para os nodos sensores ({\em encoder}, GPS e bússola). \end{enumerate}
+\item {\tt encoder.cpp}:\begin{enumerate}\item receber $q(k)$ e $u(k)$ do simulador; \item calcular $z_{enc}(q)=h(q(k),u(k))+v(k)$; \item calcular a estimativa local dos estados, $\tilde q(k)$; \item calcular os erros $e_{enc}(k)$ e $E_{enc}(k)$; \item enviar os erros para os outros nodos sensores (GPS e bússola); \item receber os erros do GPS e da bússola; \item calcular a estimativa global dos estados, $\hat q(k)$; \item gravar os dados em arquivo. \end{enumerate}
+\item {\tt gps.cpp}:\begin{enumerate}\item receber $q(k)$ e $u(k)$ do simulador; \item calcular $z_{gps}(q)=h(q(k),u(k))+v(k)$; \item calcular a estimativa local dos estados, $\tilde q(k)$; \item calcular os erros $e_{gps}(k)$ e $E_{gps}(k)$; \item enviar os erros para os outros nodos sensores ({\em encoder} e bússola); \item receber os erros do {\em encoder} e da bússola; \item calcular a estimativa global dos estados, $\hat q(k)$; \item gravar os dados em arquivo. \end{enumerate}
+\item {\tt bussola.cpp}:\begin{enumerate}\item receber $q(k)$ e $u(k)$ do simulador; \item calcular $z_{bus}(q)=h(q(k),u(k))+v(k)$; \item calcular a estimativa local dos estados, $\tilde q(k)$; \item calcular os erros $e_{bus}(k)$ e $E_{bus}(k)$; \item enviar os erros para os outros nodos sensores ({\em encoder} e GPS); \item receber os erros do {\em encoder} e do GPS; \item calcular a estimativa global dos estados, $\hat q(k)$; \item gravar os dados em arquivo. \end{enumerate}
+\end{itemize}
+
+
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=95mm]{Figuras/fluxo.eps}
+    \caption{\it Funções realizadas pelo simulador e nodos sensores dentro do laço da trajetória.}
+    \label{fluxo}
+\end{center}\end{figure}
+
+Os programas ficam em um laço que acaba quando a trajetória realizada no simulador chega ao fim. Em cada passo deste laço, são realizadas as funções descritas acima (veja Figura \ref{fluxo}). Os dados são gravados em um arquivo, onde cada linha contém as informações de cada passo, separadas por {\em tab}. Este formato é conveniente para o uso posterior de programas para gerar gráficos, como {\sc Gnuplot} e {\sc Matlab}. 
+
+A trajetória realizada no simulador é em forma de oito. A velocidade tangencial do robô é constante e igual a $0,3m/s$. O raio da trajetória é de $2m$. Então, a velocidade angular será de $0,15rad/s$. Após completar a primeira volta, a velocidade angular torna-se negativa, fazendo com que a segunda volta seja para a direção oposta da primeira, formando assim uma trajetória em forma de oito.
+
+{\bf Observação}: Para rodar o programa, abra quatro terminais e execute, em cada um deles e nesta ordem, {\tt simulador.cpp}, {\tt encoder.cpp}, {\tt gps.cpp} e {\tt bussola.cpp}. Esta ordem é necessária apenas no momento das criações e conexões entre os servidores e clientes. Após isso, a comunicação entre os programas é feita em qualquer ordem.
+
+\subsection{Estrutura de comunicação}
+Para transmitir dados entre o simulador e os sensores e entre um sensor e outro, foram utilizados {\em sockets}. Um {\em socket} é um mecanismo de comunicação que permite a troca de informações entre processos que estão no mesmo computador ou em diferentes computadores ligados em rede. Uma vez que uma conexão entre um servidor e um cliente é estabelecida, dados podem ser transmitidos nas duas direções, até que um deles termine a operação. Antes de iniciar a troca de dados, os seguintes passos são necessários:
+\begin{itemize}
+\item é estabelecido um {\em socket}-servidor com uma porta determinada e fica esperando pelo(s) cliente(s);
+\item é stabelecido um {\em socket}-cliente que requisita a conexão com o servidor a ele relacionado pelo número da porta;
+\item o servidor aceita a requisição do cliente.
+\end{itemize}
+
+Neste ponto, ambos estão aptos a enviar e receber dados. Esta estrutura foi escolhida para ser utilizada neste trabalho por já existirem pacotes com funções de fácil utilização \cite{sockets} e também pela possibilidade de executar o simulador e os sensores em computadores (processadores) diferentes, tornando a simulação do sistema mais realista. Para cada canal de comunicação, foi criado um par {\em servidor-cliente}.
+
+No simulador, existem três servidores, um para cada sensor. Nos sensores, exitem três clientes, para receber dados do simulador e enviar dados para os outros dois sensores, e mais dois servidores, para receber dados dos outros dois sensores.
+
+As funções da estrutura de comunicação é descrita graficamante através do esquema da Figura \ref{esquema1}, onde cada seta indica um canal de comunicação independente.
+
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=100mm]{Figuras/esquema1.eps}
+    \caption{\it Esquema de troca de informações entre os programas.}
+    \label{esquema1}
+\end{center}\end{figure}
+
+\section{Resultados obtidos}
+Serão agora mostrados os resultados obtidos em simulação. Para isto, gráficos da evolução dos estados em cada nodo e da matriz de covariância global, $\hat P$, são mostrados. Primeiramente uma análise da estimação utilizando apenas o {\em encoder} será considerada. Após, cosidera-se todos os sensores e a mesma análise é feita, a fim de ser possível uma comparação gráfica e uma avaliação do efeito da fusão dos dados entre os sensores.
+
+Como dito anteriormente, o {\em encoder} teve os valores de seus desvios-padrões aumentados drasticamente. O gráfico da Figura \ref{traj_enc} mostra a trajetória estimada apenas pelo {\em encoder}, dada por $\hat q_{enc}(k)$ (linha contínua) e a trajetória real, dada por $q(k)$ (linha tracejada). Por trajetória real quer-se dizer a trajetória calculada no simulador como $q(k+1)=f(q(k),u(k))+w(k)$.
+\begin{figure}\begin{center}
+    \includegraphics[width=100mm]{Figuras/traj_enc.eps}
+    \caption{\it Comparação da trajetória gerada pelo encoder (linha contínua) e pelo processo real (linha tracejada).}
+    \label{traj_enc}
+\end{center}\end{figure}
+
+Nota-se uma grande discrepância entre o estado estimado e o real, neste caso. Pode-se tambem fazer uma análise do erro entre o estado real e o estado estimado, calculado como $q(k)-\hat q_{enc}(k)$, onde $\hat q_{enc}(k)$ representa o estado estimado apenas pelo encoder. Este erro é mostrado no gráfico da Figura \ref{erro_enc}.
+\begin{figure}\begin{center}
+    \includegraphics[width=100mm]{Figuras/erro_enc.eps}
+    \caption{\it Erros entre os estados reais, $q(k)$ e os estados estimados pelo encoder, $\hat q_{enc}(k)$.}
+    \label{erro_enc}
+\end{center}\end{figure}
+
+Apesar da alta variância do estado estimado, nota-se que o mesmo ainda converge para a trajetória real. Isto pode ser visto analisando-se o gráfico da diagonal principal da covariância do encoder, $\hat P_{enc}(k)$, mostrado na Figura \ref{P_enc}.
+\begin{figure}\begin{center}
+    \includegraphics[width=100mm]{Figuras/P_enc.eps}
+    \caption{\it Diagonal principal da matriz de covariâncias $\hat P_{enc}(k)$ gerada pelo encoder.}
+    \label{P_enc}
+\end{center}\end{figure}
+
+Abaixo, gráficos adicionais dos estados estimados são mostrados nas Figuras \ref{x_enc}, \ref{y_enc} e \ref{theta_enc}.
+
+Agora, se for considerada a fusão dos dados entre todos os sensores ({\em encoder}, GPS e bússola), nota-se claramente que o erro entre o estado estimado, $\hat q(k)$, e o estado real, $q(k)$, será muito menor. Isto é visto nos gráficos das Figura \ref{traj_todos}, onde é plotada a trajetória do estado estimado global (linha contínua) e a trajetória do estado real (linha tracejada), Figura \ref{erro_todos}, onde nota-se a baixa discrepância dos dados estimados, e Figura \ref{P_todos}, onde nota-se a baixíssima variância dos estados se comparado com o caso onde apenas com o encoder das Figuras \ref{traj_enc}, \ref{erro_enc} e \ref{P_enc}.
+
+\begin{figure}\begin{center}
+    \includegraphics[width=100mm]{Figuras/traj_todos.eps}
+    \caption{\it Comparação do estado estimado global, $\hat q(k)$, com o estado real.}
+    \label{traj_todos}
+\end{center}\end{figure}
+
+\begin{figure}\begin{center}
+    \includegraphics[width=100mm]{Figuras/erro_todos.eps}
+    \caption{\it Erros entre os estados reais, $q(k)$, e o estados estimado global, $\hat q(k)$.}
+    \label{erro_todos}
+\end{center}\end{figure}
+
+Como o estado de todos os sensores foram igualmente inicializados, os estados estimados globais serão os mesmos para todos os nodos. A covariância também foi inicializada igualmente, e por isso também será a mesma em todos os sensores, como pode ser visto nos gráficos \ref{traj_todos} e \ref{P_todos}.
+
+\begin{figure}\begin{center}
+    \includegraphics[width=100mm]{Figuras/P_todos.eps}
+    \caption{\it Diagonal principal da matriz de covariâncias global $\hat P(k)$.}
+    \label{P_todos}
+\end{center}\end{figure}
+
+Abaixo, gráficos adicionais dos estados globais estimados são mostrados nas Figuras \ref{x_todos}, \ref{y_todos} e \ref{theta_todos}.
+
+\begin{figure}\begin{center}
+    \includegraphics[width=100mm]{Figuras/x_enc.eps}
+    \caption{\it Estado estimado $\hat x_{enc}(k)$.}
+    \label{x_enc}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=100mm]{Figuras/y_enc.eps}
+    \caption{\it Estado estimado $\hat y_{enc}(k)$.}
+    \label{y_enc}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=100mm]{Figuras/theta_enc.eps}
+    \caption{\it Estado estimado $\hat \theta_{enc}(k)$.}
+    \label{theta_enc}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=100mm]{Figuras/x_todos.eps}
+    \caption{\it Estado estimado $\hat x(k)$.}
+    \label{x_todos}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=100mm]{Figuras/y_todos.eps}
+    \caption{\it Estado estimado $\hat y(k)$.}
+    \label{y_todos}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=100mm]{Figuras/theta_todos.eps}
+    \caption{\it Estado estimado $\hat \theta(k)$.}
+    \label{theta_todos}
+\end{center}\end{figure}
+
+\section{Conclusões}
+Neste trabalho, foi desenvolvido um programa computacional para simular o comportamento de um robô móvel ao longo de uma trajetória. A fim de levar em conta erros de modelagem e perturbações de medida, o filtro de Kalman foi utilizado, considerando a existência de três sensores: {\em encoder}, GPS e bússola. O simulador do modelo e os sensores foram implementados como processos independentes. Para fazer a comunicação entre eles, foi empregada uma estrutura de comunicação baseada em {\em sockets}, onde para cada canal de comunicação foi estabelecido um par servidor/cliente. Esta estrutura de comunicação permite a execução de cada processo em computadores diferentes, ligados em rede.
+
+A utilização do filtro de Kalman torna-se evidente se for analisado os erros da Figura \ref{erro_enc} com os da Figura \ref{erro_todos}. A variância do {\em encoder} é muito mais elevada que as dos outros sensores. Depois da fusão de dados entre todos os sensores, nota-se que o erro diminui drasticamente (Figura \ref{erro_todos}).
+
+O grupo acredita que este trabalho foi de grande valia no que diz respeito à assimilação de conceitos em modelagem de sistemas discretos, nas implementações do filtro de Kalman (linear, extendido, descentralizado) e da comunicação com {\em sockets}. Foi possível também desenvolver os programas de forma gradual, sistemática e independente, tratando cada problema em separado, e posteriormente unindo-os, de forma que se torna simples a implementação de um outro tipo de modelo, ou de um controle (linearizante, por exemplo).
+
+
+\begin{thebibliography}{4}
+\bibitem{borenstein}{Borenstein, J., Everett, H. R. e Feng, L. {\it Where am I? -- Sensors
+and Methods for Mobile Robot Positioning}. The University of
+Michigan. 1996. Disponível {\em on-line} em {\mbox{\tt http://www-personal.umich.edu/{\~}johannb/position.html}}. Acessado em dezembro de 2003.}
+\bibitem{lages1}{Lages, W. F. {\it Tópicos Especiais em Automação e Controle II -- Apostilas de
+Aula}. UFRGS. 2003. Disponível {\em on-line} em {\mbox{\tt http://www.eletro.ufrgs.br/{\~}fetter/ele00071}}. Acessado em dezembro de 2003.}
+\bibitem{lages2}{Lages, W. F. {\it Controle e estimação de posição e orientação de robôs móveis}. Tese de Doutorado. Instituto Tecnológico da Aeronáutica, São José dos Campos. 1998.}
+\bibitem{sockets}{Tougher, R. {\it Linux Socket Programming in C++}. Disponível {\em on line} em {\mbox {\tt http://www.linuxgazette.com/issue74/tougher.html}}. Acessado em janeiro de 2004.}
+\bibitem{hemerly}{Hemerly, E. M. {\it Controle por Computador de Sistemas Dinâmicos}. 2a. ed. Editora Edgar Blücher. São Paulo. 2000.}
+\end{thebibliography}
+
+\end{document}

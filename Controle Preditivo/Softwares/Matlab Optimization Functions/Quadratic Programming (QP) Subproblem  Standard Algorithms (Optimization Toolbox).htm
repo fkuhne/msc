@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0073)http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor17b.html -->
+<HTML><HEAD><TITLE>Quadratic Programming (QP) Subproblem :: Standard Algorithms (Optimization Toolbox)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!-- $Revision$  $Date$ --><!-- DOCNAME: Optimization Toolbox --><!-- CHUNKNAME: Quadratic Programming (QP) Subproblem --><!-- CHAPNAME: Standard Algorithms --><!-- HEADSTUFF --><LINK 
+href="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/docset.css" 
+type=text/css rel=stylesheet>
+<META content="MSHTML 6.00.2900.2627" name=GENERATOR></HEAD>
+<BODY class=support bgColor=#ffffff>
+<SCRIPT language=Javascript>
+if (parent.frames.length<2) document.write('<p><a href="../../helpdesk.html" target=_top><b>Documentation</b></a> <img src="../../arrowr.gif"> <a HREF="optim.html"><b>Optimization Toolbox</b></a></p>');
+</SCRIPT>
+<!-- NAVBARTOP -->
+<TABLE class=support cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=baseline bgColor=#e7ebf7><B>Optimization Toolbox</B></TD>
+    <TD vAlign=baseline align=right bgColor=#e7ebf7><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor16b.html"><IMG 
+      alt="Previous page" 
+      src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      border=0></A>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html"><IMG 
+      alt="Next Page" 
+      src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      border=0></A></TD></TR></TBODY></TABLE><A 
+name=quadratic_programming_(qp)_subproblem></A><!-- H2 --><A name=26633></A>
+<P><FONT class=Head3 size=+1><B>Quadratic Programming (QP) 
+Subproblem</B></FONT><BR class=hdr>
+<P><A name=26638></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="statement of the quadratic programming subproblem: minimize d an element of the real numbers one-half d transpose times H sub k times d + gradientf(x sub k) transpose times d" 
+      src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/tutor245.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-25)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26639></A>This subproblem can be solved using any QP algorithm (see, 
+for instance, <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html#26746">Quadratic 
+Programming Solution</A>). The solution is used to form a new iterate</P>
+<P>
+<UL class=continued><A name=32563></A>
+  <LI class=continued><IMG 
+  alt="x sub (k + 1) = x sub k + alpha sub k times d sub k" 
+  src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/tutori2c.gif" 
+  align=bottom> </LI></UL>
+<P><A name=26646></A>The step length parameter <IMG alt="alpha sub k" 
+src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/tutor166.gif" 
+align=bottom>is determined by an appropriate line search procedure so that a 
+sufficient decrease in a merit function is obtained (see <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html#26691">Updating 
+the Hessian Matrix</A>). The matrix <IMG alt="H sub k" 
+src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/tutor172.gif" 
+align=bottom> is a positive definite approximation of the Hessian matrix of the 
+Lagrangian function (<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor16b.html#26631">Eq.&nbsp;3-24</A>). 
+<IMG alt="H sub k" 
+src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/tutor177.gif" 
+align=bottom><B><I> </I></B>can be updated by any of the quasi-Newton methods, 
+although the BFGS method (see <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html#26691">Updating 
+the Hessian Matrix</A>) appears to be the most popular.</P>
+<P><A name=26656></A>A nonlinearly constrained problem can often be solved in 
+fewer iterations than an unconstrained problem using SQP. One of the reasons for 
+this is that, because of limits on the feasible area, the optimizer can make 
+informed decisions regarding directions of search and step length. </P>
+<P><A name=26661></A>Consider Rosenbrock's function (<A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori3b.html#2741">Eq.&nbsp;3-2</A>) 
+with an additional nonlinear inequality constraint, <EM>g(x)</EM>,</P>
+<P><A name=46162></A>
+<TABLE cellPadding=6 width="100%" border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD>&nbsp;&nbsp;&nbsp;&nbsp;<IMG 
+      alt="x sub 1 squared + x sub 2 squared minus 1.5 less than or equal 0" 
+      src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/tutor40b.gif" 
+      align=bottom> </TD>
+    <TD align=right><B>(3-26)</B>&nbsp;&nbsp;</TD></TR></TBODY></TABLE></P>
+<P><A name=26666></A>This was solved by an SQP implementation in 96 iterations 
+compared to 140 for the unconstrained case. <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor17b.html#26682">Figure&nbsp;3-6</A> 
+shows the path to the solution point <IMG alt="x = [0.9072, 0.8228]" 
+src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/tutor187.gif" 
+align=bottom> starting at<B><I> </I></B><IMG alt="x = [ minus 1.9, 2]" 
+src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/tutor192.gif" 
+align=bottom>.</P>
+<P><A name=26682></A><IMG alt="plot of path to the solution point" 
+src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/tutor198.gif" 
+align=bottom></P>
+<P><A name=26683></A><B>Figure 3-6: SQP Method on Nonlinear Linearly Constrained 
+Rosenbrock's Function (Eq.3-2) </B></P>
+<P><BR>
+<P>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#e7ebf7 border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD align=left width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor16b.html"><IMG 
+      alt="Previous page" 
+      src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/b_prev.gif" 
+      align=bottom border=0></A>&nbsp;</TD>
+    <TD align=left>&nbsp;Sequential Quadratic Programming (SQP)</TD>
+    <TD>&nbsp;</TD>
+    <TD align=right>SQP Implementation&nbsp;</TD>
+    <TD align=right width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutor18b.html"><IMG 
+      alt="Next page" 
+      src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/b_next.gif" 
+      align=bottom border=0></A></TD></TR></TBODY></TABLE><BR><!-- Copyright 2005 The MathWorks, Inc. --><!-- Last updated: Thu Jan 13 23:15:24 2005 --><!-- SiteCatalyst code version: G.7.
+Copyright 1997-2004 Omniture, Inc. More info available at
+http://www.omniture.com -->
+<SCRIPT language=JavaScript type=text/javascript><!--
+/* You may give each page an identifying name, server, and channel on
+the next lines. */
+var s_pageName=document.title
+var s_server=""
+var s_channel=""
+var s_pageType=""
+var s_prop1=""
+var s_prop2=""
+var s_prop3=""
+var s_prop4=""
+var s_prop5=""
+/* E-commerce Variables */
+var s_campaign=""
+var s_state=""
+var s_zip=""
+var s_events=""
+var s_products=""
+var s_purchaseID=""
+var s_eVar1=""
+var s_eVar2=""
+var s_eVar3=""
+var s_eVar4=""
+var s_eVar5=""
+//--></SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="Quadratic Programming (QP) Subproblem  Standard Algorithms (Optimization Toolbox)_files/s_code_remote.js" 
+type=text/javascript></SCRIPT>
+<!-- End SiteCatalyst code version: G.7. -->
+<TABLE style="BORDER-TOP: #ed8000 2px solid; BACKGROUND-COLOR: #ffffff" 
+cellSpacing=0 cellPadding=3 width="100%" align=center summary=layout border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>&nbsp;© 1994-2005 The MathWorks, Inc. &nbsp;&nbsp;&nbsp; 
+      -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/trademarks.html" 
+      target=_parent>Trademarks</A>&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/" 
+      target=_parent>Privacy Policy</A> </TD></TR></TBODY></TABLE></P></BODY></HTML>

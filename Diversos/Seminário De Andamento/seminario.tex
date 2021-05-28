@@ -1,0 +1,404 @@
+\documentclass{ppgeesa}
+\usepackage{amssymb,amsmath,graphicx,float,array,pifont}
+\usepackage[latin1]{inputenc}
+
+\newcommand\cd{\ding{52}}
+\newcommand\longpage{\enlargethispage*{2\linewidth}}
+
+\begin{document}
+
+\title{Controle Preditivo de Robôs Móveis Usando Linearização}
+
+\author{Felipe Kühne, Walter F. Lages e João M. G. da Silva Jr.\\
+{\small Universidade Federal do Rio Grande do Sul\\Departamento de Engenharia Elétrica\\
+Av, Oswaldo Aranha, 103, CEP 90035-190, Porto Alegre RS}\\
+\thanks{F. Kühne, \mbox{kuhne@eletro.ufrgs.br}, W. F. Lages, \mbox{fetter@eletro.ufrgs.br}, J. M. Gomes da Silva Jr., \mbox{jmgomes@eletro.ufrgs.br}, Tel.
++55-51-33163129, Ext. 3561, Fax +55-51-33163293.}}
+
+\maketitle
+\thispagestyle{empty}\pagestyle{empty}
+
+\begin{abstract}
+Este artigo apresenta um esquema de controle ótimo para robôs móveis dotados de rodas e com restrições não holonômicas. É bem sabido que um robô móvel com restrições não holonômicas não pode ser estabilizado por realimentação através de leis de controle suaves ou invariantes no tempo. Utilizando controle preditivo, um lei de controle descontínua é naturalmente obtida. Uma das principais vantagens do controle preditivo em robôs móveis é a sua habilidade de aceitar restrições (devido a limitações de controle e/ou estado) de uma maneira bastante direta. Umas das desvantagens é a grande carga computacional necessária, já que a otimização precisa ser feita {\em on-line}. Entretanto, através de linearizações sucessivas, o método de programação quadrática pode ser utilizado para resolver o problema de otimização, reduzindo consideravelmente a carga computacional. Resultados experimentais e de simulação são mostrados.
+\end{abstract}
+\begin{keywords}
+Robôs móveis, controle preditivo, rastreamento de trajetória.
+\end{keywords}
+\thispagestyle{empty}\pagestyle{empty}
+
+\section{Introdução}
+\label{sec:intro}
+
+O problema do controle de robôs móveis vem recebendo bastante atenção da comunidade acadêmica nas últimas décadas. Apesar da aparente simplicidade do modelo cinemático de um robô móvel dotado de rodas ({\em wheeled mobile robot -- WMR}), a existência de restrições não holonômicas (não integráveis) a síntese de leis de controle para estes sistemas torna-se um grande desafio, já que, devido às condições de Brockett~\cite{brockett82}, leis de controle suaves (continuamente diferenciáveis) ou invariantes no tempo não podem ser obtidas. Para superar este problema, leis de controle descontínuas e variantes no tempo são as abordagens mais comuns~\cite{bloch89,samson91,canudas92,yamamoto94,murray97}. Trabalhos recentes lidando com controle robusto e adaptativo podem ser vistos em \cite{oya03,dixon04}.
+
+Entretanto, em implementações reais é difícil de se obter boa performance, devido às restrições nas entradas de controle e nos estados que naturalmente existem. Nenhum dos autores citados acima leva em consideração estas restrições no momento da síntese do controle. Isto pode ser feito de uma maneira bastante direta através de esquemas de controle preditivo ({\em model predictive control -- MPC}). Para um WMR isto é uma importante característica, já que a posição do robô pode ser restringida a pertencer dentro de uma região segura de operação. Considerando limitações nas entradas de controle, ações de controle que respeitem limites de saturação dos atuadores são geradas.
+
+MPC é uma estratégia de controle que se baseia em um modelo do sistema para obter uma seqüência ótima de controle através da minimização de uma função de custo. A cada passo amostral, o modelo fornece uma predição dos estados dentro de um horizonte de predição. Baseado nestas predições, a função de custo é minimizada com relação às futuras ações de controle em malha aberta. Embora a predição e a otimização são calculadas dentro de um horizonte futuro, apenas as componentes do controle para o instante atual é que são aplicados na planta e o mesmo procedimento repete-se para o próximo instante amostral. Este mecanismo é comumente chamado de {\em Estratégia de Horizonte Móvel} ({\em moving} ou {\em receding horizon}), em referência ao modo com que a janela de tempo desloca-se de um tempo amostral para o próximo.
+
+Para problemas de controle complexos, multivariáveis e com restrições, MPC tornou-se um padrão bem aceito em indústrias de processo~\cite{bemporad02}, principalmente onde as plantas a serem controladas são suficientemente {\em lentas} para permitir a sua implementação~\cite{mayne98}. Entretanto, para sistemas não lineares e/ou com dinâmicas rápidas, como os robôs móveis, a implementação de tal técnica permanece fundamentalmente limitada em sua aplicabilidade, devido principalmente ao grande custo computacional envolvido na solução da otimização {\em on-line}~\cite{cannon00}. Neste artigo, este problema é solucionado através do uso de linearizações sucessivas do modelo cinemático do robô, o que leva à possibilidade de se resolver um MPC linear, através de programação quadrática. É mostrado também que inclusive uma implementação tempo-real torna-se factível. Embora MPC não seja um novo método de controle, sua aplicação em robôs móveis é recente e bastante esparsa~\cite{ollero91,rico99,essen01}.
+
+Este documento está organizado como segue: Na próxima seção o modelo cinemático do robô móvel é mostrado. O algoritmo do MPC é explicitado na Seção~\ref{sec:mpc}. Resultados de simulação em {\sc Matlab} são mostrados na Seção~\ref{sec:simulations}, onde uma trajetória em forma de oito é utilizada como referência. A Seção~\ref{sec:exp} apresenta alguns resultados experimentais.
+
+
+\section{Modelo Cinemático do Robô Móvel}
+\label{sec:model}
+
+Nesta seção o modelo cinemático do robô móvel é descrito. Um robô constituído de um corpo rígido e rodas não deformáveis é considerado (veja Fig.~\ref{fig:robot}). Assume-se ainda que o veículo move-se em um plano sem derrapar, ou seja, a velocidade no ponto de contato entre a roda e o solo é nula. A cinemática do robô móvel é descrita por~\cite{canudas92,kolmanovsky95}:
+
+\begin{equation}
+\label{eqn:model}
+	\left\{
+		\begin{aligned}
+			\dot x	  &= v\cos\theta \\
+			\dot y	  &= v\sin\theta \\
+			\dot \theta &= w
+		\end{aligned}
+	\right.
+\end{equation}
+
+\noindent ${\bf x}\triangleq[x~~y~~\theta]^T$ descreve a configuração (posição e orientação) do centro do eixo das rodas ativas, $C$, com respeito a um sistema de coordenadas global $\{O,X,Y\}$. ${\bf u}\triangleq[v~~w]^T$ é a entrada de controle, onde $v$ e $w$ são as velocidades linear e angular, respectivamente. 
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.67\linewidth]{Figures/robot.eps}
+	\caption{Sistema de coordenadas do robô.}
+	\label{fig:robot}
+\end{figure}
+
+A aproximação de $\dot{\bf x}$ através do método de Euler dá o seguinte sistema em tempo discreto:
+
+\begin{equation}
+\label{eqn:discretemodel}
+	\left\{
+		\begin{aligned}
+			x(k+1)	  &= x(k) + v(k)\cos\theta(k)T \\
+			y(k+1)	  &= y(k) + v(k)\sin\theta(k)T \\
+			\theta(k+1) &= \theta(k) + w(k)T \\
+		\end{aligned}
+	\right.
+\end{equation}
+
+\noindent onde $T$ é o período amostral e $k$ é o passo amostral. A equação (\ref{eqn:discretemodel}) pode ser escrita na seguinte forma compacta:
+
+\begin{equation}
+\label{eqn:discretemodelshort}
+	{\bf x}(k+1) = f({\bf x}(k),{\bf u}(k))
+\end{equation}
+
+Um modelo linear pode ser obtido através de um modelo de erro com respeito a uma trajetória de referência. Para isso, considera-se um robô de referência descrito através do mesmo modelo~(\ref{eqn:discretemodelshort}). Portanto, sua trajetória ${\bf x}_r(k)$ e o controle ${\bf u}_r(k)$ são relacionados por
+
+\begin{equation}
+\label{eqn:referencecar}
+	{\bf x}_r(k+1)=f({\bf x}_r(k),{\bf u}_r(k))
+\end{equation}
+
+Expandindo o lado direito de ~(\ref{eqn:discretemodelshort}) através de séries de Taylor em torno de um ponto $({\bf x}_r(k),{\bf u}_r(k))$ e desconsiderando termos de ordem superior, tem-se que:
+
+\begin{multline}
+\label{eqn:taylor}
+	{\bf x}(k+1) \approx f({\bf x}_r(k),{\bf u}_r(k)) + \\
+ 	+ \left.\frac{\partial f({\bf x}(k),{\bf u}(k))}{\partial{\bf x}(k)}\right|_{\begin{smallmatrix}{\bf x}(k)={\bf x}_r(k) \\ {\bf u}(k)={\bf u}_r(k) \end{smallmatrix}}({\bf x}(k)-{\bf x}_r(k)) + \\
+	+ \left.\frac{\partial f({\bf x}(k),{\bf u}(k))}{\partial{\bf u}(k)}\right|_{\begin{smallmatrix}{\bf x}(k)={\bf x}_r(k) \\ {\bf u}(k)={\bf u}_r(k) \end{smallmatrix}}({\bf u}(k)-{\bf u}_r(k))
+\end{multline}
+
+Logo, a subtração de ~(\ref{eqn:referencecar}) em~(\ref{eqn:taylor}) resulta em:
+
+\begin{equation}
+\label{eqn:error}
+	\tilde{\bf x}(k+1) = {\bf A}(k)\tilde{\bf x}(k)+{\bf B}(k)\tilde{\bf u}(k),
+\end{equation}
+
+\noindent com
+
+\begin{align*}
+	{\bf A}(k) &\triangleq \begin{bmatrix}
+		1 & 0 & -v_r(k)\sin\theta_r(k)T \\
+		0 & 1 &  v_r(k)\cos\theta_r(k)T \\
+		0 & 0 & 1
+	\end{bmatrix} \\
+	{\bf B}(k) &\triangleq \begin{bmatrix}
+		\cos\theta_r(k)T & 0 \\
+		\sin\theta_r(k)T & 0 \\
+		0 			  & T
+	\end{bmatrix}
+\end{align*}
+
+$\tilde{\bf x}(k) \triangleq {\bf x}(k)-{\bf x}_r(k)$ representa o erro com relação ao robô de referência e $\tilde{\bf u}(k)\triangleq{\bf u}(k)-{\bf u}_r(k)$ é a entrada de perturbação de controle.
+
+De fato, a convergência de ${\bf x}$ para ${\bf x}_r$ é equivalente à convergência de $\tilde{\bf x}$ para o conjunto ${\cal O}=\{{\bf x}|(\tilde x,\tilde y,\tilde\theta)=(0,0,2\pi n)\},n\in \{0,\pm1,\pm2,\ldots\}$.
+
+Em~\cite{bloch89} é mostrado que o sistema não-linear, não-holonômico (\ref{eqn:model}) é totalmente controlável, i.e., pode ser levado de qualquer estado inicial para qualquer estado final em um espaço de tempo finito através de um controle finito. É fácil de ver que, quando o robô está parado ($v=w=0$), a linearização em torno de um ponto estacionário de operação é não controlável. Entretanto, esta linearização torna-se controlável enquanto existirem entradas de controle não nulas~\cite{samson91}, o que significa que é possível utilizar o controle preditivo linear para o problema de rastreamento de trajetória de um robô móvel~\cite{essen01}.
+
+\section{O Algoritmo MPC}
+\label{sec:mpc}
+
+Como dito na Seção~\ref{sec:intro}, a essência de um esquema MPC é a otimização do comportamento do processo através das entradas de controle. Tal predição é feita através o modelo do processo dentro de um intervalo de tempo finito, usualmente chamado de {\em horizonte de predição}. Em cada tempo amostral, o controlador preditivo gera uma seqüência ótima de controle através da resolução de um problema de otimização. O mesmo problema é resolvido novamente para o proóximo instante amostral utilizando os estados atualizados e um horizonte de predição deslocado.
+
+Para tornar a análise do algoritmo mais simples, considera-se neste trabalho que os estados estão sempre disponíveis para medição e que não existe diferença entre a planta e o modelo. Ainda, para a obtenção do controlador linear, considera-se que o par $({\bf A}(k),{\bf B}(k))$ é estabilizável.
+
+A função de custo a ser minimizada pode ser escrita como uma função quadrática dos estados e dos controles:
+
+\begin{multline}
+\label{eqn:cost}
+	\Phi(k) = \sum_{j=1}^{N}\tilde{\bf x}^T(k+j|k){\bf Q}\tilde{\bf x}(k+j|k) + \\ + \tilde{\bf u}^T(k+j-1|k){\bf R}\tilde{\bf u}(k+j-1|k),
+\end{multline}
+
+\noindent onde $N$ é o horizonte de predição e ${\bf Q}$, ${\bf R}$ são matrizes de peso, com ${\bf Q}\geq 0$ e ${\bf R}>0$. A notação $a(m|n)$ indica o valor de $a$ no instante $m$ calculada no instante $n$.
+
+Agora, o problema de otimização pode ser escrita como o problema de achar $\tilde{\bf
+u}^\star$ tal que:
+\begin{equation*}
+	\tilde{\bf u}^\star = \arg\min_{\tilde{\bf u}}\left\{\Phi(k)\right\}
+\end{equation*}
+\noindent s. a.
+\begin{equation*}
+	\tilde{\bf u}_{min} \leq \tilde{\bf u} \leq \tilde{\bf u}_{max}
+\end{equation*}
+
+\noindent onde $\Phi(k)$ é a {\em função de custo}, $\tilde{\bf u}$ é a variável livre de otimização e $\tilde{\bf u}_{min}$ e $\tilde{\bf u}_{max}$ são os limites inferior e superior, respectivamente.
+
+O problem de minização da função de custo (\ref{eqn:cost}) é resolvido em cada passo $k$ resultando então, para cada $k$, uma sequeência de controle ótima $\{\tilde{\bf u}^\star(k|k),\cdots,\tilde{\bf u}^\star(k+N-1|k)\}$ e o custo ótimo $\Phi^\star(k)$. a lei de controle preditivo é implicitamente dada pelo primeiro termo da sequência de controle ótima, $\tilde{\bf u}^\star(k|k)$. Um diagrama de blocos com todos os componentes do sistema é mostrado na Fig. \ref{fig:bloco}, onde os índices $(k|k)$ foram omitidos.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=.8\linewidth]{Figures/bloco.eps}
+	\caption{Block diagram of the system.}
+	\label{fig:bloco}
+\end{figure}
+
+A fim de formular o problema de otimização na forma padrão de programação quadrática, são definidos agora os seguintes vetores "empilhados":
+
+\begin{equation*}
+	\bar{\bf x}(k+1) \triangleq \begin{bmatrix}
+		\tilde{\bf x}(k+1|k) \\ \tilde{\bf x}(k+2|k) \\ \vdots \\ \tilde{\bf x}(k+N|k) 
+	\end{bmatrix} \quad
+	\bar{\bf u}(k) \triangleq \begin{bmatrix}
+		\tilde{\bf u}(k|k)  \\ \tilde{\bf u}(k+1|k) \\ \vdots \\ \tilde{\bf u}(k+N-1|k)
+	\end{bmatrix}
+\end{equation*}
+
+Logo, Eq. (\ref{eqn:cost}) pode ser reescrita como:
+
+\begin{equation}\label{eqn:cost2}
+	\Phi(k) = \bar{\bf x}^T(k+1)\bar{\bf Q}\bar{\bf x}(k+1) + \bar{\bf u}^T(k)\bar{\bf R}\bar{\bf u}(k),
+\end{equation}
+with
+\begin{equation*}
+	\bar {\bf Q} \triangleq \begin{bmatrix}
+		{\bf Q} & {\bf 0} & \cdots & {\bf 0} \\
+		{\bf 0} & {\bf Q} & \cdots & {\bf 0} \\
+		\vdots  & \vdots  & \ddots & \vdots  \\
+		{\bf 0} & {\bf 0} & \cdots & {\bf Q}
+	\end{bmatrix} \quad
+	\bar {\bf R} \triangleq \begin{bmatrix}
+		{\bf R} & {\bf 0} & \cdots & {\bf 0} \\
+		{\bf 0} & {\bf R} & \cdots & {\bf 0} \\
+		\vdots  & \vdots  & \ddots & \vdots  \\
+		{\bf 0} & {\bf 0} & \cdots & {\bf R}
+	\end{bmatrix}
+\end{equation*}
+
+Conseqüentemente, é possível, de ~(\ref{eqn:error}), escrever $\bar{\bf x}(k+1)$ como:
+
+\begin{equation}\label{eqn:exbar}
+	\bar{\bf x}(k+1) = \bar{\bf A}(k)\tilde{\bf x}(k|k)+{\bf S}(k)\bar{\bf u}(k),
+\end{equation}
+com
+\begin{equation*}
+	\bar{\bf A}(k) \triangleq \begin{bmatrix}
+		{\bf A}(k|k) \\ {\bf A}(k|k){\bf A}(k+1|k) \\ \vdots \\ \alpha(k,0)
+	\end{bmatrix}
+\end{equation*}
+{\small
+\begin{multline*}
+		{\bf S}(k) \triangleq \\ \begin{bmatrix}
+			{\bf B}(k|k)		       & {\bf 0} 			    	 & \cdots & {\bf 0}         \\
+			{\bf A}(k+1|k){\bf B}(k|k) & {\bf B}(k+1|k)      	 & \cdots & {\bf 0}         \\
+			\vdots			       & \vdots				 & \ddots & \vdots          \\
+			\alpha(k,1){\bf B}(k|k)    & \alpha(k,2){\bf B}(k+1|k) & \cdots & {\bf B}(k+N-1|k)
+		\end{bmatrix}
+\end{multline*}
+}
+onde  $\alpha(k,j)$ é definido como:
+\begin{equation*}
+	\alpha(k,j) \triangleq \prod_{i=j}^{N-1}{\bf A}(k+i|k),
+\end{equation*}
+
+Com (\ref{eqn:cost2}) e (\ref{eqn:exbar}), pode-se reescrever a função de custo (\ref{eqn:cost}) em uma forma quadrática padrão:
+\begin{equation}
+	\Phi(k) = \frac{1}{2}\bar{\bf u}^T(k){\bf H}(k)\bar{\bf u}(k) + {\bf f}^T(k)\bar{\bf u}(k) + {\bf d}(k)
+\end{equation}
+com
+\begin{align*}
+	{\bf H}(k) &\triangleq 2\left({\bf S}^T(k)\bar{\bf Q}{\bf S}(k)+\bar{\bf R}\right) \\
+	{\bf f}(k) &\triangleq 2{\bf S}^T(k)\bar{\bf Q}\bar{\bf A}(k)\tilde{\bf x}(k|k) \\
+	{\bf d}(k) &\triangleq \tilde{\bf x}^T(k|k)\bar{\bf A}^T(k)\bar{\bf Q}\bar{\bf A}(k)\tilde{\bf x}(k|k)
+\end{align*}
+
+A matriz ${\bf H}$ é conhecida como a matriz {\em Hessiana} e, por definição, é positiva definida. ${\bf H}$ descreve a parte quadrática da função de custo, e o vetor ${\bf f}$ descreve a parte linear. ${\bf d}$ é independente de $\tilde{\bf u}$ e não influencia na determinação de $\bf u^\star$.
+
+O controle preditivo baseado em modelo utilizado aqui baseia-se na suposição de que, para um curto horizonte de predição, os sistemas do modelo e da planta são idênticos. Obviamente, para qualquer planta realmente implementada, as entradas de controle são sujeitas a limitações físicas. Logo, para evitar grandes diferenças entre planta e modelo, estas limitações precisam ser levadas em conta no cálculo da lei de controle. No controle preditivo, isto pode ser feito de uma maneira direta através de definicões de limites inferiores e superiores para os valores de controle. O problema de otimização precisa então ser resolvido garantindo que o controle permanecerá sempre dentro destes limites. Assim, as seguintes restrições de controle podem ser escritas:
+
+\begin{equation}\label{eqn:uconstr}
+	{\bf u}_{min}(k) \leq {\bf u}(k) \leq {\bf u}_{max}(k),
+\end{equation}
+
+Como a variável livre de otimização é $\tilde{\bf u}(k)$, a restrição~(\ref{eqn:uconstr}) precisa ser reescrita com relação a esta variável. Assim:
+
+\begin{equation*}
+	{\bf u}_{min}(k) - {\bf u}_r(k) \leq \tilde{\bf u}(k) \leq {\bf u}_{max}(k) - {\bf u}_r(k),
+\end{equation*}
+ou, na forma "empilhada",
+\begin{equation*}
+	\bar{\bf u}_{min}(k) - \bar{\bf u}_r(k) \leq \bar{\bf u}(k) \leq \bar{\bf u}_{max}(k) - \bar{\bf u}_r(k)
+\end{equation*}
+\noindent com
+\begin{align*}
+	\bar{\bf u}_{min}(k) &\triangleq \begin{bmatrix}
+		{\bf u}_{min}(k) \\ {\bf u}_{min}(k+1) \\ \vdots \\ {\bf u}_{min}(k+N-1)
+	\end{bmatrix} \\
+	\bar{\bf u}_{max}(k) &\triangleq \begin{bmatrix}
+		{\bf u}_{max}(k) \\ {\bf u}_{max}(k+1) \\ \vdots \\ {\bf u}_{max}(k+N-1)
+	\end{bmatrix} \\
+	\bar{\bf u}_r(k) &\triangleq \begin{bmatrix}
+		{\bf u}_r(k) \\ {\bf u}_r(k+1) \\ \vdots \\ {\bf u}_r(k+N-1)
+	\end{bmatrix}
+\end{align*}
+
+
+\section{Resultados de simulação}
+\label{sec:simulations}
+
+Nesta seção, resultados de simulação são apresentados para o controle preditivo aplicado ao robô móvel, utilizando-se como referência uma trajetória em forma de oito. O problema de otimização é resolvido através da rotina {\tt quadprog} do {\sc Matlab}. A configuração inicial do robô e da referência são, respectivamente, ${\bf x}(0)=[0~~-1~~\pi/2]^T$ e ${\bf x}_r(0)=[0~~0~~0]^T$. As matrizes de peso utilizadas são ${\bf Q}=diag(1,1,0.5)$ e ${\bf R}=0.1{\bf I}_{2\times 2}$. O horizonte de predição é $N=5$. Restrições nas amplitudes das variáveis de controle são: $v_{min}=-0.4 m/s$, $v_{max}=0.4 m/s$, $w_{min}=-0.4 rad/s$ e $w_{max}=0.4 rad/s$.
+
+\begin{figure}[H]
+	\centering
+    \includegraphics[width=.9\linewidth]{Figures/traj8.eps}
+    \caption{Trajetória no plano $XY$.}
+    \label{fig:traj8}
+\end{figure}
+\begin{figure}
+	\centering
+    \includegraphics[width=.95\linewidth]{Figures/states.eps}
+    \caption{Estados $x$, $y$ e $\theta$.}
+    \label{fig:states}
+\end{figure}
+
+Pode ser claramente visto que os estados convergem para a trajetória de referência. Fig.~\ref{fig:errors} mostra os erros dos estados convergindo para zero. É preciso observar que, mesmo que inicialmente o estado $x$ é igual a $x_r$ (ou seja, com erro nulo), este estado tem que se desviar da referência a fim de satisfazer a não-holonomicidade do robô móvel. Na Fig. ~\ref{fig:controls}, é visto que as entradas de controle permanecem dentro dos limites impostos pelas restrições.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=.95\linewidth]{Figures/errors.eps}
+	\caption{Errors.}
+    	\label{fig:errors}
+\end{figure}
+\begin{figure}
+	\centering
+    	\includegraphics[width=.95\linewidth]{Figures/controls.eps}
+    	\caption{Controls bounded by the constraints.}
+    	\label{fig:controls}
+\end{figure}
+
+Uma medida típica de convergência é o erro integrado~\cite{essen01},
+
+\begin{equation*}
+	\varepsilon \triangleq \frac{1}{K_f}\sum_{k=0}^{K_f}\left\|{\bf x}\right\|^2,
+\end{equation*}
+
+\noindent onde $K_f$ é o numero de passos necessários para percorrer toda a trajetória e $\left\|{\bf\cdot}\right\|$ é a norma euclideana
+
+Tabela~\ref{table:table1} mostra alguns resultados relacionando o custo computacional e o erro $\varepsilon$ como função do horizonte de predição $N$. O tempo de computação é o tempo médio para resolver o problema de otimização para um passo da trajetória. O número de flops necessários para completar os cálculos para um tempo amostral também é mostrado.
+ 
+\begin{table}[htpb]
+ \caption{Influência do horizonte de predição no tempo de computação e em $\varepsilon$}
+ \label{table:table1}
+ \centering
+ \begin{tabular}{cccc}
+  \hline
+  Horizonte & Tempo de computação (s) & Flops & $\varepsilon$ \\
+  \hline\hline
+  1  & 0.0110 & 4343    & 3.2578  \\
+  3  & 0.0114 & 9529    & 1.4384  \\
+  5  & 0.0135 & 25643   & 1.3757  \\
+  10 & 0.0271 & 160180  & 1.3695  \\
+  15 & 0.0582 & 528570  & 1.3798  \\
+  20 & 0.1156 & 1269500 & 1.3927  \\
+  30 & 0.3402 & 4949000 & 1.4856  \\
+  \hline
+ \end{tabular}
+\end{table}
+
+Obviamente, em uma aplicação em tempo-real, o horizonte de predição precisa ser escolhido de forma que o tempo de computação seja menor que o período amostral, $T$. Neste caso, $T=0,1$ segundos. Portanto, com $N=20$ o problema não é mais factível em tempo-real. Ainda. o esforço computacional com respeito ao número total de flops pode ser utilizado como medida de performance. Analizando o númerode flops e o valor de $\varepsilon$, foi escolhido $N=5$ como a melhor opção, considerando que o tempo computcional é cerca de dez vezes menor que o período amostral e o número de flops é cerca de seis vezes menor que o número de flops para $N=10$. Nota-se também que para $N\geq10$ o erro $\varepsilon$ não pode ser mais considerado como um fator decisivo. A simulação foi realizada em um computador com processador Athlon 2600+ rodando sistema operacinal Linux.
+ 
+
+\section{Resultados experimentais}
+\label{sec:exp}
+
+Fig.~\ref{fig:twil} mostra o robô móvel Twil deselvolvido em nossos laboratórios e utilizado nos experimentos. O corpo do robô possui uma geometria cilíndrica com 1,35m de altura e 0,30m de raio, utilizando um sistema de acionamento diferencial. O software instalado nesta plataforma é baseado em sistema operacional Linux com modificações para a implementações de tarefas em tempo-real, chamado RTAI~\cite{Dozio:2003}.
+
+\begin{figure}[htbp]
+	\centering
+	\includegraphics[width=0.65\linewidth]{Figures/twil6.ps}
+	\caption{O robô móvel Twil.}
+	\label{fig:twil}
+\end{figure}
+
+
+\section{Cronograma}
+\label{sec:cron}
+
+A Tabela \ref{table:cron} mostra um planejamento das atividades planejadas até a conclusão da dissertação.
+
+\begin{table*}[htbp]
+ \renewcommand{\arraystretch}{1.1}
+ \caption{Cronograma}
+ \label{table:cron}
+ \centering
+ \begin{tabular}{r||ccc|cccccccccccc|cc}
+  \hline
+   & \multicolumn{3}{c|}{\bf 2003} & \multicolumn{12}{c|}{\bf 2004} & \multicolumn{2}{c}{\bf 2005} \\
+              & out & nov & dez & jan & fev & mar & abr & mai & jun & jul & ago & set & out & nov & dez & jan & fev \\
+  \hline
+  \hline
+   {\em TI}         & \cd & \cd & \cd &     &     &     &     &     &     &     &     &     &     &     &     &     &     \\ 	    \hline
+   {\em Artigo CBA} &     &     &     & \cd & \cd & \cd &     &     &     &     &     &     &     &     &     &     &     \\
+   \hline
+   {\em Estudo MPC} &     &     &     &     &     & \cd & \cd & \cd & \cd &     &     &     &     &     &     &     &     \\ 
+   \hline
+   {\em MPC linear} &     &     &     &     &     &     &     & \cd & \cd &     &     &     &     &     &     &     &     \\  
+   \hline
+   {\em MPC não-linear}&  &     &     &     &     &     &     &     &     & \cd & \cd & \cd &     &     &     &     &     \\  
+   \hline
+   {\em Testes}     &     &     &     &     &     &     &     &     &     &     & \cd & \cd &     &     &     &     &     \\  
+   \hline
+   {\em Estabilidade}&    &     &     &     &     &     &     &     &     &     &     &     & \cd & \cd &     &     &     \\  
+   \hline
+   {\em Tempo-real} &     &     &     &     &     &     &     &     &     &     &     &     &     & \cd &     &     &     \\  
+   \hline
+   {\em Dissertação}&     &     &     &     &     &     &     &     &     &     &     &     &     &     & \cd & \cd &     \\  
+   \hline
+   {\em Defesa}     &     &     &     &     &     &     &     &     &     &     &     &     &     &     &     &     & \cd \\  
+   \hline
+ \end{tabular}
+\end{table*}
+
+\section{Conclusões}
+\label{sec:conclusions}
+
+Este artigo mostrou a implementação do controle preditivo em um robô móvel não-holonômico. A solução do problema de otimização através de programação foi mostrada. Os sinais de controle obtidos obedeceram perfeitamente as restrições impostas durante a solução do problema de otimização. 
+
+Como vantagens do controle preditivo aplicado a robôs móveis, podem ser destacadas três características principais:
+\begin{itemize}
+\item O controle preditivo gera implicitamente uma lei de controle descontínua, o que é necessário para o controle de sistemas não-holonômicos;
+\item Restrições tanto na amplitude quanto na taxa de variação do controle (o que se traduz em saturação e limite de torque dos atuadores, respectivamente) podem ser diretamente formuladas;
+\item Restrições nos estados também podem ser formuladas, de forma que o controle preditivo pode ser visto como um planejador ótimo de trajetórias.
+\end{itemize}
+
+\section{Agradecimentos}
+
+Os autores agradecem à CAPES pelo apoio financeiro.
+
+\bibliographystyle{IEEEtran}
+\bibliography{seminario}
+
+\end{document}

@@ -1,0 +1,226 @@
+\documentclass[11pt,epsf]{report}
+\setlength{\vsize}{297mm}
+\setlength{\hsize}{210mm}
+\setlength{\textheight}{230mm}
+\setlength{\textwidth}{175mm}
+\voffset -2cm
+\hoffset -2.5cm
+
+\usepackage[latin1]{inputenc}
+%\usepackage{latexsym}
+%\usepackage{amssymb}
+\usepackage[dvips]{graphicx}
+\newcommand\ipar{\hspace*{\parindent}}
+\newcommand\epar{\vspace{\baselineskip}}
+\newcommand\pdef{\stackrel{\bigtriangleup}{=}}
+\newcommand\bdm{\begin{displaymath}}
+\newcommand\edm{\end{displaymath}}
+\newcommand\barray{\begin{array}}
+\newcommand\earray{\end{array}}
+\newcommand\beqa{\begin{eqnarray}}
+\newcommand\eeqa{\end{eqnarray}}
+\newcommand\beqan{\begin{eqnarray*}}
+\newcommand\eeqan{\end{eqnarray*}}
+\newcommand\beq{\begin{equation}}
+\newcommand\eeq{\end{equation}}
+\newcommand\bc{\begin{center}}
+\newcommand\ec{\end{center}}
+\newcommand\bit{\begin{itemize}}
+\newcommand\eit{\end{itemize}}
+\newcommand\bquo{\begin{quote}}
+\newcommand\equo{\end{quote}}
+\newcommand\ben{\begin{enumerate}}
+\newcommand\een{\end{enumerate}}
+\newcommand{\ignore}[1]{\iffalse #1 \fi}
+
+\begin{document}
+
+\begin{center}
+ENG04035 - Sistemas de Controle I \\
+ Prof. Joãoo Manoel Gomes da Silva Jr. e Romeu Reginatto 
+\\ {\bf -  Lista de Exercícios 3 - }\\
+\end{center}
+
+
+\begin{enumerate}
+
+
+\item Desprezando-se a dinâmica da parte elétrica (que em geral é muito 
+mais rápida que a da parte mecânica), o comportamento de um dado servomotor
+ pode ser modelado, por uma função de transfer\^encia do tipo 
+\bdm
+G(s)=\frac{w(s)}{v(s)}=\frac{50}{10s+1}
+\edm
+onde $w$ \'e dado em RPM e $v$ \'e dada em volts. Pergunta-se
+\begin{enumerate}
+\item Supondo que o motor est\'a girando, em regime, a uma velocidade 
+constante de 100RPM. Qual o valor de tens\~ao $V$  que est\'a 
+sendo aplicada em sua entrada ?
+\item Supondo que em um dado momento a tens\~ao aplicada 
+sobre o motor \'e aumentada de 2V. Faça um gr\'afico explicitando
+o comportamento da velocidade a partir da aplicaç\~ao deste 
+salto.
+\end{enumerate}
+
+\item Um ensaio em malha aberta \'e realizado com um forno. Primeiramente,
+aplica-se uma pot\^encia constante que faz com que sua temperatura
+chegue a $132^o$C. Em seguida, aumenta-se a pot\^encia aplicada em 
+$5\%$. O gráficos da temperatura a partir da aplicação do salto de $5\%$ 
+(instante $t=0$) é  mostrado na figura abaixo:
+
+\begin{center}
+\includegraphics[width=8cm]{ens_ma_1o.eps}
+\end{center}
+
+Com base neste gr\'afico, qual seriam os par\^ametros $K$, $L$ e $\tau$,
+se desej\'assemos aproximar o comportamento do sistema 
+para um  ponto de operação pr\'oximo de $132^o$, por uma 
+funç\~ao de transfer\^encia do tipo 
+\bdm
+G(s)=\frac{t(s)}{P(s)}=\frac{Ke^{-Ls}}{\tau s+1}
+\edm
+
+\item A função de transfer\^encia de um processo de 2a ordem 
+é  dada genericamente por:
+\bdm
+G(s)=\frac{Kw_n^2}{s^2+2\xi w_n s + w_n^2}
+\edm
+onde $K$ é  o ganho est\'atico, $w_n$ \'e a freqüência 
+natural de oscilaç\~ao e $\xi$ \'e o amortecimento.
+Neste caso, tem-se que o tempo de acomodaç\~ao e o valor 
+do m\'aximo pico percentual da resposta  s\~ao 
+dados por (vide material fornecido em anexo):
+\bdm
+Mo \% = 100e ^{\frac{-\xi \pi}{\sqrt{1 - \xi^2}}} ~~~,~~~ t_s = \frac{4}{\xi w_n}
+\edm
+
+Suponha agora que injetamos um sinal do tipo salto de amplitude 1
+na entrada de um processo, obtendo-se em sua saída 
+a seguinte resposta:
+
+\begin{center}
+\includegraphics[width=8cm]{ens_ma_2o.eps}
+\end{center}
+
+Com base neste gr\'afico, qual seriam os par\^ametros 
+$K$, $w_n$, $\xi$ 
+se desej\'assemos aproximar o comportamento do sistema 
+por uma funç\~ao de transfer\^encia de 2a ordem ?
+
+\item O seguinte diagrama em blocos representa um controle 
+de posição feito através de um servomotor.
+
+\vspace*{4cm}
+
+\begin{itemize} 
+\item[a)] Supondo $r(t)=2$, a perturbação de carga nula, e um controlador
+proporcional $C(s)=5$, qual será o valor de regime para 
+$u(t)$ e $y(t)$ ? Justifique física e matematicamente.
+ 
+
+\item[b)] Supondo  $r(t)=2$, a perturbação de carga constante de
+$0.5$, e um controlador
+proporcional $C(s)=10$, qual será o valor de regime para 
+$u(t)$ e $y(t)$ ?
+
+\item[c)] Repita agora os itens a) e b) para considerando 
+$C(s)=\frac{10(s+0.1)}{s}$.
+
+\end{itemize}
+
+OBS: não esqueça de verificar se o sistema em malha fechada é 
+estável antes de calcular valores finais !
+
+\item 
+%controle tacometrico
+O diagrama em blocos dado abaixo representa
+um sistema de controle de posição baseado no modelo simplificado 
+de um motor de corrente contínua. 
+
+\vspace*{3cm}
+
+\begin{itemize}
+
+\item[a)] Calcule $K_p$ e $K_d$ de forma que os pólos da função
+de tranferência da referência para a saída apresente pólos 
+exatamente em $-6 \pm j6$. 
+
+
+\item[b)] Suponha $K_p=5$ e $K_d=0$. Em $t=0s$ aplica-se na entrada 
+um degrau de amplitude $-2$. Em  $t=2s$ o sistema é sujeito a uma 
+perturbação de carga na forma de um degrau de amplitude $0.5$.
+Esboce o gráfico correspondente ao comportamento da saída do sistema. 
+Justifique sua resposta.
+
+\item[c)] Mostre que, para referências constantes de ângulo,
+ o ajuste dos ganhos $K_p$ e $K_d$ correspondem
+ ao ajuste de um controlador PD.
+\end{itemize}
+
+
+\item Considere o ensaio em malha aberta  realizado no item 3.
+Com base neste ensaio determine, através da tabela de Chien, um 
+ajuste para um controlador PID priorizando a minimização do 
+overshoot.
+
+
+
+
+
+\item Considere o seguinte sistema de controle:
+
+\vspace*{5cm}
+
+onde $b_1,b_0,a_0,a_1,K, K_i, K_d, \tau$ são constantes 
+positivas e são tais que todos os zeros de 
+\bdm
+1+C(s)G(s)=0
+\edm 
+estão no semiplano esquerdo do plano complexo.
+
+
+\begin{itemize}
+\item[a)] O sistema segue referências $r(t)$ constantes com erro 
+nulo em regime permanente ?
+O sistema rejeita assintoticamente perturbações $q(t)$ constantes
+em regime permanente ?  Justifique suas respostas.
+
+
+\item[b)]Qual a condicão que deve ser satisfeita por $b_1,b_0,a_0,a_1$
+para que seja possível seguir referências do tipo rampa com erro 
+nulo em regime permanente.
+
+
+
+\item[c)] Para $r(t)=-2.5$ e $q(t)=0$ determine (em função 
+de  $b_1,b_0,a_0,a_1,K, K_i, K_d, \tau$):
+\begin{itemize}
+\item [c.1)] $p(t),i(t),d(t)$ no instante $t=0$ em que é aplicado o sinal de referência.
+\item [c.2)] $p(t),i(t),d(t)$ em regime permanente (i.e. $t \rightarrow \infty$)
+\end{itemize}
+ 
+\item[c)] Se $r(s)=\frac{1}{s}$ e $q(s)=\frac{e^{-Ts}}{s}$, quanto valerá
+$v(t)$ e $e(t)$ em regime permanente ? Justifique.
+
+\end{itemize}
+
+
+
+\end{enumerate}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: t
+%%% End: 

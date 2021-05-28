@@ -1,0 +1,115 @@
+\documentclass{article}
+
+\usepackage[portuges,brazil]{babel}
+\usepackage{isolatin1}
+
+\usepackage{a4wide}
+
+\usepackage{graphicx,psfrag}
+\usepackage{float}
+\usepackage{subfigure}
+\usepackage[rflt]{floatflt}
+
+\newenvironment{alternativas}{\begin{itemize}\addtolength{\itemsep}{-2.5mm}\setlength{\parsep}{0pt}}{\end{itemize}}
+\newcommand{\matriz}[2]{\left[\begin{array}{#1} #2 \end{array}\right]}
+
+\markright{ENG04035 - Sistemas de Controle I - Modelagem e Linearização}
+\pagestyle{myheadings}
+
+\begin{document}
+
+\begin{center}
+ENG04035 - Sistemas de Controle I - 2003/1 \\
+Lista de Exercícios - Prof. João Manoel Gomes da Silva e Romeu Reginatto \\
+Modelagem e Linearização 
+\end{center}
+
+
+\paragraph{1. }
+O texto \cite[pg. 250-251]{schilling} refere-se a obtenção de parâmetros
+do modelo de pequenos sinais para transistores na configuração emissor comum.
+Suponha que as curvas ilustradas na figura 6.2-2 são descritas pela 
+seguinte equação
+$$
+ i_{C} = f(v_{CE},i_{B})
+$$
+onde $f$ é uma função conhecida. (a) Como você pode relacionar
+os parâmetros $h_{oe}$ e $h_{fe}$ com a função $f$? Obtenha
+relações explicitas. 
+
+
+\paragraph{2. } Exercício do livro texto \cite{ogata3}. B.3-8, B.3-11, B.3-13, B.3-17, B.3-18 e B.3-19. 
+
+\paragraph{3. }
+Considere o sistema abaixo com $u=0.5$. 
+ $$
+\frac{d^2y}{dt^2}+\lambda(1-y^2)\frac{dy}{dt} 
+         + y = u
+$$
+\begin{alternativas}
+\item[(a)] Determine o(s) ponto(s) de equilíbrio.
+\item[(b)] Obtenha um modelo linearizado em torno de cada ponto de equilíbrio.
+\item[(c)] Considere a condição de equilíbrio resultante para
+  $u=0.5$. Determine aproximadamente a resposta do sistema não-linear
+quando a entrada $u$ é incrementada de $0.1$ instantaneamente.
+\item[(d)] Se você dispõe de um simulador, simule o sistema não-linear
+e compare com a solução obtida no item (c).
+\end{alternativas}
+
+\paragraph{4. }
+Procure responder as questões abaixo sem consulta a qualquer material.
+\begin{alternativas}
+\item 
+Defina ponto de equilíbrio.
+\item
+O ponto de equilíbrio é uma solução da equação diferencial? Explique.
+\item
+Obtenha os pontos de equilíbrio para os sistemas lineares
+$$
+\begin{array}{lcr} \dot{y} &=& x \\ \dot{x} &=& -2 y \end{array},~~~~~~
+ \ddot{y}(t)+5\dot{y}=u
+$$
+\item
+Como você entende (qual o significado para você) 
+a linearização de um sistema não-linear em torno de
+um ponto de equilíbrio? Que utilidade você vê para
+este procedimento?
+\end{alternativas}
+
+
+\begin{thebibliography}{20}
+
+\bibitem{schilling} D. L. Schilling, C. Belove, {\bf Circuitos Eletrônicos
+Discretos e Integrados}, Guanabara Dois, RJ, 1982.
+
+\bibitem{ogata3} K. Ogata; {\bf Engenharia de Controle Moderno}; 3a ed.; 
+xvi+816 páginas; 27,5cm $\times$ 21cm; Tradução B. Severo; LTC Editora; Rio de Janeiro; 1998.
+
+
+
+\end{thebibliography}
+
+
+
+\end{document}
+
+\begin{alternativas}
+\item[(a)] 
+\item[(b)] 
+\item[(c)] 
+\item[(d)] 
+\item[(e)] 
+\end{alternativas}
+
+
+
+
+
+
+
+
+
+
+
+
+

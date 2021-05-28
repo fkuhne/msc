@@ -1,0 +1,19 @@
+X. Yun and N. Sarkar. Unified formulation of robotic systems with holonomic and nonholonomic constraints. IEEE Transactions on Robotics and Automation, 14(4):640-650, Aug. 1998. 
+
+http://www.cim.mcgill.ca/research/1999AnnualReport/html/node150.html#SECTION04037100000000000000 (texto pode ser usado para o TI)
+
+Ostrovskaya, S. and Angeles, J., 1997, "On quasiholonomic mechanical systems", Proc. Fifth Pan American Congress of Applied Mechanics, Jan. 2-4, San Juan, Puerto Rico, pp. 290-293. (PESQUISAR ESSE ARTIGO !)
+
+http://www.enme.umd.edu/ice_lab/papers/parchives.html
+
+http://texas.math.ttu.edu/~gilliam/mtns98/prog/node89.html
+
+http://www.cyb.mei.titech.ac.jp/research_e.html
+
+http://www.inversioninc.com/nonholonomic.html
+
+http://www.piaggio.ccii.unipi.it/robotics/robpublications/Keyword/NONHOLONOMIC-SYSTEMS.html
+
+http://www.ae.gatech.edu/people/tsiotras/nonholonomic.html (OLHAR ESSA PÁGINA !!)
+
+CONTINUAR GOOGLE "nonholonomic control systems" PÁGINA 4

@@ -1,0 +1,94 @@
+\documentclass[openright,diss]{deletex}
+
+\usepackage[T1]{fontenc}
+\usepackage[latin1]{inputenc}
+\usepackage{amsthm,pifont,amsfonts,amssymb,amsmath,graphicx,float,url,enumerate}
+%\usepackage[dvips,ps2pdf]{hyperref}
+
+\newcommand\real{\mathbb{R}}
+\newcommand{\req}[1]{(\ref{#1})}
+
+\newcounter{defin}
+\newcounter{teorem}
+\newtheorem{definition}{Definição\refstepcounter{defin}}
+\newtheorem{theorem}{Teorema\refstepcounter{teorem}}
+
+\DeclareMathOperator{\sen}{sen}
+\DeclareMathOperator{\inv}{inv}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\atan}{atan2}
+
+\newenvironment{margins}[2]{\begin{list}{}{\setlength{\leftmargin}{#1}\setlength{\rightmargin}{#2}}\item}{\end{list}}
+
+\title{Controle Preditivo de Robôs Móveis Não Holonômicos}
+
+\author{Kühne}{Felipe}
+
+\advisorwidth{.66\linewidth}
+
+\advisor[Prof.~Dr.]{Gomes da Silva Jr.}{João Manoel}
+\advisorinfo{UFRGS}{Doutor pela Universidade Paul Sabatier -- Toulouse, França}
+\coadvisor[Prof.~Dr.]{Fetter Lages}{Walter}
+\coadvisorinfo{UFRGS}{Doutor pelo Instituto Tecnológico de Aeronáutica -- São José dos Campos, Brasil}
+
+\examiner[Prof.~Dr.]{Normey-Rico}{Julio Elias}
+\examinerinfo{UFSC}{Doutor pela Universidade de Sevilla -- Sevilla, Espanha}
+\examiner[Prof.~Dr.]{Trierweiler}{Jorge Otávio}
+\examinerinfo{UFRGS}{Doutor pela Universidade de Dortmund -- Dortmund, Alemanha}
+\examiner[Prof.~Dr.]{Reginatto}{Romeu}
+\examinerinfo{UFRGS}{Doutor pela Universidade Federal de Santa Catarina, UFSC}
+\examiner[Prof.~Dr.]{Sanfelice Bazanella}{Alexandre}
+\examinerinfo{UFRGS}{Doutor pela Universidade Federal de Santa Catarina, UFSC}
+
+\date{março}{2005}
+
+% iniciar todas com letras minúsculas, exceto no caso de abreviaturas
+\keyword{sistemas não holonômicos}
+\keyword{robôs móveis}
+\keyword{controle preditivo baseado em modelo}
+
+
+%%%%%%%%%%%%%%%%
+\begin{document}
+
+
+% Inclui \maketitle, dedicatória, agradecimentos, resumo e abstract, sumário, lista de figuras, tabelas, abreviaturas e símbolos
+\input{stuff}
+
+
+%
+% AQUI COMEÇA O TEXTO PROPRIAMENTE DITO
+%
+% CAPÍTULO 1
+\chapter{Introdução}\label{cap:intro}
+\input{intro}
+
+% CAPÍTULO 2
+\chapter{Robôs Móveis Dotados de Rodas}\label{cap:wmr}
+\input{wmr}
+
+% CAPÍTULO 3
+\chapter{Fundamentos de Controle Preditivo Baseado em Modelo}\label{cap:mpc}
+\input{mpc}
+
+% CAPÍTULO 4
+\chapter{MPC de Robôs Móveis: Estabilização em um Ponto}\label{cap:point}
+\input{point}
+
+% CAPÍTULO 5
+\chapter{MPC de Robôs Móveis: Rastreamento de Trajetória}\label{cap:traj}
+\input{traj}
+
+% CAPÍTULO 6
+\chapter{Conclusão}\label{cap:conclusions}
+\input{conclusions}
+
+\bibliographystyle{abnt}
+\bibliography{diss}
+
+\appendix
+\chapter{O Robô Móvel Twil}\label{app:twil}
+\input{twil}
+
+\end{document}
+

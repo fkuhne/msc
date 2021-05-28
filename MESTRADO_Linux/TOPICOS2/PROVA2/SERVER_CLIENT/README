@@ -1,0 +1,7 @@
+Esta pasta contém arquivos para rodar o filtro de kalman para apenas um nodo e o servidor (simulador do processo).
+
+No caso, o encoder está implementado. Para rodar os outros nodos, é necessário redefinir a ordem da saída e todas as variáveis dependentes desta ordem.
+
+As equações do filtro de kalman foram modificadas para o caso do EKF com apenas um nodo. Porém, o efeito é o mesmo se, no EKF descentralizado, forem retirados os erros 'e' e 'E' dos outros nodos.
+
+A princípio, não serve para nada... deixar aqui, se por acaso for necessário...

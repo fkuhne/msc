@@ -1,0 +1,76 @@
+% Modelo do robo - Julio, Ortega, Camacho - 1999
+
+echo off;
+clear all; close all; clc;
+
+T = 0.1;
+v = 0.3;
+r = 2;
+w = v/r;
+Tf = 20*4*pi/v;
+
+% Inicializacao:
+x(:,1) = 0;
+y(:,1) = 0;
+theta(:,1) = 0;
+
+xnl(:,1) = x(:,1);
+ynl(:,1) = y(:,1);
+thetanl(:,1) = theta(:,1);
+
+xl(:,1) = xnl(:,1);
+yl(:,1) = ynl(:,1);
+thetal(:,1) = thetanl(:,1);
+
+for k = 1 : Tf
+   
+    if (theta(:,k)>=2*pi) w = -w; end;
+    
+    % Modelo tradicional nao linear do robo:
+    x(:,k+1) = x(:,k) + v * cos(theta(:,k)) * T;
+    y(:,k+1) = y(:,k) + v * sin(theta(:,k)) * T;
+    theta(:,k+1) = theta(:,k) + w * T;
+    
+    % Geracao da entrada para o modelo do julio:
+    dy(:,k) = y(:,k+1) - y(:,k);
+    gammay(:,k) = 2 * dy(:,k) / (v*T)^2;
+
+    if (gammay(:,k)==0) 
+    
+    dtheta(:,k) = theta(:,k+1) - theta(:,k);
+    gammatheta(:,k) = dtheta(:,k)/(v*T);
+    
+    % Modelo nao-linear do julio:
+    xnl(:,k+1) = xnl(:,k) + sin(v*T*gammay(:,k))/gammay(:,k);
+    ynl(:,k+1) = ynl(:,k) + (1-cos(v*T*gammay(:,k)))/gammay(:,k);
+    thetanl(:,k+1) = thetanl(:,k) + v*T*gammay(:,k);
+    
+end
+
+hold on; box on; grid on;
+plot(x,'g');
+plot(y,'b');
+plot(theta,'r');
+legend('x','y','\theta',0);
+xlabel('amostra'); ylabel('estados');
+hold off;
+
+figure;
+hold on; box on; grid on;
+xlabel('x'); ylabel('y');
+plot(x,y);
+hold off;
+
+figure;
+hold on; box on; grid on;
+xlabel('amostra'); ylabel('\gamma');
+plot(gammay,'r');
+plot(gammatheta,'b');
+legend('\gamma_y','\gamma_\theta',0);
+hold off;
+
+figure;
+hold on; box on; grid on;
+xlabel('x'); ylabel('y');
+plot(xnl,ynl);
+hold off;

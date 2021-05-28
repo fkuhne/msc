@@ -1,0 +1,246 @@
+\begin{thebibliography}{10}
+
+\bibitem{allgower1}
+F.~Allgöwer, T.~A. Badgwell, J.~S. Qin, and J.~B. Rawlings.
+\newblock {\em Advances in Control - Highlights of ECC'99}, chapter 12:
+  Nonlinear Predictive Control and Moving Horizon Estimation - An Introductory
+  Overview, pages 391--449.
+\newblock Springer-Verlag, 1999.
+
+\bibitem{alvarez1}
+T.~Alvarez, F.~Tadeo, and D.~Megias.
+\newblock Constrained predictive control of robotic manipulators using on-line
+  linearized models.
+\newblock 2000.
+
+\bibitem{aoyama1}
+A.~Aoyama, G.~Bell, and S.~P. Walsh.
+\newblock Implementation issues in quadratic model predictive control.
+\newblock In {\em American Control Conference}, pages 3375--3379, june 1997.
+
+\bibitem{badgwell1}
+T.~A. Badgwell.
+\newblock A robust model predictive control algorithm for stable linear plants.
+\newblock In {\em American Control Conference}, pages 1618--1622, june 1997.
+
+\bibitem{bemporad1}
+A.~Bemporad, M.~Morari, V.~Dua, and E.~N. Pistikopoulos.
+\newblock The explicit linear quadratic regulator for constrained systems.
+\newblock {\em Automatica}, 38:3--20, 2002.
+
+\bibitem{camacho2}
+E.~F. Camacho and C.~Bordons.
+\newblock {\em Model predictive control}.
+\newblock Springer-Verlag, London, 1998.
+
+\bibitem{cannon1}
+M.~Cannon, B.~Kouvaritakis, A.~C. Brooms, and Y.I. Lee.
+\newblock efficient nonlinear model predictive control.
+\newblock In {\em American Control Conference}, pages 255--259, june 2000.
+
+\bibitem{chai1}
+L.~Chai, Y.-X. Sun, and Y.-Y. Cao.
+\newblock Model predictive control for uncertain systems.
+\newblock In {\em American Control Conference}, pages 3261--3265, june 1998.
+
+\bibitem{chen1}
+W.-H. Chen, D.~J. Balance, and J.~O'Reilly.
+\newblock Model predictive controlof nonlinear systems: Computational burden
+  and stability.
+\newblock In {\em IEEE Control Theory and Applications}, volume 147(4), pages
+  387--394, july 2000.
+
+\bibitem{cheng1}
+X.~Cheng and B.~H. Krogh.
+\newblock Stability constrained model predictive control for nonlinear systems.
+\newblock {\em IEEE American Conference on Decision and Control},
+  25(3):335--348, 1989.
+
+\bibitem{chikkula1}
+Y.~Chikkula and J.~H. Lee.
+\newblock Robust model predictive control of nonlinear systems using
+  input-output models.
+\newblock In {\em American Control Conference}, pages 2205--2209, june 1995.
+
+\bibitem{oliveira1}
+S.~L. de~Oliveira and M.~Morari.
+\newblock Robust model predictive control for nonlinear systems.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  3561--3566, december 1994.
+
+\bibitem{essen1}
+H.~V. Essen and H.~Nijmeijer.
+\newblock Nonlinear model predictive control of constrained mobile robots.
+\newblock Technical report, Technische Universiteit Eindhoven, Eindhoven, The
+  Netherlands, 2000.
+
+\bibitem{favier1}
+G.~Favier and D.~Dubois.
+\newblock A review of {\em k}-step-ahead predictors.
+\newblock {\em Automatica}, 26(1):75--84, 1990.
+
+\bibitem{rfindeisen1}
+R.~Findeisen and F.~Allgöwer.
+\newblock An introduction to nonlinear model predictive control.
+\newblock Technical report, Institute for Systems Theory in Engineering,
+  University of Stuttgart, Stuttgart, Germany.
+
+\bibitem{rfindeisen2}
+R.~Findeisen, L.~Imsland, F.~Allgöwer, and B.~Foss.
+\newblock Towards a sampled-data theory for nonlinear model predictive control.
+\newblock 2003.
+
+\bibitem{garcia1}
+C.~E. García, D.~M. Prett, and M.~Morari.
+\newblock Model predictive control: theory and practice--a survey.
+\newblock {\em Automatica}, 25(3):335--348, 1989.
+
+\bibitem{gawthrop1}
+P.~Gawthrop and E.~Ronco.
+\newblock Predictive pole-placement control with linear models.
+\newblock {\em Automatica}, 38:421--432, 2002.
+
+\bibitem{kelly2}
+A.~Kelly.
+\newblock An intelligent predictive controller for autonomous vehicles.
+\newblock Technical report, The robotics Institute, Carnegie Mellon University,
+  Pittsburgh, may 1994.
+
+\bibitem{kelly1}
+A.~Kelly and A.~Stentz.
+\newblock An approach to rough terrain autonomous mobility.
+\newblock {\em International Journal of Autonomous Robots}, february 1997.
+
+\bibitem{kouvaritakis1}
+B.~Kouvaritakis, M.~Cannon, and J.~A. Rossiter.
+\newblock Who needs qp for linear mpc anyway?
+\newblock {\em Automatica}, 38:879--884, 2002.
+
+\bibitem{lofberg2}
+J.~Löfberg.
+\newblock Minimax mpc for systems with uncertain input gain -- revisited.
+\newblock Technical report, Automatic Control Group, Linköping, Sweden, june
+  2001.
+
+\bibitem{lofberg3}
+J.~Löfberg.
+\newblock Nonlinear receding horizon control: stability without stabilizing
+  constraints.
+\newblock Technical report, Automatic Control Group, Linköping, Sweden, june
+  2001.
+
+\bibitem{lofberg1}
+J.~Löfberg.
+\newblock Approximations of closed-loop minimax mpc.
+\newblock Technical report, Control \& Communication Group, Linköping, Sweden,
+  april 2003.
+
+\bibitem{magni1}
+L.~Magni, G.~De Nicolao, and R.~Scattolini.
+\newblock Output feedback and tracking of nonlinear systems with model
+  predictive control.
+\newblock {\em Automatica}, 37:1601--1607, 2001.
+
+\bibitem{martin1}
+G.~Martin.
+\newblock Nonlinear model predictive control.
+\newblock In {\em American Control Conference}, pages 677--678, june 1999.
+
+\bibitem{mayne2}
+D.~Q. Mayne.
+\newblock Model predictive control of constrained n/l systems: stability and
+  inverse optimality.
+\newblock Technical report, Imperial College of Science, Technology and
+  Medicine, UC Santa Barbara, may 1999.
+
+\bibitem{mayne1}
+D.~Q. Mayne, J.~B. Rawlings, C.~V. Rao, and P.~O.~M. Scokaert.
+\newblock Model predictive control: A review.
+\newblock may 1998.
+
+\bibitem{mayne3}
+D.~Q. Mayne, J.~B. Rawlings, C.~V. Rao, and P.~O.~M. Scokaert.
+\newblock Constrained model predictive control: stability and optimality.
+\newblock {\em Automatica}, 36:789--814, 2000.
+
+\bibitem{michalska1}
+H.~Michalska and D.~Q. Mayne.
+\newblock Robust receding horizon control of constrained nonlinear systems.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  2091--2096, december 1997.
+
+\bibitem{muske1}
+K.~R. Muske.
+\newblock Steady-state target optimization in linear model predictive control.
+\newblock In {\em American Control Conference}, pages 3597--3601, june 1997.
+
+\bibitem{nevistic1}
+V.~Nevistic and J.~A. Primbs.
+\newblock Model predictive control: breaking through constraints.
+\newblock In {\em Conference on Decision and Control}, pages 3932--3937, Kobe,
+  Japan, december 1996.
+
+\bibitem{camacho1}
+J.~E. Normey-Rico, Juán Gomez-Ortega, and E.~F. Camacho.
+\newblock A smith-predictor based generalized predictive controller for mobile
+  robot path tracking.
+\newblock {\em Control Engineerings Practice}, 7, february 1999.
+
+\bibitem{poignet1}
+Ph. Poignet and M.~Gautier.
+\newblock Nonlinear model predictive control of a robot manipulator.
+\newblock In {\em 6th. IEEE International Workshop on Advanced Motion Control},
+  pages 401--406, 2000.
+
+\bibitem{primbs1}
+J.~A. Primbs and V.~Nevistic.
+\newblock Mpc extensions to feedback linearizable systems.
+\newblock In {\em American Control Conference}, pages 2073--2077, june 1997.
+
+\bibitem{primbs2}
+J.~A. Primbs and V.~Nevistic.
+\newblock Innovation in industrial model predictive control.
+\newblock In {\em IEE Seminar on Practical Experiences with Predictive
+  Control}, 2000.
+
+\bibitem{quevedo1}
+D.~E. Quevedo and M.~E. Salgado.
+\newblock Robustification of model predictive control.
+\newblock In {\em IEEE Conference on Decision and Control}, pages 178--180,
+  Sydney, december 2000.
+
+\bibitem{rawlings2}
+J.~B. Rawlings.
+\newblock Tutorial: Model predictive control.
+\newblock In {\em American Control Conference}, pages 662--676, june 1999.
+
+\bibitem{rawlings1}
+J.~B. Rawlings.
+\newblock Tutorial overview of model predictive control.
+\newblock {\em IEEE Control Systems Magazine}, pages 38--52, june 2000.
+
+\bibitem{roberts1}
+P.~D. Roberts.
+\newblock A brief overview of model predictive control.
+\newblock In {\em IEEE Two-day Workshop on Model Predictive Control: Techniques
+  and Applications}, 1999.
+
+\bibitem{soroush1}
+M.~Soroush and C.~Kravaris.
+\newblock Short horizon nonlinear model predictive control.
+\newblock In {\em 4th. IEEE Conference on Control Applications}, pages
+  943--948, 1995.
+
+\bibitem{stenman1}
+A.~Stenman.
+\newblock Model-free predictive control.
+\newblock Technical report, Automatic Control Group, Linköping, Sweden, august
+  1999.
+
+\bibitem{zheng1}
+A.~Zheng and M.~Morari.
+\newblock Stability of model predictive control with soft constraints.
+\newblock In {\em IEEE American Conference on Decision and Control}, pages
+  1018--1023, december 1994.
+
+\end{thebibliography}

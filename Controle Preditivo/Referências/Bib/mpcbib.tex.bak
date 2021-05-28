@@ -1,0 +1,22 @@
+\documentclass[10pt, a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[brazil]{babel}
+\usepackage[dvips,ps2pdf]{hyperref}
+\usepackage{amsthm, amsfonts, amssymb, amsmath, graphicx}
+\pagestyle{empty}
+
+% Define área da folha
+\setlength{\vsize}{297mm} \setlength{\hsize}{210mm}
+\setlength{\textheight}{245mm} \setlength{\textwidth}{165mm}
+\voffset -2.4cm \hoffset -2.5cm
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AQUI COMEÇA O DOCUMENTO %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\nocite{*}
+\bibliographystyle{plain}
+\bibliography{mpcbib}
+
+\end{document}

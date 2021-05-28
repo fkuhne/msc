@@ -1,0 +1,5 @@
+Esta pasta contém arquivos necessários para rodar o programa robo.cpp.
+
+Utiliza o filtro de Kalman para estimar os estados e realizar o controle linearizante.
+
+Não utiliza sockets. Não é separado em simulador e sensor.

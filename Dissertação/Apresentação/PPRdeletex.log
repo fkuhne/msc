@@ -1,0 +1,635 @@
+This is e-TeX, Version 3.141592-2.1 (MiKTeX 2.4) (preloaded format=latex 2004.6.11)  16 MAR 2005 20:08
+entering extended mode
+**PPRdeletex.sty
+(PPRdeletex.sty
+LaTeX2e <2003/12/01>
+Babel <v3.8a> and hyphenation patterns for english, french, german, ngerman, po
+rtuguese, dumylang, nohyphenation, loaded.
+
+LaTeX Warning: You have requested package `',
+               but the package provides `PPRdeletex'.
+
+Package: PPRdeletex 2004/07/16 v0.3.3 PPRdeletex - Prosper style for DELET/EE/U
+FRGS
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.22 ...sh}{\@englishtrue\OptionNotUsed}\newif\if@
+                                                  english
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no @ in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no n in font nullfont!
+Missing character: There is no g in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no h in font nullfont!
+(C:\texmf\tex\latex\pstricks\pst-grad.sty
+Package: pst-grad 1997/03/25 package wrapper for PSTricks pst-grad.tex
+
+(C:\texmf\tex\generic\pstricks\pst-grad.tex  v1.04, 2004/06/24
+Overfull \hbox (20.0pt too wide) in paragraph at lines 22--40
+[][]
+ []
+
+(C:\texmf\tex\generic\pstricks\pstricks.tex
+`PSTricks' v1.04  <2004/06/22> (tvz)
+\pst@dima=\dimen102
+\pst@dimb=\dimen103
+\pst@dimc=\dimen104
+\pst@dimd=\dimen105
+\pst@dimg=\dimen106
+\pst@dimh=\dimen107
+\pst@hbox=\box26
+\pst@boxg=\box27
+\pst@cnta=\count79
+\pst@cntb=\count80
+\pst@cntc=\count81
+\pst@cntd=\count82
+\pst@cntg=\count83
+\pst@cnth=\count84
+\pst@toks=\toks14
+(C:\texmf\tex\generic\pstricks\pstricks.con)
+\psunit=\dimen108
+\psxunit=\dimen109
+\psyunit=\dimen110
+\pslinewidth=\dimen111
+\pst@customdefs=\toks15
+\pslinearc=\dimen112
+\everypsbox=\toks16
+\psframesep=\dimen113
+\pslabelsep=\dimen114
+\theoverlaybox=\box28
+)))
+(C:\texmf\tex\latex\base\fontenc.sty
+Package: fontenc 2004/02/22 v1.99f Standard LaTeX package
+ (C:\texmf\tex\latex\base\t1enc.def
+File: t1enc.def 2004/02/22 v1.99f Standard LaTeX file
+LaTeX Font Info:    Redeclaring font encoding T1 on input line 43.
+))
+Runaway argument?
+@nnil ifx external@font @empty @latex@error {Font expandafter string ETC.
+! File ended while scanning use of reserved@f.
+<inserted text> 
+                par 
+l.26 \RequirePackage
+                    {times}
+I suspect you have forgotten a `}', causing me
+to read past where you wanted me to stop.
+I'll try to recover; but if the error is serious,
+you'd better type `E' or `X' now and fix your file.
+
+(C:\texmf\tex\latex\psnfss\times.sty
+Package: times 2004/01/26 PSNFSS-v9.1b (SPQR) 
+) (C:\texmf\tex\generic\Babel\babel.sty
+Package: babel 2004/02/19 v3.8a The Babel package
+
+(C:\texmf\tex\generic\Babel\english.ldf
+Language: english 2004/02/19 v3.3m English support from the babel system
+ (C:\texmf\tex\generic\Babel\babel.def
+File: babel.def 2004/02/19 v3.8a Babel common definitions
+babel@savecnt=count85
+U@D=dimen115
+
+
+! LaTeX Error: reserved@a undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.729   \fi}
+            
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+)
+l@canadian = a dialect from languagel@english 
+) (C:\texmf\tex\generic\Babel\portuges.ldf
+Language: portuges 2004/02/19 v1.2p Portuguese support from the babel system
+l@brazilian = a dialect from languagel@portuges 
+Package babel Info: Making " an active character on input line 145.
+))
+(C:\texmf\tex\latex\deletex\deletex_pt_BR.ldf
+Language: deletex_pt_BR 2004/11/29 v0.4.0 DeLeTex brazilian portuguese support
+
+! You can't use `spacefactor' in vertical mode.
+@->spacefactor 
+               @m 
+l.2 \@
+      namedef{captionsbrazilian}{%
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.2 \@
+      namedef{captionsbrazilian}{%
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Missing begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.2 \@
+      namedef{captionsbrazilian}{%
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Runaway argument?
+@nnil ifx external@font @empty @latex@error {Font expandafter string ETC.
+! Paragraph ended before reserved@f was complete.
+<to be read again> 
+                   par 
+l.21 
+     
+I suspect you've forgotten a `}', causing me to apply this
+control sequence to too much text. How can we recover?
+My plan is to forget the whole thing and hope for the best.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.21 
+     
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing endgroup inserted.
+<inserted text> 
+                endgroup 
+l.21 
+     
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing endgroup inserted.
+<inserted text> 
+                endgroup 
+l.21 
+     
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Math formula deleted: Insufficient symbol fonts.
+<recently read> $
+                 
+l.21 
+     
+Sorry, but I can't typeset math unless \textfont 2
+and \scriptfont 2 and \scriptscriptfont 2 have all
+the \fontdimen values needed in math symbol fonts.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 2--21
+[][]$$ 
+ []
+
+! Extra }, or forgotten endgroup.
+l.108 }
+       
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! You can't use `spacefactor' in vertical mode.
+@->spacefactor 
+               @m 
+l.111 \@
+        namedef{datebrazilian}{%
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.111 \@
+        namedef{datebrazilian}{%
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Missing begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.111 \@
+        namedef{datebrazilian}{%
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+)
+Runaway argument?
+@nnil ifx external@font @empty @latex@error {Font expandafter string ETC.
+! File ended while scanning use of reserved@f.
+<inserted text> 
+                par 
+l.28 \input{deletex_pt_BR.ldf}
+                              
+I suspect you have forgotten a `}', causing me
+to read past where you wanted me to stop.
+I'll try to recover; but if the error is serious,
+you'd better type `E' or `X' now and fix your file.
+
+(C:\texmf\tex\latex\deletex\deletex_en.ldf
+Language: deletex_en 2004/11/29 v0.4.0 DeLeTex english support
+
+! You can't use `spacefactor' in math mode.
+@->spacefactor 
+               @m 
+l.2 \@
+      namedef{captionsenglish}{%
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.21 
+     
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing } inserted.
+<inserted text> 
+                }
+l.21 
+     
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing endgroup inserted.
+<inserted text> 
+                endgroup 
+l.21 
+     
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing endgroup inserted.
+<inserted text> 
+                endgroup 
+l.21 
+     
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Math formula deleted: Insufficient symbol fonts.
+<recently read> $
+                 
+l.21 
+     
+Sorry, but I can't typeset math unless \textfont 2
+and \scriptfont 2 and \scriptscriptfont 2 have all
+the \fontdimen values needed in math symbol fonts.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 111--21
+[][]$$ 
+ []
+
+! Extra }, or forgotten endgroup.
+l.104 }
+       
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! You can't use `spacefactor' in vertical mode.
+@->spacefactor 
+               @m 
+l.106 \@
+        namedef{dateenglish}{%
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.106 \@
+        namedef{dateenglish}{%
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Missing begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.106 \@
+        namedef{dateenglish}{%
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+)
+Runaway argument?
+@nnil ifx external@font @empty @latex@error {Font expandafter string ETC.
+! File ended while scanning use of reserved@f.
+<inserted text> 
+                par 
+l.29 \input{deletex_en.ldf}
+                           
+I suspect you have forgotten a `}', causing me
+to read past where you wanted me to stop.
+I'll try to recover; but if the error is serious,
+you'd better type `E' or `X' now and fix your file.
+
+(C:\texmf\tex\latex\deletex\deletexdefs.sty
+Package: deletexdefs 
+
+(C:\texmf\tex\latex\graphics\graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(C:\texmf\tex\latex\graphics\keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+KV@toks@=toks17
+)
+(C:\texmf\tex\latex\graphics\graphics.sty
+Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
+ (C:\texmf\tex\latex\graphics\trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+) (C:\texmf\tex\latex\00miktex\graphics.cfg
+File: graphics.cfg 2003/03/12 v1.1 MiKTeX 'graphics' configuration
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.3 
+    
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing endgroup inserted.
+<inserted text> 
+                endgroup 
+l.3 
+    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing endgroup inserted.
+<inserted text> 
+                endgroup 
+l.3 
+    
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Math formula deleted: Insufficient symbol fonts.
+<recently read> $
+                 
+l.3 
+    
+Sorry, but I can't typeset math unless \textfont 2
+and \scriptfont 2 and \scriptscriptfont 2 have all
+the \fontdimen values needed in math symbol fonts.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 106--3
+[][]$$ 
+ []
+
+! You can't use `spacefactor' in vertical mode.
+@->spacefactor 
+               @m 
+l.8   \@
+        ifundefined{pdfoutput}{}{%
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.8   \@
+        ifundefined{pdfoutput}{}{%
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Missing begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.8   \@
+        ifundefined{pdfoutput}{}{%
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Runaway argument?
+@nnil ifx external@font @empty @latex@error {Font expandafter string ETC.
+! Paragraph ended before reserved@f was complete.
+<to be read again> 
+                   par 
+l.22 
+     
+I suspect you've forgotten a `}', causing me to apply this
+control sequence to too much text. How can we recover?
+My plan is to forget the whole thing and hope for the best.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.22 
+     
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing endgroup inserted.
+<inserted text> 
+                endgroup 
+l.22 
+     
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Missing endgroup inserted.
+<inserted text> 
+                endgroup 
+l.22 
+     
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+! Math formula deleted: Insufficient symbol fonts.
+<recently read> $
+                 
+l.22 
+     
+Sorry, but I can't typeset math unless \textfont 2
+and \scriptfont 2 and \scriptscriptfont 2 have all
+the \fontdimen values needed in math symbol fonts.
+
+
+Overfull \hbox (20.0pt too wide) in paragraph at lines 8--22
+[][]$$ 
+ []
+
+)
+! Undefined control sequence.
+<write> Package graphics Info: Driver file: Gin 
+                                                @driveron@line .
+l.80 ...geInfo{graphics}{Driver file: \Gin@driver}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Package graphics Info: Driver file: @driver on input line 80.
+! You can't use `spacefactor' in vertical mode.
+@->spacefactor 
+               @m 
+l.81   \@
+         ifundefined{ver@\Gin@driver}{\input{\Gin@driver}}{}
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.81   \@
+         ifundefined{ver@\Gin@driver}{\input{\Gin@driver}}{}
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Missing begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.81   \@
+         ifundefined{ver@\Gin@driver}{\input{\Gin@driver}}{}
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Text line contains an invalid character.
+l.328 ^^A
+            \GDebug{Rotate: angle \Grot@angle, sine is \Grot@sin,
+A funny symbol that I can't read has just been input.
+Continue, and I'll forget that it ever happened.
+
+! Text line contains an invalid character.
+l.329 ^^A
+                      cosine is \Grot@cos}%
+A funny symbol that I can't read has just been input.
+Continue, and I'll forget that it ever happened.
+
+! Text line contains an invalid character.
+l.365 ^^A
+            \GDebug{Rotate: (l,r,h,d)^^J%
+A funny symbol that I can't read has just been input.
+Continue, and I'll forget that it ever happened.
+
+! Text line contains an invalid character.
+l.366 ^^A
+          Original \the\Grot@l,\the\Grot@r,\the\Grot@h,\the\Grot@d,^^J%
+A funny symbol that I can't read has just been input.
+Continue, and I'll forget that it ever happened.
+
+! Text line contains an invalid character.
+l.367 ^^A
+          New..... \the\Grot@left,\the\Grot@right,%
+A funny symbol that I can't read has just been input.
+Continue, and I'll forget that it ever happened.
+
+! Text line contains an invalid character.
+l.368 ^^A
+                   \the\Grot@height,\the\Grot@depth}%
+A funny symbol that I can't read has just been input.
+Continue, and I'll forget that it ever happened.
+
+)
+Runaway argument?
+@nnil ifx external@font @empty @latex@error {Font expandafter string ETC.
+! File ended while scanning use of reserved@f.
+<inserted text> 
+                par 
+l.25 \define@key
+                {Gin}{bb}
+I suspect you have forgotten a `}', causing me
+to read past where you wanted me to stop.
+I'll try to recover; but if the error is serious,
+you'd better type `E' or `X' now and fix your file.
+
+! TeX capacity exceeded, sorry [input stack size=1500].
+graphics.sty-h@@k ->graphics.sty-h@@k 
+                                      begingroup @ifundefined{DeclareGraphic...
+l.25 \define@key
+                {Gin}{bb}
+If you really absolutely need more capacity,
+you can ask a wizard to enlarge me.
+
+ 
+Here is how much of TeX's memory you used:
+ 1657 strings out of 95880
+ 17101 string characters out of 1195048
+ 83407 words of memory out of 1087158
+ 4692 multiletter control sequences out of 35000
+ 3640 words of font info for 14 fonts, out of 500000 for 1000
+ 16 hyphenation exceptions out of 607
+ 1500i,2n,24p,191b,606s stack positions out of 1500i,500n,5000p,200000b,32768s
+No pages of output.

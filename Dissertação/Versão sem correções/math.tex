@@ -1,0 +1,50 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Colchetes de Lie}\label{sec:lie}
+Seja $f$ e $g$ dois campos vetoriais independentes. O colchete de Lie de $f$ e $g$, denotado por $[f,g]$, é um terceiro campo vetorial definido como
+\[ [f,g](x)=\frac{\partial g}{\partial x}f(x) - \frac{\partial f}{\partial x}g(x) \]
+onde $\frac{\partial f}{\partial x}$ e $\frac{\partial g}{\partial x}$ são matrizes jacobianas. A seguinte notação é utilizada:
+\begin{align*}
+	ad^0_fg(x) &= g(x) \\
+	ad_fg(x) &= [f,g](x) \\
+	ad^k_fg(x) &= [f,ad^{k-1}_fg](x)
+\end{align*}
+
+Os colchetes de Lie apresentam ainda as seguintes propriedades:
+\begin{itemize}
+\item Bilinearidade: sejam $f_1$, $f_2$, $g_1$ e $g_2$ campos vetoriais e $\alpha$, $\beta$ números reais. Então,
+\begin{align*}
+	\left[ \alpha f_1+\beta f_2,g_1\right] &= \alpha\left[f_1,g_1\right]+\beta\left[f_2,g_1\right] \\
+	\left[f_1, \alpha g_1+\beta f_2\right] &= \alpha\left[f_1,g_1\right]+\beta\left[f_1,g_2\right]
+\end{align*}
+\item Comutatividade:
+\[ \left[f,g\right] = -\left[g,f\right] \]
+\item Identidade de Jacobi: se $f$ e $g$ são campos vetoriais e $h$ é uma função real, então
+\[ L_{[f,g]}h(x)=L_fL_gh(x)-L_gL_fh(x), \]
+\end{itemize}
+onde $L_fh(x)$ é a {\em derivada de Lie},
+\[ L_fh(x)=\frac{\partial h}{\partial x}f(x) \]
+e $L_gL_fh(x) = \frac{\partial \left(L_fh\right)}{\partial x}g(x)$.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Distribuições Involutivas}\label{sec:inv}
+Uma distribuição $\Delta$ é involutiva se é fechada no colchete de Lie:
+\[ g_1\in\Delta \text{~~e~~} g_2\in\Delta\Rightarrow\left[g_1,g_2\right]\in\Delta \]
+
+Se $\Delta$ é uma distribuição não singular (ou seja, $\Delta$ é igual para todo e qualquer $x$), gerada pelos campos vetoriais linearmente independentes $f_1,\ldots,f_r$, então $\Delta$ é involutiva se e somente se
+\[ \left[f_i,f_j\right]\in\Delta,\quad\forall~1\leq i,j\leq r, \]
+ou
+\[ \left[f_i,f_j\right](x) = \sum_{k=1}^r\alpha_{ijk}(x)f_k(x), \quad \forall~i,j, \]
+onde $\alpha_{ijk}:\real^n\rightarrow\real$ são funções escalares e $n$ é a dimensão de $x$.
+
+Involutividade significa que, se formado o colchete de Lie de qualquer par de campos vetoriais $f_i,f_j$ do conjunto $f_1,\ldots,f_r$, então o campo vetorial resultante pode ser expresso como combinação linear dos campos vetoriais originais. Nota-se que:
+\begin{itemize}
+\item Campos vetoriais constantes são sempre involutivos. De fato, o colchete de Lie de dois campos vetoriais constantes, $[f_{c1},f_{c2}]$, é simplesmente o vetor zero, que pode ser trivialmente expresso como combinação linear de $f_{c1}$ e $f_{c2}$;
+\item Um conjunto composto de apenas um campo vetorial é involutivo. De fato,
+\[ \left[f,f\right]=\frac{\partial f}{\partial x}f-\frac{\partial f}{\partial x}f=0 \]
+\item Para uma distribuição ser involutiva, a seguinte condição deve ser atendida:
+\[ rank\left[f_1(x)~~\cdots~~f_r(x)\right]=rank\left[f_1(x)~~\cdots~~f_r(x)~~[f_i,f_j](x)\right], \]
+para todos $i$, $j$ e $x$.
+\end{itemize}
+
+O {\em fechamento involutivo} de uma distribuição $\Delta$ é denotado por $\inv\Delta$.

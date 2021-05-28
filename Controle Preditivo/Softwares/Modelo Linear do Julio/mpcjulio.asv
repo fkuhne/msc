@@ -1,0 +1,53 @@
+% MPC utilizando as funcoes do MATLAB   
+% e o modelo do julio.
+
+close all;
+clear all;
+clc;
+
+v = 10; % velocidade tangencial
+T = 0.1; % periodo amostral
+
+d = 0.5; % restricao no controle
+
+% modelo em ss:
+A = eye(2);
+B = [(v*T)^2 ; v*T];
+C = eye(2);
+D = [0 ; 0];
+
+% modelo da planta em mod:
+minfo = [0.1 2 1 0 0 2 0];
+pmod = ss2mod(A,B,C,D,minfo);
+
+% modelo interno para predicao dos estados:
+imod = pmod;
+
+% Horizonte de predicao e controle:
+P = 10;
+M = P;
+
+% Matrizes de peso:
+% do estado:
+Q = [1 1];
+% e do controle:
+R = [1 1];
+
+% Ganho do controlador sem restricoes:
+Ks = smpccon(imod,Q,R,M,P);
+
+% Carrega trajetoria de referencia (setpoint variavel):
+load y;
+load theta;
+%r = [y ; theta];
+%tend = size(r,2); % tempo total de simulacao
+r = [0.5 1];
+tend= 20;
+
+% Restricao do controle:
+dtil = d/(v*T);
+ulim = dtil;
+
+[ybar,ubar,ym] = smpcsim(pmod,imod,Ks,tend,r,ulim,[],[],[],[]);
+
+plotall(ybar,ubar,ym);

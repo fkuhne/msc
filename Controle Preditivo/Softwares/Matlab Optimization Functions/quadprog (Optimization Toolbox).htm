@@ -1,0 +1,549 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0073)http://www.mathworks.com/access/helpdesk/help/toolbox/optim/quadprog.html -->
+<HTML><HEAD><TITLE>quadprog (Optimization Toolbox)</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1"><!-- $Revision$  $Date$ --><!-- DOCNAME: Optimization Toolbox --><!-- CHUNKNAME: quadprog --><!-- CHAPNAME: quadprog --><!-- HEADSTUFF --><LINK 
+href="quadprog (Optimization Toolbox)_files/docset.css" type=text/css 
+rel=stylesheet>
+<META content="MSHTML 6.00.2900.2627" name=GENERATOR></HEAD>
+<BODY class=support bgColor=#ffffff>
+<SCRIPT language=Javascript>
+if (parent.frames.length<2) document.write('<p><a href="../../helpdesk.html" target=_top><b>Documentation</b></a> <img src="../../arrowr.gif"> <a HREF="optim.html"><b>Optimization Toolbox</b></a></p>');
+</SCRIPT>
+<A name=215><!-- NAVBARTOP -->
+<TABLE class=support cellSpacing=0 cellPadding=0 width="100%" border=0>
+  <TBODY>
+  <TR>
+    <TD vAlign=baseline bgColor=#e7ebf7><B>Optimization Toolbox</B></TD>
+    <TD vAlign=baseline align=right bgColor=#e7ebf7><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/optimset.html"><IMG 
+      alt="Previous page" src="quadprog (Optimization Toolbox)_files/b_prev.gif" 
+      border=0></A>&nbsp;&nbsp;&nbsp;<A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/acknowle.html"><IMG 
+      alt="Next Page" src="quadprog (Optimization Toolbox)_files/b_next.gif" 
+      border=0></A></TD></TR></TBODY></TABLE><FONT class=Head1 size=+3>quadprog</FONT> 
+<!-- FNAME:quadprog  --><A name=215></A><!-- SYNCHTO: ref_intr.html --><!-- H2 --><A name=567></A><BR>
+<P><A name=213></A>Solve the quadratic programming problem</P>
+<P>
+<UL class=continued><A name=439511></A>
+  <LI class=continued><IMG alt="" 
+  src="quadprog (Optimization Toolbox)_files/refere72.gif" align=bottom> 
+</LI></UL>
+<P><A name=57991></A>where <EM>H</EM>, <EM>A</EM>, and <EM>Aeq</EM> are 
+matrices, and <EM>f</EM>, <EM>b</EM>, <EM>beq</EM>, <EM>lb</EM>, <EM>ub</EM>, 
+and <EM>x</EM> are vectors.</P><A name=syntax></A><!-- H2 --><A name=214></A>
+<P><FONT class=Head3 size=+1><B>Syntax</B></FONT><BR class=hdr>
+<UL class=continued>
+  <LI class=continued><PRE><A name=1254></A>x = quadprog(H,f,A,b)
+<A name=1255></A>x = quadprog(H,f,A,b,Aeq,beq)
+<A name=1256></A>x = quadprog(H,f,A,b,Aeq,beq,lb,ub)
+<A name=1257></A>x = quadprog(H,f,A,b,Aeq,beq,lb,ub,x0)
+<A name=498524></A>x = quadprog(H,f,A,b,Aeq,beq,lb,ub,x0,options)
+<A name=209337></A>[x,fval] = quadprog(...)
+<A name=209339></A>[x,fval,exitflag] = quadprog(...)
+<A name=209341></A>[x,fval,exitflag,output] = quadprog(...)
+<A name=1260></A>[x,fval,exitflag,output,lambda] = quadprog(...)
+</PRE></LI></UL><A name=description></A><!-- H2 --><A name=374></A>
+<P><FONT class=Head3 size=+1><B>Description</B></FONT><BR class=hdr>
+<P><A name=54395></A><CODE>x = quadprog(H,f,A,b) </CODE><A 
+name=377301></A>returns a vector <CODE>x</CODE> that minimizes 
+<CODE>1/2*x'*H*x&nbsp;+&nbsp;f'*x</CODE> subject to 
+<CODE>A*x&nbsp;&lt;=&nbsp;b</CODE>.</P>
+<P><A name=209160></A><CODE>x = quadprog(H,f,A,b,Aeq,beq) </CODE><A 
+name=209164></A>solves the preceding problem while additionally satisfying the 
+equality constraints <CODE>Aeq*x&nbsp;=&nbsp;beq</CODE>.</P>
+<P><A name=51046></A><CODE>x = quadprog(H,f,A,b,Aeq,beq,lb,ub) </CODE><A 
+name=183567></A>defines a set of lower and upper bounds on the design variables, 
+<CODE>x</CODE>, so that the solution is in the range 
+<CODE>lb&nbsp;&lt;=&nbsp;x&nbsp;&lt;=&nbsp;ub</CODE>.</P>
+<P><A name=51272></A><CODE>x = quadprog(H,f,A,b,Aeq,beq,lb,ub,x0) </CODE><A 
+name=183584></A>sets the starting point to <CODE>x0</CODE>.</P>
+<P><A name=51270></A><CODE>x = quadprog(H,f,A,b,Aeq,beq,lb,ub,x0,options) 
+</CODE><A name=212924></A>minimizes with the optimization options specified in 
+the structure <CODE>options</CODE>. Use <CODE>optimset</CODE> to set these 
+options. </P>
+<P><A name=377364></A><CODE>[x,fval] = quadprog(...) </CODE><A 
+name=183635></A>returns the value of the objective function at x:</P>
+<UL class=continued>
+  <LI class=continued><PRE><A name=752066></A><CODE>fval&nbsp;=&nbsp;0.5*x'*H*x&nbsp;+&nbsp;f'*x</CODE>.
+</PRE></LI></UL>
+<P><A name=51640></A><CODE>[x,fval,exitflag] = quadprog(...) </CODE><A 
+name=183652></A>returns a value <CODE>exitflag</CODE> that describes the exit 
+condition of <CODE>quadprog</CODE>.</P>
+<P><A name=209366></A><CODE>[x,fval,exitflag,output] = quadprog(...) </CODE><A 
+name=209367></A>returns a structure <CODE>output</CODE> that contains 
+information about the optimization.</P>
+<P><A name=209371></A><CODE>[x,fval,exitflag,output,lambda] = quadprog(...) 
+</CODE><A name=224807></A>returns a structure <CODE>lambda</CODE> whose fields 
+contain the Lagrange multipliers at the solution <CODE>x</CODE>.</P><A 
+name=input_arguments></A><!-- H2 --><A name=483028></A>
+<P><FONT class=Head3 size=+1><B>Input Arguments</B></FONT><BR class=hdr>
+<P><A name=482885></A><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/ref_int3.html#10534">Function 
+Arguments</A> contains general descriptions of arguments passed in to 
+<CODE>quadprog</CODE>. <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/quadprog.html#93996">Options</A> 
+provides function-specific details for the <CODE>options</CODE> values.</P><A 
+name=output_arguments></A><!-- H2 --><A name=483057></A>
+<P><FONT class=Head3 size=+1><B>Output Arguments</B></FONT><BR class=hdr>
+<P><A name=482975></A><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/ref_int3.html#10534">Function 
+Arguments</A> contains general descriptions of arguments returned by 
+<CODE>quadprog</CODE>. This section provides function-specific details for 
+<CODE>exitflag</CODE>, <CODE>lambda</CODE>, and <CODE>output</CODE>:</P>
+<P><A name=482976></A><!-- TBLSTART -->
+<TABLE cellPadding=5 border=0>
+  <CAPTION></CAPTION>
+  <TBODY>
+  <TR vAlign=top>
+    <TD><A name=824205></A><CODE>exitflag</CODE><BR></TD>
+    <TD colSpan=2><A name=824207></A>Integer identifying the reason the 
+      algorithm terminated. The following lists the values of 
+      <CODE>exitflag</CODE> and the corresponding reasons the algorithm 
+      terminated.<BR><!-- TBLSPANEND -->
+  <TR vAlign=top>
+    <TD><A name=830026></A><BR></TD>
+    <TD><A name=830028></A><CODE>1</CODE><BR></TD>
+    <TD><A name=830030></A>Function converged to a solution 
+    <CODE>x</CODE>.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=830038></A><BR></TD>
+    <TD><A name=830040></A><CODE>3</CODE><BR></TD>
+    <TD><A name=830042></A>Change in the objective function value was smaller 
+      than the specified tolerance.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=830044></A><BR></TD>
+    <TD><A name=830046></A><CODE>4</CODE><BR></TD>
+    <TD><A name=830048></A>Local minimizer was found.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=830056></A><BR></TD>
+    <TD><A name=830058></A><CODE>0</CODE><BR></TD>
+    <TD><A name=830060></A>Number of iterations exceeded 
+      <CODE>options.MaxIter</CODE>.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=830068></A><BR></TD>
+    <TD><A name=830070></A><CODE>-2</CODE><BR></TD>
+    <TD><A name=830072></A>Problem is infeasible.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=861869></A><BR></TD>
+    <TD><A name=861871></A>-3<BR></TD>
+    <TD><A name=861873></A>Problem is unbounded.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=861863></A><BR></TD>
+    <TD><A name=861865></A>-4<BR></TD>
+    <TD><A name=861867></A>Current search direction was not a direction of 
+      descent. No further progress could be made.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=861857></A><BR></TD>
+    <TD><A name=861859></A>-7<BR></TD>
+    <TD><A name=861861></A>Magnitude of search direction became too small. No 
+      further progress could be made.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=482992></A><CODE>lambda</CODE><BR></TD>
+    <TD colSpan=2>
+      <P><A name=482994></A>Structure containing the Lagrange multipliers at the 
+      solution <CODE>x</CODE> (separated by constraint type). The fields are</P>
+      <P><!-- TBLSPANEND --></P>
+  <TR vAlign=top>
+    <TD><A name=498703></A><BR></TD>
+    <TD><A name=498705></A><CODE>lower</CODE><BR></TD>
+    <TD><A name=498707></A>Lower bounds <CODE>lb</CODE><BR></TD>
+  <TR vAlign=top>
+    <TD><A name=498697></A><BR></TD>
+    <TD><A name=498699></A><CODE>upper</CODE><BR></TD>
+    <TD><A name=498701></A>Upper bounds <CODE>ub</CODE><BR></TD>
+  <TR vAlign=top>
+    <TD><A name=498691></A><BR></TD>
+    <TD><A name=498693></A><CODE>ineqlin</CODE><BR></TD>
+    <TD><A name=498695></A>Linear inequalities<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=498685></A><BR></TD>
+    <TD><A name=498687></A><CODE>eqlin</CODE><BR></TD>
+    <TD><A name=498689></A>Linear equalities<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=483000></A><CODE>output</CODE><BR></TD>
+    <TD colSpan=2><A name=483002></A>Structure containing information about 
+      the optimization. The fields are<BR><!-- TBLSPANEND -->
+  <TR vAlign=top>
+    <TD><A name=498796></A><BR></TD>
+    <TD><A name=498798></A><CODE>iterations</CODE><BR></TD>
+    <TD><A name=498800></A>Number of iterations taken<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=498790></A><BR></TD>
+    <TD><A name=498792></A><CODE>algorithm</CODE><BR></TD>
+    <TD><A name=498794></A>Algorithm used<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=498784></A><BR></TD>
+    <TD><A name=498786></A><CODE>cgiterations</CODE><BR></TD>
+    <TD><A name=498788></A>Number of PCG iterations (large-scale algorithm 
+      only)<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=498778></A><BR></TD>
+    <TD><A name=498780></A><CODE><CODE>firstorderopt</CODE></CODE><BR></TD>
+    <TD><A name=498878></A>Measure of first-order optimality (large-scale 
+      algorithm only)<BR><A name=498879></A>For large-scale bound constrained 
+      problems, the first-order optimality is the infinity norm of 
+      <CODE>v.*g</CODE>, where <CODE>v</CODE> is defined as in <A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori6d.html#3477">Box 
+      Constraints</A>, and <CODE>g</CODE> is the gradient.<BR><A 
+      name=498782></A>For large scale problems with linear equalities only, the 
+      first-order optimality is the 2-norm of the scaled residual 
+      (<CODE>z&nbsp;=&nbsp;M\r</CODE>) of the reduced preconditioned conjugate 
+      gradient calculation. See <A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori3d.html#3346">Algorithm</A> 
+      in "Preconditioned Conjugate Gradients," and also <A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori4d.html#3395">Linearly 
+      Constrained Problems</A>.<BR></TD></TR></TBODY></TABLE>
+<TABLE>
+  <TBODY>
+  <TR vAlign=top>
+    <TD></TR></TBODY></TABLE></P><A name=options></A><!-- H2 --><A name=93996></A>
+<P><FONT class=Head3 size=+1><B>Options</B></FONT><BR class=hdr>
+<P><A name=665451></A>Optimization options. Use <CODE><A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/optimset.html">optimset</A></CODE> 
+to set or change the values of these options. Some options apply to all 
+algorithms, some are only relevant when using the large-scale algorithm, and 
+others are only relevant when you are using the medium-scale algorithm. See <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/ref_int6.html#19175">Optimization 
+Options</A> for detailed information.</P>
+<P><A name=665452></A>The option to set an algorithm preference:</P>
+<P><A name=665261></A><!-- TBLSTART -->
+<TABLE cellPadding=5 border=0>
+  <CAPTION></CAPTION>
+  <TBODY>
+  <TR vAlign=top>
+    <TD><A name=665480></A><CODE>LargeScale</CODE><BR></TD>
+    <TD><A name=665482></A>Use large-scale algorithm if possible when set to 
+      <CODE>'on'</CODE>. Use medium-scale algorithm when set to 
+      <CODE>'off'</CODE>.<BR><A name=665483></A><CODE>'on'</CODE> is only a 
+      preference. If the problem has <EM>only</EM> upper and lower bounds; i.e., 
+      no linear inequalities or equalities are specified, the default algorithm 
+      is the large-scale method. Or, if the problem given to 
+      <CODE>quadprog</CODE> has <EM>only</EM> linear equalities; i.e., no upper 
+      and lower bounds or linear inequalities are specified, and the number of 
+      equalities is no greater than the length of <CODE>x</CODE>, the default 
+      algorithm is the large-scale method. Otherwise the medium-scale algorithm 
+      is used.<BR></TD></TR></TBODY></TABLE>
+<TABLE>
+  <TBODY>
+  <TR vAlign=top>
+    <TD></TR></TBODY></TABLE></P><!-- H4 -->
+<P><A name=665615></A><B>Medium-Scale and Large-Scale Algorithms.</B> 
+&nbsp;&nbsp;<A name=665616></A>These options are used by both the medium-scale 
+and large-scale algorithms:</P>
+<P><A name=665263></A><!-- TBLSTART -->
+<TABLE cellPadding=5 border=0>
+  <CAPTION></CAPTION>
+  <TBODY>
+  <TR vAlign=top>
+    <TD><A name=665513></A><CODE>Diagnostics</CODE><BR></TD>
+    <TD><A name=665515></A>Display diagnostic information about the function 
+      to be minimized.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=665517></A><CODE>Display</CODE><BR></TD>
+    <TD><A name=665519></A>Level of display. <CODE>'off'</CODE> displays no 
+      output; <CODE>'iter'</CODE> displays output at each iteration; 
+      <CODE>'final'</CODE> (default) displays just the final output.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=665521></A><CODE>MaxIter</CODE><BR></TD>
+    <TD><A name=665523></A>Maximum number of iterations allowed.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=844985></A><CODE><CODE>TypicalX</CODE></CODE><BR></TD>
+    <TD><A name=844987></A>Typical <CODE>x</CODE> 
+values.<BR></TD></TR></TBODY></TABLE>
+<TABLE>
+  <TBODY>
+  <TR vAlign=top>
+    <TD></TR></TBODY></TABLE></P><!-- H4 -->
+<P><A name=665622></A><B>Large-Scale Algorithm Only.</B> &nbsp;&nbsp;<A 
+name=665623></A>These options are used only by the large-scale algorithm:</P>
+<P><A name=665265></A><!-- TBLSTART -->
+<TABLE cellPadding=5 border=0>
+  <CAPTION></CAPTION>
+  <TBODY>
+  <TR vAlign=top>
+    <TD><A name=845264></A><CODE>HessMult</CODE><BR></TD>
+    <TD><A name=845432></A>Function handle for Hessian multiply function. For 
+      large-scale structured problems, this function computes the Hessian matrix 
+      product <CODE>H*Y</CODE> without actually forming <CODE>H</CODE>. The 
+      function is of the form<BR>
+      <UL class=continued>
+        <LI class=continued><PRE><A name=845433></A>W = hmfun(Hinfo,Y)
+</PRE></LI></UL>
+      <P><A name=845434></A>where <CODE>Hinfo</CODE> and possibly some 
+      additional parameters contain the matrices used to compute 
+      <CODE>H*Y</CODE>.<BR><A name=845471></A>See <A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori29.html#34755">Quadratic 
+      Minimization with a Dense but Structured Hessian</A> for an example that 
+      uses this option.<BR></P></TD>
+  <TR vAlign=top>
+    <TD><A name=845277></A><CODE><CODE>MaxPCGIter</CODE></CODE><BR></TD>
+    <TD><A name=845438></A>Maximum number of PCG (preconditioned conjugate 
+      gradient) iterations. See <A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/quadprog.html#355427">Algorithm</A> 
+      for more information.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=845284></A><CODE><CODE>PrecondBandWidth</CODE></CODE><BR></TD>
+    <TD><A name=845286></A>Upper bandwidth of preconditioner for PCG. By 
+      default, diagonal preconditioning is used (upper bandwidth of 0). For some 
+      problems, increasing the bandwidth reduces the number of PCG 
+      iterations.<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=845288></A><CODE><CODE>TolFun</CODE></CODE><BR></TD>
+    <TD><A name=845290></A>Termination tolerance on the function value. 
+      <CODE>TolFun</CODE> is used as the exit criterion for problems with simple 
+      lower and upper bounds (<CODE>lb</CODE>, <CODE>ub</CODE>).<BR></TD>
+  <TR vAlign=top>
+    <TD><A name=845292></A><CODE><CODE>TolPCG</CODE></CODE><BR></TD>
+    <TD><A name=845294></A>Termination tolerance on the PCG iteration. 
+      <CODE>TolPCG</CODE> is used as the exit criterion for problems with only 
+      equality constraints (<CODE>Aeq</CODE>, <CODE>beq</CODE>). <BR></TD>
+  <TR vAlign=top>
+    <TD><A name=845296></A><CODE><CODE>TolX</CODE></CODE><BR></TD>
+    <TD><A name=845298></A>Termination tolerance on 
+  <CODE>x.</CODE><BR></TD></TR></TBODY></TABLE>
+<TABLE>
+  <TBODY>
+  <TR vAlign=top>
+    <TD></TR></TBODY></TABLE></P><A name=examples></A><A name=exmpl_sec></A><!-- H2 --><A name=665252></A>
+<P><FONT class=Head3 size=+1><B>Examples</B></FONT><BR class=hdr>
+<P><A name=382></A>Find values of <CODE>x</CODE> that minimize</P>
+<P>
+<UL class=continued><A name=482771></A>
+  <LI class=continued><IMG alt="" 
+  src="quadprog (Optimization Toolbox)_files/refere84.gif" align=bottom> 
+</LI></UL>
+<P><A name=163751></A>subject to</P>
+<P>
+<UL class=continued><A name=482738></A>
+  <LI class=continued><IMG alt="" 
+  src="quadprog (Optimization Toolbox)_files/refere71.gif" align=bottom> 
+</LI></UL>
+<P><A name=94134></A>First, note that this function can be written in matrix 
+notation as</P>
+<UL><A name=491246></A><IMG alt="" 
+  src="quadprog (Optimization Toolbox)_files/refer16a.gif" align=bottom> </UL>
+<P><A name=491245></A>where </P>
+<P>
+<UL class=continued><A name=482800></A>
+  <LI class=continued><IMG alt="" 
+  src="quadprog (Optimization Toolbox)_files/refere57.gif" align=bottom> 
+</LI></UL>
+<P><A name=94181></A>Enter these coefficient matrices.</P>
+<UL class=continued>
+  <LI class=continued><PRE><A name=385></A>H = [1 -1; -1 2] 
+<A name=1263></A>f = [-2; -6]
+<A name=1264></A>A = [1 1; -1 2; 2 1]
+<A name=1265></A>b = [2; 2; 3]
+<A name=94171></A>lb = zeros(2,1)
+</PRE></LI></UL>
+<P><A name=94172></A>Next, invoke a quadratic programming routine.</P>
+<UL class=continued>
+  <LI class=continued><PRE><A name=94173></A>[x,fval,exitflag,output,lambda] = quadprog(H,f,A,b,[],[],lb)
+</PRE></LI></UL>
+<P><A name=585></A>This generates the solution</P>
+<UL class=continued>
+  <LI class=continued><PRE><A name=219></A>x = 
+<A name=1266></A>     0.6667
+<A name=1267></A>     1.3333
+<A name=411073></A>fval =
+<A name=411074></A>&nbsp;&nbsp;&nbsp;&nbsp;-8.2222
+<A name=411075></A>exitflag =
+<A name=389></A>     1
+<A name=411080></A>output = 
+<A name=411081></A>       iterations: 3
+<A name=411082></A>        algorithm: 'medium-scale: active-set'
+<A name=411083></A>    firstorderopt: []
+<A name=411078></A>     cgiterations: []
+<A name=411086></A>lambda.ineqlin
+<A name=411087></A>ans =
+<A name=411088></A>    3.1111
+<A name=411089></A>    0.4444
+<A name=411090></A>         0
+<A name=411091></A>lambda.lower
+<A name=411092></A>ans =
+<A name=411093></A>     0
+<A name=411077></A>     0
+</PRE></LI></UL>
+<P><A name=411066></A>Nonzero elements of the vectors in the fields of 
+<CODE>lambda</CODE> indicate active constraints at the solution. In this case, 
+the first and second inequality constraints (in <CODE>lambda.ineqlin</CODE>) are 
+active constraints (i.e., the solution is on their constraint boundaries). For 
+this problem, all the lower bounds are inactive.</P><A name=notes></A><!-- H2 --><A name=355401></A>
+<P><FONT class=Head3 size=+1><B>Notes</B></FONT><BR class=hdr>
+<P><A name=355404></A>In general <CODE>quadprog</CODE> locates a local solution 
+unless the problem is strictly convex.</P>
+<P><A name=355405></A>Better numerical results are likely if you specify 
+equalities explicitly, using <CODE>Aeq</CODE> and <CODE>beq,</CODE> instead of 
+implicitly, using <CODE>lb</CODE> and <CODE>ub</CODE>.</P>
+<P><A name=355556></A>If the components of <EM>x</EM> have no upper (or lower) 
+bounds, then <CODE>quadprog</CODE> prefers that the corresponding components of 
+<CODE>ub</CODE> (or <CODE>lb</CODE>) be set to <CODE>Inf</CODE> (or 
+<CODE>-Inf</CODE> for <CODE>lb</CODE>) as opposed to an arbitrary but very large 
+positive (or negative in the case of lower bounds) number.</P><!-- H4 -->
+<P><A name=355406></A><B>Large-Scale Optimization.</B> &nbsp;&nbsp;<A 
+name=759629></A>IBy default, <CODE>quadprog</CODE> uses the large-scale 
+algorithm if you specify the feasible region using, but not both, of the 
+following <FONT face=sansserif>types of</FONT> constraints:</P>
+<UL>
+  <LI><A name=759633></A>Upper and lower bounds constraints 
+  <LI><A name=759634></A>Linear equality constraints, in which the columns of 
+  the constraint matrix <CODE>Aeq</CODE> are linearly independent. 
+  <CODE>Aeq</CODE> is typically sparse. </LI></UL>
+<P><A name=759731></A>You cannot use inequality constraints with the large-scale 
+algorithm. If the preceding conditions are not met, <CODE>quadprog</CODE> 
+reverts to the medium-scale algorithm. </P>
+<P><A name=437229></A>If you do not supply <CODE>x0</CODE>, or <CODE>x0</CODE> 
+is not strictly feasible, <CODE>quadprog</CODE> chooses a new strictly feasible 
+(centered) starting point.</P>
+<P><A name=355635></A>If an equality constrained problem is posed and 
+<CODE>quadprog</CODE> detects negative curvature, the optimization terminates 
+because the constraints are not restrictive enough. In this case, 
+<CODE>exitflag</CODE> is returned with the value -<CODE>1</CODE>, a message is 
+displayed (unless the <CODE>options</CODE> <CODE>Display</CODE> option is 
+<CODE>'off'</CODE>), and the <CODE>x</CODE> returned is not a solution but a 
+direction of negative curvature with respect to <CODE>H</CODE>.</P>
+<P><A name=590991></A>For problems with simple lower and upper bounds 
+(<CODE>lb</CODE>, <CODE>ub</CODE>), <CODE>quadprog</CODE> exits based on the 
+value of <CODE>TolFun</CODE>. For problems with only equality constraints 
+(<CODE>Aeq</CODE>, <CODE>beq</CODE>), the exit is based on <CODE>TolPCG</CODE>. 
+Adjust <CODE>TolFun</CODE> and <CODE>TolPCG</CODE> to affect your results. 
+<CODE>TolX</CODE> is used by both types of problems.</P><A name=algorithm></A><!-- H2 --><A name=355427></A>
+<P><FONT class=Head3 size=+1><B>Algorithm</B></FONT><BR class=hdr><!-- H4 -->
+<P><A name=355428></A><B>Large-Scale Optimization.</B> &nbsp;&nbsp;<A 
+name=414206></A>The large-scale algorithm is a subspace trust-region method 
+based on the interior-reflective Newton method described in <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/quadprog.html#355539">[1]</A>. 
+Each iteration involves the approximate solution of a large linear system using 
+the method of preconditioned conjugate gradients (PCG). See <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori2d.html#3137">Trust-Region 
+Methods for Nonlinear Minimization</A> and <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori3d.html#3329">Preconditioned 
+Conjugate Gradients</A>. </P><!-- H4 -->
+<P><A name=355418></A><B>Medium-Scale Optimization.</B> &nbsp;&nbsp;<A 
+name=437236></A><CODE>quadprog</CODE> uses an active set method, which is also a 
+projection method, similar to that described in <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/quadprog.html#483086">[2]</A>. 
+It finds an initial feasible solution by first solving a linear programming 
+problem. This method is discussed in the <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutoriaa.html#10204">Standard 
+Algorithms</A> chapter.</P><A name=diagnostics></A><!-- H2 --><A name=227></A>
+<P><FONT class=Head3 size=+1><B>Diagnostics</B></FONT><BR class=hdr><!-- H4 -->
+<P><A name=355517></A><B>Large-Scale Optimization.</B> &nbsp;&nbsp;<A 
+name=437244></A>The large-scale method does not allow equal upper and lower 
+bounds. For example, if <CODE>lb(2) == ub(2)</CODE>, then <CODE>quadprog</CODE> 
+gives the error</P>
+<UL class=continued>
+  <LI class=continued><PRE><A name=355518></A>Equal upper and lower bounds not permitted in this large-scale 
+method.
+<A name=355519></A>Use equality constraints and the medium-scale method instead.
+</PRE></LI></UL>
+<P><A name=411162></A>If you only have equality constraints you can still use 
+the large-scale method. But if you have both equalities and bounds, you must use 
+the medium-scale method.</P><!-- H4 -->
+<P><A name=228></A><B>Medium-Scale Optimization.</B> &nbsp;&nbsp;<A 
+name=437247></A>When the problem is infeasible, <CODE>quadprog</CODE> gives this 
+warning:</P>
+<UL class=continued>
+  <LI class=continued><PRE><A name=534></A>Warning: The constraints are overly stringent;
+<A name=1274></A>     there is no feasible solution.
+</PRE></LI></UL>
+<P><A name=51810></A>In this case, <CODE>quadprog</CODE> produces a result that 
+minimizes the worst case constraint violation.</P>
+<P><A name=596></A>When the equality constraints are inconsistent, 
+<CODE>quadprog</CODE> gives this warning</P>
+<UL class=continued>
+  <LI class=continued><PRE><A name=619></A>Warning: The equality constraints are overly stringent;
+<A name=1275></A>     there is no feasible solution.
+</PRE></LI></UL>
+<P><A name=620></A>Unbounded solutions, which can occur when the <FONT 
+face=sansserif>Hessian </FONT><CODE>H</CODE><FONT face=sansserif> is negative 
+semidefinite, </FONT>can result in</P>
+<UL class=continued>
+  <LI class=continued><PRE><A name=623></A>Warning: The solution is unbounded and at infinity;
+<A name=1276></A>     the constraints are not restrictive enough.
+</PRE></LI></UL>
+<P><A name=51817></A>In this case, <CODE>quadprog</CODE> returns a value of 
+<CODE>x</CODE> that satisfies the constraints.</P><A name=limitations></A><!-- H2 --><A name=738></A>
+<P><FONT class=Head3 size=+1><B>Limitations</B></FONT><BR class=hdr>
+<P><A name=357064></A>At this time the only levels of display, using the 
+<CODE>Display</CODE> option in <CODE>options</CODE>, are <CODE>'off'</CODE> and 
+<CODE>'final'</CODE>; iterative output using <CODE>'iter'</CODE> is not 
+available.</P>
+<P><A name=752030></A>The solution to <FONT face=sansserif></FONT>indefinite or 
+negative definite problems is often unbounded (in this case, 
+<CODE>exitflag</CODE> is returned with a negative value to show that a minimum 
+was not found); when a finite solution does exist, <CODE>quadprog</CODE> might 
+only give local minima, because the problem might be nonconvex.</P><!-- H4 -->
+<P><A name=752031></A><B>Large-Scale Optimization.</B> &nbsp;&nbsp;<A 
+name=437515></A>The linear equalities cannot be dependent (i.e., 
+<CODE>Aeq</CODE> must have full row rank). Note that this means that 
+<CODE>Aeq</CODE> cannot have more rows than columns. If either of these cases 
+occurs, the medium-scale algorithm is called instead. See <A 
+href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/tutori19.html#27135">Table&nbsp;2-4, 
+Large-Scale Problem Coverage and Requirements</A>, for more information on what 
+problem formulations are covered and what information must be provided.</P><A 
+name=references></A><!-- H2 --><A name=459></A>
+<P><FONT class=Head3 size=+1><B>References</B></FONT><BR class=hdr>
+<P><A name=355539></A>[1] &nbsp;Coleman, T.F. and Y. Li, "A Reflective Newton 
+Method for Minimizing a Quadratic Function Subject to Bounds on some of the 
+Variables," <EM>SIAM Journal on Optimization</EM>, Vol. 6, Number 4, pp. 
+1040-1058, 1996. </P>
+<P><A name=483086></A>[2] &nbsp;Gill, P. E. and W. Murray, and M.H. Wright, 
+<EM>Practical Optimization, </EM>Academic Press, London, UK, 1981. </P>
+<P><BR>
+<P>
+<TABLE cellSpacing=0 cellPadding=0 width="100%" bgColor=#e7ebf7 border=0>
+  <TBODY>
+  <TR vAlign=top>
+    <TD align=left width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/optimset.html"><IMG 
+      alt="Previous page" src="quadprog (Optimization Toolbox)_files/b_prev.gif" 
+      align=bottom border=0></A>&nbsp;</TD>
+    <TD align=left>&nbsp;optimset</TD>
+    <TD>&nbsp;</TD>
+    <TD align=right width=20><A 
+      href="http://www.mathworks.com/access/helpdesk/help/toolbox/optim/acknowle.html"><IMG 
+      alt="Next page" src="quadprog (Optimization Toolbox)_files/b_next.gif" 
+      align=bottom border=0></A></TD></TR></TBODY></TABLE><BR><!-- Copyright 2005 The MathWorks, Inc. --><!-- Last updated: Thu Jan 13 23:36:28 2005 --><!-- SiteCatalyst code version: G.7.
+Copyright 1997-2004 Omniture, Inc. More info available at
+http://www.omniture.com -->
+<SCRIPT language=JavaScript type=text/javascript><!--
+/* You may give each page an identifying name, server, and channel on
+the next lines. */
+var s_pageName=document.title
+var s_server=""
+var s_channel=""
+var s_pageType=""
+var s_prop1=""
+var s_prop2=""
+var s_prop3=""
+var s_prop4=""
+var s_prop5=""
+/* E-commerce Variables */
+var s_campaign=""
+var s_state=""
+var s_zip=""
+var s_events=""
+var s_products=""
+var s_purchaseID=""
+var s_eVar1=""
+var s_eVar2=""
+var s_eVar3=""
+var s_eVar4=""
+var s_eVar5=""
+//--></SCRIPT>
+
+<SCRIPT language=JavaScript 
+src="quadprog (Optimization Toolbox)_files/s_code_remote.js" 
+type=text/javascript></SCRIPT>
+<!-- End SiteCatalyst code version: G.7. -->
+<TABLE style="BORDER-TOP: #ed8000 2px solid; BACKGROUND-COLOR: #ffffff" 
+cellSpacing=0 cellPadding=3 width="100%" align=center summary=layout border=0>
+  <TBODY>
+  <TR>
+    <TD align=middle>&nbsp;© 1994-2005 The MathWorks, Inc. &nbsp;&nbsp;&nbsp; 
+      -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/trademarks.html" 
+      target=_parent>Trademarks</A>&nbsp;&nbsp;&nbsp; -&nbsp;&nbsp;&nbsp; <A 
+      href="http://www.mathworks.com/company/aboutus/policies_statements/" 
+      target=_parent>Privacy Policy</A> </TD></TR></TBODY></TABLE></P></BODY></HTML>

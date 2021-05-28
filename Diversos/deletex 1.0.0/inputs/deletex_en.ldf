@@ -1,0 +1,116 @@
+\ProvidesLanguage{deletex_en}[2004/11/29 v0.4.0 DeLeTex english support]
+\@namedef{captionsenglish}{%
+	\def\bibname{References}%
+	\def\refname{\bibname}
+	\def\abstractname{Abstract}%
+	\def\appendixname{Appendix}%
+	\def\contentsname{Contents}%
+	\def\listfigurename{List of Figures}%
+	\def\listtablename{List of Tables}%
+	\def\figurename{Figure}%
+	\def\tablename{Table}%
+	\def\advisorname{Advisor}%
+	\def\coadvisorname{Coadvisor}%
+	\def\examinername{Examination Committee}%
+	\def\listabbrvname{List of Abbreviations}%
+	\def\listsymbolname{List of Symbols}%
+	\def\annexname{Annex}%
+	\def\keywordsname{Keywords}%
+	\def\cipcaption{CIP -- CATALOGING-IN-PUBLICATION}%
+	\def\byname{by}%
+
+	\def\PPGEEcoordname{Coordinator of PPGEE}
+	\def\DELETheadname{Head of DELET}
+
+	\def\dissname{Thesis (Master)}%
+	\def\dissspecificinfo{%
+		Thesis presented to \ppgee\ of \ufrgs\ 
+		in partial fulfillment of the requirements for the 
+		degree of Master in Electrical Engineering.
+
+		Minor: Automation and Electro-Electronic Instrumentation
+	}%
+	\def\dissapproval{%
+		This thesis was considered adequate for obtaining the
+		degree of Master in Electrical Engineering and approved in its
+		final form by the Advisor and the Examination Committee.
+	}%
+	\def\disscoordname{Coordinator of PPGEE}
+
+	\def\tesename{Thesis (Ph.D.)}%
+	\def\tesespecificinfo{%
+		Thesis presented to \ppgee\ of \ufrgs\ 
+		in partial fulfillment of the requirements for the 
+		degree of Doctor in Electrical Engineering.
+
+		Minor: Automation and Electro-Electronic Instrumentation
+	}%
+	\def\teseapproval{%
+		This thesis was considered adequate for the awarding of the
+		degree of Doctor in Electrical Engineering and approved in its
+		final form by the Advisor and the Examination Committee.
+	}%
+
+	\def\planodoutoradospecificinfo{PhD Work Plan}%
+
+	\def\proptesename{Ph.D. Thesis Proposal}%
+	\def\proptesespecificinfo{Ph.D. Thesis Proposal}%
+
+	\def\tcname{Final Report (Master)}%
+	\def\tcspecificinfo{%
+		Final Report presented 
+		in partial fulfillment of the requirements for the 
+		title of Master in Electrical Engineering.
+	}%
+
+	\def\rpname{Research Report}%
+	\def\financname{Sponsorship}%
+
+	\def\especname{Monography (specialization)}%
+	\def\especcoursename{Specialization course in}%
+	\def\especcoordname{Coordinator of the}
+	\def\especspecificinfo{%
+		Monography presented 
+		in partial fulfillment of the requirements for the 
+		title of Specialist.
+	}%
+
+	\def\diplelespecificinfo{%
+		Graduation Project presented to \delet\ of \ufrgs\ 
+		in partial fulfillment of the requirements for the 
+		degree of Electrical Engineer. 
+	}%
+	\def\diplecpspecificinfo{%
+		Graduation Project presented to \delet\ of \ufrgs\ 
+		in partial fulfillment of the requirements for the 
+		degree of Computer Engineer. 
+	}%
+	\def\diplapproval{%
+		This Projetc was considered adequate for obtaining the
+		credits of the course Projeto de Diploma\c{c}\~ao of \delet\ 
+		and and approved in its final form by the Advisor and the Examination Committee.
+	}%
+
+	\def\tispecificinfo{%
+		Individual Studies~\@tirelease\\
+		TI-\@tinumber
+	}%
+
+	\def\pepspecificinfo{%
+		Studies and Research Plan
+	}%
+
+	\def\phonename{Phone}%
+}
+
+\@namedef{dateenglish}{%
+	\def\today{\monthname\space\number\day,\space\number\year}%
+	\def\monthname{%
+		\ifcase\month\or%
+			January\or February\or March\or April\or%
+			May\or June\or July\or August\or September\or%
+			October\or November\or December%
+		\fi%
+	}%
+	\def\delet@date{\@publmonth~\@publyear}%
+}

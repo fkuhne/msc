@@ -1,0 +1,1581 @@
+\documentclass[pdf,final,total,deletex]{prosper}
+\usepackage{amssymb,amsmath,graphicx,float,array,pifont,subfigure,wrapfig,color}
+
+\slideCaption{}
+
+\newcommand\real{\mathbb{R}}
+\newcommand\cd{\ding{52}}
+
+\newenvironment{mitemize}{\renewcommand{\labelitemi}{\bullet}\begin{itemize}}{\end{itemize}}
+
+\title{CONTROLE PREDITIVO DE ROBÔS MÓVEIS NÃO HOLONÔMICOS}
+\author{{\large\bf Felipe Kühne} \\ \vspace{5mm} Orientador: Prof. Dr. João Manoel Gomes da Silva Jr. \\ Co-orientador: Prof. Dr. Walter Fetter Lages}
+\course{\ppgee}
+
+\begin{document}
+
+\maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Organização}
+\begin{enumerate}
+\item Objetivos propostos
+\item Motivação
+\item Sistemas não holonômicos
+\item Modelo cinemático do robô
+\item Fundamentos de MPC
+\item Controle de robôs móveis
+\item Conclusões
+\item Trabalhos futuros
+\end{enumerate}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{1. Objetivos Propostos}
+Estudo e desenvolvimento de algoritmos de MPC para robôs móveis dotados de rodas e com restrições não holonômicas abordando:
+\vspace{6mm}
+\begin{enumerate}
+	\item Solução do problema de estabilização em um ponto;
+	\item Solução do problema de rastreamento de trajetória;
+	\item Estudo da viabilidade dos algoritmos de MPC em uma aplicação real.
+\end{enumerate}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{2. Motivação}
+{\bf O problema do controle de robôs móveis:}
+\vspace{6mm}
+\begin{itemize}
+	\item Sistemas não holonômicos não são podem ser estabilizados em um ponto através de uma realimentação de estados suave e invariante no tempo (BROCKETT; 1982);
+	\item Abordagens clássicas: leis de controle {\em não suaves} ou {\em variantes no tempo};
+	\item Alguns métodos abandonam a idéia de estabilizar em um ponto e procuram obter a convergência a uma trajetória de referência, parametrizada no tempo.
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{2. Motivação}
+{\bf Desvantagens das abordagens clássicas:}
+\vspace{6mm}
+\begin{itemize}
+	\item Baixas taxas de convergência;
+	\item Trajetórias altamente oscilatórias;
+	\item Síntese e sintonia do controlador não é intuitiva;
+	\item Em implementações reais é difícil de se obter boa performance, devido às restrições nas entradas de controle e nos estados que naturalmente existem.
+\end{itemize}	
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{2. Motivação}
+{\bf Através do uso de Controle Preditivo:}
+\vspace{6mm}
+\begin{itemize}
+	\item Uma lei de controle não suave é implicitamente gerada;
+	\item Restrições nas entradas de controle e nos estados são consideradas diretamente:
+	\begin{itemize}
+		\item saturação dos atuadores podem ser considerados;
+		\item movimentação dentro de uma região segura.
+	\end{itemize}
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Organização}
+\begin{enumerate}
+{\textcolor\gray{
+\item Objetivos propostos
+\item Motivação
+{\textcolor\black{\bf\item Sistemas não holonômicos}}
+\item Modelo cinemático do robô
+\item Fundamentos de MPC
+\item Controle de robôs móveis
+\item Conclusões
+\item Trabalhos futuros}}
+\end{enumerate}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{3. Sistemas Não Holonômicos}
+%\begin{itemize}
+%	\item Sistemas que possuem restrições ao seu movimento;
+%	\item O espaço das velocidades é menor que o espaço de configuração.
+%\end{itemize}
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{3. Sistemas Não Holonômicos}
+\begin{itemize}
+	\item Sistemas que possuem restrições ao seu movimento;
+	\item O espaço das velocidades é menor que o espaço de configuração.
+\end{itemize}
+Exemplo:
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.65\linewidth]{../Figuras/parking.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Organização}
+\begin{enumerate}
+{\textcolor\gray{
+\item Objetivos propostos
+\item Motivação
+\item Sistemas não holonômicos
+{\textcolor\black{\bf\item Modelo cinemático do robô}}
+\item Fundamentos de MPC
+\item Controle de robôs móveis
+\item Conclusões
+\item Trabalhos futuros}}
+\end{enumerate}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{4. Modelo Cinemático de Robôs Móveis}
+\hspace{10mm} ${\bf x} = [x~~y~~\theta]^T$: estados de configuração
+
+\vspace{2mm}
+
+\hspace{10mm} ${\bf u} = [v~~w]^T$: entradas de controle
+
+\begin{wrapfigure}[4]{l}{60mm}
+	\mbox{\includegraphics[width=58mm]{../Figuras/robot.eps}}
+\end{wrapfigure}
+
+\hfill
+
+\begin{equation*}
+	\left\{
+		\begin{aligned}
+			\dot x	  &= v\cos\theta \\
+			\dot y	  &= v\sin\theta \\
+			\dot \theta &= w
+		\end{aligned}
+	\right.
+\end{equation*}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{4. Modelo Cinemático}
+{\em Restrição não holonômica}: a velocidade no centro de massa do robô é perpendicular ao eixo que liga as duas rodas ativas:
+\begin{wrapfigure}[4]{r}{60mm}
+	\mbox{\includegraphics[width=.95\linewidth]{../Figuras/nhcond2.eps}}
+\end{wrapfigure}
+\begin{equation*}
+	-\dot x\cos\theta + \dot y\sin\theta = 0
+\end{equation*}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{4. Modelo Cinemático}
+%{\bf Teorema de Brockett:}
+%\begin{small}\begin{equation*}
+%	\dot{\bf x}=f({\bf x},{\bf u})~~~\rightarrow~~~\dot{\bf x} = \sum_{i=1}^{m}f_i({\bf x})u_i, \quad m\leq n
+%\end{equation*}\end{small}	
+%
+%Se $f_i(0)$ são LI, existe uma lei de controle estática e suave que estabiliza o sistema sse $m=n$.
+%
+%Neste caso, tem-se que:
+%\begin{small}\begin{equation*}
+%	f_1(0) = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, ~~~
+%	f_2(0) = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}, ~~~
+%	{\rm rank}[f_1(0)~~f_2(0)]=2 ~ \rightarrow ~ f_i~\text{são LI}
+%\end{equation*}\end{small}
+%e $n=3$, $m=2$.
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{O Robô Twil}
+
+\begin{wrapfigure}{l}{40mm}
+	\mbox{\includegraphics[width=38mm]{../Figuras/twil.ps}}
+\end{wrapfigure}
+
+Considerando que cada motor pode desenvolver uma velocidade máxima de uma rotação por segundo, tem-se os seguintes limites de velocidade:
+\begin{small}\begin{align*}
+	-\overline v &\leq v \leq \overline v, \quad \overline v = 0,4712~m/s \\ 
+	-\overline w &\leq w \leq \overline w, \quad \overline w = 3,7699~rad/s
+\end{align*}\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Organização}
+\begin{enumerate}
+{\textcolor\gray{
+\item Objetivos propostos
+\item Motivação
+\item Sistemas não holonômicos
+\item Modelo cinemático do robô
+{\textcolor\black{\bf\item Fundamentos de MPC}}
+\item Controle de robôs móveis
+\item Conclusões
+\item Trabalhos futuros}}
+\end{enumerate}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{5. Controle Preditivo (MPC)}
+\begin{itemize}
+\item Problema de controle ótimo com horizonte finito e com restrições, não existe solução analítica $\rightarrow$ o problema de otimização é resolvido {\em on-line} para cada instante de amostragem;
+\item Modelo do sistema $\rightarrow$ predição dos estados dentro de um intervalo de tempo finito ({\em horizonte de predição});
+\item Minimizacão de uma função de custo $\rightarrow$ seqüência ótima de controle e estados e um custo ótimo para cada instante de amostragem;
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{5. MPC}
+%{\bf Analogia:} dirigir um carro.
+%\begin{figure}[htbp]
+%	\centering\includegraphics[width=.92\linewidth]{../Figuras/car_driving.eps}
+%\end{figure}
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{5. MPC}
+
+Função de custo:
+\begin{small}\begin{equation*}
+	\Phi(k) = \sum_{j=1}^N{\bf x}^T(k+j+1|k){\bf Q}{\bf x}(k+j+1|k) + {\bf u}^T(k+j|k){\bf R}{\bf u}(k+j|k)
+\end{equation*}\end{small}
+onde:
+\begin{itemize}
+\item $k$: instante de amostragem, $k\in{\mathbb N}^+$;
+\item $N$: horizonte de predição;
+\item $\bf Q$: matriz de ponderação dos estados;
+\item $\bf R$: matriz de ponderação do controle.
+\end{itemize}
+\end{slide}	
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{5. MPC}
+
+{\bf Problema de minimização da função de custo:}
+
+\vspace{2mm}
+
+Resolvido {\em on line}, para cada instante de amostragem $k$:
+\begin{small}\begin{equation*}
+	{\bf u}^\star,{\bf x}^\star = \arg\min_{{\bf u},{\bf x}}\left\{\Phi(k)\right\}
+\end{equation*}
+sujeito a:
+\begin{align*}
+	{\bf x}(k|k) &= {\bf x}_0 \\
+	{\bf x}(k+j+1|k) &= f({\bf x}(k+j|k),{\bf u}(k+j|k)), ~~~ j\in[0,N-1] \\
+	{\bf x}(k+j|k)   &\in \mathbb{X}, ~~~ j\in[0,N] \\
+	{\bf u}(k+j|k)   &\in \mathbb{U}, ~~~ j\in[0,N-1]
+\end{align*}\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{5. MPC}
+
+Obtém-se assim uma seqüência ótimas de estado:
+\begin{small}\begin{equation*}
+	{\bf x}^\star = \left\{{\bf x}^\star(k+1|k), {\bf x}^\star(k+2|k), \cdots, {\bf x}^\star(k+N|k)\right\},
+\end{equation*}\end{small}
+de controle
+\begin{small}\begin{equation*}
+	{\bf u}^\star = \left\{{\bf u}^\star(k|k), {\bf u}^\star(k+1|k), \cdots, {\bf u}^\star(k+N-1|k)\right\},
+\end{equation*}\end{small}	
+e um custo ótimo $\Phi^\star(k)$.
+\begin{itemize}
+\item apenas o controle para o instante atual, ${\bf u}^\star(k|k)$, é aplicado e o mesmo procedimento repete-se para o próximo instante de amostragem; 
+\item mecanismo chamado de {\em estratégia de horizonte móvel}.
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Organização}
+\begin{enumerate}
+{\textcolor\gray{
+\item Objetivos propostos
+\item Motivação
+\item Sistemas não holonômicos
+\item Modelo cinemático do robô
+\item Fundamentos de MPC
+{\textcolor\black{\bf\item Controle de robôs móveis}}
+\item Conclusões
+\item Trabalhos futuros}}
+\end{enumerate}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Organização}
+\begin{enumerate}
+\item Controle de robôs móveis
+	\begin{enumerate}
+	\item[1.1.] {\bf Estabilização em um ponto:}
+		\begin{itemize}
+		\item controle variante no tempo
+		\item controle não suave
+		\item MPC não linear
+		\item custo computacional
+		\end{itemize}
+		\vspace{2mm}		
+	{\textcolor\gray{\item[1.2.] Rastreamento de trajetória}}
+%		\begin{itemize}
+%		\item MPC não linear
+%		\item MPC linear
+%		\item custo computacional
+%		\end{itemize}
+	\end{enumerate}
+\end{enumerate}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{1.1. Estabilização em um Ponto}
+\begin{itemize}
+\item Dada uma postura qualquer ${\bf x}_{ref}$, encontrar uma lei de controle tal que
+\begin{small}\begin{equation*}
+	{\bf x}(t)-{\bf x}_{ref}=0
+\end{equation*}\end{small}
+em um intervalo de tempo finito;
+\item Condição de Brockett: não existe lei de controle suave e invariante no tempo que resolva este problema;
+\item ${\bf x}_{ref} = [0~~0~~0]^T$.
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Controle Variante no Tempo}
+{\bf Lei de Controle variante no tempo (SAMSON, AIT-ABDERRAHIM; 1991):}
+
+Transformação para um base variante no tempo:
+\begin{small}\begin{align*}
+	z_1 &= x\cos\theta+y\sin\theta \\
+	z_2 &= -x\sin\theta+y\cos\theta \\
+	z_3 &= \theta + z_2\sin t
+\end{align*}
+\vspace{2mm}
+\begin{equation*}
+	\left\{
+		\begin{aligned}
+			\dot z_1 &= v+z_2w \\
+			\dot z_2 &= -z_1w \\
+			\dot z_3 &= w - z_1w\sin t + z_2\cos t
+		\end{aligned}
+	\right., \quad \begin{aligned} w &= z_3-z_2\cos t \\ v &= -z_1+z_3w\sin t \end{aligned}
+\end{equation*}\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{Controle Variante no Tempo}
+%Escolhendo:
+%\begin{small}\begin{equation*}
+%	f(z_2,t)=z_2\sin t ~~ \rightarrow ~~ \frac{\partial f}{\partial z_2}=\sin t, \quad \frac{\partial f}{\partial t}=z_2\cos t
+%\end{equation*}
+%
+%O seguinte controle estabiliza o sistema assintoticamente na origem:
+%\begin{align*}
+%	w &= z_3-z_2\cos t \\
+%	v &= -z_1+z_3w\sin t
+%\end{align*}\end{small}
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Controle Variante no Tempo}
+${\bf x}_0=[-2,5~~1,3~~\pi/2]^T$
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.81\linewidth]{../Figuras/samson/traj_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{Controle Variante no Tempo}
+%\begin{figure}[htbp]
+%	\centering\includegraphics[width=.87\linewidth]{../Figuras/samson/state_01.eps}
+%\end{figure}
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Controle Variante no Tempo}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/samson/control_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{Controle Não Suave}
+%{\bf Lei de controle descontínua de (LAGES; 1998):}
+%
+%Transformação em coordenadas polares:
+%\begin{equation*}
+%	e=\sqrt{x^2+y^2}, \qquad \phi={\rm atan2}(y,x), \qquad \alpha=\theta-\phi
+%\end{equation*}
+%\begin{wrapfigure}[4]{l}{60mm}
+%	\mbox{\includegraphics[width=.87\linewidth]{../Figuras/polar.eps}}
+%\end{wrapfigure}
+%\begin{equation*}
+%	\left\{
+%		\begin{aligned}
+%			\dot e	  &= v\cos\alpha \\
+%			\dot\phi	  &= v\frac{\sin\alpha}{e} \\
+%			\dot\alpha  &= -v\frac{\sin\alpha}{e} + w
+%		\end{aligned}
+%	\right.
+%\end{equation*}
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Controle Não Suave}
+{\bf Lei de controle descontínua de (LAGES; 1998):}
+
+Transformação em coordenadas polares:
+\begin{small}\begin{equation*}
+	e=\sqrt{x^2+y^2}, \qquad \phi={\rm atan2}(y,x), \qquad \alpha=\theta-\phi
+\end{equation*}\end{small}
+\begin{wrapfigure}{l}{50mm}
+	\mbox{\includegraphics[width=.96\linewidth]{../Figuras/polar.eps}}
+\end{wrapfigure}
+\begin{small}\begin{equation*}
+	\left\{
+		\begin{aligned}
+			\dot e	  &= v\cos\alpha \\
+			\dot\phi	  &= v\frac{\sin\alpha}{e} \\
+			\dot\alpha  &= -v\frac{\sin\alpha}{e} + w
+		\end{aligned}
+	\right.
+\end{equation*}
+\begin{align*}
+	v &= -\gamma_1 e\cos\alpha \\
+	w &= -\gamma_2\alpha - \gamma_1\cos\alpha\frac{\sin\alpha}{\alpha}(\alpha-h\phi)
+\end{align*}\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{Controle Não Suave}
+%Função de Liapunov:
+%
+%\begin{equation*}
+%	V = \frac{1}{2}\left( \lambda e^2 + \alpha^2 + h\phi^2 \right)
+%\end{equation*}
+%
+%Lei de controle:
+%\begin{align*}
+%	v &= -\gamma_1 e\cos\alpha \\
+%	w &= -\gamma_2\alpha - \gamma_1\cos\alpha\frac{\sin\alpha}{\alpha}(\alpha-h\phi)
+%\end{align*}
+%
+%\begin{align*}
+%	\dot V &= -\lambda\gamma_1 e^2\cos^2\alpha-\gamma_2\alpha^2 \\
+%		  &\leq 0
+%\end{align*}	
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Controle Não Suave}
+
+\begin{small}$\gamma_1=0,1 \quad \gamma_2=0,2 \quad h=2 \quad {\bf x}_0=[-0,2~~3~~0]^T$\end{small}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.82\linewidth]{../Figuras/lages/traj_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{Controle Não Suave}
+%\begin{figure}[htbp]
+%	\centering\includegraphics[width=.89\linewidth]{../Figuras/lages/state_01.eps}
+%\end{figure}
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Controle Não Suave}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.89\linewidth]{../Figuras/lages/control_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Estabilização em um Ponto}
+{\bf NMPC:}
+
+Função de custo:
+\begin{small}\begin{equation*}
+	\Phi(k) = \sum_{j=1}^N{\bf x}^T(k+j+1|k){\bf Q}{\bf x}(k+j+1|k) + {\bf u}^T(k+j|k){\bf R}{\bf u}(k+j|k)
+\end{equation*}\end{small}
+
+Problema de otimização:
+\begin{small}\begin{equation*}
+	{\bf u}^\star,{\bf x}^\star = \arg\min_{{\bf u},{\bf x}}\left\{\Phi(k)\right\}
+\end{equation*}\end{small}
+sujeito a:
+\begin{small}\begin{align*}
+	{\bf x}(k|k) &= {\bf x}_0 \\
+	{\bf x}(k+j+1|k) &= f({\bf x}(k+j|k),{\bf u}(k+j|k)), ~~~ j\in[0,N-1]
+\end{align*}\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+Parâmetros de sintonia: \begin{small}$N=5$, ${\bf Q}={\rm diag}(1;1;0,5)$ e ${\bf R}={\rm diag}(0,1;0,1)$. ${\bf x}_0=[-0,2~~3~~0]^T$. ${\bf x}_f=[0~~0,91~~0]^T$.\end{small}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.73\linewidth]{../Figuras/pure_mpc/traj_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{NMPC - Estabilização em um Ponto}
+%\begin{figure}[htbp]
+%	\centering\includegraphics[width=.89\linewidth]{../Figuras/pure_mpc/state_01.eps}
+%\end{figure}
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.86\linewidth]{../Figuras/pure_mpc/control_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+\begin{itemize}
+\item Nota-se então um grande erro em regime no estado $y$, sendo que $x$ e $\theta$ convergem para a origem;
+\item Existe uma simetria entre os estados $x$ e $y$, ambos dependendo da mesma entrada de controle:
+\begin{small}\begin{align*}
+	\dot x&=v\cos\theta \\
+	\dot y&=v\sin\theta
+\end{align*}\end{small}
+\item O mínimo encontrado pelo algoritmo de otimização não é único, fazendo com que o valor da função de custo estabilize em uma curva de nível não nula.
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+Alternativa de (ESSEN; 2001):
+\begin{small}\begin{multline*}
+	\Phi(k) = \sum_{j=1}^{N-1}{\bf x}^T(k+j|k){\bf Q}(j){\bf x}(k+j|k) + \\ + \sum_{j=0}^{N-1}{\bf u}^T(k+j|k){\bf R}{\bf u}(k+j|k) + \Omega({\bf x}(k+N|k))
+\end{multline*}
+
+\begin{itemize}
+\item Custo terminal:
+\begin{equation*}
+	\Omega({\bf x}(k+N|k)) = {\bf x}^T(k+N|k){\bf P}{\bf x}(k+N|k)
+\end{equation*}	
+\item Matriz ${\bf Q}(j)$ crescente exponencialmente: 
+\begin{equation*}
+	{\bf Q}(j)=2^{j-1}{\bf Q}
+\end{equation*}
+\end{itemize}\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+Parâmetros de sintonia: \begin{small}$N=5$, ${\bf Q}={\rm diag}(1;1;0,5)$ e ${\bf R}={\rm diag}(0,1;0,1)$, ${\bf P}=50{\bf Q}(N)$. ${\bf x}_0=[-0,2~~3~~0]^T$, ${\bf x}_f=[0~~-0,003~~0]^T$.\end{small}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.71\linewidth]{../Figuras/essen_mpc/traj_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/essen_mpc/state_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/essen_mpc/control_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{NMPC - Estabilização em um Ponto}
+%\begin{itemize}
+%\item A função de custo de (ESSEN; 2001), faz com que o robô estabilize mais perto da origem. Entretando, ainda existe um pequeno erro;
+%\item Ainda existe um acoplamento entre os estados $x$ e $y$, ambos dependendo da mesma entrada de controle.
+%\end{itemize}
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+{\bf Alternativa: transformar a função de custo para coordenadas polares}.
+\begin{small}\begin{equation*}
+	e=\sqrt{x^2+y^2}, \qquad \phi={\rm atan2}(y,x), \qquad \alpha=\theta-\phi
+\end{equation*}\end{small}
+\begin{wrapfigure}[4]{l}{60mm}
+	\mbox{\includegraphics[width=.87\linewidth]{../Figuras/polar.eps}}
+\end{wrapfigure}
+\begin{small}\begin{equation*}
+	\left\{
+		\begin{aligned}
+			\dot e	  &= v\cos\alpha \\
+			\dot\phi	  &= v\frac{\sin\alpha}{e} \\
+			\dot\alpha  &= -v\frac{\sin\alpha}{e} + w
+		\end{aligned}
+	\right.
+\end{equation*}\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+Função de Liapunov: $V=\frac{1}{2}(\lambda e^2+h\phi^2+\alpha^2)$. Escrevendo matricialmente:
+\begin{small}\begin{equation*}
+	{\bf x}_p = \begin{bmatrix} e \\ \phi \\ \alpha \end{bmatrix}, \qquad
+	V = {\bf x}_p^T{\bf Q}_p{\bf x}_p, \qquad 
+	{\bf Q}_p=\begin{bmatrix} \frac{1}{2}\lambda & 0 & 0 \\
+					    0 & \frac{1}{2}h & 0 \\
+					    0 & 0 & \frac{1}{2}
+		   \end{bmatrix}
+\end{equation*}\end{small}
+\begin{small}\begin{multline*}
+	\Phi_p(k) = \sum_{j=1}^{N}{\bf x}_p^T(k+j|k){\bf Q}_p{\bf x}_p(k+j|k) +\\ + {\bf u}^T(k+j-1|k){\bf R}{\bf u}(k+j-1|k)
+\end{multline*}
+\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+Parâmetros de sintonia: \begin{small}$N=5$, ${\bf Q}={\rm diag}(1;1;0,5)$ e ${\bf R}={\rm diag}(0,1;0,1)$. ${\bf x}_0=[-0,2~~3~~0]^T$. ${\bf x}_f=[0~~0~~0]^T$.\end{small}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.74\linewidth]{../Figuras/polar_mpc/traj_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/polar_mpc/state_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/polar_mpc/control_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+\begin{itemize}
+\item Com a transformação da função de custo para coordenadas polares foi possível obter-se um desempenho superior, sem o aumento do horizonte e sem a inclusão de outros termos;
+\item Este modelo faz com que todas as variáveis de estado convirjam ao mesmo tempo para a origem (LAGES; 1998);
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+{\bf Inclusão de restrições no controle:}
+\begin{small}\begin{alignat*}{3}
+	-\overline v &\leq &v &\leq \overline v, &\quad \overline v &= 0,4712~m/s \\ 
+	-\overline w &\leq &w &\leq \overline w, &\quad \overline w &= 3,7699~rad/s
+\end{alignat*}
+%\begin{equation*}
+%	{\bf Du}\leq {\bf d} \quad \rightarrow \quad
+%	\begin{bmatrix}
+%		1 & 0 \\ 0 & 1 \\ -1 & 0 \\ 0 & -1
+%	\end{bmatrix}	\begin{bmatrix} v \\ w 
+%	\end{bmatrix} \leq \begin{bmatrix}
+%		0,4712~m/s \\ 3,7699~rad/s \\ 0,4712~m/s \\ 3,7699~rad/s
+%	\end{bmatrix}
+%\end{equation*}\end{small}
+\vspace{3mm}
+\begin{equation*}
+	{\bf u}^\star,{\bf x}^\star = \arg\min_{{\bf u},{\bf x}}\left\{\Phi_p(k)\right\}
+\end{equation*}
+sujeito a:
+\begin{alignat*}{3}
+	{\bf x}(k|k) &= {\bf x}_0 \\
+	{\bf x}(k+j+1|k) &= f({\bf x}(k+j|k),{\bf u}(k+j|k)), &~~ j&\in[0,N-1] \\
+	{\bf Du}(k+j|k)  &\leq {\bf d}, &~~ j&\in[0,N-1]
+\end{alignat*}\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{NMPC com Restrições}
+%\begin{equation*}
+%	{\bf u}^\star,{\bf x}^\star = \arg\min_{{\bf u},{\bf x}}\left\{\Phi_p(k)\right\}
+%\end{equation*}
+%sujeito a:
+%\begin{alignat*}{3}
+%	{\bf x}(k|k) &= {\bf x}_0 \\
+%	{\bf x}(k+j+1|k) &= f({\bf x}(k+j|k),{\bf u}(k+j|k)), &~~~ j&\in[0,N-1] \\
+%	{\bf Du}(k+j|k)  &\leq {\bf d}, &~~~ j&\in[0,N-1]
+%\end{alignat*}
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC com Restrições}
+Parâmetros de sintonia: \begin{small}$N=5$, ${\bf Q}={\rm diag}(1;1;0,5)$ e ${\bf R}={\rm diag}(0,1;0,1)$. ${\bf x}_0=[3~~6~~0]^T$.\end{small}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.74\linewidth]{../Figuras/restu_mpc/traj_04.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC com Restrições}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/restu_mpc/state_04.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC com Restrições}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/restu_mpc/control_04.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+{\bf Comparação entre o NMPC proposto e o controle variante no tempo de (SAMSON, AIT-ABDERRAHIM; 1991):}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.74\linewidth]{../Figuras/comps/traj_03.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC e Controle Variante no Tempo}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/comps/state_03.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC e Controle Variante no Tempo}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/comps/control_03.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+{\bf Comparação entre o NMPC proposto e o controle não suave de (LAGES; 1998):}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.74\linewidth]{../Figuras/comps/traj_05.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC e Controle Não Suave}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/comps/state_05.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC e Controle Não Suave}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/comps/control_05.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Estabilização em um Ponto}
+{\bf O custo computacional:}
+\begin{itemize}
+\item Considerações acerca do esforço computacional do NMPC precisam ser feitas a fim de se avaliar a aplicabilidade da técnica;
+\item Critério de avaliação: número de operações em ponto flutuante por período de amostragem;
+\item Computador Athlon 2600+: {\textcolor\red{57.600.000}} OPF por período de amostragem;
+\item Condições de simulação: trajetória de referência circular com restrições no controle: ${\bf Du}\leq{\bf d}$.
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{O Custo Computacional}
+%{\bf Leis de controle clássicas:} Possuem uma solução analítica e assim um baixo custo computacional:
+%\begin{table}[htpb]
+% \label{tab:classical}
+% \centering
+% \begin{tabular}{l|c}
+%  \hline
+%  Lei de controle	 & OPF \\
+%  \hline\hline
+%  Variante no tempo	 & 35 \\
+%  Não suave    	 & 32 \\
+%  \hline
+% \end{tabular}
+%\end{table}
+%
+%{\bf NMPC:} Não existe solução analítica; um problema de otimização com restrições é resolvido {\em on-line} para cada instante de amostragem.
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{O Custo Computacional}
+{\bf Caso 1:} O NMPC original, com função de custo quadrática em coordenadas cartesianas.
+\vspace{2mm}
+\begin{center}
+ \begin{tabular}{c|c|c}
+  \hline
+  Horizonte & OPF & ${\bf x}_f$ \\
+  \hline\hline
+  5	& 640.970 & $[0~~0,85~~0]^T$ \\
+  10	& 11.399.000 & $[0~~0,62~~0]^T$ \\
+  12	& 24.589.000 & $[0~~0,52~~0]^T$ \\
+  15 & \textcolor\red{62.619.000} & $[0~~0,40~~0]^T$ \\
+  \hline
+ \end{tabular}\end{center}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{O Custo Computacional}
+{\bf Caso 2:} O NMPC de (ESSEN; 2001), com função de custo com custo terminal e matriz $\bf Q$ crescente exponencialmente.
+\vspace{2mm}
+\begin{center}
+ \begin{tabular}{c|c|c}
+  \hline
+  Horizonte & OPF & ${\bf x}_f$ \\
+  \hline\hline
+  5	& 1.401.900 & $[0~~0,0018~~0]^T$ \\
+  10	& 38.388.000 & $[0~~0,0001~~0]^T$ \\
+  12	& \textcolor\red{92.569.000} & $[0~~0~~0]^T$ \\
+  15 & \textcolor\red{607.710.000} & $[0~~0~~0]^T$ \\
+  \hline
+\end{tabular}\end{center}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{O Custo Computacional}
+{\bf Caso 3:} O NMPC proposto neste trabalho, com função de custo quadrática e com as variáveis de estado em coordenadas polares.
+\vspace{2mm}
+\begin{center}
+ \begin{tabular}{c|c|c}
+  \hline
+  Horizonte & OPF & ${\bf x}_f$ \\
+  \hline\hline
+  5	& 816.800 & $[0~~0~~0]^T$ \\
+  10	& 12.827.000 & $[0~~0~~0]^T$ \\
+  12	& 43.442.000 & $[0~~0~~0]^T$ \\
+  15 & \textcolor\red{139.210.000} & $[0~~0~~0]^T$ \\
+  \hline
+ \end{tabular}\end{center}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{O Custo Computacional}
+\begin{itemize}
+\item O método proposto mostrou-se bem satisfatório para qualquer horizonte de predição;
+\item É possível manter um bom compromisso entre desempenho e esforço computacional;
+\item Possui melhor desempenho se comparado com técnicas clássicas de controle de robôs não holonômicos.
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{O Custo Computacional}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.75\linewidth]{../Figuras/restu_mpc/traj_03.eps}
+\end{figure}
+\begin{small}Linha contínua: $N=5$; linha tracejada: $N=12$\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Organização}
+\begin{enumerate}
+\item Controle de robôs móveis
+	\begin{enumerate}
+	{\textcolor\gray{\item[1.1.] Estabilização em um ponto}}
+%		\begin{itemize}
+%		\item controle variante no tempo
+%		\item controle não suave
+%		\item MPC não linear
+%		\item custo computacional
+%		\end{itemize}
+		\vspace{2mm}		
+	\item[1.2.] {\bf Rastreamento de trajetória:}
+		\begin{itemize}
+		\item MPC não linear
+		\item MPC linear
+		\item custo computacional
+		\end{itemize}
+	\end{enumerate}
+\end{enumerate}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{1.2. Rastreamento de Trajetória}
+\begin{itemize}
+\item O problema de rastreamento de trajetória pode ser posto como encontrar uma lei de controle tal que
+\begin{small}\begin{equation*}
+	{\bf x}(t)-{\bf x}_{ref}(t)=0
+\end{equation*}\end{small}
+em um intervalo de tempo finito;
+\item Robô de referência:
+\begin{small}\begin{equation*}
+	\left\{
+		\begin{aligned}
+			\dot x_{ref}	  &= v_{ref}\cos\theta_{ref} \\
+			\dot y_{ref}	  &= v_{ref}\sin\theta_{ref} \\
+			\dot\theta_{ref} &= w_{ref}
+		\end{aligned}
+	\right.
+\end{equation*}\end{small}
+\item ${\bf x}_{ref}$ e ${\bf u}_{ref}$ são determinados previamente.
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Rastreamento de Trajetória}
+\begin{small}\begin{align*}
+	\tilde{\bf x}(k) &= {\bf x}(k) - {\bf x}_{ref}(k) \\
+	\tilde{\bf u}(k) &= {\bf u}(k) - {\bf u}_{ref}(k)
+\end{align*}
+\begin{equation*}
+	\Phi(k) = \sum_{j=1}^{N}\tilde{\bf x}^T(k+j|k){\bf Q}\tilde{\bf x}(k+j|k) + \tilde{\bf u}^T(k+j-1|k){\bf R}\tilde{\bf u}(k+j-1|k)
+\end{equation*}
+\begin{equation*}
+	{\bf u}^\star,~{\bf x}^\star = \arg\min_{{\bf u},{\bf x}}\left\{\Phi(k)\right\}
+\end{equation*}
+sujeito a:\end{small}
+\begin{footnotesize}\begin{alignat*}{2}
+	{\bf x}(k|k)    &= {\bf x}_0 \\
+	{\bf x}(k+j|k)  &= f({\bf x}(k+j-1|k),{\bf u}(k+j-1|k)), &\quad j &\in [1,N] \\
+	{\bf Du}(k+j|k) &\leq {\bf d}, 					  &\quad j &\in [0,N-1]
+\end{alignat*}\end{footnotesize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Rastreamento de Trajetória}
+\begin{small}Parâmetros: $N=5$, ${\bf Q}={\rm diag}(1;1;0,5)$ e ${\bf Q}={\rm diag}(0,1;0,1)$. ${\bf x}_0=[-0,5~~-2,5~~0]^T$. Trajetória de referência circular.\end{small}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.71\linewidth]{../Figuras/pure_traj/traj_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{NMPC - Rastreamento de Trajetória}
+%\begin{figure}[htbp]
+%	\centering\includegraphics[width=.87\linewidth]{../Figuras/pure_traj/state_01.eps}
+%\end{figure}
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Rastreamento de Trajetória}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/pure_traj/control_01.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Rastreamento de Trajetória}
+\begin{small}Parâmetros: $N=5$, ${\bf Q}={\rm diag}(1;1;0,5)$ e ${\bf Q}={\rm diag}(0,1;0,1)$. ${\bf x}_0=[-1~~-1~~0]^T$. Trajetória de referência em "U".\end{small}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.71\linewidth]{../Figuras/pure_traj/traj_02.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{NMPC - Rastreamento de Trajetória}
+%\begin{figure}[htbp]
+%	\centering\includegraphics[width=.86\linewidth]{../Figuras/pure_traj/state_02.eps}
+%\end{figure}
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Rastreamento de Trajetória}
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/pure_traj/control_02.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{slide}{NMPC - Rastreamento de Trajetória}
+%\begin{itemize}
+%\item O robô converge para a referência suavemente;
+%\item Nota-se uma baixa taxa de convergência.
+%\end{itemize}
+%\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Rastreamento de Trajetória}
+\begin{itemize}
+\item O robô converge para a referência suavemente;
+\item Nota-se uma baixa taxa de convergência.
+\end{itemize}
+{\bf Solução:} Função de custo proposta por (ESSEN; 2001)
+\begin{small}\begin{multline*}
+	\Phi(k) = \sum_{j=1}^{N-1}\tilde{\bf x}^T(k+j|k){\bf Q}(j)\tilde{\bf x}(k+j|k) + \\ + \sum_{j=0}^{N-1}\tilde{\bf u}^T(k+j|k){\bf R}\tilde{\bf u}(k+j|k) + \Omega(\tilde{\bf x}(k+N|k))
+\end{multline*}
+Custo terminal: $\Omega(\tilde{\bf x}(k+N|k)) = \tilde{\bf x}^T(k+N|k){\bf P}\tilde{\bf x}(k+N|k)$;
+
+Matriz ${\bf Q}(j)$ crescente exponencialmente: ${\bf Q}(j)=2^{j-1}{\bf Q}$.
+\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Rastreamento de Trajetória}
+\begin{small}Parâmetros: $N=5$, ${\bf Q}={\rm diag}(1;1;0,5)$, ${\bf R}={\rm diag}(0,1;0,1)$ e ${\bf P}=30{\bf Q}(N)$. ${\bf x}_0=[-0,5~~-2,5~~0]^T$. Referência circular.\end{small}
+%
+% COMPARAÇÃO COM O NMPC ORIGINAL (LINHA TRACEJADA)
+%
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.76\linewidth]{../Figuras/essen_traj/traj_11.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Rastreamento de Trajetória}
+%
+% COMPARAÇÃO COM O NMPC ORIGINAL (LINHA TRACEJADA)
+%
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/essen_traj/control_11.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Rastreamento de Trajetória}
+\begin{small}Parâmetros: $N=5$, ${\bf Q}={\rm diag}(1;1;0,5)$ e ${\bf Q}={\rm diag}(0,1;0,1)$. ${\bf x}_0=[-1~~-1~~0]^T$. Referência em "U".\end{small}
+%
+% COMPARAÇÃO COM O NMPC ORIGINAL (LINHA TRACEJADA)
+%
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.75\linewidth]{../Figuras/essen_traj/traj_12.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{NMPC - Rastreamento de Trajetória}
+%
+% COMPARAÇÃO COM O NMPC ORIGINAL (LINHA TRACEJADA)
+%
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/essen_traj/control_12.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{1.2. Rastreamento de Trajetória}
+\begin{itemize}
+\item Se o sistema é não linear ou existem restrições não lineares $\rightarrow$ problema de otimização não convexo;
+\item Se o sistema é linear, as restrições são lineares e o custo é quadrático $\rightarrow$ programação quadrática $\rightarrow$ problema de otimização convexo;
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{1.2. Rastreamento de Trajetória}
+\begin{itemize}
+\item Se o sistema é não linear ou existem restrições não lineares $\rightarrow$ problema de otimização não convexo;
+\item Se o sistema é linear, as restrições são lineares e o custo é quadrático $\rightarrow$ programação quadrática $\rightarrow$ problema de otimização convexo;
+\vspace{7mm}
+\item Para o problema de rastreamento de trajetória, é possível desenvolver um algoritmo de MPC linear, através da transformação do problema de otimização em um problema de programação quadrática.
+\item O modelo cinemático é linearizado sucessivamente ao longo da trajetória de referência.
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+\begin{itemize}
+\item Modelo cinemático: \begin{small}$\dot{\bf x}=f({\bf x},{\bf u})$\end{small};
+\item Modelo de referência: \begin{small}$\dot{\bf x}_{ref}=f({\bf x}_{ref},{\bf u}_{ref})$\end{small};
+\end{itemize}
+
+Através de expansão em séries de Taylor, pode-se chegar ao seguinte modelo linear e variante no tempo:
+\begin{small}\begin{equation*}
+	\dot{\tilde{\bf x}} = {\bf A}{\tilde{\bf x}} + {\bf B}{\tilde{\bf u}}, \qquad\qquad
+		\begin{aligned}
+		\tilde{\bf x}&={\bf x}-{\bf x}_{ref} \\
+		\tilde{\bf u}&={\bf u}-{\bf u}_{ref}
+	\end{aligned}
+\end{equation*}
+\vspace{2mm}
+\begin{equation*}
+	{\bf A} = \begin{bmatrix}
+		0 & 0 & -v_{ref}\sin\theta_{ref} \\
+		0 & 0 &  v_{ref}\cos\theta_{ref} \\
+		0 & 0 & 0 \end{bmatrix}, \quad
+	{\bf B} = \begin{bmatrix}
+		\cos\theta_{ref} & 0 \\
+		\sin\theta_{ref} & 0 \\
+		0 & 1 \end{bmatrix}
+\end{equation*}\end{small}	
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+{\bf O algoritmo de programação quadrática:}
+\begin{small}\begin{equation*}
+	\Phi(k) = \sum_{j=1}^{N}\tilde{\bf x}^T(k+j|k){\bf Q}\tilde{\bf x}(k+j|k) + \tilde{\bf u}^T(k+j-1|k){\bf R}\tilde{\bf u}(k+j-1|k)
+\end{equation*}\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+{\bf O algoritmo de programação quadrática:}
+\begin{small}\begin{equation*}
+	\Phi(k) = \sum_{j=1}^{N}\tilde{\bf x}^T(k+j|k){\bf Q}\tilde{\bf x}(k+j|k) + \tilde{\bf u}^T(k+j-1|k){\bf R}\tilde{\bf u}(k+j-1|k)
+\end{equation*}\end{small}
+\begin{center}$\Updownarrow$\end{center}
+\begin{small}\begin{equation*}
+	\bar\Phi(k) = \frac{1}{2}\bar{\bf u}^T(k){\bf H}(k)\bar{\bf u}(k) + {\bf f}^T(k)\bar{\bf u}(k) + {\bf g}(k)
+\end{equation*}
+\begin{align*}
+	{\bf H}(k) &= 2\left(\bar{\bf B}(k)^T\bar{\bf Q}\bar{\bf B}(k)+\bar{\bf R}\right) \\
+	{\bf f}(k) &= 2\bar{\bf B}^T(k)\bar{\bf Q}\bar{\bf A}(k)\tilde{\bf x}(k|k) \\
+	{\bf g}(k) &= \tilde{\bf x}^T(k|k)\bar{\bf A}^T(k)\bar{\bf Q}\bar{\bf A}(k)\tilde{\bf x}(k|k)
+\end{align*}\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+{\bf O algoritmo de programação quadrática:}
+\begin{small}\begin{equation*}
+	\bar\Phi'(k) = \frac{1}{2}\bar{\bf u}^T(k){\bf H}(k)\bar{\bf u}(k) + {\bf f}^T(k)\bar{\bf u}(k)
+\end{equation*}
+\vspace{2mm}
+\begin{equation*}
+	\tilde{\bf u}^\star = \arg\min_{\tilde{\bf u}}\left\{\bar\Phi'(k)\right\}
+\end{equation*}
+\begin{equation*}
+	\text{sujeito a:}~~~{\bf D}\tilde{\bf u}(k+j|k) \leq {\bf d}, \quad j\in[0,N-1]
+\end{equation*}\end{small}
+\vspace{2mm}
+\begin{itemize}
+\item variável de decisão: \begin{small}$\tilde{\bf u}$\end{small};
+\item a dinâmica do sistema e a condição inicial estão inseridas na função de custo.
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+Parâmetros de sintonia: \begin{small}$N=5$, ${\bf Q}={\rm diag}(1;1;0,5)$ e ${\bf R}={\rm diag}(0,1;0,1)$. ${\bf x}_0=[-0,5~~-2,5~~0]^T$.\end{small}
+%
+% COMPARAÇÃO COM O CASO NÃO LINEAR (LINHA TRACEJADA)
+%
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.75\linewidth]{../Figuras/pure_traj/traj_05.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+%
+% COMPARAÇÃO COM O CASO NÃO LINEAR (LINHA TRACEJADA)
+%
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/pure_traj/control_05.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+Parâmetros de sintonia: \begin{small}$N=5$, ${\bf Q}={\rm diag}(1;1;0,5)$ e ${\bf R}={\rm diag}(0,1;0,1)$. ${\bf x}_0=[-1~~-1~~\pi/2]^T$.\end{small}
+%
+% COMPARAÇÃO COM O CASO NÃO LINEAR (LINHA TRACEJADA)
+%
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.75\linewidth]{../Figuras/pure_traj/traj_06.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+%
+% COMPARAÇÃO COM O CASO NÃO LINEAR (LINHA TRACEJADA)
+%
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/pure_traj/control_06.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+\begin{itemize}
+\item O robô converge para a referência suavemente;
+\item Nota-se uma baixa taxa de convergência.
+\end{itemize}
+{\bf Solução:} Função de custo proposta por (ESSEN; 2001)
+\begin{small}\begin{multline*}
+	\Phi(k) = \sum_{j=1}^{N-1}\tilde{\bf x}^T(k+j|k){\bf Q}(j)\tilde{\bf x}(k+j|k) + \\ + \sum_{j=0}^{N-1}\tilde{\bf u}^T(k+j|k){\bf R}\tilde{\bf u}(k+j|k) + \Omega(\tilde{\bf x}(k+N|k))
+\end{multline*}
+Custo terminal: $\Omega(\tilde{\bf x}(k+N|k)) = \tilde{\bf x}^T(k+N|k){\bf P}\tilde{\bf x}(k+N|k)$;
+
+Matriz ${\bf Q}(j)$ crescente exponencialmente: ${\bf Q}(j)=2^{j-1}{\bf Q}$.
+\end{small}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+Parâmetros de sintonia: \begin{small}$N=5$, ${\bf Q}={\rm diag}(1;1;0,5)$ e ${\bf R}={\rm diag}(0,1;0,1)$. ${\bf x}_0=[-0,5~~-2,5~~0]^T$.\end{small}
+%
+% COMPARAÇÃO COM O CASO NÃO LINEAR (LINHA TRACEJADA)
+%
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.75\linewidth]{../Figuras/essen_traj/traj_13.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+%
+% COMPARAÇÃO COM O CASO NÃO LINEAR (LINHA TRACEJADA)
+%
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/essen_traj/control_13.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+Parâmetros de sintonia: \begin{small}$N=5$, ${\bf Q}={\rm diag}(1;1;0,5)$ e ${\bf R}={\rm diag}(0,1;0,1)$. ${\bf x}_0=[-1~~-1~~\pi/2]^T$.\end{small}
+%
+% COMPARAÇÃO COM O CASO NÃO LINEAR (LINHA TRACEJADA)
+%
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.75\linewidth]{../Figuras/essen_traj/traj_14.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+%
+% COMPARAÇÃO COM O CASO NÃO LINEAR (LINHA TRACEJADA)
+%
+\begin{figure}[htbp]
+	\centering\includegraphics[width=.87\linewidth]{../Figuras/essen_traj/control_14.eps}
+\end{figure}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{LMPC - Rastreamento de Trajetória}
+{\bf O custo computacional:}
+\begin{itemize}
+\item MPC não linear: $N\times(n+m)$ variáveis de decisão;
+\item MPC linear por QP: $N\times m$ variáveis de decisão;
+\item Critério de avaliação: número de operações em ponto flutuante por período de amostragem;
+\item Computador Athlon 2600+: {\textcolor\red{57.600.000}} OPF por período de amostragem;
+\end{itemize}
+\vspace{2mm}
+{\bf Comparação entre:}
+\begin{itemize} 
+\item {\em Caso 1}: MPC não linear;
+\item {\em Caso 2}: MPC linear;
+\item Ambos com $\Phi$ com $\bf Q$ exponencial e custo terminal $\Omega$.
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{O Custo Computacional}
+\begin{itemize}
+\item Condições de simulação: trajetória de referência circular e restrições nas entradas de controle: ${\bf Du}\leq{\bf d}$.
+\end{itemize}
+\vspace{2mm}
+\begin{center}
+ 	\begin{tabular}{c|cc}
+  		\hline
+  		Horizonte & \multicolumn{2}{c}{OPF} \\
+          		& Caso 1 & Caso 2 \\
+  		\hline\hline
+  		5	& 1.109.800 & 16.546 \\
+  		10	& 50.156.000 & 94.792 \\
+  		15	& {\textcolor\red{536.410.000}} & 352.360 \\
+  		20	& --- & 908.010  \\
+  		\hline
+ 	\end{tabular}
+\end{center}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{O Custo Computacional}
+\begin{itemize}
+\item O LMPC é uma boa alternativa quando deseja-se diminuir o esforço computacional;
+\item Desvantagem: a linearização é válida apenas em uma região próxima do ponto de referência;
+\item Mantém bom desempenho se comparado com o caso não linear.
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Conclusões}
+\begin{itemize}
+\item Desenvolvimento de algoritmos de MPC para robôs móveis não holonômicos envolvendo dois problemas:
+	\begin{itemize}
+	\item Estabilização em um ponto;
+	\item Rastreamento de trajetória;
+	\end{itemize}
+\item Considerações acerca do esforço computacional foram feitas.
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Conclusões}
+\begin{itemize}
+\item {\bf Estabilização em um ponto:}
+	\begin{itemize}
+	\item Identificado um erro em regime nas variáveis de estado;
+	\item A introdução de uma transformação de coordenadas na função de custo resolveu o problema;
+	\item {\em Vantagens sobre leis clássicas:}
+		\begin{itemize}
+		\item existência de um critério de performance a ser minimizado; 
+		\item a capacidade de considerar restrições de um forma direta; 
+		\item a sintonia dos parâmetros é intuitiva; o controle gerado é tal que respeita as condições de Brockett;
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Conclusões}
+\begin{itemize}
+\item {\bf Rastreamento de trajetória:}
+	\begin{itemize}
+	\item O problema foi satisfatoriamente resolvido;
+	\item Melhora do desempenho com a inclusão de outros termos na função de custo;
+	\item A fim de diminuir o esforço computacional, uma abordagem alternativa foi desenvolvida, utilizando MPC linear;
+	\item A desvantagem é que a linearização é válida somente em torno do ponto de referência;
+	\item Foi possível manter um bom desempenho se comparado com o método não linear.
+	\end{itemize}
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Conclusões}
+\begin{itemize}
+\item {\bf O custo computacional:}
+	\begin{itemize}
+	\item MPC: solução de um problema de otimização para cada instante de amostragem, apresentando um elevado custo computacional;
+	\item Entretanto, a utilização de processadores rápidos e algoritmos eficientes torna viável uma implementação real;
+	\item Para o problema de rastreamento de trajetória, foi possível diminuir consideravelmente o custo computacional;
+	\end{itemize}
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Trabalhos Futuros}
+\begin{itemize}
+\item Prova formal da estabilidade do sistema em malha fechada:
+	\begin{itemize}
+	\item modificação da função de custo com a inclusão de um custo terminal e restrições nas variáveis de estado (MAYNE; 2000);
+	\item {\em dual-mode} MPC;
+	\item MPC contrativo;
+	\end{itemize}
+\item Inclusão de trajetórias de aproximação para o caso do MPC linear;
+\item Validação experimental;
+\item Extensão dos algoritmos para o modelo dinâmico do robô;
+\item Consideração de observadores de estado.	
+\end{itemize}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{slide}{Obrigado!}
+\vspace{10mm}
+\begin{center}
+Felipe Kühne
+
+{\tt kuhne@eletro.ufrgs.br}
+
+\vspace{5mm}
+
+João Manoel Gomes da Silva Jr.
+
+{\tt jmgomes@eletro.ufrgs.br}
+
+\vspace{5mm}
+
+Walter Fetter Lages
+
+{\tt fetter@eletro.ufrgs.br}
+\end{center}
+\end{slide}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\end{document}

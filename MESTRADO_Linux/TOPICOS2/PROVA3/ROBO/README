@@ -1,0 +1,13 @@
+Este diretório contém arquivos necessários para executar o programa robo.cpp, onde o robô realiza uma trajetória em forma de oito.
+
+Filtro de Kalman e sockets não são utilizados. O controle por realimentação linearizante é imnplementado. Apenas a posição do robô é linearizada.
+
+Descrição dos arquivos:
+
+-- Makefile: para compilar o programa func.cpp;
+-- mmath.h: contém funções para manipulação de matrizes e vetores;
+-- normal.cpp: contém função para gerar um número aleatório com distribuição normal;
+-- func.cpp: contém funções relativas ao modelo do robô;
+-- controls.cpp contém funções relativas à linearização e ao controle linear do robô;
+-- trajplot.gnu: script para gerar um gráfico usando o Gnuplot;
+-- robo.cpp: programa principal.

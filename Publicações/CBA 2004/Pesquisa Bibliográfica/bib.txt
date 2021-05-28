@@ -1,0 +1,17 @@
+D. Kang and H. Hashimoto and F. Harashima. "Position estimation for mobile robot using sensor fusion". IEEE International Conference on Intelligent Robots and Systems. 1995. Pittsburgh, Pensilvania, USA. pp. 271-276.
+
+
+S. Yajnik, N. K. Jha. "Graceful degradation in algorithm-based fault tolerant multiprocessor systems". IEEE Transactions on Parallel and distributed systems. volume 8, no. 2. february, 1997. pp. 137-153.
+
+
+R. C. Luo and K. L. Su. "A review of high-level multisensor fusion: approaches and applications
+". Multisensor Fusion and Integration for Intelligent Systems, 1999. MFI '99. Proceedings. 1999 IEEE/SICE/RSJ International Conference on. 1999. Taipei, Taiwan. pp. 25-31.
+
+
+J.-S. Gutmann. "Markov-Kalman Localization for Mobile Robots". 16 th International Conference on Pattern Recognition (ICPR'02) Volume 2 
+August 11 - 15, 2002 
+Quebec City, QC, Canada. pp. 20601-20604.
+
+
+Hoshino, M.   Gunji, Y.   Oho, S.   Takano, K.. "A Kalman filter to estimate direction for automotive navigation
+". Multisensor Fusion and Integration for Intelligent Systems, 1996. IEEE/SICE/RSJ International Conference on. 8-11 Dec 1996. Washington, DC . pp. 145-150.

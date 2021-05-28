@@ -1,0 +1,65 @@
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lista1"
+%%% End: 
+\documentclass[11pt,epsf]{report}
+\setlength{\vsize}{297mm}
+\setlength{\hsize}{210mm}
+\setlength{\textheight}{230mm}
+\setlength{\textwidth}{170mm}
+%\voffset -2.5cm
+\hoffset -2.5cm
+
+\usepackage[latin1]{inputenc}
+%\usepackage{latexsym}
+%\usepackage{amssymb}
+\usepackage[dvips]{graphicx}
+
+\newenvironment{alternativas}{\renewcommand{\labelenumi}{(\alph{enumi})}\begin{enumerate}\addtolength{\itemsep}{-2.5mm}\setlength{\parsep}{0pt}}{\end{enumerate}}
+
+\newcounter{qcounter}
+\newenvironment{question}{\stepcounter{qcounter}\paragraph{\arabic{qcounter}.}}{}
+
+
+
+
+\begin{document}
+
+\begin{center}
+ENG04035 - Sistemas de Controle I \\
+Profs. Romeu Reginatto e Tristão Garcia \\
+Princípios de Realimentação e Ações Básicas de Controle
+\end{center}
+
+
+\begin{question}
+Ler o capítulo 4, ``Basic Properties of Feedback'', do livro:
+G.F. Franklin, J.D. Powell, A.E. Naeini; {\bf Feedback Control of Dynamic Systems}; 
+778 p.; 9 caps.; 6 apêndices; 24 cm x 20 cm x 3.5cm; alf.; br.; 3$^a$ Ed; 
+Addison-Wesley, 1994.
+Para este momento, podem ser desconsideradas as seções 4.2.5, 4.2.7 e 4.3.3.
+
+
+
+ Em seguida, resolver os seguintes problemas propostos no livro 
+(início na pag. 224): 4.4, 4.5, 4.8(a,b), 4.9, {\em 4.10},
+ 4.11, 4.12, 4.14, 4.15(a,b,c,d), 4.19(a,b), 4.25(a,b),
+4.32(a,c), 4.36(a). Os problemas complementares 
+foram aqui marcados em itálico.
+\end{question}
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,70 @@
+
+%%% Local Variables: 
+%%% mode: latex
+%%% TeX-master: "lista1"
+%%% End: 
+\documentclass[11pt,epsf]{report}
+\setlength{\vsize}{297mm}
+\setlength{\hsize}{210mm}
+\setlength{\textheight}{230mm}
+\setlength{\textwidth}{170mm}
+%\voffset -2.5cm
+\hoffset -2.5cm
+
+\usepackage[latin1]{inputenc}
+%\usepackage{latexsym}
+%\usepackage{amssymb}
+\usepackage[dvips]{graphicx}
+
+\newenvironment{alternativas}{\renewcommand{\labelenumi}{(\alph{enumi})}\begin{enumerate}\addtolength{\itemsep}{-2.5mm}\setlength{\parsep}{0pt}}{\end{enumerate}}
+
+\newcounter{qcounter}
+\newenvironment{question}{\stepcounter{qcounter}\paragraph{\arabic{qcounter}.}}{}
+
+
+
+
+\begin{document}
+
+\begin{center}
+ENG04035 - Sistemas de Controle I \\
+ Prof. Joãoo Manoel Gomes da Silva Jr. e Romeu Reginatto \\
+Resposta Transitória e Identificação de Parâmetros de Funções de Transferência
+\end{center}
+
+
+\begin{question}
+Ler o capítulo 4, páginas 123 a 178, "Resposta no Domínio do Tempo",
+do livro: N. S. Nise, {\em Engenharia de Sistemas de Controle}, disponível 
+no xeróx (as seções 4.9 a 4.11 não serão necessárias neste momento). 
+
+ Em seguida, resolver os seguintes problemas propostos no livro 
+(início na pag. 170): 2, 4, 6, 8, 17, 19, 20, 23, 24, 29, 
+{\em 30}, 49, 50, {\em 58}, 61. Os problemas considerados avançados 
+foram aqui marcados em itálico.
+\end{question}
+
+
+\begin{question}
+A figura abaixo ilustra a resposta ao degrau unitário de 3 sistemas
+distintos. Obtenha um modelo aproximado para cada um deles, em
+termos de uma função de transferência.
+\begin{center}
+\includegraphics[width=17cm,height=16cm]{identfig1.eps}
+\end{center}
+
+\end{question}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+

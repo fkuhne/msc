@@ -1,0 +1,97 @@
+This is e-TeX, Version 3.141592-2.1 (MiKTeX 2.4) (preloaded format=latex 2004.6.11)  14 MAR 2005 15:58
+entering extended mode
+**lista2.tex
+(lista2.tex
+LaTeX2e <2003/12/01>
+Babel <v3.8a> and hyphenation patterns for english, french, german, ngerman, po
+rtuguese, dumylang, nohyphenation, loaded.
+(C:\texmf\tex\latex\base\report.cls
+Document Class: report 2004/02/16 v1.4f Standard LaTeX document class
+(C:\texmf\tex\latex\base\size11.clo
+File: size11.clo 2004/02/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) (C:\texmf\tex\latex\base\inputenc.sty
+Package: inputenc 2004/02/05 v1.0d Input encoding file
+
+(C:\texmf\tex\latex\base\latin1.def
+File: latin1.def 2004/02/05 v1.0d Input encoding file
+)) (C:\texmf\tex\latex\graphics\graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+(C:\texmf\tex\latex\graphics\keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(C:\texmf\tex\latex\graphics\graphics.sty
+Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
+ (C:\texmf\tex\latex\graphics\trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+) (C:\texmf\tex\latex\00miktex\graphics.cfg
+File: graphics.cfg 2003/03/12 v1.1 MiKTeX 'graphics' configuration
+)
+Package graphics Info: Driver file: dvips.def on input line 80.
+
+(C:\texmf\tex\latex\graphics\dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen103
+\Gin@req@width=\dimen104
+)
+\c@algo=\count88
+\c@theor=\count89
+\c@assum=\count90
+\c@defin=\count91
+\c@lemma=\count92
+\c@propo=\count93
+\c@propr=\count94
+\c@coroll=\count95
+\c@exemp=\count96
+\c@remarq=\count97
+
+
+LaTeX Warning: Unused global option(s):
+    [epsf].
+
+(lista2.aux)
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 99.
+LaTeX Font Info:    ... okay on input line 99.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <10.95> on input line 125.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 125.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 125.
+ [1
+
+] (lista2.aux) ) 
+Here is how much of TeX's memory you used:
+ 747 strings out of 95880
+ 7373 string characters out of 1195048
+ 54850 words of memory out of 1057065
+ 3813 multiletter control sequences out of 35000
+ 7330 words of font info for 26 fonts, out of 500000 for 1000
+ 16 hyphenation exceptions out of 607
+ 25i,4n,21p,183b,220s stack positions out of 1500i,500n,5000p,200000b,32768s
+
+Output written on lista2.dvi (1 page, 2704 bytes).

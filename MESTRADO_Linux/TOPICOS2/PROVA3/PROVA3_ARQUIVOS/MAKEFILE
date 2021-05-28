@@ -1,0 +1,44 @@
+all : controlador encoder gps bussola
+
+controlador_objs = ServerSocket.o Socket.o normal.o func.o controls.o
+nodes_objs = ServerSocket.o ClientSocket.o Socket.o normal.o func.o
+
+controlador: $(controlador_objs) controlador.cpp
+	g++ -o controlador $(controlador_objs) controlador.cpp -Wno-deprecated
+
+encoder: $(nodes_objs)  encoder.cpp
+	g++ -o encoder $(nodes_objs) encoder.cpp -Wno-deprecated
+
+gps: $(nodes_objs) gps.cpp
+	g++ -o gps $(nodes_objs) gps.cpp -Wno-deprecated
+
+bussola: $(nodes_objs) bussola.cpp
+	g++ -o bussola $(nodes_objs) bussola.cpp -Wno-deprecated
+
+
+
+normal.o:normal.c
+	gcc -c -o normal.o normal.c
+
+func.o:func.cpp
+	g++ -c -o func.o func.cpp -Wno-deprecated
+
+controls.o:controls.cpp
+	g++ -c -o controls.o controls.cpp -Wno-deprecated
+
+ServerSocket.o:ServerSocket.cpp
+	g++ -c -o ServerSocket.o ServerSocket.cpp
+
+ClientSocket.o:ClientSocket.cpp
+	g++ -c -o ClientSocket.o ClientSocket.cpp
+
+Socket.o:Socket.cpp
+	g++ -c -o Socket.o Socket.cpp
+
+clean:
+	rm -f *.o ClientSocket ServerSocket Socket controlador encoder gps bussola normal func controls 
+	
+
+
+
+

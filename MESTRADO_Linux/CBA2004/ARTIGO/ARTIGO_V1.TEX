@@ -1,0 +1,289 @@
+\documentclass[conference,harvard,brazil,english]{sbatex}
+\usepackage[latin1]{inputenc}
+\usepackage{ae}
+\usepackage{amstex,graphicx}
+
+\newcommand\real{\mathbb{R}}
+\newcommand{\req}[1]{(\ref{#1})}
+
+%---------------------------------------------------------
+\begin{document}
+
+\title{Estimação e Controle da Posição de um Robô Móvel Utilizando Filtro de Kalman Descentralizado}
+
+\author{Carlos Claro}{caclaro@uol.com.br}
+\address{Grupo de Controle e Automação de Sistemas\\ Universidade Federal do Rio Grande do Sul\\ Porto Alegre, RS, Brasil}
+
+\author[1]{Sérgio R. Suess}{srsuess@terra.com.br}
+\author[1]{Felipe Kühne}{kuhne@eletro.ufrgs.br}
+\author[1]{Walter F. Lages}{fetter@eletro.ufrgs.br}
+
+\twocolumn[
+\maketitle
+\selectlanguage{english}
+
+%---------------------------------------------------------
+\begin{abstract}
+	One of the most important problems in navigation and control of mobile robots is to inform it's actual configuration with respect to a global frame. For this task, a very common solution is to use encoders in the so-called {\em odometry}, because of it's ease and low cost. However, odometry's advantages falls off when integration errors becames large.  With this in mind, it is necessary to use some error's minimization mechanism. In this paper, it is shown the use of descentralized Kalman filter as an aptimal state-estimator, and a static state-feedback position controller for trajectory tracking of a wheeled mobile robot with encoders, GPS and an electronic compass. Simulation results are shown with graphics of the reference and estimated states, and for the error covariance matrix, for two different trajectories.
+\end{abstract}
+\keywords{Mobile robots, Kalman filtering, state-feedback control.}
+
+\selectlanguage{brazil}
+
+%---------------------------------------------------------
+\begin{abstract} 
+	Um dos principais problemas quando se trata da navegação e controle de robôs móveis está em informar ao mesmo a sua localização com relação a um espaço de configuração. Para isto, geralmente usam-se {\em encoders}, pois possuem baixo custo e são de fácil implementação. Contudo, os encoders geram erros que crescem indefinidamente durante a movimentação do robô, sendo necessário então algum mecanismo para a minimização destes erros. Neste artigo, é demostrado o uso do filtro de Kalman como estimador ótimo de estados, e a implementação de um controle por realimentação estática de estados para o problema de rastreamento de trajetória de um robô móvel dotado de rodas. Resultados de simulação são apresentados em forma de gráficos dos estados de referência, estados estimados e da matriz da covariância do erro, para dois tipos diferentes de trajetórias.
+\end{abstract}
+\keywords{Robôs móveis, filtro de Kalman, controle por realimentação de estados.}
+]
+
+\selectlanguage{brazil}
+
+%---------------------------------------------------------
+\section{Introdução}\label{sec:intro}
+	No problema de navegação e controle de um robô móvel autônomo, uma das principais informações que deve ser obtida é a atual configuração (posição e orientação) deste robô com relação a algum sistema de coordenadas global. Para isso, utilizam-se sensores acoplados ao corpo do veículo. De uma forma geral, estes sensores podem ser classificados em sensores de medida {\em relativa} (utilizam informações internas do sistema) ou {\em absoluta} (utilizam informações externas). No caso de robôs com rodas, é comum o uso de encoders acoplados aos eixos de rotação das rodas. É possível então obter-se a posição e orientação atuais deste robô, dada a sua configuração anterior e conhecendo-se as características físicas e geométricas do mesmo. A isso chama-se {\em odometria} \cite{borenstein1}.
+
+Encoders são bastante utilizados pois são baratos e fáceis de utilizar. Além disso, como dependem apenas de variáveis internas do sistema, a informação proveniente destes sensores está sempre disponível. Entretanto, a idéia básica da odometria é a integração da informação da movimentação em um dado período de tempo, o que inevitavelmente leva ao acúmulo ilimitado de erros, estes causados, por exemplo, por incertezas de modelagem, escorregamento das rodas ou imperfeições geométricas. Com o objetivo de minimizar-se estes erros de integração, faz-se uso de sensores de medida absoluta, como aparelhos de GPS e bússolas eletrônicas. A vantagem de sensores deste tipo é que os mesmos não sofrem do problema de integração do erro. Por outro lado, a informação proveniente destes sensores pode ser deturpada, seja por causa de condições atmosféricas adversas (no caso do GPS) ou por distorções no campo magnético terrestre, causadas, por exemplo, por linhas de transmissão de energia (no caso da bússola).
+
+Sistemas relativamente complexos, em geral, exigem diversos sensores de forma a obter-se a informação necessária sobre o sistema em questão. Usualmente, utilizam-se diversos	tipos de sensores, com diferentes tecnologias, e alguns possuindo domínios de medida que se sobrepõem. Esta sobreposição confere ao sistema a capacidade de {\em graceful degradation}, ou seja, a falha de um sensor não significa a falha de todo o sistema, pois os outros sensores podem ser utilizados para medir a informação do sensor em falha. Ainda, esta redundância de informação pode ser utilizada para reduzir a incerteza inerente a cada sensor, possibilitando a obtenção de estimativas das variáveis mais precisas do que as leituras individuais dos sensores.
+
+Para que as vantagens de uma arquitetura descentralizada possam ser obtidas, é essencial que a informação dos diversos sensores seja combinada de forma a obter-se uma descrição completa, confiável e coerente do sistema. A isto denomina-se {\em fusão de dados}. Em um sistema descentralizado, a fusão de dados ocorre em cada nodo com base na observação local e na informação transmitida pelos outros nodos.
+
+No presente trabalho, utiliza-se uma estrutura descentralizada totalmente conectada composta de um nodo controlador e três nodos sensores. É apresentada a implementação do filtro de Kalman para um robô móvel com três sensores: encoder, GPS e bússola. O problema de rastreamento de trajetória é resolvido através de um controle linearizante entrada-saída para a posição do robô. Os sensores, e mais o controlador, são implementados de forma totalmente independente, sendo a comunicação entre eles feita por meio de {\em sockets}. Realizada a fusão dos dados, o estado estimado global $\hat q$ é utilizado para o cálculo de uma realimentação linearizante e de uma lei de controle linear do tipo $v=Le$, onde $L$ é uma matriz de ganhos e $e$ é o erro entre a posição de referência e a posição estimada atual do robô, $e=q^p_{ref}-\hat q^p$.
+
+Este artigo está organizado como segue: ainda nesta seção, é apresentado o modelo cinemático do robô móvel. Na seção \ref{sec:ekf}, é apresentado o filtro de Kalman extendido descentralizado, bem como a organização do mesmo no contexto dos programas. Na seção \ref{sec:control} é projetado o controle linearizante por realimentação dos estados estimados. Na seção \ref{sec:sim}, resultados de simulação para dois tipos de trajetória são mostrados, na forma de gráficos da trajetória, da evolução dos estados e da covariância do erro do filtro de Kalman. Por fim, são apresentadas as conclusões.
+
+%---------------------------------------------------------
+\subsection{Modelo cinemático do robô}
+	É considerado aqui um robô móvel dotado de rodas e com acionamento diferencial, constituido de um corpo rígido e rodas não deformáveis. A movimentação realiza-se em um plano horizontal, onde o contato das rodas com este plano é puntual. A configuração do robô é descrita conforme mostrado na Figura \ref{fig:robo1}. Define-se um sistema de coordenadas global, $\{O,X_o,Y_o\}$, e um sistema de coordenadas móvel, $\{C,X_c,Y_c\}$, associado ao centro de massa $C$. Assim, o modelo cinemático que descreve a movimentação do centro de massa com relação ao sistema global é
+\begin{equation}\label{eqn:kin}
+	\dot q &= g\left(q\right)u \\
+\end{equation}
+com
+\begin{equation*}
+	q = \left[\begin{array}{c}
+		x_c \\ y_c \\ \theta
+	\end{array}\right] \quad
+	g(q) = \left[\begin{array}{cc}
+		\cos\theta & 0 \\
+		\sin\theta & 0 \\
+		0          & 1
+	\end{array}\right] \quad
+	u = \left[\begin{array}{c}
+		u_1 \\ u_2
+	\end{array}\right],
+\end{equation*}
+%\begin{equation}
+%	\left\{\begin{aligned}\label{eqn:kin}
+%		\dot x_c   &= u_1\cos\theta \\
+%		\dot y_c   &= u_1\sin\theta \\
+%		\dot\theta &= u_2
+%	\end{aligned}\right.
+%\end{equation}
+onde $q$ descreve a configuração do robô, $u_1$ é a velocidade tangencial (na direção de $X_c$) e $u_2$ é a velocidade angular do robô.
+
+Elege-se ainda um ponto, {\em a priori} arbitrário, da estrutura do robô com ponto de referência, dado pelo sistema de coordenadas $\{R,X_r,Y_r\}$. Então, agora a configuração do robô é tomada como sendo a configuração deste ponto, e não mais a do ponto $C$ \cite{lages1}. A representação de $\{R,X_r,Y_r\}$ com relação ao sistema global é dada por $q_r=[x_r~~y_r~~\theta]^T$,
+\begin{equation}\label{eqn:pt_R}
+	q_r = 
+		\left[\begin{array}{c}
+			x_c+x^c_r\cos\theta-y^c_r\sin\theta \\
+			y_c+x^c_r\sin\theta+y^c_r\cos\theta \\
+			\theta
+		\end{array}\right]
+\end{equation}
+
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=\linewidth]{Figuras/robo2.eps}
+    \caption{\it Modelo geométrico do robô móvel.}
+    \label{fig:robo1}
+\end{center}\end{figure}
+
+%---------------------------------------------------------
+\section{Estimação dos estados por filtro de Kalman}\label{sec:ekf}
+	O filtro de Kalman é um método linear recursivo para a estimação de dados e muito utilizado para a estimação da configuração de robôs móveis. A estimativa feita pelo filtro de Kalman é ótima segundo um critério de mínimo erro médio quadrático \cite{mutambara1}, ou seja, no sentido de que o mesmo minimiza a covariância do erro de estimativa, $P(k)$.
+
+Para modelos não lineares ou potencialmente instáveis, é utilizada a linearização do sistema em torno da estimativa do estado. Tal operação é possível empregando-se a versão do método denominada filtro de Kalman extendido, o qual utiliza a linearização do sistema por expansão em série de Taylor. 
+
+As características recursivas do filtro de Kalman permitem que o mesmo seja empregado em ambientes com poucos recursos de processamento ou de memória, pois a cada interação só são utilizados o valor presente e o último valor da variável em questão, garantindo um processamento reduzido.
+
+Considerando alguma expressão de observação e a presença de ruídos aditivos no modelo e na observação, pode-se reescrever o sistema \req{eqn:kin} na forma discreta e centralizada\footnote{Considerando que os três sensores (encoder, GPS e bússola) pertencem a um único nodo.} como:
+\begin{align}
+		q(k+1) &= f\left(q(k)\right) + g\left(q(k)\right)u(k) + \omega(k)\label{eqn:q_discrete}\\
+		z(k)   &= h\left(q(k)\right) + \upsilon(k)\label{eqn:z_discrete},
+\end{align}
+com
+\begin{align*}
+	f\left(q(k)\right) &= \left[\begin{array}{ccc}
+		x_c(k) & 0      & 0 \\ 
+		0      & y_c(k) & 0 \\ 
+		0      & 0      & \theta(k)
+	\end{array}\right] \\
+	g\left(q(k)\right) &= \left[\begin{array}{cc}
+		\cos\theta(k)\Delta T & 0 \\
+		\sin\theta(k)\Delta T & 0 \\
+		0                     & 1
+	\end{array}\right]
+\end{align*}
+
+Para a discretização, utilizou-se o método de Euler ($\dot q\approx\frac{q(k+1)-q(k)}{\Delta T}$), onde $\Delta T$ é o período de amostragem. $u(k)$ é o vetor de entradas, $z(k)$ é a expressão de observação dos sensores e $\omega(k)$ e $\upsilon(k)$ são vetores de ruído (branco, gaussiano e de média zero) de processo e de medida, respectivamente. Assim:
+\begin{equation*}
+	u(k) = [~ u_1(k)~~u_2(k) ~]^T
+\end{equation*}
+\begin{equation*}
+	\begin{split}
+		h(k) = [~ x_{enc}(k)~~y_{enc}(k)~~x_{gps}(k) \\ y_{gps}(k)~~\theta_{enc}(k)~~\theta_{bus}(k) 	~]^T\label{eqn:h_centr}
+	\end{split}
+\end{equation*}
+\begin{equation*}
+	\omega(k) = [~ \sigma_x(k)~~\sigma_y(k)~~\sigma_\theta(k) ~]^T
+\end{equation*}
+\begin{equation*}
+	\begin{split}
+		\upsilon(k) = [~ \sigma_{x_{enc}}(k)~~\sigma_{y_{enc}}(k)~~\sigma_{x_{gps}}(k) \\ \sigma_{y_{gps}}(k)~~\sigma_{\theta_{enc}}(k)~~\sigma_{\theta_{bus}}(k) ~]^T
+	\end{split}
+\end{equation*}
+
+%OBS. ESTAS FÓRMULAS FICARIAM MELHOR ARRUMADAS SE NÃO PRECISASSE DO ARGUMENTO $(k)$:
+%\begin{align}
+%	u(k)	    &= [~ u_1~~u_2 ~]^T \\
+%	h(k)	    &= [~ x_{enc}~~y_{enc}~~x_{gps}~~y_{gps}~~\theta_{enc}~~\theta_{bus}(k) ~]^T\\
+%	\omega(k)   &= [~ \sigma_x~~\sigma_y~~\sigma_\theta ~]^T \\
+%	\upsilon(k) &= [~ \sigma_{x_{enc}}~~\sigma_{y_{enc}}~~\sigma_{x_{gps}}~~\sigma_{y_{gps}}~~%\sigma_{\theta_{enc}}~~\sigma_{\theta_{bus}} ~]^T
+%\end{align}
+
+Define-se então as matrizes $Q(k)$ e $R(k)$ como:
+\begin{align*}
+	E\left\{\omega(k)\omega^T(i)\right\} &= Q(k)\delta(k-i) \\
+	E\left\{\upsilon(k)\upsilon^T(i)\right\} &= R(k)\delta(k-i) \\
+	E\left\{\omega(k)\upsilon^T(i)\right\} &= 0
+\end{align*}
+
+$E\{\cdot\}$ é a função valor esperado, $\delta\{\cdot\}$ é a função delta de Dirac e $Q(k)$ e $R(k)$ são matrizes diagonais formadas pelas variâncias ($\sigma²$) de $\omega(k)$ e $\upsilon(k)$, respectivamente. A última expressão indica que os ruídos de processo e de medida são descorrelacionados.
+
+Para descentralizar o sistema, é feita a distribuição da equação de observação \req{eqn:z_discrete} e da matriz $R$ para cada nodo. Assim, considerando que o encoder fornece informação de posição e orientação, o GPS fornece informação de posição e a bússola fornece informação de orientação, tem-se que:
+\begin{align*}
+	z_{enc}(k) &= \left[\begin{array}{c}
+		x_{enc}(k) \\ y_{enc}(k) \\ \theta_{enc}(k)
+	\end{array}\right] + \left[\begin{array}{c}
+		\sigma_{x_{enc}}(k) \\ \sigma_{y_{enc}}(k) \\ \sigma_{\theta_{enc}}(k)
+	\end{array}\right] \\ 
+	z_{gps}(k) &= \left[\begin{array}{c}
+		x_{gps}(k) \\ y_{gps}(k)
+	\end{array}\right] + \left[\begin{array}{c}
+		\sigma_{x_{gps}}(k) \\ \sigma_{y_{gps}}(k)
+	\end{array}\right] \\ 
+	z_{bus}(k) &= \left[\begin{array}{c}
+		\theta_{bus}(k)
+	\end{array}\right] + \left[\begin{array}{c}
+		\sigma_{\theta_{bus}}(k)
+	\end{array}\right]
+\end{align*}
+e
+\begin{align*}	
+	R_{enc} &= \left[\begin{array}{ccc}
+		\sigma_{x_{enc}} & 0                & 0 \\
+		0                & \sigma_{y_{enc}} & 0 \\
+		0                & 0                & \sigma_{\theta_{enc}}
+	\end{array}\right] \\ 
+	R_{gps} &= \left[\begin{array}{cc}
+		\sigma_{x_{gps}} & 0 \\
+		0                & \sigma_{y_{gps}} \\
+	\end{array}\right] \\ 
+	R_{bus} &= \left[\begin{array}{c}
+		\sigma_{\theta_{bus}}
+	\end{array}\right]
+\end{align*}
+
+(NESTE PONTO EXPLICAR EXATAMENTE COMO O ALGORITMO DE KALMAN FOI IMPLEMENTADO, ASSIM COMO OS DADOS QUE SÃO TRANSMITIDOS ENTRE OS NODOS E O CONTROLADOR.)
+
+O emprego de uma estrutura descentalizada em uma rede de nodos totalmente conectados, como a utilizada neste trabalho, permite que a estimativa do estado computada em cada um dos nodos seja idêntica à estimativa que seria computada em um sistema centralizado. Ainda, esta estrutura de estimação deixa o sistema tolerante a falhas individuais dos sensores. Assim, se um dos nodos ou a comunicação falhar, os outros nodos e o controlador continuarão a realizar a fusão dos dados e a calcular a estimativa global dos estados.
+
+%---------------------------------------------------------
+\section{Controle da posição por realimentação linearizante}\label{sec:control}
+	Conforme \cite{khalil1}, faz-se agora a dedução da realimentação linearizante para a posição estimada pelo filtro de Kalman, denotada por $\hat q^p = [\hat x_c ~~ \hat y_c]^T$. A estimativa dada por $\hat q^p$ é feita com relação ao centro de massa do robô, $C$. Como será visto, para existir uma realimentação linearizante, é necessário o deslocamento de $\hat q^p$ para um ponto diferente de $C$. Usando a expressão \req{eqn:pt_R}, pode-se deslocar $\hat q^p$ para o ponto $R$. Assim:
+\begin{equation}\label{eqn:q_r_est}
+	\hat q^p_r = 
+		\left[\begin{array}{c}
+			\hat x_c+x^c_r\cos\theta-y^c_r\sin\theta \\
+			\hat y_c+x^c_r\sin\theta+y^c_r\cos\theta \\
+		\end{array}\right]
+\end{equation}
+
+Reescrevendo o sistema \req{eqn:kin} e considerando a expressão de observação como sendo $\gamma(q)=\hat q^p_r$, tem-se:
+\begin{align*}
+	\dot q &= g_1(q)u_1 + g_2(q)u_2 \\
+	\gamma_1(q) &= h_1(q) \\
+	\gamma_2(q) &= h_2(q),
+\end{align*}
+com 
+\begin{align*}
+	g_1(q) &= \left[\cos\theta~~\sin\theta~~0\right]^T \\
+	g_2(q) &= \left[0~~0~~1\right]^T\\
+	h_1(q) &= \hat x_c + x^c_r\cos\theta - y^c_r\sin\theta \\
+	h_2(q) &= \hat y_c + x^c_r\sin\theta + y^c_r\cos\theta
+\end{align*}
+
+O método de linearização entrada-saída consiste em diferenciar a expressão de saída até que a entrada $u(q)$ apareça na expressão. Vê-se que isto acontece logo na primeira diferenciação. Assim, define-se a matriz $\beta(q)$ como:
+\begin{equation}\begin{split}\label{beta}
+	\beta(q) &=
+		\left[\begin{array}{cc}
+			\frac{\partial h_1}{\partial q}g_1(q) & \frac{\partial h_1}{\partial q}g_2(q) \\
+			\frac{\partial h_2}{\partial q}g_1(q) & \frac{\partial h_2}{\partial q}g_2(q)
+		\end{array}\right] \\
+		&= \left[\begin{array}{cc}
+			\cos\theta & -\left(x^c_r\sin\theta + y^c_r\cos\theta\right) \\
+			\sin\theta & x^c_r\cos\theta - y^c_r\sin\theta
+		\end{array}\right]
+\end{split}\end{equation}
+e escreve-se o seguinte sistema:
+\begin{equation}\label{eqn:diff_z}
+	\dot\gamma(q) = \beta(q)u(q)
+\end{equation}
+
+Fica evidente aqui a necessidade de definir um ponto $R$ que não esteja sobre o eixo comum às rodas fixas. Pontos sobre este eixo (como o ponto $C$) podem mover-se instantaneamente em apenas uma direção, enquanto que os demais pontos podem mover-se em duas direções \cite{lages1}. Vê-se, da equação \req{beta}, que para a inversa de $\beta(q)$ existir, $x^c_r$ precisa ser diferente de zero. 
+
+CALCULAR O DETERMINANTE DE $\beta$.
+
+A realimentação que lineariza o sistema \req{eqn:diff_z} é $u(q)=\beta(q)^{-1}v(q)$, onde $v(q)$ é uma lei de controle linear proporcional dada por 
+\begin{equation}
+	v(q) = Le(q)
+\end{equation}
+
+$L$ é uma matriz de ganhos positivos e $e(q)$ é o erro entre a posição de referência e a posição estimada,
+\begin{equation*}
+	L = \left[\begin{array}{cc}
+		l_x & 0 \\ 0 & l_y
+	\end{array}\right], \quad
+	e(q) = \left[\begin{array}{c}
+		x_{ref_r} - \hat x_r \\
+		y_{ref_r} - \hat y_r \\			
+	\end{array}\right]
+\end{equation*}
+
+Os termos $x_{ref_r}$, $y_{ref_r}$ referem-se à posição de referência do ponto $R$ e $\hat x_r$, $\hat y_r$ referem-se à posição estimada do ponto $R$.
+
+Assim, pode-se representar o sistema em malha fechada pelo diagrama de blocos da Figura \ref{fig:bloco1}.
+\begin{figure}[b]\begin{center}
+    \includegraphics[width=\linewidth]{Figuras/bloco1.eps}
+    \caption{\it Diagrama de blocos do sistema em malha fechada.}
+    \label{fig:bloco1}
+\end{center}\end{figure}
+
+%---------------------------------------------------------
+\section{Resultados de simulação}\label{sec:sim}
+	Esta é outra seção.
+
+%---------------------------------------------------------
+\section{Conclusões}\label{sec:conc}
+	Estas são as conclusões.
+
+%---------------------------------------------------------
+\section*{Agradecimentos}\label{sec:thanks}
+	Agradecimento à CAPES pelo apoio financeiro, ao Prof. Walter pela orientação e disponibilidade constante e a mim mesmo por ter deixado de dormir hoje, ontém, antes de ontém... Mas no fim valeu a pena!
+
+
+%---------------------------------------------------------
+\bibliography{bibartigo}
+
+%---------------------------------------------------------
+\end{document}

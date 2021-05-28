@@ -1,0 +1,59 @@
+\select@language {brazilian}
+\select@language {english}
+\select@language {brazilian}
+\contentsline {chapter}{Lista de Ilustra\c {c}\~oes}{9}
+\contentsline {chapter}{Lista de Tabelas}{16}
+\contentsline {chapter}{Lista de Abreviaturas}{17}
+\contentsline {chapter}{Lista de S{\'\i }mbolos}{18}
+\contentsline {chapter}{\numberline {1}Introdu\c c\~ao}{20}
+\contentsline {section}{\numberline {1.1}Organiza\c c\~ao do Documento}{24}
+\contentsline {chapter}{\numberline {2}Rob\^os M\'oveis Dotados de Rodas}{26}
+\contentsline {section}{\numberline {2.1}Introdu\c c\~ao}{26}
+\contentsline {section}{\numberline {2.2}Sistemas Mec\^anicos N\~ao Holon\^omicos}{26}
+\contentsline {subsection}{\numberline {2.2.1}Exemplo: Um Disco Rolando em um Plano}{27}
+\contentsline {subsection}{\numberline {2.2.2}Exemplo: Um Carro Estacionando}{28}
+\contentsline {section}{\numberline {2.3}Cinem\'atica de Rob\^os M\'oveis Dotados de Rodas}{28}
+\contentsline {subsection}{\numberline {2.3.1}Propriedades do Modelo Cinem\'atico}{31}
+\contentsline {section}{\numberline {2.4}M\'etodos Cl\'assicos Para o Controle de Rob\^os M\'oveis}{33}
+\contentsline {subsection}{\numberline {2.4.1}Controle Variante no Tempo}{35}
+\contentsline {subsubsection}{\numberline {2.4.1.1}\citep {pomet92}}{35}
+\contentsline {subsubsection}{\numberline {2.4.1.2}\citep {samson91b}}{37}
+\contentsline {subsubsection}{\numberline {2.4.1.3}\citep {teel95}}{39}
+\contentsline {subsection}{\numberline {2.4.2}Controle N\~ao Suave}{40}
+\contentsline {subsubsection}{\numberline {2.4.2.1}\citep {lages98a}}{41}
+\contentsline {subsubsection}{\numberline {2.4.2.2}\citep {sordalen93a}}{44}
+\contentsline {chapter}{\numberline {3}Fundamentos de Controle Preditivo Baseado em Modelo}{47}
+\contentsline {section}{\numberline {3.1}Introdu\c c\~ao}{47}
+\contentsline {section}{\numberline {3.2}Perspectiva Hist\'orica}{47}
+\contentsline {section}{\numberline {3.3}Elementos Essenciais}{50}
+\contentsline {section}{\numberline {3.4}Formula\c c\~ao do MPC N\~ao Linear}{51}
+\contentsline {section}{\numberline {3.5}Formula\c c\~ao do MPC Linear}{53}
+\contentsline {section}{\numberline {3.6}MPC Aplicado a Rob\^os M\'oveis}{56}
+\contentsline {chapter}{\numberline {4}MPC de Rob\^os M\'oveis: Estabiliza\c c\~ao em um Ponto}{59}
+\contentsline {section}{\numberline {4.1}Introdu\c c\~ao}{59}
+\contentsline {section}{\numberline {4.2}Formula\c c\~ao do Problema}{59}
+\contentsline {section}{\numberline {4.3}Fun\c c\~ao de Custo em Coordenadas Cartesianas}{60}
+\contentsline {section}{\numberline {4.4}Fun\c c\~ao de Custo em Coordenadas Polares}{67}
+\contentsline {section}{\numberline {4.5}MPC com Restri\c c\~oes no Controle}{71}
+\contentsline {section}{\numberline {4.6}MPC Com Restri\c c\~oes no Controle e no Estado}{75}
+\contentsline {section}{\numberline {4.7}An\'alises Comparativas}{80}
+\contentsline {subsection}{\numberline {4.7.1}Compara\c c\~ao Entre o NMPC Com Fun\c c\~ao De Custo Em Coordenadas Polares e o NMPC de~\citep {essen01}}{80}
+\contentsline {subsection}{\numberline {4.7.2}Compara\c c\~ao Entre o NMPC Com Fun\c c\~ao De Custo Em Coordenadas Polares e o Controle Variante No Tempo de~\citep {pomet92}}{83}
+\contentsline {subsection}{\numberline {4.7.3}Compara\c c\~ao Entre o NMPC Com Fun\c c\~ao De Custo Em Coordenadas Polares e o Controle Variante No Tempo de~\citep {samson91b}}{84}
+\contentsline {subsection}{\numberline {4.7.4}Compara\c c\~ao Entre o NMPC Com Fun\c c\~ao De Custo Em Coordenadas Polares e o Controle Variante No Tempo De~\citep {teel95}}{87}
+\contentsline {subsection}{\numberline {4.7.5}Compara\c c\~ao Entre o NMPC Com Fun\c c\~ao De Custo Em Coordenadas Polares e o Controle Descont\IeC {\'\i }nuo De~\citep {lages98a}}{89}
+\contentsline {subsection}{\numberline {4.7.6}Compara\c c\~ao Entre o NMPC Com Fun\c c\~ao De Custo Em Coordenadas Polares e o Controle Descont\IeC {\'\i }nuo De~\citep {sordalen93a}}{90}
+\contentsline {section}{\numberline {4.8}O Custo Computacional do NMPC}{92}
+\contentsline {chapter}{\numberline {5}MPC de Rob\^os M\'oveis: Rastreamento de Trajet\'oria}{97}
+\contentsline {section}{\numberline {5.1}Introdu\c c\~ao}{97}
+\contentsline {section}{\numberline {5.2}Formula\c c\~ao do Problema}{98}
+\contentsline {section}{\numberline {5.3}Rastreamento de Trajet\'oria com um MPC N\~ao Linear}{98}
+\contentsline {section}{\numberline {5.4}O Custo Computacional do NMPC}{109}
+\contentsline {section}{\numberline {5.5}Rastreamento de Trajet\'oria com um MPC Linear}{111}
+\contentsline {subsection}{\numberline {5.5.1}O Algoritmo de Programa\c c\~ao Quadr\'atica}{112}
+\contentsline {section}{\numberline {5.6}O Custo Computacional do LMPC}{124}
+\contentsline {chapter}{\numberline {6}Conclus\~ao}{128}
+\contentsline {section}{\numberline {6.1}Trabalhos Futuros}{129}
+\contentsline {chapter}{Refer{\^e}ncias}{131}
+\setbox \@tempboxa \hbox {{{\sffamily \textbf {\MakeUppercase {Ap{\^e}ndice} }}}}\deletex@chapnumindent \wd \@tempboxa \setbox \@tempboxa \box \voidb@x \advance \deletex@chapnumindent 1.8em\relax 
+\contentsline {chapter}{\numberline {\MakeUppercase {Ap{\^e}ndice} A}O Rob\^o M\'ovel Twil}{140}

@@ -1,0 +1,165 @@
+PRE.programlisting {
+	MARGIN-LEFT: 32px
+}
+P.synopsis {
+	MARGIN-LEFT: 32px
+}
+P.programlistingindent {
+	MARGIN-LEFT: 32px
+}
+TABLE.body {
+	MARGIN-TOP: 2ex; MARGIN-BOTTOM: 2ex
+}
+SPAN.accel {
+	TEXT-DECORATION: underline
+}
+TH {
+	TEXT-ALIGN: left
+}
+.blue {
+	COLOR: blue
+}
+.red {
+	COLOR: red
+}
+.green {
+	COLOR: green
+}
+.violet {
+	COLOR: blueviolet
+}
+.black {
+	COLOR: black
+}
+IMG.baseline1 {
+	POSITION: relative; TOP: 1pt
+}
+IMG.baseline2 {
+	POSITION: relative; TOP: 2pt
+}
+IMG.baseline3 {
+	POSITION: relative; TOP: 3pt
+}
+IMG.baseline4 {
+	POSITION: relative; TOP: 4pt
+}
+IMG.baseline5 {
+	POSITION: relative; TOP: 5pt
+}
+IMG.baseline6 {
+	POSITION: relative; TOP: 6pt
+}
+IMG.baseline7 {
+	POSITION: relative; TOP: 7pt
+}
+IMG.baseline8 {
+	POSITION: relative; TOP: 8pt
+}
+IMG.baseline9 {
+	POSITION: relative; TOP: 9pt
+}
+IMG.baseline10 {
+	POSITION: relative; TOP: 10pt
+}
+IMG.baseline11 {
+	POSITION: relative; TOP: 11pt
+}
+IMG.baseline12 {
+	POSITION: relative; TOP: 12pt
+}
+IMG.baseline13 {
+	POSITION: relative; TOP: 13pt
+}
+IMG.baseline14 {
+	POSITION: relative; TOP: 14pt
+}
+IMG.baseline15 {
+	POSITION: relative; TOP: 15pt
+}
+UL LI P {
+	PADDING-RIGHT: 0px; MARGIN-TOP: 0ex; PADDING-LEFT: 0px; MARGIN-BOTTOM: 0.5ex; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+OL LI P {
+	PADDING-RIGHT: 0px; MARGIN-TOP: 0ex; PADDING-LEFT: 0px; MARGIN-BOTTOM: 0.5ex; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+BODY {
+	FONT-SIZE: 10pt; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+P {
+	FONT-SIZE: 10pt; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+UL {
+	FONT-SIZE: 10pt; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+OL {
+	FONT-SIZE: 10pt; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+LI {
+	FONT-SIZE: 10pt; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+TD {
+	FONT-SIZE: 10pt; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+DL {
+	FONT-SIZE: 10pt; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+DD {
+	FONT-SIZE: 10pt; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+DT {
+	FONT-SIZE: 10pt; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+H1 {
+	COLOR: #003333; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+H2 {
+	COLOR: #003333; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+H3 {
+	COLOR: #003333; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+H4 {
+	COLOR: #003333; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+CAPTION {
+	COLOR: #003333; FONT-FAMILY: Arial,Helvetica,sans-serif
+}
+PRE {
+	FONT-FAMILY: Courier,monospace
+}
+CODE {
+	FONT-FAMILY: Courier,monospace
+}
+LI.continued:unknown {
+	content: ""
+}
+UL.continued {
+	LIST-STYLE-TYPE: none
+}
+OL.continued {
+	LIST-STYLE-TYPE: none
+}
+TABLE.nav {
+	BACKGROUND-COLOR: #d9e1e1
+}
+TABLE.note {
+	BACKGROUND-COLOR: #d9e1e1
+}
+.midsup {
+	FONT: 11pt Arial,Helvetica,sans-serif; COLOR: #003333
+}
+.headsup {
+	FONT: bold 14pt Arial,Helvetica,sans-serif; COLOR: #003333
+}
+.headdoc {
+	FONT: bold 18pt Arial,Helvetica,sans-serif; COLOR: #003333
+}
+.Head3 {
+	FONT: 12pt Arial,Helvetica,sans-serif; COLOR: #003333
+}
+.Head2 {
+	FONT: bold 14pt Arial,Helvetica,sans-serif; COLOR: #003333
+}
+.Head1 {
+	FONT: bold 18pt Arial,Helvetica,sans-serif; COLOR: #003333
+}

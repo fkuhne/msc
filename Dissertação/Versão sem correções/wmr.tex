@@ -1,0 +1,547 @@
+\section{Introdução}
+A maioria dos trabalhos existentes na literatura que tratam do controle de robôs móveis dotados de rodas sujeitos a restrições não holonômicas utiliza o modelo cinemático de um robô com acionamento diferencial, do tipo {\em uniciclo}. Embora seja uma representação bastante simplificada do movimento do veículo, o modelo cinemático é suficiente para capturar as características não holonômicas do sistema.
+
+Como salientado no Capítulo~\ref{cap:intro}, o modelo do sistema a ser controlado é um dos elementos essenciais para a aplicação do MPC. Assim sendo, uma correta modelagem e um perfeito entendimento físico do sistema neste ponto é conveniente.
+
+Então, para uma boa compreensão de como as restrições não holonômicas influenciam no movimento de sistemas mecânicos como os robôs móveis, é dado na primeira seção deste capítulo uma breve descrição de sistemas sujeitos a restrições não holonômicas. Na seqüência, a modelagem cinemática baseada no robô Twil\footnote{Maiores detalhes do robô Twil são descritos no Apêndice~\ref{app:twil}.} é desenvolvida, e algumas propriedades de controlabilidade e estabilizabilidade para este sistema são apresentadas. Logo após, técnicas clássicas de controle de robôs móveis baseadas no modelo cinemático, como leis variantes no tempo e não suaves, são brevemente apresentadas.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sistemas Mecânicos Não Holonômicos}\label{sec:nh_rest}
+
+Em muitos casos, o movimento de sistemas mecânicos é submetido a certas restrições que são permanentemente satisfeitas durante este movimento, e que tomam a forma de relações algébricas entre posições e velocidades de pontos particulares do sistema~\cite{campion91b}. Considerando um sistema mecânico de ordem $n$ representado por um vetor $\bf q$ de coordenadas generalizadas e um vetor $\dot{\bf q}$ de velocidades generalizadas,
+\begin{equation*}
+	\bf q = \begin{bmatrix}
+		q_1 \\ q_2 \\ \vdots \\ q_n
+	\end{bmatrix}, \qquad
+	\dot{\bf q} = \begin{bmatrix}
+		\dot q_1 \\ \dot q_2 \\ \vdots \\ \dot q_n
+	\end{bmatrix},
+\end{equation*}
+dois tipos distintos de restrições podem assim ser observadas~\cite{latombe89,sordalen93a}: 
+\begin{itemize}
+\item {\bf Restrições geométricas:} são representadas por relações analíticas entre as coordenadas generalizadas $\bf q$ de um sistema mecânico:
+\begin{equation}\label{eqn:rgeom}
+	f_i({\bf q})=0, \quad i=1\ldots l
+\end{equation}
+
+Quando o sistema é submetido a $l$ restrições geométricas independentes, $l$ coordenadas generalizadas podem ser eliminadas e $n-l$ coordenadas são suficientes para fornecer uma total descrição da configuração do sistema.
+
+\item{\bf Restrições cinemáticas:} São representadas por relações analíticas entre as coordenadas $\bf q$ e as velocidades $\dot{\bf q}$:
+\begin{equation*}
+	f_i({\bf q},\dot{\bf q})=0, \quad i=1\ldots l
+\end{equation*}
+
+Na maioria dos casos, estas restrições são lineares com respeito às velocidades generalizadas. Ao contrário das restrições geométricas, restrições cinemáticas não necessariamente levam à eliminação de coordenadas generalizadas da descrição do sistema. Quando a restrição é integrável, ou {\em holonômica}, ela pode ser reduzida para a forma da expressão~\req{eqn:rgeom}.
+
+Quando uma restrição cinemática não pode ser integrada, esta não pode ser usada para eliminar qualquer coordenada generalizada, e diz-se então que esta é uma {\em restrição não holonômica}, e o sistema que possui estas restrições é chamado de {\em sistema não holonômico}. Neste caso, o número de graus de liberdade (ou o número de velocidades independentes) é igual ao número de coordenadas generalizadas independentes menos o número de restrições não holonômicas~\cite{neimark72}. A seguir serão dados dois exemplos de sistemas com restrições não holonômicas: um disco rolando em um plano e um carro em movimento. Outros exemplos clássicos são o planímetro de A. N. Krylov~\cite{neimark72} e corpos girantes como naves espaciais e veículos subaquáticos onde a conservação do momento angular precisa ser respeitada~\cite{bullo00}.
+
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Exemplo: Um Disco Rolando em um Plano}\label{sec:disco}
+Um exemplo clássico de um sistema mecânico não holonômico é um disco rolando em um plano horizontal~\cite{bloch89,neimark72} percorrendo uma trajetória $s$, sem escorregamento ({\em derrapagem}), conforme a Figura~\ref{fig:disco}.
+
+As coordenadas de postura, que descrevem o movimento do disco com relação ao plano inercial global $\pi_1$ (espaço de configuração) são a posição, dada pelos eixos $x$ e $y$, e a orientação, dada pelo ângulo $\theta$. $\varphi$ é o ângulo de rotação do disco com relação ao plano $\pi_2$ (plano de rotação do disco). Por causa da restrição de que o disco não derrapa, a velocidade no ponto $C$ (ponto de contato do disco com o plano $\pi_1$) é zero. Logo, a magnitude da velocidade tangencial $v$ do centro do disco é proporcional à velocidade angular $\dot{\varphi}$:
+\begin{equation*}
+	v=r\dot{\varphi},
+\end{equation*}	 
+onde $r$ é o raio do disco. A direção da velocidade é perpendicular ao eixo de rotação do disco, isto é,
+\begin{align*}
+	\dot x &= v\cos\theta \\
+	\dot y &= v\sin\theta
+\end{align*}
+
+Estas condições levam às seguintes restrições:
+\begin{align*}
+	\dot x - r\dot\varphi\cos\theta &= 0 \\
+	\dot y - r\dot\varphi\sin\theta &= 0
+\end{align*}
+que não podem ser integradas para encontrar uma restrição holonômica da forma $f(x,y,\theta,\varphi)=0$. Portanto são restrições {\em não holonômicas}.
+\begin{figure}[t]\begin{center}
+    \includegraphics[width=.8\linewidth]{Figuras/disco.eps}
+    \caption{Exemplo clássico de um sistema não holonômico: um disco rolando em um plano.}
+    \label{fig:disco}
+\end{center}\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Exemplo: Um Carro Estacionando}\label{sec:car}
+Um desenho de um carro estacionando é mostrado na Figura \ref{fig:parking} \cite{teel92}. Na ausência de obstáculos, ele pode assumir qualquer configuração no plano. Logo, o espaço de configuração possui três graus de liberdade (dois para a posição e um para a orientação). Entretanto, assumindo que a componente da velocidade ortogonal ao plano de rotação $\pi_2$ das rodas é zero (na direção de $y'$), a velocidade no ponto central entre duas rodas ativas (o ponto $P$) é sempre tangente à orientação do carro (na direção de $x'$). Com isso, o espaço das velocidades, em qualquer configuração, terá apenas dois graus de liberdade. Se não existissem restrições ao seu movimento, o caminho tomado para chegar à configuração final seria, por exemplo, o dado pela linha tracejada. Agora, considerando as restrições, o carro deve seguir uma trajetória semelhante à mostrada pela linha contínua. 
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.80\linewidth]{Figuras/parking.eps}
+    \caption{Exemplo de trajetórias para um carro estacionando.}
+    \label{fig:parking}
+\end{center}\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Cinemática de Robôs Móveis Dotados de Rodas}\label{sec:kinematics}
+
+Para facilitar o entendimento dos resultados apresentados neste e nos próximos capítulos, será considerado o modelo do robô móvel Twil~\cite{lages98a,lages98b} a ser utilizado como estudo de caso neste trabalho. Os dados construtivos do mesmo podem ser vistos com mais detalhes no Apêndice~\ref{app:twil}.
+
+Considera-se que o robô é constituído de um corpo rígido e de rodas não deformáveis, e movimenta-se em um plano horizontal. O contato entre as rodas e o plano é puntual. O movimento do robô é realizado através de atuadores que fornecem torque para a rotação das rodas em uma configuração diferencial. Robôs móveis com acionamento diferencial aparecem em grande parte da literatura~\cite{canudas92,indivieri99,lee99,samson91a,fukao00,essen01}. 
+
+Conforme esquematizado na Figura~\ref{fig:robot}, a principal característica deste tipo de robô é que o mesmo possui duas rodas fixas centradas (rodas {\em ativas}) que compartilham o mesmo eixo de rotação, acionadas por dois motores independentes. Uma ou mais rodas orientáveis não centrada podem ser usadas a fim de equilibrar o robô, por isso chamadas de rodas {\em passivas}. Para isto, estas rodas precisam estar localizadas fora do eixo comum às duas rodas ativas.
+
+Conforme~\cite{campion96}, o {\em modelo cinemático de postura} de um robô com acionamento diferencial tem o seu comportamento descrito pelo seguinte vetor de estados:
+
+\begin{equation*}\label{eqn:states}
+	\bf x = \begin{bmatrix}
+		x \\ y \\ \theta
+	\end{bmatrix},
+\end{equation*}	
+onde $(x,y)$ e $\theta$ representam, respectivamente, a posição e a orientação do sistema de coordenadas do robô $\{C,X_c,Y_c\}$ com relação a um sistemas de coordenadas global inercial, $\{O,X,Y\}$. O ponto $C$ na Figura~\ref{fig:robot} é o centro de massa do corpo do robô, e também é, neste caso, o centro de rotação das rodas ativas. 
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.5\linewidth]{Figuras/robot.eps}
+    \caption{Modelo geométrico de um robô móvel com acionamento diferencial.}
+    \label{fig:robot}
+\end{center}\end{figure}
+
+O modelo cinemático é então dado por:
+\begin{equation}\label{eqn:model}
+	\left\{
+		\begin{aligned}
+			\dot x	  &= v\cos\theta \\
+			\dot y	  &= v\sin\theta \\
+			\dot \theta &= w
+		\end{aligned}
+	\right.
+\end{equation}
+
+A entrada de controle é o vetor $\bf u$,
+\begin{equation*}
+	\bf u = \begin{bmatrix} v \\ w \end{bmatrix},
+\end{equation*}	
+onde $v$ é a velocidade linear, na direção de $X_c$, e $w$ é a velocidade angular.
+
+A seguinte restrição não holonômica aparece neste caso:
+\begin{equation}\label{eqn:nhcond}
+	-\dot x\sin\theta + \dot y\cos\theta = 0,
+\end{equation}
+significando que a velocidade no centro de massa do robô é ortogonal ao eixo que liga as duas rodas ativas (Figura~\ref{fig:nhcond}).
+
+\begin{figure}[b]\begin{center}
+    \includegraphics[width=.45\linewidth]{Figuras/nhcond2.eps}
+    \caption{A restrição não holonômica.}
+    \label{fig:nhcond}
+\end{center}\end{figure}
+
+A expressão~\req{eqn:nhcond} pode ser reescrita da forma
+\begin{equation*}
+	G({\bf x},\dot{\bf x})=\eta({\bf x})\dot{\bf x} = \sum_{i=1}^{n}\eta_i({\bf x})\dot x_i,
+\end{equation*}
+onde $n$ é a dimensão de $\bf x$.
+
+Uma restrição cinemática é holonômica se, para qualquer $i$, $j$ e $k$ tal que $1\leq i<j<k\leq n$, tem-se ${\cal A}_{ijk}=0$~\cite{latombe89} com:
+\begin{equation*}
+	{\cal A}_{ijk} = \eta_i\left(\frac{\partial\eta_k}{\partial q_j}-\frac{\partial\eta_j}{\partial q_k}\right) + \eta_j\left(\frac{\partial\eta_i}{\partial q_k}-\frac{\partial\eta_k}{\partial q_i}\right) + \eta_k\left(\frac{\partial\eta_j}{\partial q_i}-\frac{\partial\eta_i}{\partial q_j}\right)
+\end{equation*}	
+
+No caso da expressão~\req{eqn:nhcond}, tem-se que o único caso é $i=1$, $j=2$ e $k=n=3$, $\eta_1=-\sin\theta$, $\eta_2=\cos\theta$ e $\eta_3=0$ e
+\begin{align*}
+	{\cal A}_{123} &= -\sin\theta\sin\theta - \cos\theta\cos\theta \\
+	               &= -1
+\end{align*}
+e como ${\cal A}_{123}=-1\neq 0$, conclui-se que a restrição cinemática da expressão~\req{eqn:nhcond} é não holonômica.               
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Propriedades do Modelo Cinemático}\label{sec:modelprop}
+
+A expressão~\req{eqn:model} pode ser escrita na seguinte forma compacta:
+\begin{equation}\label{eqn:modelshort}
+	\dot{\bf x} = f({\bf x}){\bf u},	
+\end{equation}
+ou, na forma afim:
+\begin{equation}\label{eqn:affine}
+	\dot{\bf x} = \sum_{i=1}^{m}f_i({\bf x})u_i, \quad {\bf x}\in\real^n, \quad {\bf u}\in\real^m,
+\end{equation}
+com $n=3$, $m=2$ e
+\begin{equation*}
+	f_1({\bf x}) = \begin{bmatrix}\cos\theta \\ \sin\theta \\ 0 \end{bmatrix} \qquad
+	f_2({\bf x}) = \begin{bmatrix}0 \\ 0 \\ 1 \end{bmatrix}
+\end{equation*}	
+
+Embora o modelo cinemático da expressão~\req{eqn:model} seja um modelo bastante simplificado do movimento do veículo (dinâmicas dos motores, deformações elásticas e outros efeitos mecânicos são desprezados), o mesmo é suficiente para representar as propriedades não holonômicas presentes~\cite{campion96,canudas96}. Ainda, propriedades importantes com relação à controlabilidade e estabilizabilidade de robôs móveis não holonômicos podem ser estabelecidas conforme será visto a seguir:
+
+\begin{itemize}
+\item {\bf Controlabilidade}.
+\begin{definition}
+\cite{sontag90}~Um sistema é dito controlável quando, partindo de uma configuração inicial, o mesmo pode assumir qualquer configuração em um intervalo de tempo finito.
+\end{definition}
+
+\begin{theorem}\label{teo:cont}
+\cite{canudas93}~Uma condição suficiente para que um sistema não linear descrito pela expressão~\req{eqn:modelshort} seja controlável é que a dimensão do fechamento involutivo gerado pelos campos vetoriais $f_1,\ldots,f_m$ seja igual a $n$, $\forall{\bf x}$, i.e.,
+\begin{equation*}
+	\dim\{\inv\Delta\}=n, \qquad \Delta = {\rm span}\{f_1,\ldots,f_m\}
+\end{equation*}
+\end{theorem}
+
+Esta condição é equivalente, no caso de sistemas lineares, à condição de que a matriz de controlabilidade precisa ter posto completo.
+
+A dimensão de uma distribuição é dada pelo posto desta distribuição. Para o sistema da expressão~\req{eqn:affine}, tem-se que $\Delta = {\rm span}\{f_1,f_2\}$ e o fechamento involutivo de $\Delta$ é definido, neste caso, como $\inv\Delta = \{f_1,f_2,[f_1,f_2]\}$ \cite{isidori95} e\footnote{$[f_1,f_2]$ denota o {\em colchete de Lie}, i.e., $[f_1,f_2](x)=\frac{\partial f_2}{\partial x}f_1(x) - \frac{\partial f_1}{\partial x}f_2(x)$.}
+\begin{equation*}
+	{\rm rank}\{f_1,f_2,[f_1,f_2]\} = {\rm rank}\begin{bmatrix}
+		\cos\theta & 0 & \sin\theta \\
+		\sin\theta & 0 & -\cos\theta \\
+		0 & 1 & 0 \end{bmatrix} = 3,
+\end{equation*}
+
+Portanto, a partir do Teorema~\ref{teo:cont}, $\dim\{\inv\Delta\}=3$, de onde conclui-se que o sistema é controlável.
+
+\item {\bf Linearização}.
+
+Para muitos sistemas não lineares, aproximações lineares podem ser usadas para uma primeira análise na síntese da lei de controle. A linearização pode também fornecer algumas indicações quanto à controlabilidade e estabilizabilidade do sistema não linear. Mais precisamente, se o sistema linearizado é controlável e estabilizável, então o sistema original não linear é controlável e estabilizável, pelo menos localmente. Entretanto, o inverso não pode ser aplicado~\cite{canudas93}. 
+
+No caso do modelo cinemático~\req{eqn:model}, a linearização em torno da origem $(\bf x=0, \bf u = 0)$ resulta em
+\begin{equation}\label{eqn:linear}
+	\dot{\bf x} = \begin{bmatrix}1 & 0 \\ 0 & 0 \\ 0 & 1 \end{bmatrix}
+		\begin{bmatrix} v \\ w \end{bmatrix}
+\end{equation}
+
+O sistema linear acima é não controlável pois o posto da matriz de controlabilidade
+\begin{equation*}
+	{\cal C} = \begin{bmatrix} 1 & 0 & 0 & 0 & 0 & 0 \\
+						  0 & 0 & 0 & 0 & 0 & 0 \\ 
+						  0 & 1 & 0 & 0 & 0 & 0
+			 \end{bmatrix}
+\end{equation*}	
+não é completo. Observa-se entretanto que o sistema não linear é controlável, conforme visto pela aplicação do Teorema~\ref{teo:cont}.
+
+\item {\bf Linearização por realimentação de estados}.
+\begin{definition}
+\cite{khalil96}~Um sistema não linear $\dot{\bf x}=f({\bf x},{\bf u})$ é dito linearizável por realimentação de estados se existe uma mudança de coordenadas
+\begin{equation*}
+	\xi = T(\bf x)
+\end{equation*}
+e uma realimentação de estados 
+\begin{equation*}
+	\nu = a({\bf x}){\bf u} + b({\bf x})
+\end{equation*}
+que transforma o sistema original em um sistema linear.
+\end{definition}
+
+Para sistemas sem deriva, tem-se então o seguinte resultado:
+
+\begin{theorem}\label{teo:lin}
+\cite{canudas93}~Um sistema da forma~\req{eqn:affine} é localmente linearizável por realimentação de estados em torno de $\bf x=0$ se e somente se ${\rm rank}[f_1(0)~~\ldots~~f_m(0)]=n$. 
+\end{theorem}
+
+Para o caso do modelo cinemático da expressão~\req{eqn:affine}, tem-se que
+\begin{equation*}
+	{\rm rank}\left[f_1(0)~~f_2(0)\right] = 
+	{\rm rank}\begin{bmatrix}
+		1 & 0 \\ 0 & 0 \\ 0 & 1
+	\end{bmatrix} < n
+\end{equation*}
+e a linearização de todos os estados do sistema não linear não é possível. Esta condição é equivalente à condição de controlabilidade do sistema linearizado~\req{eqn:linear}, que também não é satisfeita. Ainda assim, é possível linearizar parte dos estados, como por exemplo a posição apenas~\cite{kuhne04a}. Muitas vezes isto não é muito restritivo, se o robô possui uma geometria circular e o objetivo é estabilizar apenas a posição, descartando a orientação do robô.
+
+\item {\bf Estabilização através de realimentação estática e suave}.
+
+O problema da estabilização através de uma lei de controle estática e suave pode ser formulado como encontrar um controle ${\bf u}=k({\bf x})$, com $k({\bf x})$ estática e suave, tal que o sistema em malha fechada $\dot{\bf x}=f({\bf x})k({\bf x})$ seja assintoticamente estável. Pode-se então enunciar o seguinte resultado a respeito das condições estudadas por Brockett:
+\begin{theorem}\label{teo:brockett}
+\cite{brockett82}~Considerando novamente o sistema da expressão~\req{eqn:affine}, com $m\leq n$. Se os campos vetoriais $f_i(0)$, $i=1,\ldots,m$ são linearmente independentes, i.e.,
+\begin{equation*}
+	{\rm rank}[f_1(0)~~f_2(0)~~\cdots~~f_m(0)] = m,
+\end{equation*}
+então existe uma lei de controle estática e suave do tipo ${\bf u}=k({\bf x})$ que estabiliza o sistema~\req{eqn:affine} se e somente se $m=n$.
+\end{theorem}
+
+Para o modelo cinemático da expressão~\req{eqn:model}, tem-se que $n=3$, $m=2$ e
+\begin{equation*}
+	f_1(0) = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix} \qquad
+	f_2(0) = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}
+\end{equation*}
+
+Assim, ${\rm rank}[f_1(0)~~f_2(0)]=2$ e não existe lei de controle estática e suave ${\bf u}=k({\bf x})$ para o sistema considerado. De fato, diferentemente dos sistemas lineares, a controlabilidade de um sistema não linear não implica na existência de leis suaves estáticas estabilizantes. O Teorema~\ref{teo:brockett} corresponde a uma particularização das condições de Brockett~\cite{brockett82} para o caso de sistemas sem deriva.
+
+
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Métodos Clássicos Para o Controle de Robôs Móveis}\label{sec:classical_control}
+
+O controle de sistemas mecânicos não holonômicos, como os robôs móveis, tem sido objeto de um grande esforço de pesquisa da comunidade científica nos últimos anos. A razão para isto se dá basicamente pelo seguinte~\cite{aguiar00}:
+\begin{itemize}
+\item existe um grande número de robôs, nas mais variadas aplicações, que possuem restrições não holonômicas;
+\item há um considerável desafio na síntese de leis de controle para sistemas não lineares que não podem ser transformados em sistemas lineares; 
+\item conforme Brockett~\cite{brockett82}, um sistema com restrições não holonômicas não pode ser estabilizado em um ponto de equilíbrio, por uma lei de controle suave e invariante no tempo.
+\end{itemize}
+
+Quanto ao objetivo, pode-se classificar as metodologias de controle em malha fechada para robôs móveis em basicamente três tipos:
+\begin{itemize}
+\item {\em Estabilização em um ponto.} Para um sistema linear invariante no tempo, se os autovalores instáveis são controláveis (i. e., se o sistema é estabilizável), um ponto de equilíbrio pode ser assintoticamente estabilizado por uma realimentação de estados estática, suave e invariante no tempo. Entretanto, para sistemas não lineares e com restrições não holonômicas, isto não é mais possível~\cite{brockett82}. Conseqüentemente, ferramentas lineares antes utilizadas não podem mais ser consideradas, nem localmente \cite{kolmanovsky95}, conforme mostrado nos Teoremas~\ref{teo:cont}-\ref{teo:brockett}. Neste caso, usualmente, leis de controle variantes no tempo ou não suaves são utilizadas a fim de transpor as restrições de Brockett, como será estudado nas Seções~\ref{sec:timevar}, \ref{sec:disc} e no Capítulo~\ref{cap:point}.
+
+Além do controle variante no tempo e do controle não suave, outros métodos incluem ainda controle híbrido (combinação dos dois métodos)~\cite{pomet92,canudas94,canudas95}, controle adaptativo (considera incertezas do modelo)~\cite{lee99,fukao00,oya03} e linearização por realimentação dinâmica de estados~\cite{dong01,oriolo02,sun05}. O interesse por esta última técnica baseia-se no fato de que, se a linearização do sistema existe, leis de controle lineares podem ser obtidas. Ainda, é possível obter-se uma descrição linear mais representativa do sistema não linear, ao contrário do obtido por expansão em séries de Taylor~\cite{lages98a,chaves00}.
+
+\item {\em Rastreamento de trajetória.} A fim de superar as limitações impostas pelo Teorema de Brockett, várias abordagens diferentes foram propostas. Alguns métodos abandonam a idéia da estabilização em um ponto e procuram obter convergência a uma trajetória de referência, parametrizada no tempo. Neste caso, o problema é resolvido em duas etapas distintas: primeiro uma trajetória é calculada {\em off-line} e em seguida uma lei de controle é projetada a fim de fazer com que o robô siga a tajetória calculada anteriormente. Usualmente, a existência de um robô de referência virtual é considerada, descrito, por exemplo, pelo modelo cinemático $\dot{\bf x}_r=f({\bf x}_r,{\bf u}_r)$. Assume-se então que, para entradas de referência não nulas, deseja-se calcular uma lei de controle que faça que o erro entre o robô e a referência seja nula. Trabalhos neste sentido encontram-se em~\cite{yamamoto94,pomet92,kanayama90,campion91a,deng93,yang99,do02,sun05}. Este caso será tratado com mais detalhes no Capítulo~\ref{cap:traj}.
+
+\item {\em Seguimento de caminho.} Neste caso, à semelhança do caso acima, também deseja-se que o robô convirga para uma trajetória de referência, mas geralmente, este problema é menos restritivo, pois não há especificação temporal para que esta convergência seja alcançada. Ainda, usualmente considera-se que a velocidade linear é mantida constante e a convergência é obtida apenas através da velocidade angular. Trabalhos utilizando seguimento de caminho são encontrados em~\cite{samson95,sarkar93,encarnacao02}. Este problema não será estudado neste trabalho.
+\end{itemize}
+
+A seguir serão apresentadas algumas técnicas existentes na literatura que foram escolhidas de forma a representar e abranger concisamente os trabalhos já desenvolvidos na área de controle de robôs móveis não holonômicos.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Controle Variante no Tempo}\label{sec:timevar}
+
+Leis de controle variantes no tempo utilizadas em sistemas não holonômicos foram estudadas primeiramente por~\cite{samson90}. Nesta referência, o controle utilizado era, em sua versão mais simples, da forma:
+\begin{align*}
+	v &= -k_1x \\
+	w &= -g(t)y - k_3\theta
+\end{align*}
+sendo $v$ e $w$ as entradas de controle. $k_1$ e $k_3$ são constantes reais positivas e $g(t)$ é escolhida tal que $\frac{\partial g}{\partial t}(t)$ não tende a zero quando o tempo $t$ tende ao infinito. Por exemplo, $g(t)=\sin(t)$. Leis de controle variantes no tempo possuem a desvantagem de apresentar baixas taxas de convergência e trajetórias altamente oscilatórias~\cite{gurvits93,campion96}, o que, em uma implementação real, pode se tornar até não factível, dependendo das amplitudes e taxas de variação das entradas de controle. Outros trabalhos que utilizam controle variante no tempo podem ser citados:~\cite{teel92,tarin99,murray97,dixon99,do02}.
+
+Três exemplos de leis de controle variantes no tempo existentes na literatura serão apresentadas aqui. Todas elas utilizam o sistema
+\begin{equation}\label{eqn:model2}
+	\left\{
+		\begin{aligned}
+			\dot x	  &= v\cos\theta \\
+			\dot y	  &= v\sin\theta \\
+			\dot \theta &= w
+		\end{aligned}
+	\right.
+\end{equation}
+onde $[x~~y~~\theta]^T$ representa a configuração	do robô com relação ao espaço de configuração e $[v~~w]^T$ são as velocidades linear e angular, respectivamente, conforme o modelo cinemático~\req{eqn:model2}. O objetivo é estabilizar o robô em uma postura fixa que, sem perda de generalidade, é a origem: $x=0$, $y=0$, $\theta=0$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\cite{pomet92}}\label{sec:pomet}
+Neste trabalho a seguinte lei de controle é utilizada:
+\begin{align*}
+	v = &-x\cos\theta-y\sin\theta \\
+	w = &-a\cos\frac{\theta}{a}\sin\frac{\theta}{a} + \\ &+ a\lambda\cos^2\frac{\theta}{a}\bigl(-y(\sin t-\cos t)-y\sin\theta+x\cos\theta)\cos t\sin\theta\bigr),
+\end{align*}
+onde $t$ é o tempo e $a$ e $\lambda$ são números reais positivos, com $a>2$. A função de Lyapunov utilizada para provar a estabilidade desta lei de controle é a seguinte:
+\begin{equation*}
+	V = \frac{1}{2}x^2+\frac{1}{2}y^2+\frac{1}{2}\left(\tan\frac{\theta}{a}\lambda+x\cos t\right)^2
+\end{equation*}
+
+Os resultados são mostrados abaixo, para uma condição inicial ${\bf x}_0=[x_0~~y_0~~\theta_0]^T=[2~~2~~\pi]^T$ (identificada, no plano $XY$, pelo símbolo $\odot$\footnote{Durante todo este trabalho, nos gráficos da trajetória no plano $XY$, a posição inicial do robô é indicada por $\odot$, a posição final por $\times$ e a origem por $+$.}) e constantes $a=4$ e $\lambda=2,1$.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pomet/traj_01.eps}
+    \caption{Trajetória no plano $XY$. Controle de~\cite{pomet92}.}
+    \label{fig:pomet_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pomet/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Controle de~\cite{pomet92}.}
+    \label{fig:pomet_state_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/pomet/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. Controle de~\cite{pomet92}.}
+    \label{fig:pomet_control_01}
+\end{center}\end{figure}
+
+Na Figura~\ref{fig:pomet_traj_01} é mostrada a trajetória que o robô percorre no plano de configuração $XY$. Os estados e as entradas de controle são mostrados individualmente ao longo do tempo nas Figuras~\ref{fig:pomet_state_01} e~\ref{fig:pomet_control_01}, respectivamente. Observa-se um comportamento altamente oscilatório e um tempo de acomodação elevado, características de leis variantes no tempo. Ainda, as amplitudes das entradas de controle, se consideradas as características do robô Twil (Apêndice~\ref{app:twil}) tornam esta lei de controle proibitiva do ponto de vista prático. Os limites das velocidades linear e angular são de, respectivamente, $0,4712~m/s$ e $3,7699~rad/s$, valores estes que são largamente ultrapassados, como observa-se na Figura~\ref{fig:pomet_control_01}. Talvez a sintonia dos parâmetros $a$ e $\lambda$ pode fazer com que as amplitudes das entradas de controle sejam menores. Entretanto, não existe um método sistemático para escolher estes parâmetros de forma a melhorar o desempenho ou de levar em conta restrições nos estados ou nas entradas de controle. Os valores utilizados neste caso foram obtidos através da análise de diversos casos, chegando-se então a uma solução aceitável, para este caso, com relação às trajetórias de estado.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\cite{samson91b}}\label{sec:samson}
+Este trabalho apresenta uma lei de controle que estabiliza o sistema~\req{eqn:model2}
+assintoticamente. Fazendo uma transformação de coordenadas da base cartesiana $(x,y,\theta)$ para uma base variante no tempo $(z_1,z_2,z_3)$
+\begin{align*}
+	z_1 &= x\cos\theta+y\sin\theta \\
+	z_2 &= -x\sin\theta+y\cos\theta \\
+	z_3 &= \theta + f(z_2,t)
+\end{align*}
+tem-se que
+\begin{equation}\label{eqn:model3}
+	\begin{aligned}
+		\dot z_1 &= v + z_2w \\
+		\dot z_2 &= -z_1w \\
+		\dot z_3 &= w - z_1w\frac{\partial f}{\partial z_2}+\frac{\partial f}{\partial t}
+	\end{aligned}		
+\end{equation}
+
+Escolhendo $f(z_2,t)=z_2\sin t$, $\frac{\partial f}{\partial z_2}=\sin t$, $\frac{\partial f}{\partial t}=z_2\cos t$ e a seguinte lei de controle resulta em estabilização assintótica para o sistema~\req{eqn:model3}:
+\begin{align*}
+	w &= -z_3 - \frac{\partial f}{\partial t} = -z_3 - z_2\cos t \\
+	v &= -z_1 + z_3w\frac{\partial f}{\partial z_2} = -z_1 + z_3w\sin t
+\end{align*}
+
+E os resultados são mostrados abaixo, para uma condição inicial ${\bf x}_0=[-2,5~~1,3~~\pi/2]^T$.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/samson/traj_01.eps}
+    \caption{Trajetória no plano $XY$. Controle de~\cite{samson91b}.}
+    \label{fig:samson_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/samson/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Controle de~\cite{samson91b}.}
+    \label{fig:samson_state_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/samson/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. Controle de~\cite{samson91b}.}
+    \label{fig:samson_control_01}
+\end{center}\end{figure}
+
+A exemplo da lei de controle anterior, observa-se um movimento altamente oscilatório e um tempo de acomodação elevado. Da Figura~\ref{fig:samson_control_01}, nota-se que os limites de amplitude das entradas de controle foram também ultrapassados. Talvez com outra escolha para a função $f(z_2,t)$, estes problemas possam ser minimizados.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\cite{teel95}}\label{sec:teel}
+Este trabalho utiliza uma transformação canônica do sistema para a forma encadeada. Trabalhos envolvendo controle de sistemas não holonômicos na forma encadeada são vistos em \cite{bloch89,murray90,teel92,canudas94,wu99}. A vantagem é que a lei de controle pode ser facilmente generalizada para vários tipos de sistemas não holonômicos~\cite{bloch89,murray93,sordalen93b}. Assim, fazendo
+\begin{align*}
+	z_1 &= \theta \\
+	z_2 &= x\cos\theta+y\sin\theta \\
+	z_3 &= x\sin\theta-y\cos\theta
+\end{align*}
+e
+\begin{align*}
+	u_1 &= w \\
+	u_2 &= v - z_3w,
+\end{align*}
+tem-se que o sistema do modelo cinemático é transformado para a seguinte forma encadeada:
+\begin{align*}
+	\dot z_1 &= u_1 \\
+	\dot z_2 &= u_2 \\
+	\dot z_3 &= z_2u_1
+\end{align*}
+que é estabilizado através da seguinte lei de controle:
+\begin{align*}
+	u_1 &= -z_1 + z_3\cos t \\
+	u_2 &= -z_2 + z_3^2\sin t
+\end{align*}
+
+A seguinte função de Lyapunov garante estabilidade para a lei de controle acima:
+\begin{equation*}
+	V = \left(z_1-\frac{z_3}{2}(\cos t+\sin t)\right)^2 + \left(z_2-\frac{z^2_3}{2}(\sin t-\cos t)\right)^2 + z^2_3
+\end{equation*}	
+
+E os resultados são mostrados abaixo, para uma condição inicial ${\bf x}_0=[0~~-3,2~~\pi/4]^T$.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/murray/traj_01.eps}
+    \caption{Trajetória no plano $XY$. Controle de~\cite{teel95}.}
+    \label{fig:murray_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/murray/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Controle de~\cite{teel95}.}
+    \label{fig:murray_state_01}
+\end{center}\end{figure}
+\begin{figure}\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/murray/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. Controle de~\cite{teel95}.}
+    \label{fig:murray_control_01}
+\end{center}\end{figure}
+
+Novamente as características das leis de controle variantes no tempo são observadas: trajetórias de estado altamente oscilatórias e um elevado tempo de acomodação. Nota-se também que o limite aceitável da velocidade linear, para o robô Twil, é ultrapassado.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Controle Não Suave}\label{sec:disc}
+
+As leis de controle não suaves podem ser subdivididas em leis contínuas por partes ou de modo deslizante. A vantagem do controle não suave é que o mesmo pode superar as desvantagens comumente associadas ao controle variante no tempo, ou seja, baixa taxa de convergência e trajetórias de estado oscilatórias. O trabalho pioneiro nesta técnica foi~\cite{bloch89}. Trabalhos subseqüentes são encontrados em~\cite{bloch92,canudas92,chacal94,su94}. Como será visto, apesar de resolver os problemas apresentados pelas leis variantes no tempo, ainda não é possível com leis de controle descontínuas incluir restrições nos estados ou nas entradas de controle.
+
+A exemplo da seção anterior, serão mostrados agora leis de controle não suaves existentes na literatura para o problema de estabilização do robô em um ponto.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\cite{lages98a}}\label{sec:lages}
+Neste trabalho e também em \cite{astolfi94,lages98b,indivieri99,chwa04}, o modelo cinemático~\req{eqn:model2} é transformado em coordenadas polares através da seguinte transformação descontínua\footnote{A função $\atan(y,x)$ calcula o valor do arco tangente de $y/x$, usando os sinais dos dois argumentos para determinar o quadrante do valor retornado.}, conforme a Figura~\ref{fig:polar2}:
+\begin{align*}
+	e      &= \sqrt{x^2+y^2} \\
+	\phi   &= \atan(y,x) \\
+	\alpha &= \theta-\phi
+\end{align*}
+
+\begin{figure}[htbp]\begin{center}
+    \includegraphics[width=.45\linewidth]{Figuras/polar.eps}
+    \caption{Coordenadas polares para o robô com acionamento diferencial.}
+    \label{fig:polar2}
+\end{center}\end{figure}
+
+Assim, o seguinte modelo cinemático é obtido:
+\begin{equation*}
+	\left\{
+		\begin{aligned}
+			\dot e	  &= v\cos\alpha \\
+			\dot \phi	  &= v\frac{\sin\alpha}{e} \\
+			\dot \alpha &= -v\frac{\sin\alpha}{e}+w
+		\end{aligned}
+	\right.
+\end{equation*}
+
+Este sistema é não definido quando $e=0$. Assim, o sistema na base polar de coordenadas torna-se descontínuo, sendo possível assim transpor as condições de Brockett e estabilizar o sistema acima na origem através de uma lei de controle suave e invariante no tempo. Então, através da seguinte função de Lyapunov:
+\begin{equation*}
+	V = \frac{1}{2}\left(\lambda e^2+h\phi^2+\alpha^2\right),
+\end{equation*}
+chega-se ao seguinte controle:
+\begin{align*}
+	v &= -\gamma_1e\cos\alpha \\
+	w &= -\gamma_2\alpha-\gamma_1\cos\alpha\frac{\sin\alpha}{\alpha}\left(\alpha-h\phi\right)
+\end{align*}
+onde $\lambda$, $h$, $\gamma_1$ e $\gamma_2$ são constantes reais positivas. Esta lei de controle, quando transformada para base original de coordenadas cartesianas, torna-se descontínua~\cite{lages98a}. Os resultados são mostrados abaixo, para uma condição inicial de ${\bf x}_0=[-0,2~~3~~0]^T$ e $\gamma_1=0,05$, $\gamma_2=0,1$ e $h=1,35$.
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/lages/traj_01.eps}
+    \caption{Trajetória no plano $XY$. Controle de~\cite{lages98a}.}
+    \label{fig:lages_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/lages/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Controle de~\cite{lages98a}.}
+    \label{fig:lages_state_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/lages/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. Controle de~\cite{lages98a}.}
+    \label{fig:lages_control_01}
+\end{center}\end{figure}
+
+Nota-se aqui uma lei de controle que gera uma trajetória de estado bastante suave, como observa-se pelas figura~\ref{fig:lages_traj_01} e \ref{fig:lages_state_01}. Ainda, as amplitudes das entradas de controle (Figura~\ref{fig:lages_control_01}) são compatíveis com os limites definidos para o robô Twil. É claro que, com isso, o tempo com que o robô chega na origem é maior. Com a sintonia dos parâmetros existentes para esta lei de controle ($h$, $\gamma_1$ e $\gamma_2$), a taxa de convergência pode ser aumentada, diminuindo assim o tempo de acomodação. Entretanto, não existe método sistemático para isto e a modificação destes parâmetros pode gerar entradas de controle com amplitudes elevadas. A condição final do robô é ${\bf x}_f=[0~~0~~0]^T$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\cite{sordalen93a}}\label{sec:sordalen}
+Este método também utiliza uma transformação descontínua de coordenadas (Figura~\ref{fig:sordalen}). 
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.54\linewidth]{Figuras/sordalen.eps}
+    \caption{Transformação descontínua de coordenadas.}
+    \label{fig:sordalen}
+\end{center}\end{figure}
+
+Assim, define-se:
+\begin{align*}
+	a &= r\theta_d \\
+	\alpha &= e - 2\pi n(e)
+\end{align*}
+onde
+\begin{align*}
+	r &= \frac{x^2+y^2}{2y} \\
+	\theta_d &= \begin{cases}
+		2\atan(y,x) & ;~(x,y)\neq(0,0) \\
+		0           & ;~(x,y)=(0,0)
+	\end{cases} \\
+	e &= \theta-\theta_d
+\end{align*}
+e $n(e)\in\{0,\pm1,\pm2,\ldots\}$ é uma função que faz com que $\alpha\in[-\pi,\pi)$. A seguinte lei de controle estabiliza o robô na origem exponencialmente:
+\begin{align*}
+	v &= -\gamma b_1a \\
+	w &= -b_2v - k\alpha
+\end{align*}
+onde $\gamma$ e $k$ são constantes reais positivas e
+\begin{align*}
+	b_1 &= \cos\theta\left(\frac{\theta_d}{\beta}-1\right) + \sin\theta\left(\frac{\theta_d}{2}\left(1-\frac{1}{\beta^2}\right)+\frac{1}{\beta}\right) \\
+	b_2 &= \frac{2}{(1+\beta^2)x}\left(\beta\cos\theta-\sin\theta\right)
+\end{align*}
+com $\beta= y/x$.
+
+Assim, os seguintes resultados são obtidos, para uma condição final de ${\bf x}_0=[-0,2~~3~~0]^T$.
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/sordalen/traj_01.eps}
+    \caption{Trajetória no plano $XY$. Controle de \cite{sordalen93a}.}
+    \label{fig:sordalen_traj_01}
+\end{center}\end{figure}
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/sordalen/state_01.eps}
+    \caption{Estados $x$, $y$ e $\theta$. Controle de \cite{sordalen93a}.}
+    \label{fig:sordalen_state_01}
+\end{center}\end{figure}
+
+Da mesma forma apresentada anteriormente, esta lei de controle também gera uma trajetória bastante suave, sem movimentos oscilatórios desnecessários e com uma taxa de convergência bastante elevada. O tempo com que o robô chega na origem é de apenas 4 segundos. Em~\cite{sordalen93a} é apresentado um roteiro de cálculo para os parâmetros $\gamma$ e $k$ que levam em conta os intervalos de tempo em que $a(t)$ e $\alpha(t)$ devem chegar a um determinado valor final. Assim, pode-se escolher um determinado tempo de acomodação e calcular $\gamma$ e $k$ para o caso desejado. Entretanto, este método não leva em consideração as amplitudes das entradas de controle, e conforme os valores dos parâmetros, estas amplitudes podem ser tais que ultrapassem os limites aceitáveis, o que efetivamente ocorre, neste caso, para o robô Twil\footnote{Os limites para o robô Twil são de $0,4712~m/s$ para a velocidade linear e de $3,7699~rad/s$ para a velocidade angular. Maiores detalhes são descritos no Apêndice~\ref{app:twil}.}~(Figura~\ref{fig:sordalen_control_01}).
+
+\begin{figure}[H]\begin{center}
+    \includegraphics[width=.6\linewidth]{Figuras/sordalen/control_01.eps}
+    \caption{Entradas de controle $v$ e $w$. Controle de \cite{sordalen93a}.}
+    \label{fig:sordalen_control_01}
+\end{center}\end{figure}

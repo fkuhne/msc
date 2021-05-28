@@ -1,0 +1,176 @@
+------------------------------------------
+            BIBLIOGRAFIA TI
+------------------------------------------
+
+
+
+1) MODELAGEM E TEORIA:
+
+
+-- A MATLAB Simulink-based platform for real-time planning and execution of control techniques applied to mobile robots. Chaves, L. F., Spiller, P. A., Scolari, A. G., Conte, R. N., Pereira, L. F. A. Proceedings of 2001 IEEE Int. Symp. CIRA. pp. 530-535.
+
+-- An odometry callibration method for mobile robots based on the least-squares technique. Gianluca Antonelli, Stefano Chiaverini, Giuseppe Fusco. Proceedings on ACC 2003. pp. 3429-3434.
+
+-- Dynamic feedback linearization of nonholonomic wheeled mobile robots. B. d´Andrea-Novel, G. Bastin, G. Campion. Proceedings of Int. Conf. Rob. Aut. 1992. pp. 2527-2532.
+
+-- Introduction to an integrated design for motion systems using over-actuation. M. G. E. Schneiders, M. J. G. van de Molengraft, M. Steinbuch. NÃO SEI DAONDE VEIO!!!
+
+-- Locomotion functions in the mobile robot language, MML. Yutaka Kanayama, Masanori Onishi. Proceedings of Int. Conf. on Rob. and Aut. 1991. pp. 1110-1115.
+
+-- Mechatronics and robotics for service applications. R. D. Schraft. IEEE Rob. Aut Magazine dez. 1994. pp 31-35.
+
+-- Modelling and control of non holonomic wheeled mobile robots. B. d´Andrea-Novel, G. Bastin, G. Campion. Proceedings on IEEE Int. Conf. Rob. Aut. 1991. pp. 1130-1135.
+
+-- Moddeling and state feedback control of nonholonomic mechanical systems. B. d´Andrea-Novel, G. Bastin, G. Campion. Proceedings of 30th. CDC 1991. pp. 1184-1189.
+
+-- Newton´s Law and Nonholonomic systems. A. M. Block. Proceedings of 37th. IEEE CDC 1998. pp. 3569-3574.
+
+-- On nonholonomic mobile robots and optimal maneuvering. Jérôme Barraquand, Jean-Claude Latombe. Intelligent Control, 1989. Proceedings., IEEE International Symposium on. pp. 340-347.
+
+-- Structural properties and classification of kinematic and dynamic models of wheeled mobile robots. B. d´Andrea-Novel, G. Bastin, G. Campion. IEEE TRA. 12(1). Fev. 1996. pp. 47-62.
+
+-- The cahotic mobile robot. Yoshihiko Nakamura, Akinori Sekigushi. IEEE TRA. 17(6). Dez. 2001. pp. 898-904.
+
+-- Unified formulation of robotic systems with holonomic and nonholonomic constraints. Xiaoping Yun, Nilanjan Sarkar. IEEE TRA. 14(4). Ago. 1998. pp. 640-650.
+
+--Velocity kinematic modeling for wheeled mobile robots, Dong Hun Shin, Kyung Hoon Park. Proceedings of IEEE Int. Conf. Rob. & Aut. 2001. pp. 3516-3522.
+
+
+
+
+2) ESTABILIZAÇÃO:
+
+
+-- A hibrid strategy for the feedback stabilization of nonholonomic mobile robots. J. B. Pomet, B. Thuilot, G. Bastin, G. Campion. Proceedings of IEEE ICRA 1992. pp. 129-134.
+
+-- A Lyapunov approach to exponential stabilization of nonholonomic systems in power form. TAC 47(7). Jul. 1997. pp. 1028-1032.
+
+-- Adaptive Exponential Stabilization of Mobile Robots with Uncertainties. Weiguo Wu, Huitang Chen, Yuejuan Wang, Pengyung Woo. Proceedings of the 38th American CDC 1999. pp. 3484-3489.
+
+-- Adaptive robust stabilization of dynamic nonholonomic chained systems. S. S. Ge, G. Y. Zhou. CDC2000.
+
+-- Dynamic Feedback Stabilization of Nonholonomic Systems. Navin Khaneja and Roger Brockett. Proceedings of the 38th. American CDC 1999. pp. 1640-1645.
+
+-- Exponential Stabilization Of Driftless Nonlinear Control Systems Using Homogeneous Feedback. TAC 42(5). mai 1997. pp. 614-628.
+
+-- Exponential stabilization of mobile robots with nonholonomic constraints. Proceedings of the 30th European CDC. 1991. pp. 692-697.
+
+- Exponential stabilization of mobile robots with nonholonomic constraints. C. Canudas de Wit, O. J. Sordalen. TAC 37(11) . nov. 1992. pp. 1791-1796.
+
+-- On the stabilization of nonholonomic systems. A. Astolfi. Proceedings of the 33th American CDC 1994. pp. 3481-3486.
+
+
+
+3) NAVEGAÇÃO:
+
+
+-- A behaviour-based approach to reactive navigation for autonomous tobot. D. Y. Youn, S. R. Oh, G. T. Park, B. J. You. XV IFAC World Congress 2002.
+
+-- Full State Tracking and Internal Dynamics of Nonholonomic Wheeled Mobile Robots. Danwei Wang and Guangyan Xu. Proceedings of the American Control Conference. 2000. pp. 3274-3278.
+
+-- G3-splines for the path planning of wheeled mobile robots. Aurelio Piazzi, Massimo Romano, Corrado Guarino Lo Bianco. NÃO SEI DAONDE !!!!!.
+
+-- Nonholonomic motion planning: steering using sinusoids. Richard M. Murray, S. Shankar Sastry. TAC 38(5). mai 1993. pp. 700-716.
+
+-- Optimal mobile robot pose estimation using geometrical maps. Geovany Araujo Borges, Marie-José Aldon. TRA 18(1). fev. 2002. pp. 87-94.
+
+-- Simple Motion Planning Strategies for Spherobot: A Spherical Mobile Robot. Ranjan Mukherjee, Mark A. Minor, and Jay T. Pukrushpan. Proceedings of the 38th. American CDC 1999. 2132-2137.
+
+-- Steering nonholonomic systems using sinusoids. Richard M. Murray, S. Shankar Sastry. Proceedings of the 29th. American CDC 1990. pp. 2097-2101.
+
+
+
+4) CONTROLE:
+
+
+-- A kinematic And dynamic model-based motion controller for mobile robots. J. R. Asensio, L. Montano. XV IFAC World Congress 2002.
+
+-- A neural gain scheduling network controller for nonholonomic systems. Jin-Tsong Jeng, Tsu-Tian Lee. TSMC_A 29(6). nov. 1999. pp. 654-661.
+
+-- A new mobile robot control architecture via control output fusion. Eduardo Oliveira Freire Teodiano Freire Bastos Filho Mario Sarcinelli Filho Ricardo Carelli Oscar Nasisi. XV IFAC World Congress 2002.
+
+-- A novel non-time based tracking controller for nonholonomic mobile robots. Eric Hu, Simon X. Yang, Ning Xi. Proceedings of the IEEE Int. Symp. on Computational Inteligence and Automation. 2001. pp- 119-124.
+
+-- A stable tracking control method for an autonomous mobile robot. Yutaka Kanayama, Yoshihiko Kimura, Fumio Miyazaki, Tetsuo Noguchi. Proceedings of the ICRA 1990. pp. 384-389.
+
+-- A Universal Saturation Controller Design for Mobile Robots. K. D. Do, Z. P. Jiang, J. Pan. Proc of the 41th. Americam CDC 2002. pp. 2044-2049.
+
+-- Adaptive Control of Mechanical Systems with Classical Nonholonomic Constraints. Chun-Yi Su, Yury Stepanenko. TSMC 1995. pp. 4143-4148.
+
+-- Adaptive control of robots with an improved transient performance. Marco A. Arteaga, Yu Tang. TAC 47(7). jul 2002. pp. 1198-1202.
+
+-- Adaptive Motion/Force Control of Mechanical Systems with Nonholonomic Pfaffian Constraints. Yury Stepanenko, Chun-Yi Su. Proceedings of the ACC 1995. pp. 375-379.
+
+-- Adaptive Self-Tuning Path Control System for an Autonomous Mobile Robot. C. Tarin, H. Brugger, B. Tibken, and E.P. Hofer. Proc of the 38 American CDC 1999. pp. 3886-3887.
+
+-- Adaptive tracking control of a nonholonomic mobile robot. Takanori Fukao, Hiroshi Nakagawa, and Norihiko Adachi. TRA 16(5). out. 2000. pp. 609-615.
+
+-- Adaptive Tracking Control of Nonholonomic Mobile Robots by Computed Torque. Ti-Chung Lee, Ching-Hung Lee, Ching-Cheng Teng. Proc of the 38 ACDC 1999. pp. 1254-1259.
+
+-- Adaptive tracking control of uncertain nonholonomic dynamic system. Wenjie Dong and W. L. Xu. TAC 46(3). amr 2001. pp. 450-454.
+
+-- Combined trajectory tracking and path following control for dynamic wheeled mobile robots. P. Encarnacao A. Pascoal. XV IFAC World Congress 2002.
+
+-- Comparison of four methods of robot trajecory control. D. T. Pham, Sahin Yildirim. XV IFAC World Congress 2002. 
+
+-- Continuous steering-function control of robot carts. Winston L. Nelson. IEEE Trans. on Industrial Electronics. 36(3), ago. 1989. pp- 330-337.
+
+-- Control and stabilization of a general class of nonholonomic dynamic systems. N. Harris McClamroch, Anthony M. Bloch, Mahmut Reyhanoglu. Proc of the 32 ACDC 1993. pp. 955-956.
+
+-- Control and stabilization of nonholonomic Caplygin dynamic systems. N. Harris McClamroch, Anthony M. Bloch. Proc 30 ECDC. 1991. pp. 1127-1132.
+
+-- Control and stabilization of nonholonomic dynamic systems. N. Harris McClamroch, Anthony M. Bloch, Mahmut Reyhanoglu. TAC 37(11). nov 1992. pp. 1746-1757.
+
+-- Control of mechanical systems with classical nonholonomic constraints. N. Harris McClamroch, Anthony M. Bloch. Proc 28 ACDC 1989. pp. 201-205
+
+-- Controllability and stabilizability properties of a nonholonomic control system. N. Harris McClamroch, Anthony M. Bloch, Mahmut Reyhanoglu. Proc 29 ACDC 1990. pp. 1312-1314.
+
+-- Coordinating locomotion and manipulation of a mobile manipulation for a mobile robot. Yoshio Yamamoto, Xiaoping Yun. proc 31 ACDC 1992. pp. 2644-2648. 
+
+-- Feedback control of a nonholonomic wheeled cart in Cartesian space. C. Samson, K. Ait-Abderrahim. Proc ICRA 1991. pp. 1136-1141.
+
+-- Feedback stabilization of a nonholonomic wheeled mobile robot. C. Samson, K. Ait-Abderrahim. IEEE Int. Workshop on Intelligent Robots ans Systems 1991. pp. 1242- 1247.
+
+-- Hybrid stabilizing control on a real mobile robot. Wilco Oelen, Harry Berghuis, Henk Nijmeijer, Carlos Canudas de Wit. IEEE Rob & Aut Magazine 1995. pp. 16-23.
+
+-- Kinematic Time-invariant Control of a 2D Nonholonomic Vehicle. Giovanni Indiveri. Proc 38 ACDC 1999. pp. 2112-2117.
+
+-- Mobile Robot Navigation Using Recursive Motion  Control. Rajiv Ellepola, Peter Kovesi. Advanced Mobile Robots, 1997. Proceedings., Second EUROMICRO workshop on. pp. 168-174.
+
+-- New Results in the Global Stabilization of Nonlinear Systems via Measurement Feedback with Application to Nonholonomic Systems. S. Battilotti. Proc 40 ACDC 2001. pp. 1360-1365.Nonholonomic control systems: from steering to stabilization. Andrew R. Teel, Richard M. Murray, Greg Walsh. Proc 31 ACDC 1992. pp. 1603-1609.
+
+-- Nonholonomic mobile robots - a new solution for path planning in changing environment. Leszek Podsedkowski, Jacek Nowakowski. Marek Idzikowski, Istvan Visvary. Advanced Mobile Robots, 1999. (Eurobot '99). 1999 Third European Workshop on. pp. 89-96.
+
+-- Optimal Feedback Position Control for an Autonomous Mobile Robot. C. Tarin, B. Tibken, H. Brugger and E.P. Hofer. Prc ACC 2000. pp. 1491-1492.
+
+-- Programming and control of robots by means of differential algebraic inequalities. TA 16(2) abr. 2000. pp. 135-145.
+
+-- Reactive planning and control with mobile robots. Pascal Maigret. IEEE Control Systems Magazine. 1992. pp. 95-100.
+
+-- Robust adaptive motion/force tracking control of uncertain nonholonomic mechanical systems. TRA 19(1). fev. 2003. pp. 175-181.
+
+-- Robust Control of Full State Tracking of a Wheeled Mobile Robot. Guangyan Xu, Danwei Wang, Keliang Zhou. CDC2000. p. 1-6.
+
+-- Robust motion/force control of mechanical systems with classical nonholonomic constraints. TAC 39(3). mar. 1994. pp. 609-614.
+
+-- Rolling bodies with regular surface: controllability theory and applications. Alessia Marigo and Antonio Bicchi. TRA 45(9). set. 2000. pp. 1586-1599.
+
+-- Simple mechanical control systems with constraints. TAC 45(8). ago 2000. pp. 1420-1436.
+
+-- Sliding mode control for trajectory tracking of nonholonomic wheeled mobile robots. TRA 15(3). jun 1999. pp. 478-587.
+
+-- Sliding Mode Motion Control of Nonholonomic Mobile Robots. Jung-Min Yang, Jong-Hwan Kim. IEEE Control Systems Magazine 1999. pp. 15-23.
+
+-- Stabilization of trajectories for systems with nonholonomic constraints. TAC 39(1). jan. 1994. pp. 216-222.
+
+-- Supervision of heterogeneous controllers for a mobile robot. Albert Figueras Joan Colomer J. Lliss de la Rosa. XV IFAC World Congress 2002. 
+
+-- Synthesis Of Control Units For Mobiie Robots. Samary Baranov. Advanced Mobile Robots, 1997. Proceedings., Second EUROMICRO workshop on. pp. 80-86.
+
+-- Tracking control of a mobile robot with kinematic and dynamic constraints. Heting Xu, Simon X. Yang. Proc Int Symp on Computational Intelligence in Robotics and Automation. 2001. pp. 125-130.
+
+-- Tracking control of nonholonomic mobile robots. Jindong Tan, Ning Xi, Wei Kang. Proc IEEE CIRA 1999. pp. 77-82.
+
+-- Tracking control of uncertain dynamic nonholonomic system and its application to wheeled mobile robots. Wenjie Dong, Wei Huo, S. K. Tso. TRA 16(6). dez 2000. pp. 870-874.
+
+-- Transforming Nonholonomic Control Systems into the Canonical Contact Form. Witold Repondek. Proc. 40 ACDC 2001. pp. 1781-1786.

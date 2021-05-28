@@ -1,0 +1,456 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0048)http://www.linuxgazette.com/issue74/tougher.html -->
+<!--startcut  ==============================================--><!-- *** BEGIN HTML header *** --><HTML><HEAD><TITLE>Linux Socket Programming In C++ LG #74</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2800.1400" name=GENERATOR></HEAD>
+<BODY text=#000000 vLink=#0000af aLink=#ff0000 link=#0000ff bgColor=#ffffff><!-- *** END HTML header *** -->
+<CENTER><A href="http://www.linuxgazette.com/"><IMG height=124 
+alt="LINUX GAZETTE" 
+src="Linux Socket Programming In C++ LG #74_files/lglogo.png" width=600 
+border=0></A> <BR><!-- *** BEGIN navbar *** --><IMG height=45 alt="" 
+src="Linux Socket Programming In C++ LG #74_files/left.jpg" width=14 
+align=bottom border=0><A 
+href="http://www.linuxgazette.com/issue74/spiel.html"><IMG height=45 
+alt="[ Prev ]" src="Linux Socket Programming In C++ LG #74_files/prev.jpg" 
+width=16 align=bottom border=0></A><A 
+href="http://www.linuxgazette.com/issue74/index.html"><IMG height=45 
+alt="[ Table of Contents ]" 
+src="Linux Socket Programming In C++ LG #74_files/toc.jpg" width=220 
+align=bottom border=0></A><A href="http://www.linuxgazette.com/index.html"><IMG 
+height=45 alt="[ Front Page ]" 
+src="Linux Socket Programming In C++ LG #74_files/frontpage.jpg" width=137 
+align=bottom border=0></A><A 
+href="http://www.linuxgazette.com/cgi-bin/talkback/all.py?site=LG&amp;article=http://www.linuxgazette.com/issue74/tougher.html"><IMG 
+height=45 alt="[ Talkback ]" 
+src="Linux Socket Programming In C++ LG #74_files/talkback.jpg" width=121 
+align=bottom border=0></A><A 
+href="http://www.linuxgazette.com/faq/index.html"><IMG height=45 alt="[ FAQ ]" 
+src="Linux Socket Programming In C++ LG #74_files/faq.jpg" width=62 align=bottom 
+border=0></A><A href="http://www.linuxgazette.com/issue74/zhaoway.html"><IMG 
+height=45 alt="[ Next ]" 
+src="Linux Socket Programming In C++ LG #74_files/next.jpg" width=15 
+align=bottom border=0></A><IMG height=45 alt="" 
+src="Linux Socket Programming In C++ LG #74_files/right.jpg" width=15 
+align=bottom> <!-- *** END navbar *** -->
+<P></CENTER><!--endcut ============================================================-->
+<H4 align=center>"Linux Gazette...<I>making Linux just a little more fun!</I>" 
+</H4>
+<P>
+<HR>
+
+<P><!--===================================================================-->
+<CENTER>
+<H1><FONT color=maroon>Linux Socket Programming In C++</FONT></H1>
+<H4>By <A href="mailto:rtougher@yahoo.com">Rob Tougher</A></H4></CENTER>
+<P>
+<HR>
+
+<P><!-- END header -->
+<H2>Contents</H2>
+<DL>
+  <DT><A href="http://www.linuxgazette.com/issue74/tougher.html#1">1. 
+  Introduction</A> 
+  <DT><A href="http://www.linuxgazette.com/issue74/tougher.html#2">2. Overview 
+  of Client-Server Communications</A> 
+  <DT><A href="http://www.linuxgazette.com/issue74/tougher.html#3">3. 
+  Implementing a Simple Server and Client</A> 
+  <DD><A href="http://www.linuxgazette.com/issue74/tougher.html#3.1">3.1 Server 
+  - establishing a listening socket</A> 
+  <DD><A href="http://www.linuxgazette.com/issue74/tougher.html#3.2">3.2 Client 
+  - connecting to the server</A> 
+  <DD><A href="http://www.linuxgazette.com/issue74/tougher.html#3.3">3.3 Server 
+  - Accepting the client's connection attempt</A> 
+  <DD><A href="http://www.linuxgazette.com/issue74/tougher.html#3.4">3.4 Client 
+  and Server - sending and receiving data</A> 
+  <DT><A href="http://www.linuxgazette.com/issue74/tougher.html#4">4 Compiling 
+  and Testing Our Client and Server</A> 
+  <DD><A href="http://www.linuxgazette.com/issue74/tougher.html#4.1">4.1 File 
+  list</A> 
+  <DD><A href="http://www.linuxgazette.com/issue74/tougher.html#4.2">4.2 Compile 
+  and test</A> 
+  <DT><A href="http://www.linuxgazette.com/issue74/tougher.html#5">5. 
+  Conclusion</A> </DT></DL>
+<H2>1. Introduction</H2><A name=1></A>
+<P>Sockets are a mechanism for exchanging data between processes. These 
+processes can either be on the same machine, or on different machines connected 
+via a network. Once a socket connection is established, data can be sent in both 
+directions until one of the endpoints closes the connection. </P>
+<P>I needed to use sockets for a project I was working on, so I developed and 
+refined a few C++ classes to encapsulate the raw socket API calls. Generally, 
+the application requesting the data is called the client, and the application 
+servicing the request is called the server. I created two primary classes, 
+<B>ClientSocket</B> and <B>ServerSocket</B>, that the client and server could 
+use to exchange data. </P>
+<P>The goal of this article is to teach you how to use the <B>ClientSocket</B> 
+and <B>ServerSocket</B> classes in your own applications. We will first briefly 
+discuss client-server communications, and then we will develop a simple example 
+server and client that utilize these two classes. </P>
+<H2>2. Overview of Client-Server Communications</H2><A name=2></A>
+<P>Before we go jumping into code, we should briefly go over the set of steps in 
+a typical client-server connection. The following table outlines these steps: 
+</P>
+<TABLE cols=2 width=400 border=1>
+  <TBODY>
+  <TR>
+    <TD><B>Server</B></TD>
+    <TD><B>Client</B></TD></TR>
+  <TR>
+    <TD>1. Establish a listening socket and wait for connections from 
+    clients.</TD>
+    <TD>&nbsp;</TD></TR>
+  <TR>
+    <TD>&nbsp;</TD>
+    <TD>2. Create a client socket and attempt to connect to server.</TD></TR>
+  <TR>
+    <TD>3. Accept the client's connection attempt.</TD>
+    <TD>&nbsp;</TD></TR>
+  <TR>
+    <TD>4. Send and receive data.</TD>
+    <TD>4. Send and receive data.</TD></TR>
+  <TR>
+    <TD>5. Close the connection.</TD>
+    <TD>5. Close the connection.</TD></TR></TBODY></TABLE>
+<P>That's basically it. First, the server creates a listening socket, and waits 
+for connection attempts from clients. The client creates a socket on its side, 
+and attempts to connect with the server. The server then accepts the connection, 
+and data exchange can begin. Once all data has been passed through the socket 
+connection, either endpoint can close the connection. </P>
+<H2>3. Implementing a Simple Server and Client</H2><A name=3></A>
+<P>Now its time to dig into the code. In the following section we will create 
+both a client and a server that perform all of the steps outlined above in the 
+overview. We will implement these operations in the order they typically happen 
+- i.e. first we'll create the server portion that listens to the socket, next 
+we'll create the client portion that connects to the server, and so on. All of 
+the code in this section can be found in <A 
+href="http://www.linuxgazette.com/issue74/misc/tougher/simple_server_main.cpp.txt">simple_server_main.cpp</A> 
+and <A 
+href="http://www.linuxgazette.com/issue74/misc/tougher/simple_client_main.cpp.txt">simple_client_main.cpp</A>. 
+</P>If you would rather just examine and experiment with the source code 
+yourself, jump to <A 
+href="http://www.linuxgazette.com/issue74/tougher.html#4">this section</A>. It 
+lists the files in the project, and discusses how to compile and test them. 
+<H3>3.1 Server - establishing a listening socket</H3><A name=3.1></A>
+<P>The first thing we need to do is create a simple server that listens for 
+incoming requests from clients. Here is the code required to establish a server 
+socket: </P>listing 1 : creating a server socket ( part of <A 
+href="http://www.linuxgazette.com/issue74/misc/tougher/simple_server_main.cpp.txt">simple_server_main.cpp</A> 
+) 
+<DIV class=listing><PRE>#include "ServerSocket.h"
+#include "SocketException.h"
+#include &lt;string&gt;
+
+int main ( int argc, int argv[] )
+{
+  try
+    {
+      <B>// Create the server socket
+      ServerSocket server ( 30000 );</B>
+
+      // rest of code -
+      // accept connection, handle request, etc...
+
+    }
+  catch ( SocketException&amp; e )
+    {
+      std::cout &lt;&lt; "Exception was caught:" &lt;&lt; e.description() &lt;&lt; "\nExiting.\n";
+    }
+
+  return 0;
+}
+
+
+</PRE></DIV>
+<P>That's all there is to it. The constructor for the <B>ServerSocket</B> class 
+calls the necessary socket APIs to set up the listener socket. It hides the 
+details from you, so all you have to do is create an instance of this class to 
+begin listening on a local port. </P>
+<P>Notice the try/catch block. The <B>ServerSocket</B> and <B>ClientSocket</B> 
+classes use the exception-handling feature of C++. If a class method fails for 
+any reason, it throws an exception of type <B>SocketException</B>, which is 
+defined in <A 
+href="http://www.linuxgazette.com/issue74/misc/tougher/SocketException.h.txt">SocketException.h</A>. 
+Not handling this exception results in program termination, so it is best to 
+handle it. You can get the text of the error by calling <B>SocketException</B>'s 
+<B>description()</B> method as shown above. </P>
+<H3>3.2 Client - connecting to the server</H3><A name=3.2></A>
+<P>The second step in a typical client-server connection is the client's 
+responsibility - to attempt to connect to the server. This code is similar to 
+the server code you just saw: </P>listing 2 : creating a client socket ( part of 
+<A 
+href="http://www.linuxgazette.com/issue74/misc/tougher/simple_client_main.cpp.txt">simple_client_main.cpp</A> 
+) 
+<DIV class=listing><PRE>#include "ClientSocket.h"
+#include "SocketException.h"
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int main ( int argc, int argv[] )
+{
+  try
+    {
+      <B>// Create the client socket
+      ClientSocket client_socket ( "localhost", 30000 );</B>
+
+      // rest of code -
+      // send request, retrieve reply, etc...
+
+    }
+  catch ( SocketException&amp; e )
+    {
+      std::cout &lt;&lt; "Exception was caught:" &lt;&lt; e.description() &lt;&lt; "\n";
+    }
+
+  return 0;
+}
+
+
+</PRE></DIV>
+<P>By simply creating an instance of the <B>ClientSocket</B> class, you create a 
+linux socket, and connect it to the host and port you pass to the constructor. 
+Like the <B>ServerSocket</B> class, if the constructor fails for any reason, an 
+exception is thrown. </P>
+<H3>3.3 Server - accepting the client's connection attempt</H3><A name=3.3></A>
+<P>The next step of the client-server connection occurs within the server. It is 
+the responsibility of the server to accept the client's connection attempt, 
+which opens up a channel of communication between the two socket endpoints. </P>
+<P>We have to add this functionality to our simple server. Here is the updated 
+version: </P>listing 3 : accepting a client connection ( part of <A 
+href="http://www.linuxgazette.com/issue74/misc/tougher/simple_server_main.cpp.txt">simple_server_main.cpp</A> 
+) 
+<DIV class=listing><PRE>#include "ServerSocket.h"
+#include "SocketException.h"
+#include &lt;string&gt;
+
+int main ( int argc, int argv[] )
+{
+  try
+    {
+      // Create the socket
+      ServerSocket server ( 30000 );
+
+      <B>while ( true )
+	{
+	  ServerSocket new_sock;
+	  server.accept ( new_sock );</B>
+
+	  // rest of code -
+	  // read request, send reply, etc...
+
+	<B>}</B>
+    }
+  catch ( SocketException&amp; e )
+    {
+      std::cout &lt;&lt; "Exception was caught:" &lt;&lt; e.description() &lt;&lt; "\nExiting.\n";
+    }
+
+  return 0;
+}
+
+</PRE></DIV>
+<P>Accepting a connection just requires a call to the <B>accept</B> method. This 
+method accepts the connection attempt, and fills <B>new_sock</B> with the socket 
+information about the connection. We'll see how <B>new_sock</B> is used in the 
+next section. </P>
+<H3>3.4 Client and Server - sending and receiving data</H3><A name=3.4></A>
+<P>Now that the server has accepted the client's connection request, it is time 
+to send data back and forth over the socket connection. </P>
+<P>An advanced feature of C++ is the ability to overload operators - or simply, 
+to make an operator perform a certain operation. In the <B>ClientSocket</B> and 
+<B>ServerSocket</B> classes I overloaded the &lt;&lt; and &gt;&gt; operators, so 
+that when used, they wrote data to and read data from the socket. Here is the 
+updated version of the simple server: </P>listing 4 : a simple implementation of 
+a server ( <A 
+href="http://www.linuxgazette.com/issue74/misc/tougher/simple_server_main.cpp.txt">simple_server_main.cpp</A> 
+) 
+<DIV class=listing><PRE>#include "ServerSocket.h"
+#include "SocketException.h"
+#include &lt;string&gt;
+
+int main ( int argc, int argv[] )
+{
+  try
+    {
+      // Create the socket
+      ServerSocket server ( 30000 );
+
+      while ( true )
+	{
+
+	  ServerSocket new_sock;
+	  server.accept ( new_sock );
+<B>
+	  try
+	    {
+	      while ( true )
+		{
+		  std::string data;
+		  new_sock &gt;&gt; data;
+		  new_sock &lt;&lt; data;
+		}
+	    }
+	  catch ( SocketException&amp; ) {}
+</B>
+	}
+    }
+  catch ( SocketException&amp; e )
+    {
+      std::cout &lt;&lt; "Exception was caught:" &lt;&lt; e.description() &lt;&lt; "\nExiting.\n";
+    }
+
+  return 0;
+}
+
+</PRE></DIV>
+<P>The <B>new_sock</B> variable contains all of our socket information, so we 
+use it to exchange data with the client. The line "new_sock &gt;&gt; data;" 
+should be read as "read data from new_sock, and place that data in our string 
+variable 'data'." Similarly, the next line sends the data in 'data' back through 
+the socket to the client. </P>
+<P>If you're paying attention, you'll notice that what we've created here is an 
+echo server. Every piece of data that gets sent from the client to the server 
+gets sent back to the client as is. We can write the client so that it sends a 
+piece of data, and then prints out the server's response: </P>listing 5 : a 
+simple implementation of a client ( <A 
+href="http://www.linuxgazette.com/issue74/misc/tougher/simple_client_main.cpp.txt">simple_client_main.cpp</A> 
+) 
+<DIV class=listing><PRE>#include "ClientSocket.h"
+#include "SocketException.h"
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int main ( int argc, int argv[] )
+{
+  try
+    {
+
+      ClientSocket client_socket ( "localhost", 30000 );
+<B>
+      std::string reply;
+      try
+	{
+	  client_socket &lt;&lt; "Test message.";
+	  client_socket &gt;&gt; reply;
+	}
+      catch ( SocketException&amp; ) {}
+
+      std::cout &lt;&lt; "We received this response from the server:\n\"" &lt;&lt; reply &lt;&lt; "\"\n";;
+</B>
+    }
+  catch ( SocketException&amp; e )
+    {
+      std::cout &lt;&lt; "Exception was caught:" &lt;&lt; e.description() &lt;&lt; "\n";
+    }
+
+  return 0;
+}
+</PRE></DIV>
+<P>We send the string "Test Message." to the server, read the response from the 
+server, and print out the response to std output. </P>
+<H2>4. Compiling and Testing Our Client And Server</H2><A name=4></A>
+<P>Now that we've gone over the basic usage of the <B>ClientSocket</B> and 
+<B>ServerSocket</B> classes, we can build the whole project and test it. </P>
+<H3>4.1 File list</H3><A name=4.1></A>
+<P>The following files make up our example: </P>
+<DL>
+  <DT>Miscellaneous: 
+  <DD><A 
+  href="http://www.linuxgazette.com/issue74/misc/tougher/Makefile.txt">Makefile</A> 
+  - the Makefile for this project 
+  <DD><A 
+  href="http://www.linuxgazette.com/issue74/misc/tougher/Socket.h.txt">Socket.h</A>, 
+  <A 
+  href="http://www.linuxgazette.com/issue74/misc/tougher/Socket.cpp.txt">Socket.cpp</A> 
+  - the Socket class, which implements the raw socket API calls. 
+  <DD><A 
+  href="http://www.linuxgazette.com/issue74/misc/tougher/SocketException.h.txt">SocketException.h</A> 
+  - the SocketException class 
+  <DT>Server: 
+  <DD><A 
+  href="http://www.linuxgazette.com/issue74/misc/tougher/simple_server_main.cpp.txt">simple_server_main.cpp</A> 
+  - main file 
+  <DD><A 
+  href="http://www.linuxgazette.com/issue74/misc/tougher/ServerSocket.h.txt">ServerSocket.h</A>, 
+  <A 
+  href="http://www.linuxgazette.com/issue74/misc/tougher/ServerSocket.cpp.txt">ServerSocket.cpp</A> 
+  - the ServerSocket class 
+  <DT>Client: 
+  <DD><A 
+  href="http://www.linuxgazette.com/issue74/misc/tougher/simple_client_main.cpp.txt">simple_client_main.cpp</A> 
+  - main file 
+  <DD><A 
+  href="http://www.linuxgazette.com/issue74/misc/tougher/ClientSocket.h.txt">ClientSocket.h</A>, 
+  <A 
+  href="http://www.linuxgazette.com/issue74/misc/tougher/ClientSocket.cpp.txt">ClientSocket.cpp</A> 
+  - the ClientSocket class </DD></DL>
+<H3>4.2 Compile and Test</H3><A name=4.2></A>
+<P>Compiling is simple. First save all of the project files into one 
+subdirectory, then type the following at your command prompt: </P>
+<DIV class=listing><PRE>
+prompt$ cd <I>directory_you_just_created</I>
+prompt$ make
+
+</PRE></DIV>
+<P>This will compile all of the files in the project, and create the 
+simple_server and simple_client output files. To test these two output files, 
+run the server in one command prompt, and then run the client in another command 
+prompt: </P>
+<DIV class=listing><PRE>
+<I>first prompt:</I>
+prompt$ <B>./simple_server
+running....</B>
+
+
+
+<I>second prompt:</I>
+prompt$ <B>./simple_client
+We received this response from the server:
+"Test message."</B>
+prompt$
+</PRE></DIV>
+<P>The client will send data to the server, read the response, and print out the 
+response to std output as shown above. You can run the client as many times as 
+you want - the server will respond to each request. </P>
+<H2>5. Conclusion</H2><A name=5></A>
+<P>Sockets are a simple and efficient way to send data between processes. In 
+this article we've gone over socket communications, and developed an example 
+server and client. You should now be able to add socket communications to your 
+applications! </P><!-- *** BEGIN bio *** --><SPACER SIZE="30" TYPE="vertical">
+<P>
+<H4><IMG alt="" src="Linux Socket Programming In C++ LG #74_files/note.gif" 
+align=bottom>Rob Tougher</H4><EM>Rob is a C++ software engineer in the NYC area. 
+When not coding on his favorite platform, you can find Rob strolling on the 
+beach with his girlfriend, Nicole, and their dog, Halley.</EM> <!-- *** END bio *** --><!-- *** BEGIN copyright *** -->
+<P>
+<HR>
+<!-- P -->
+<H5 align=center>Copyright © 2002, Rob Tougher.<BR>Copying license <A 
+href="http://www.linuxgazette.com/copying.html">http://www.linuxgazette.com/copying.html</A><BR>Published 
+in Issue 74 of <I>Linux Gazette</I>, January 2002</H5><!-- *** END copyright *** --><!--startcut ==========================================================-->
+<HR>
+
+<P>
+<CENTER><!-- *** BEGIN navbar *** --><IMG height=45 alt="" 
+src="Linux Socket Programming In C++ LG #74_files/left.jpg" width=14 
+align=bottom border=0><A 
+href="http://www.linuxgazette.com/issue74/spiel.html"><IMG height=45 
+alt="[ Prev ]" src="Linux Socket Programming In C++ LG #74_files/prev.jpg" 
+width=16 align=bottom border=0></A><A 
+href="http://www.linuxgazette.com/issue74/index.html"><IMG height=45 
+alt="[ Table of Contents ]" 
+src="Linux Socket Programming In C++ LG #74_files/toc.jpg" width=220 
+align=bottom border=0></A><A href="http://www.linuxgazette.com/index.html"><IMG 
+height=45 alt="[ Front Page ]" 
+src="Linux Socket Programming In C++ LG #74_files/frontpage.jpg" width=137 
+align=bottom border=0></A><A 
+href="http://www.linuxgazette.com/cgi-bin/talkback/all.py?site=LG&amp;article=http://www.linuxgazette.com/issue74/tougher.html"><IMG 
+height=45 alt="[ Talkback ]" 
+src="Linux Socket Programming In C++ LG #74_files/talkback.jpg" width=121 
+align=bottom border=0></A><A 
+href="http://www.linuxgazette.com/faq/index.html"><IMG height=45 alt="[ FAQ ]" 
+src="Linux Socket Programming In C++ LG #74_files/faq.jpg" width=62 align=bottom 
+border=0></A><A href="http://www.linuxgazette.com/issue74/zhaoway.html"><IMG 
+height=45 alt="[ Next ]" 
+src="Linux Socket Programming In C++ LG #74_files/next.jpg" width=15 
+align=bottom border=0></A><IMG height=45 alt="" 
+src="Linux Socket Programming In C++ LG #74_files/right.jpg" width=15 
+align=bottom> <!-- *** END navbar *** --></CENTER><!--endcut ============================================================--></BODY></HTML>
